@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/pages/template.xhtml">
+	<ui:define name="corpo">
+		<h:form id="cadUsuario">
+			<p:panel id="panel" header="#{userMB.labelCadastro}">
+				<p:messages />
+				<h:inputHidden id="id" value="#{userMB.user.id}" />
+
+				<h:panelGrid columns="3" cellpadding="5">
+					<h:outputLabel for="name"
+						value="#{msgs['cadastroUsuario.label.nome']}" />
+
+					<p:inputText id="name" value="#{userMB.user.nome}" required="true"
+						requiredMessage="#{msgs['cadastroUsuario.nome.required']}"
+						style="width:300px">
+						<f:validateLength minimum="4" />
+						<p:ajax event="blur" update="nameMsg" />
+					</p:inputText>
+					<p:message id="nameMsg" for="name" />
+
+
+					<h:outputText value="Perfil: " />
+					<p:selectManyCheckbox value="#{userMB.selecaoPerfis}"
+						layout="pageDirection">
+						<f:selectItems value="#{userMB.opcaoPerfis}" />
+					</p:selectManyCheckbox>
+					<h:outputText></h:outputText>
+
+
+<!-- 
+					<h:outputText value="Perfil: " />
+					<p:selectManyCheckbox value="#{userMB.user.perfil}"
+						layout="pageDirection">
+						<f:selectItems var="p" itemLabel="#{p.tipo}" itemValue="#{p.id}"
+							value="#{userMB.perfilList}" /> 
+					</p:selectManyCheckbox>
+					<h:outputText></h:outputText>
+ -->
+
+<!--
+<h:outputText value="Perfil: " />
+					<p:selectManyCheckbox value="#{userMB.selecaoPerfis}"
+						layout="pageDirection">
+						<f:selectItems var="p" itemLabel="#{p.id_perfil}"
+							itemValue="#{p.tipoPerfil}" value="#{userMB.opcaoPerfis}" />
+					</p:selectManyCheckbox>
+					<h:outputText></h:outputText>
+					
+<h:outputText value="Perfil: " />
+						<p:selectOneRadio value="#{userMB.user.perfis}" layout="pageDirection">
+					<f:selectItems  id="perfils" var="perfil" value="#{userMB.perfilList}"/>
+					</p:selectOneRadio>
+					<h:outputText></h:outputText>
+	 -->
+		<h:outputText value="Perfil: " />
+					<p:selectManyCheckbox value="#{userMB.user.perfis}"
+						layout="pageDirection">
+						<f:selectItems value="#{userMB.opcaoPerfis}" />
+					</p:selectManyCheckbox>
+					<h:outputText></h:outputText>
+
+<!-- 
+					<p:selectManyCheckbox value="#{userMB.user.perfilList}"
+						layout="pageDirection">
+						<f:selectItems value="#{userMB.opcaoPerfis}" />
+					</p:selectManyCheckbox>
+					<h:outputText></h:outputText>
+								
+					
+						<p:selectOneRadio value="#{userMB.user.perfil}" layout="pageDirection">
+					<f:selectItems value="#{userMB.perfis}"/>
+					</p:selectOneRadio>
+					<h:outputText></h:outputText>
+ -->
+
+					<h:outputLabel for="cpf"
+						value="#{msgs['cadastroUsuario.label.cpf']}" />
+					<p:inputMask id="cpf" mask="999.999.999-99"
+						value="#{userMB.user.cpf}" maxlength="14" required="true"
+						requiredMessage="#{msgs['cadastroUsuario.cpf.required']}"
+						style="width:300px">
+						<p:ajax event="blur" update="idMsg" />
+					</p:inputMask>
+					<p:message id="idMsg" for="cpf" />
+
+					<h:outputLabel for="email"
+						value="#{msgs['cadastroUsuario.label.email']}" />
+					<p:inputText id="email" value="#{userMB.user.email}"
+						required="true"
+						requiredMessage="#{msgs['cadastroUsuario.email.required']}"
+						validatorMessage="#{msgs['cadastroUsuario.email.requiredValidator']}"
+						style="width:300px">
+						<f:validateRegex
+							pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						<f:validateLength minimum="5" />
+						<p:ajax event="blur" update="emailMsg" />
+					</p:inputText>
+					<p:message id="emailMsg" for="email" />
+				</h:panelGrid>
+
+				<p:commandButton id="addUser"
+					value="#{msgs['cadastroUsuario.label.add']}" update="panel"
+					action="#{userMB.addUser}" ajax="false" />
+
+				<p:commandButton id="reset"
+					value="#{msgs['cadastroUsuario.label.reset']}"
+					action="#{userMB.reset}" type="reset" ajax="false" />
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

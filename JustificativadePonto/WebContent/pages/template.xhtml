@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+	<title><h:outputText value="#{msgs['titulo.sistema']}" /></title>
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript name="jsf.js" library="javax.faces" target="head" />
+</h:head>
+<h:body>
+  <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
+
+	<h:outputText id="nomedousuario" value="#{loginController.user.nome}" />
+	<div id="conteudo">
+		<h:form>
+		<p:menubar styleClass="menunav">
+				<p:submenu label="Justificativa">
+					<p:menuitem value="Nova Justificativa" icon="ui-icon-document" url="#" />
+				</p:submenu>
+
+				<p:submenu label="Justificativas">
+					<p:menuitem value="Por ano" url="#" />
+					<p:separator />
+					<p:menuitem value="Por colaborador" url="#" />
+					<p:separator />
+					<p:menuitem value="Por mês" url="#" />
+					<p:separator />
+					<p:menuitem value="Por motivo" url="#" />
+				</p:submenu>
+
+				<p:submenu label="Administração">
+					<p:menuitem value="Manual" url="#" />
+					<p:separator />
+					<p:menuitem value="Novo Usuário" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
+					<p:menuitem value="Consulta Usuários"
+						url="/pages/adm/listaUsuarios.jsf"/>
+					<p:separator />
+					<p:menuitem value="Novo Perfil" url="/pages/adm/cadPerfil.jsf" icon="ui-icon-document" />
+					<p:menuitem value="Consulta Perfils" url="/pages/adm/listaPerfils.jsf" /> 
+				</p:submenu>
+
+				<p:menuitem value="Alterar senha" url="/pages/adm/senha.jsf"
+					ajax="false" />
+				<p:menuitem value="Sair" action="#{loginController.logOut}"
+					ajax="false" />
+
+				<p:menuitem value="#{loginController.user.nome}" />
+			</p:menubar>
+
+		</h:form>
+		<br></br>
+		<ui:insert name="corpo" />
+	</div>
+	<div id="rodape"></div>
+</h:body>
+</html>

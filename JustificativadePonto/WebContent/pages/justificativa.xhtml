@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+	<title><h:outputText
+			value="#{msgs['justificativa.label.titulo']}" /></title>
+</h:head>
+<ui:composition template="/pages/template.xhtml">
+	<ui:define name="corpo">
+		<h:form>
+
+			<h:panelGrid columns="2">
+				<h:outputText value="Motivo" />
+				<p:selectOneMenu id="motivo" 
+					requiredMessage="#{msgs['login.required']}">
+					<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+				<h:outputText value="Causa da falta" />
+				<p:selectOneMenu id="tipoFalta" 
+					requiredMessage="#{msgs['login.required']}">
+					<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+
+			<h:panelGrid columns="4">
+				<h:outputText value="Horário" />
+				<input id="hrini" requiredMessage="#{msgs['login.required']}" />
+				<h:outputText value="às" />
+				<input id="hrfim" 
+					requiredMessage="#{msgs['login.required']}" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="2">
+				<h:outputText value="Banco de dados" />
+				<p:selectOneMenu id="tipoBanco" 
+					requiredMessage="#{msgs['login.required']}">
+					<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+
+			<h:outputText value="Justificativa" />
+			<p:inputTextarea rows="5" cols="30" counter="counter" maxlength="100"
+				counterTemplate="{0} characters remaining." autoResize="false" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

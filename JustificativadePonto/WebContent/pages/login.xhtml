@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+	<title><h:outputLabel value="#{msgs['sistema.titulo']}" /></title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel id="panel" header="#{msgs['login.label.titulo']}" style="margin:0 auto;width: 60%">
+			<p:messages/>
+			<h:panelGrid columns="2">
+
+				<h:outputText value="#{msgs['login.label']}" />
+				<h:inputText id="username" value="#{loginController.user.email}"
+					required="true" requiredMessage="#{msgs['login.required']}" />
+
+				<h:outputText value="#{msgs['login.label.passw']}" />
+				<h:inputSecret id="password" value="#{loginController.user.senha}"
+					required="true" requiredMessage="#{msgs['login.passw.required']}" />
+			</h:panelGrid>
+			
+			<h:commandButton action="#{loginController.efetuaLogin}"
+				value="#{msgs['login.acao']}" />
+		</p:panel>
+	</h:form>
+</h:body>
+</html>
