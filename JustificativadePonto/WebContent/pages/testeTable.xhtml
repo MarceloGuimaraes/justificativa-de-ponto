@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+	<title><h:outputText
+			value="#{msgs['cadastroUsuario.label.titulo']}" /></title>
+	<p:panelGrid border="0" columns="2">
+		<p:row>
+			<p:column colspan="2">
+				<h:outputLabel value="Solicitante: " />
+				<h:outputText id="solicitante" value="NOME DO SOLICITANTE" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column colspan="2">
+				<h:outputLabel value="Data Criação:  " />
+				<h:outputText id="solicitante" value="24/11/2012" />
+			</p:column>
+		</p:row>
+		<h:outputText value="item2"></h:outputText>
+		<h:outputText value="item3"></h:outputText>
+	</p:panelGrid>
+</h:head>
+
+
+</html>

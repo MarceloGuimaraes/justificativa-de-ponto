@@ -12,44 +12,91 @@
 </h:head>
 <ui:composition template="/pages/template.xhtml">
 	<ui:define name="corpo">
-		<h:form>
+		<h:form id="justificativaForm">
 
-			<h:panelGrid columns="2">
-				<h:outputText value="Motivo" />
-				<p:selectOneMenu id="motivo" 
-					requiredMessage="#{msgs['login.required']}">
-					<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
-				</p:selectOneMenu>
-			</h:panelGrid>
+			<p:panel id="panel" header="#{justificativaBean.labelCadastro}">
+				<p:messages />
+				<h:inputHidden
+					value="#{justificativaBean.justificativa.justificativaId}" />
 
-			<h:panelGrid columns="2">
-				<h:outputText value="Causa da falta" />
-				<p:selectOneMenu id="tipoFalta" 
-					requiredMessage="#{msgs['login.required']}">
-					<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
-				</p:selectOneMenu>
-			</h:panelGrid>
+				<p:fieldset style="padding: 5px;width:99%">
+					<p:panelGrid columns="2" styleClass="semBorda">
+						<p:row>
+							<p:column colspan="2" style="text-align:left">
+								<h:outputLabel value="Solicitante: " />
+								<h:outputText id="solicitante" value="NOME DO SOLICITANTE" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2" style="text-align:right">
+								<h:outputLabel value="Data Criação: " />
+								<h:outputText
+									value="#{justificativaBean.justificativa.dtCriacao}">
+									<f:convertDateTime pattern="d/M/yyyy" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+				<br></br>
+				<p:separator />
+				<br></br>
+				<p:panelGrid columns="2" style="width:99%">
+					<p:row>
+						<p:column colspan="2">
+							<h:outputLabel value="Motivo:" />
+							<p:selectOneMenu id="motivo"
+								value="#{justificativaBean.justificativa.motivo}">
+								<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2">
+							<h:outputLabel value="Horário: ">
+								<p:calendar styleClass="calendar"
+									value="#{justificativaBean.justificativa.hrIni}" id="hrini"
+									showOn="button" pattern="HH:mm" timeOnly="true" />
+							</h:outputLabel>
+							<h:outputLabel value=" às ">
+								<p:calendar styleClass="calendar"
+									value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
+									showOn="button" pattern="HH:mm" timeOnly="true" />
+							</h:outputLabel>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
 
-			<h:panelGrid columns="4">
-				<h:outputText value="Horário" />
-				<input id="hrini" requiredMessage="#{msgs['login.required']}" />
-				<h:outputText value="às" />
-				<input id="hrfim" 
-					requiredMessage="#{msgs['login.required']}" />
-			</h:panelGrid>
+				<p:panelGrid columns="2" style="margin:5px;padding: 5px;width:99%">
 
-			<h:panelGrid columns="2">
-				<h:outputText value="Banco de dados" />
-				<p:selectOneMenu id="tipoBanco" 
-					requiredMessage="#{msgs['login.required']}">
-					<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
-				</p:selectOneMenu>
-			</h:panelGrid>
+					<h:outputLabel value="Causa da falta:" />
+					<p:selectOneMenu id="tipoFalta"
+						requiredMessage="#{msgs['login.required']}"
+						value="#{justificativaBean.justificativa.tipofalta}">
+						<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
+					</p:selectOneMenu>
 
-			<h:outputText value="Justificativa" />
-			<p:inputTextarea rows="5" cols="30" counter="counter" maxlength="100"
-				counterTemplate="{0} characters remaining." autoResize="false" />
+					<h:outputLabel value="Banco de dados:" />
+					<p:selectOneMenu id="tipobancohoras"
+						value="#{justificativaBean.justificativa.tipobancohoras}">
+						<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
+					</p:selectOneMenu>
 
+					<h:outputLabel value="Justificativa:" />
+					<p:inputTextarea id="descricao" rows="5" cols="30"
+						counter="counter" maxlength="300"
+						counterTemplate="{0} characters remaining." autoResize="false"
+						value="#{justificativaBean.justificativa.descricao}" />
+				</p:panelGrid>
+				<br></br>
+				<p:commandButton id="addJustificativa"
+					value="#{msgs['cadastroJustificativa.label.add']}" update="panel"
+					action="#{justificativaBean.addJustificativa}" ajax="false" />
+
+				<p:commandButton id="reset"
+					value="#{msgs['cadastroJustificativa.label.reset']}"
+					action="#{justificativaBean.reset}" type="reset" ajax="false" />
+			</p:panel>
 		</h:form>
 	</ui:define>
 </ui:composition>

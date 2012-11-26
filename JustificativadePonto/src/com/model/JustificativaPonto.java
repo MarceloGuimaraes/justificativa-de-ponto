@@ -19,8 +19,8 @@ public class JustificativaPonto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private int id;
+	@Column(name = "justificativaId")
+	private int justificativaId;
 
 	@Column(name = "dtCriacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -64,19 +64,36 @@ public class JustificativaPonto {
 	private String status;
 
 	@Column(name = "motivo")
-    @Enumerated(EnumType.STRING)
-    private Motivo motivo;
-	
-	
+	@Enumerated(EnumType.STRING)
+	private Motivo motivo;
+
 	@Column(name = "tipodefalta")
-    @Enumerated(EnumType.STRING)
-    private TipoFalta tipofalta;
-	
+	@Enumerated(EnumType.STRING)
+	private TipoFalta tipofalta;
+
 	@Column(name = "tipobancohoras")
-    @Enumerated(EnumType.STRING)
-    private TipoBancoHoras tipobancohoras;	
-	
-	
+	@Enumerated(EnumType.STRING)
+	private TipoBancoHoras tipobancohoras;
+
+	/*
+	 * public JustificativaPonto(){
+	 * 
+	 * } public JustificativaPonto(Date dtCriacao, Date dtAprovCoord, Date
+	 * dtAprovSuper,Date dtAprovRh, Date dtOcorrenciaInit, Date dtOcorrenciaFim)
+	 * { super(); dtCriacao = new Date(); this.dtAprovCoord = dtAprovCoord;
+	 * this.dtAprovSuper = dtAprovSuper; this.dtAprovRh = dtAprovRh;
+	 * this.dtOcorrenciaInit = dtOcorrenciaInit; this.dtOcorrenciaFim =
+	 * dtOcorrenciaFim; }
+	 */
+
+	public int getJustificativaId() {
+		return justificativaId;
+	}
+
+	public void setJustificativaId(int justificativaId) {
+		this.justificativaId = justificativaId;
+	}
+
 	public TipoFalta getTipofalta() {
 		return tipofalta;
 	}
@@ -100,21 +117,13 @@ public class JustificativaPonto {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public Motivo getMotivo() {
 		return motivo;
 	}
 
 	public void setMotivo(Motivo motivo) {
 		this.motivo = motivo;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public Date getDtCriacao() {

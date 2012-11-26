@@ -36,7 +36,18 @@ public class User implements Serializable {
 	
 	@OneToMany 
 	private List<Perfil> perfil;
+	
+	@Column(name = "ativo")
+	private boolean ativo = true;
+	
+	public boolean isAtivo() {
+		return ativo;
+	}
 
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 	public List<Perfil> getPerfil() {
 		return perfil;
 	}

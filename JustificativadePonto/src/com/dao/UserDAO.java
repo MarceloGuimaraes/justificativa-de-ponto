@@ -40,8 +40,7 @@ public class UserDAO implements IUserDAO, Serializable {
 	public User getUserById(User user) {
 		int id = user.getUserId();
 		Query q = getSessionFactory().getCurrentSession().createQuery(
-				"from User where id=?");
-
+				"from User u where u.userId=?");
 		q.setParameter(0, id).list();
 		User p;
 		try {
@@ -107,7 +106,7 @@ public class UserDAO implements IUserDAO, Serializable {
 			return false;
 		}
 	}
- 
+
 	public List<Perfil> getPerfis(User user) {
 
 		int idUser = user.getUserId();
@@ -115,8 +114,8 @@ public class UserDAO implements IUserDAO, Serializable {
 		String hdl = "select u from User_perfis u where u.User_id = :iduser";
 		Query query = getSessionFactory().getCurrentSession().createQuery(hdl);
 		// getSessionFactory().getCurrentSession().createQuery("from justificativadeponto.user_perfis where user_id=?");
-		query.setInteger("iduser",idUser).list();
-		/*q.setParameter(0, id).list();*/
+		query.setInteger("iduser", idUser).list();
+		/* q.setParameter(0, id).list(); */
 		try {
 			return query.list();
 		} catch (NonUniqueResultException e) {

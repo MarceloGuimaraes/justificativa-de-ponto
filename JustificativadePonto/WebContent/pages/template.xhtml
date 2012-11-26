@@ -15,14 +15,15 @@
 	<h:outputScript name="jsf.js" library="javax.faces" target="head" />
 </h:head>
 <h:body>
+<div id="cabecalho">
   <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
-
-	<h:outputText id="nomedousuario" value="#{loginController.user.nome}" />
+</div>
+	<div id="usuarioLogado">Logado como: #{loginController.user.nome}</div>
 	<div id="conteudo">
 		<h:form>
 		<p:menubar styleClass="menunav">
 				<p:submenu label="Justificativa">
-					<p:menuitem value="Nova Justificativa" icon="ui-icon-document" url="#" />
+					<p:menuitem value="Nova Justificativa" url="/pages/justificativa.jsf" icon="ui-icon-document" />
 				</p:submenu>
 
 				<p:submenu label="Justificativas">
@@ -53,11 +54,9 @@
 
 				<p:menuitem value="#{loginController.user.nome}" />
 			</p:menubar>
-
 		</h:form>
-		<br></br>
 		<ui:insert name="corpo" />
 	</div>
-	<div id="rodape"></div>
+	<div id="rodape">------------  Justificativa de Ponto  -----------</div>
 </h:body>
 </html>
