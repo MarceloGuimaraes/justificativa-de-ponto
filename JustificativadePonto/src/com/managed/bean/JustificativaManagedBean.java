@@ -78,6 +78,7 @@ public class JustificativaManagedBean implements Serializable {
 
 	private void fetchTipoMotivosList() {
 		tipoMotivosList.clear();
+		tipoMotivosList.add(new SelectItem("SELECIONE"));
 		Motivo[] motivoArray = Motivo.values();
 		for (Motivo tipoMotivo : motivoArray) {
 			// System.out.println("tipoMotivo:" + tipoMotivo);
@@ -118,6 +119,7 @@ public class JustificativaManagedBean implements Serializable {
 
 	private void fetchTipoBancoHorasList() {
 		tipoBancoHorasList.clear();
+		tipoBancoHorasList.add(new SelectItem("SELECIONE"));
 		TipoBancoHoras[] bancoHorasArray = TipoBancoHoras.values();
 		for (TipoBancoHoras tipoBancoHoras : bancoHorasArray) {
 			// System.out.println("tipoBancoHoras:" + tipoBancoHoras);
@@ -143,6 +145,7 @@ public class JustificativaManagedBean implements Serializable {
 
 	private void fetchTipoFaltaList() {
 		tipoFaltaList.clear();
+		tipoFaltaList.add(new SelectItem("SELECIONE"));
 		TipoFalta[] bancoHorasArray = TipoFalta.values();
 		for (TipoFalta tipoFalta : bancoHorasArray) {
 			// System.out.println("tipoFalta:" + tipoFalta);

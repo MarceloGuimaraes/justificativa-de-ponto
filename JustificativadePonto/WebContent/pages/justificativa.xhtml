@@ -41,13 +41,14 @@
 				<br></br>
 				<p:separator />
 				<br></br>
-				<p:panelGrid columns="2" style="width:99%">
+				<p:panelGrid id="grid1" columns="2" style="width:99%">
 					<p:row>
 						<p:column colspan="2">
 							<h:outputLabel value="Motivo:" />
 							<p:selectOneMenu id="motivo"
 								value="#{justificativaBean.justificativa.motivo}">
 								<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
+								<p:ajax process="@this tipoFalta" event="change" update="tipoFalta"/> 
 							</p:selectOneMenu>
 						</p:column>
 					</p:row>
@@ -67,10 +68,9 @@
 					</p:row>
 				</p:panelGrid>
 
-				<p:panelGrid columns="2" style="margin:5px;padding: 5px;width:99%">
-
-					<h:outputLabel value="Causa da falta:" />
-					<p:selectOneMenu id="tipoFalta"
+				<p:panelGrid id="grid2" columns="2" style="margin:5px;padding: 5px;width:99%">
+					<h:outputLabel value="Causa da falta:" id="tipoFalta" rendered="#{justificativaBean.tipoMotivosList eq 'Faltas'}" />
+					<p:selectOneMenu 
 						requiredMessage="#{msgs['login.required']}"
 						value="#{justificativaBean.justificativa.tipofalta}">
 						<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
