@@ -25,7 +25,8 @@ public class UserService implements IUserService,Serializable {
 
 	@Override
 	public boolean isExiteUser(User user) {
-		if (getUserByCpf(user) != null && getUserByEmail(user) != null)
+/*		System.out.println("Verifica se existe usuário: " + user.getNome());*/
+		if (getUserByCpf(user) != null || getUserByEmail(user) != null)
 			return true;
 		else
 			return false;

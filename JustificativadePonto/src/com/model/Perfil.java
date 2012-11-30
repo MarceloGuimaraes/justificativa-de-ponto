@@ -23,17 +23,6 @@ public class Perfil implements Serializable {
 	@Column(name = "tipo", unique = true, nullable = false, length = 20)
 	private String tipo;
 
-	@Column(name = "ativo")
-	private boolean ativo = true;
-	
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-	
 	public int getPerfilId() {
 		return perfilId;
 	}
@@ -62,8 +51,8 @@ public class Perfil implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Perfil [id=").append(perfilId).append(", tipo=").append(tipo)
-				.append("]");
+		builder.append("Perfil [id=").append(perfilId).append(", tipo=")
+				.append(tipo).append("]");
 		return builder.toString();
 	}
 

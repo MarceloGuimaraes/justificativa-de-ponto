@@ -10,7 +10,8 @@
 			<p:panel id="panel" header="#{msgs['login.passw.altera']}">
 
 				<p:messages id="a"></p:messages>
-					<h:inputHidden id="id" value="#{loginController.user.id}" />
+				
+					<h:inputHidden id="id" value="#{loginController.user.userId}" />
 				<h:panelGrid id="panelAltera" columns="3" cellpadding="5">
 
 					<h:outputLabel value="#{msgs['login.passw.fldSenha']}" for="txtSenhaAtual" />

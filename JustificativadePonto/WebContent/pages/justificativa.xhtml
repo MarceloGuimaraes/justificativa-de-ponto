@@ -48,7 +48,6 @@
 							<p:selectOneMenu id="motivo"
 								value="#{justificativaBean.justificativa.motivo}">
 								<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
-								<p:ajax process="@this tipoFalta" event="change" update="tipoFalta"/> 
 							</p:selectOneMenu>
 						</p:column>
 					</p:row>

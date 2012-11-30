@@ -68,13 +68,15 @@ public class UserManagedBean implements Serializable {
 	 * } }
 	 */
 
+	
+	private String getDefaultPassword(String strCpf){
+		//Senha default é composto pelos 5 primeiros números do CPF
+			return strCpf.replace(".","").replace("-", "").substring(0, 5);
+	}
+		
+	
 	public String addUser() {
 
-		System.out.println("ENTROU NO ADDUSER");
-
-		if (this.user.getSenha() == null) {
-			this.user.setSenha("123456");
-		}
 
 		// se o usuário existir atualiza
 		if (this.user.getUserId() != 0) {
@@ -83,6 +85,11 @@ public class UserManagedBean implements Serializable {
 			return SUCCESS;
 			// valida se existe p/adicionar
 		} else if (!getUserService().isExiteUser(this.user)) {
+			
+			if (this.user.getSenha() == null) {
+                this.user.setSenha(getDefaultPassword(this.user.getCpf()));
+			}
+			
 			// /selecaoToPerfilEnum(this.user);
 			getUserService().addUser(this.user);
 			return SUCCESS;

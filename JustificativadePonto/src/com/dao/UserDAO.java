@@ -52,7 +52,10 @@ public class UserDAO implements IUserDAO, Serializable {
 	}
 
 	public User getUserByCpf(User user) {
+		
 		String cpf = user.getCpf();
+/*		System.out.println("NOME: " + user.getNome());
+		System.out.println("CPF: " + user.getCpf());*/
 		Query q = getSessionFactory().getCurrentSession().createQuery(
 				"from User where cpf=?");
 
@@ -67,6 +70,10 @@ public class UserDAO implements IUserDAO, Serializable {
 	}
 
 	public User getUserByEmail(User user) {
+		
+/*		System.out.println("NOME: " + user.getNome());
+		System.out.println("CPF: " + user.getEmail());*/
+		
 		String email = user.getEmail();
 		Query q = getSessionFactory().getCurrentSession().createQuery(
 				"from User where email=?");
@@ -83,8 +90,8 @@ public class UserDAO implements IUserDAO, Serializable {
 
 	public Boolean buscaPorLogin(User user) {
 
-		System.out.println("USER => " + user.getEmail());
-		System.out.println("SENHA => " + user.getSenha());
+/*		System.out.println("USER => " + user.getEmail());
+		System.out.println("SENHA => " + user.getSenha());*/
 
 		Query q = getSessionFactory().getCurrentSession().createQuery(
 				"from User u where u.email = "

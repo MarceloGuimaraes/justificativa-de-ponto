@@ -14,12 +14,12 @@ import com.util.Message;
 
 @SessionScoped
 @ManagedBean(name = "loginController")
-
 public class LoginBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final String SUCCESS = "welcome";
+	private static final String TROCASENHA = "";
 
 	// Spring User Service is injected...
 	@ManagedProperty(value = "#{UserService}")
@@ -43,7 +43,7 @@ public class LoginBean implements Serializable {
 
 	public void setSenhaNova(String senhaNova) {
 		this.senhaNova = senhaNova;
-		//System.out.println("NOVA SENHA:" + senhaNova);
+		// System.out.println("NOVA SENHA:" + senhaNova);
 	}
 
 	public User getUser() {
@@ -53,7 +53,7 @@ public class LoginBean implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -67,16 +67,31 @@ public class LoginBean implements Serializable {
 		if (getUserService().buscaPorLogin(this.user)) {
 
 			this.user = getUserService().getUserByEmail(this.user);
-			
+
 			System.out.println("CPF DO USER => " + this.user.getCpf());
-			
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioLogado", this.user);
-			
-			//recuperando p/testar se esta sendo adicionado na sessão
-			//User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-			//System.out.println("currentUser => " + currentUser.getCpf());
-			
-			return SUCCESS;
+
+			FacesContext.getCurrentInstance().getExternalContext()
+					.getSessionMap().put("usuarioLogado", this.user);
+
+			// recuperando p/testar se esta sendo adicionado na sessão
+			// User currentUser =
+			// (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+			// System.out.println("currentUser => " + currentUser.getCpf());
+
+			// verifica se contem 5 caracteres conforme a senha default
+			if (this.user.getSenha().length() == 5) {
+				if (this.user.getSenha().equals(
+						this.user.getSenha().replace(".", "").replace("-", "")
+								.substring(0, 5))) {
+					// return TROCASENHA;
+					Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
+					return "/pages/adm/senha.jsf?faces-redirect=true";
+				} else {
+					return SUCCESS;
+				}
+			} else {
+				return SUCCESS;
+			}
 
 		} else {
 			Message.addMessage("login.invalido");
@@ -85,43 +100,42 @@ public class LoginBean implements Serializable {
 	}
 
 	public String alteraSenha() {
-		
-		
-        if (this.user.getSenha() == "") {
+
+		if (this.user.getSenha() == "") {
 			Message.addMessage("login.passw.atual");
 			return null;
-//			/dao.existe(this.user).getId() == null
-        } else if (!getUserService().buscaPorLogin(this.user)) {
+			// /dao.existe(this.user).getId() == null
+		} else if (!getUserService().buscaPorLogin(this.user)) {
 			Message.addMessage("login.passw.atual");
 			return null;
-        } else if (getSenhaNova() == "") {
+		} else if (getSenhaNova() == "") {
 			Message.addMessage("login.passw.nova");
 			return null;
-			
-        } else if (getConfirmaSenhaNova() == "") {
+
+		} else if (getConfirmaSenhaNova() == "") {
 			Message.addMessage("login.passw.confirm");
 			return null;
-        } else if (!getSenhaNova().equals(getConfirmaSenhaNova())) {
-            Message.addMessage("login.passw.confirmError");
-            return null;
-        } else {
-             //   user.setSenha(Criptografia.encodePassword(getSenhaNova()));
-    		   user.setSenha(getSenhaNova());
-                ///dao.altera(user);
-                getUserService().updateUser(this.user);
-                Message.addMessageConfig("login.passw.confirmOk");
-                return "/pages/wellcome?faces-redirect=true";
-              //  return SUCCESS;
-        }
-}
-	
-/*
-    public boolean isLogado() {
-        System.out.println("==========================Usuario: " + user.getEmail());
-        return user.getEmail() != null;
-}
-	*/
-	
+		} else if (!getSenhaNova().equals(getConfirmaSenhaNova())) {
+			Message.addMessage("login.passw.confirmError");
+			return null;
+		} else {
+			// user.setSenha(Criptografia.encodePassword(getSenhaNova()));
+			user.setSenha(getSenhaNova());
+			// /dao.altera(user);
+			getUserService().updateUser(this.user);
+			Message.addMessageConfig("login.passw.confirmOk");
+			return "/pages/wellcome.jsf?faces-redirect=true";
+		//	return "/pages/adm/senha.jsf?faces-redirect=true";
+			// return SUCCESS;
+		}
+	}
+
+	/*
+	 * public boolean isLogado() {
+	 * System.out.println("==========================Usuario: " +
+	 * user.getEmail()); return user.getEmail() != null; }
+	 */
+
 	public String logOut() {
 
 		this.user = new User();
@@ -151,7 +165,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public LoginBean() {
-	if (this.user == null) {
+		if (this.user == null) {
 			this.user = new User();
 		}
 	}
