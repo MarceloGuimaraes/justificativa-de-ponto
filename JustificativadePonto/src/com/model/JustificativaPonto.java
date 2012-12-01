@@ -74,7 +74,30 @@ public class JustificativaPonto {
 	@Column(name = "tipobancohoras")
 	@Enumerated(EnumType.STRING)
 	private TipoBancoHoras tipobancohoras;
+	
+	@Column(name = "coordenador")
+	private User coordenador;
+	
+	@Column(name = "superintendente")
+	private User superintendente;
+	
 
+	public User getSuperintendente() {
+		return superintendente;
+	}
+
+	public void setSuperintendente(User superintendente) {
+		this.superintendente = superintendente;
+	}
+
+	public User getCoordenador() {
+		return coordenador;
+	}
+
+	public void setCoordenador(User coordenador) {
+		this.coordenador = coordenador;
+	}
+	
 	/*
 	 * public JustificativaPonto(){
 	 * 
@@ -85,6 +108,7 @@ public class JustificativaPonto {
 	 * this.dtOcorrenciaInit = dtOcorrenciaInit; this.dtOcorrenciaFim =
 	 * dtOcorrenciaFim; }
 	 */
+
 
 	public int getJustificativaId() {
 		return justificativaId;

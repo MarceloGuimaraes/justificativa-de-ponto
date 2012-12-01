@@ -35,18 +35,20 @@ a Img {
 /** cabecalho **/
 #cabecalho,header {
 	background-color: #FFFFFF;
-	height: 150px;
+	height: 100px;
 	position: relative;
 	top: 0px;
 }
 
 #logoCompany {
-	float: left;
+	float: center;
 	position: absolute;
 	top: 0px;
 	left: 50%;
 	margin-left: -450px;
 	width: 900px;
+	height: 120px;
+	
 }
 
 #usuarioLogado {
@@ -138,11 +140,11 @@ input:not    (.ui-widget    ),textarea:not    (.ui-widget    ),select {
 
 label {
 	color:#155c91; 
-	display: block;
-	float: left;
+/* 	display: block;
+	float: right;
 	margin-right: 20px;
 	text-align: right;
-	width: 120px;
+	width: 120px; */
 	font-family: helvetica, arial, sans-serif;
 	padding: 5px;
 	font-weight: bold;

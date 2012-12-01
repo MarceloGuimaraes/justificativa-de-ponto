@@ -16,6 +16,7 @@ import com.model.TipoBancoHoras;
 import com.model.TipoFalta;
 import com.model.User;
 import com.service.IJustificativaService;
+import com.service.IUserService;
 import com.util.Message;
 
 @ManagedBean(name = "justificativaBean")
@@ -28,6 +29,25 @@ public class JustificativaManagedBean implements Serializable {
 
 	@ManagedProperty(value = "#{JustificativaService}")
 	private IJustificativaService justificativaService;
+
+	@ManagedProperty(value = "#{UserService}")
+	IUserService userService;
+
+	List<User> userList;
+
+	public List<User> getUserList() {
+		userList = new ArrayList<User>();
+		userList.addAll(getUserService().getUsers());
+		return userList;
+	}
+
+	public IUserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
 
 	private List<JustificativaPonto> justificativaList;
 
@@ -53,6 +73,7 @@ public class JustificativaManagedBean implements Serializable {
 		if (this.justificativa == null) {
 			this.justificativa = new JustificativaPonto();
 			this.justificativa.setDtCriacao(new Date());
+			this.justificativa.setStatus("Em  Elboração");
 		}
 
 		fetchTipoMotivosList();

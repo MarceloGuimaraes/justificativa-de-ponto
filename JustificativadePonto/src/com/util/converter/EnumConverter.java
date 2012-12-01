@@ -1,26 +1,31 @@
 package com.util.converter;
 
 import javax.faces.component.UIComponent;
-
-
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
+import javax.persistence.EnumType;
 
+@FacesConverter("enumTypeConverter")
 public class EnumConverter implements Converter {
-	public Object getAsObject(FacesContext context, UIComponent component,
-			String value) throws ConverterException {
-		Class enumType = component.getValueExpression("value").getType(
-				context.getELContext());
-		return Enum.valueOf(enumType, value);
+
+
+	@Override
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
+		if (value != null) {
+			return EnumType.valueOf(value);
+		}
+
+		return null;
 	}
 
-	public String getAsString(FacesContext context, UIComponent component,
-			Object object) throws ConverterException {
-		if (object == null) {
-			return null;
+	@Override
+	public String getAsString(FacesContext context, UIComponent component, Object value) {
+		if (value != null && value instanceof EnumType) {
+			return ((EnumType) value).name();
 		}
-		Enum type = (Enum) object;
-		return type.toString();
+		return null;
 	}
+		
+	
 }
