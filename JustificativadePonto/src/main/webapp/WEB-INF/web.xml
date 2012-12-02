@@ -51,6 +51,18 @@
     <session-config>
         <session-timeout>10</session-timeout>
     </session-config>
+
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/error.jsf</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/error.jsf</location>
+    </error-page>
+
     <listener>
         <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
     </listener>

@@ -267,6 +267,13 @@ table.dados tr td {
 	background: none repeat scroll 0 0 #DDDDDD;
 }
 
+.erroPage{
+    text-align: center;
+    font-size: 80px;
+    color: #0000FF;
+    display: block;
+}
+
 /* validacao */
 .erros {
 	margin: 0 0 10px 0;

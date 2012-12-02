@@ -48,6 +48,17 @@
         </navigation-case>
     </navigation-rule>
 
+    <converter>
+        <converter-id>EnumConverter</converter-id>
+        <converter-for-class>java.lang.Enum</converter-for-class>
+        <converter-class>com.util.converter.EnumConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>CpfConverter</converter-id>
+        <converter-class>com.util.converter.CpfConverter</converter-class>
+    </converter>
+
 <!-- 
      <lifecycle>  
          <phase-listener>com.filter.AuthorizationListener</phase-listener>  

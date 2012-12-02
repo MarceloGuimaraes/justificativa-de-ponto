@@ -64,16 +64,16 @@ public class JustificativaPonto {
 	private String status;
 
 	@Column(name = "motivo")
-	@Enumerated(EnumType.STRING)
-	private Motivo motivo;
+	@Enumerated(EnumType.ORDINAL)
+	private MotivoEnum motivo;
 
 	@Column(name = "tipodefalta")
-	@Enumerated(EnumType.STRING)
-	private TipoFalta tipofalta;
+	@Enumerated(EnumType.ORDINAL)
+	private TipoFaltaEnum tipofalta;
 
 	@Column(name = "tipobancohoras")
-	@Enumerated(EnumType.STRING)
-	private TipoBancoHoras tipobancohoras;
+	@Enumerated(EnumType.ORDINAL)
+	private TipoBancoHorasEnum tipobancohoras;
 	
 	@Column(name = "coordenador")
 	private User coordenador;
@@ -118,19 +118,19 @@ public class JustificativaPonto {
 		this.justificativaId = justificativaId;
 	}
 
-	public TipoFalta getTipofalta() {
+	public TipoFaltaEnum getTipofalta() {
 		return tipofalta;
 	}
 
-	public void setTipofalta(TipoFalta tipofalta) {
+	public void setTipofalta(TipoFaltaEnum tipofalta) {
 		this.tipofalta = tipofalta;
 	}
 
-	public TipoBancoHoras getTipobancohoras() {
+	public TipoBancoHorasEnum getTipobancohoras() {
 		return tipobancohoras;
 	}
 
-	public void setTipobancohoras(TipoBancoHoras tipobancohoras) {
+	public void setTipobancohoras(TipoBancoHorasEnum tipobancohoras) {
 		this.tipobancohoras = tipobancohoras;
 	}
 
@@ -142,11 +142,11 @@ public class JustificativaPonto {
 		this.status = status;
 	}
 
-	public Motivo getMotivo() {
+	public MotivoEnum getMotivo() {
 		return motivo;
 	}
 
-	public void setMotivo(Motivo motivo) {
+	public void setMotivo(MotivoEnum motivo) {
 		this.motivo = motivo;
 	}
 

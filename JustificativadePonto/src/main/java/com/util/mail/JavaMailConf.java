@@ -30,7 +30,7 @@ public class JavaMailConf {
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication("celoguimaraes@gmail.com",
-                                "@ssEmbly9883");
+                                "");
                     }
                 });
 

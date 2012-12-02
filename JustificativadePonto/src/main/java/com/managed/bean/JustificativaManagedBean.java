@@ -10,11 +10,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
-import com.model.JustificativaPonto;
-import com.model.Motivo;
-import com.model.TipoBancoHoras;
-import com.model.TipoFalta;
-import com.model.User;
+import com.model.*;
+import com.model.MotivoEnum;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.util.Message;
@@ -51,13 +48,71 @@ public class JustificativaManagedBean implements Serializable {
 
     private List<JustificativaPonto> justificativaList;
 
-    private String selctedMotivos;
-    private String selectedTipoBancoHoras;
-    private String selctedTipoFalta;
+    private MotivoEnum tipoMotivo;
+    private TipoBancoHorasEnum tipoBancoHoras;
+    private TipoFaltaEnum tipoFalta;
 
-    private List<SelectItem> tipoBancoHorasList = new ArrayList<SelectItem>();
-    private List<SelectItem> tipoMotivosList = new ArrayList<SelectItem>();
-    private List<SelectItem> tipoFaltaList = new ArrayList<SelectItem>();
+    private List<SelectItem> tipoBancoHorasList;
+    private List<SelectItem> tipoMotivosList;
+    private List<SelectItem> tipoFaltaList;
+
+
+
+    public List<SelectItem> getTipoBancoHorasList() {
+
+        if (this.tipoBancoHorasList == null) {
+
+            this.tipoBancoHorasList = new ArrayList<SelectItem>();
+
+            for (TipoBancoHorasEnum tipoBancoHoras : TipoBancoHorasEnum.values()) {
+                tipoBancoHorasList.add(new SelectItem(tipoBancoHoras, tipoBancoHoras.getDescricao()));
+            }
+        }
+        return tipoBancoHorasList;
+
+    }
+
+    public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
+        this.tipoBancoHorasList = tipoBancoHorasList;
+    }
+
+    public List<SelectItem> getTipoFaltaList() {
+
+        if (this.tipoFaltaList == null) {
+
+            this.tipoFaltaList = new ArrayList<SelectItem>();
+
+            for (TipoFaltaEnum tipoFalta : TipoFaltaEnum.values()) {
+                tipoFaltaList.add(new SelectItem(tipoFalta, tipoFalta.getDescricao()));
+            }
+        }
+            return tipoFaltaList;
+
+    }
+
+    public void setTipoFaltaList(List<SelectItem> tipoFaltaList) {
+        this.tipoFaltaList = tipoFaltaList;
+    }
+
+
+    public List<SelectItem> getTipoMotivosList() {
+
+        if (this.tipoMotivosList == null) {
+
+            this.tipoMotivosList = new ArrayList<SelectItem>();
+
+            for (MotivoEnum tipoMotivo : MotivoEnum.values()) {
+                tipoMotivosList.add(new SelectItem(tipoMotivo, tipoMotivo
+                        .getDescricao()));
+            }
+        }
+
+        return tipoMotivosList;
+    }
+
+    public void setTipoMotivosList(List<SelectItem> tipoMotivosList) {
+        this.tipoMotivosList = tipoMotivosList;
+    }
 
     private JustificativaPonto justificativa;
 
@@ -69,16 +124,38 @@ public class JustificativaManagedBean implements Serializable {
         this.justificativa = justificativa;
     }
 
+    public MotivoEnum getTipoMotivo() {
+        return tipoMotivo;
+    }
+
+    public void setTipoMotivo(MotivoEnum tipoMotivo) {
+        this.tipoMotivo = tipoMotivo;
+    }
+
+    public TipoBancoHorasEnum getTipoBancoHoras() {
+        return tipoBancoHoras;
+    }
+
+    public void setTipoBancoHoras(TipoBancoHorasEnum tipoBancoHoras) {
+        this.tipoBancoHoras = tipoBancoHoras;
+    }
+
+    public TipoFaltaEnum getTipoFalta() {
+        return tipoFalta;
+    }
+
+    public void setTipoFalta(TipoFaltaEnum tipoFalta) {
+        this.tipoFalta = tipoFalta;
+    }
+
+
+
     public JustificativaManagedBean() {
         if (this.justificativa == null) {
             this.justificativa = new JustificativaPonto();
             this.justificativa.setDtCriacao(new Date());
-            this.justificativa.setStatus("Em  Elaboração");
+            this.justificativa.setStatus(StatusEnum.ELABORACAO.getDescricao());
         }
-
-        fetchTipoMotivosList();
-        fetchTipoBancoHorasList();
-        fetchTipoFaltaList();
     }
 
     public String addJustificativa() {
@@ -97,15 +174,6 @@ public class JustificativaManagedBean implements Serializable {
         }
     }
 
-    private void fetchTipoMotivosList() {
-        tipoMotivosList.clear();
-        tipoMotivosList.add(new SelectItem("SELECIONE"));
-        Motivo[] motivoArray = Motivo.values();
-        for (Motivo tipoMotivo : motivoArray) {
-            // System.out.println("tipoMotivo:" + tipoMotivo);
-            tipoMotivosList.add(new SelectItem(tipoMotivo.getName()));
-        }
-    }
 
     public String editJustificativa(JustificativaPonto justificativa) {
         this.justificativa = justificativa;
@@ -122,76 +190,9 @@ public class JustificativaManagedBean implements Serializable {
         }
     }
 
-    public String getSelctedMotivos() {
-        return selctedMotivos;
-    }
-
-    public void getSelctedMotivos(String selctedMotivos) {
-        this.selctedMotivos = selctedMotivos;
-    }
-
-    public List<SelectItem> getTipoMotivosList() {
-        return tipoMotivosList;
-    }
-
-    public void setTipoMotivosList(List<SelectItem> tipoMotivosList) {
-        this.tipoMotivosList = tipoMotivosList;
-    }
-
-    private void fetchTipoBancoHorasList() {
-        tipoBancoHorasList.clear();
-        tipoBancoHorasList.add(new SelectItem("SELECIONE"));
-        TipoBancoHoras[] bancoHorasArray = TipoBancoHoras.values();
-        for (TipoBancoHoras tipoBancoHoras : bancoHorasArray) {
-            // System.out.println("tipoBancoHoras:" + tipoBancoHoras);
-            tipoBancoHorasList.add(new SelectItem(tipoBancoHoras.getName()));
-        }
-    }
-
-    public String getSelectedTipoBancoHoras() {
-        return selectedTipoBancoHoras;
-    }
-
-    public void getSelectedTipoBancoHoras(String selectedTipoBancoHoras) {
-        this.selectedTipoBancoHoras = selectedTipoBancoHoras;
-    }
-
-    public List<SelectItem> getTipoBancoHorasList() {
-        return tipoBancoHorasList;
-    }
-
-    public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
-        this.tipoBancoHorasList = tipoBancoHorasList;
-    }
-
-    private void fetchTipoFaltaList() {
-        tipoFaltaList.clear();
-        tipoFaltaList.add(new SelectItem("SELECIONE"));
-        TipoFalta[] bancoHorasArray = TipoFalta.values();
-        for (TipoFalta tipoFalta : bancoHorasArray) {
-            // System.out.println("tipoFalta:" + tipoFalta);
-            tipoFaltaList.add(new SelectItem(tipoFalta.getName()));
-        }
-    }
 
     public void reset() {
         this.justificativa = new JustificativaPonto();
-    }
-
-    public String getSelectedTipoFalta() {
-        return selctedTipoFalta;
-    }
-
-    public void getSelectedTipoFalta(String selectedTipoFalta) {
-        this.selctedTipoFalta = selectedTipoFalta;
-    }
-
-    public List<SelectItem> getTipoFaltaList() {
-        return tipoFaltaList;
-    }
-
-    public void setTipoFaltaList(List<SelectItem> tipoFaltaList) {
-        this.tipoFaltaList = tipoFaltaList;
     }
 
     public List<JustificativaPonto> getJustificativaList() {
