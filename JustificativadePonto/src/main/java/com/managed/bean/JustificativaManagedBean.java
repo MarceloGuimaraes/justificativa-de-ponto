@@ -1,23 +1,21 @@
 package com.managed.bean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
+import com.model.*;
+import com.service.IJustificativaService;
+import com.service.IUserService;
+import com.util.Message;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-
-import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
-import com.model.*;
-import com.model.MotivoEnum;
-import com.service.IJustificativaService;
-import com.service.IUserService;
-import com.util.Message;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @ManagedBean(name = "justificativaBean")
 @RequestScoped
@@ -33,11 +31,14 @@ public class JustificativaManagedBean implements Serializable {
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
-    List<User> userList;
+    List<SelectItem> userList;
 
-    public List<User> getUserList() {
-        userList = new ArrayList<User>();
-        userList.addAll(getUserService().getUsers());
+    public List<SelectItem> getUserList() {
+        userList = new ArrayList<SelectItem>();
+        for(User u : getUserService().getUsers()){
+            userList.add(new SelectItem(u.getUserId(), u.getNome()));
+        }
+//        userList.addAll(getUserService().getUsers());
         return userList;
     }
 
@@ -108,6 +109,8 @@ public class JustificativaManagedBean implements Serializable {
     }
 
     private JustificativaPonto justificativa;
+    private Integer idCoordenador;
+    private Integer idSuperintendente;
 
     public JustificativaPonto getJustificativa() {
         return justificativa;
@@ -115,6 +118,22 @@ public class JustificativaManagedBean implements Serializable {
 
     public void setJustificativa(JustificativaPonto justificativa) {
         this.justificativa = justificativa;
+    }
+
+    public Integer getIdCoordenador() {
+        return idCoordenador;
+    }
+
+    public void setIdCoordenador(Integer idCoordenador) {
+        this.idCoordenador = idCoordenador;
+    }
+
+    public Integer getIdSuperintendente() {
+        return idSuperintendente;
+    }
+
+    public void setIdSuperintendente(Integer idSuperintendente) {
+        this.idSuperintendente = idSuperintendente;
     }
 
     public MotivoEnum getTipoMotivo() {
@@ -153,7 +172,9 @@ public class JustificativaManagedBean implements Serializable {
 
     public String addJustificativa() {
 
-        System.out.println("ENTROU NO addJustificativa");
+        //Inserindo o coordenador e o superintendente escolhidos
+        justificativa.setCoordenador(userService.recuperar(idCoordenador));
+        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
 
         // se a justificativa existir atualiza
         if (this.justificativa.getJustificativaId() != 0) {

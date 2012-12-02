@@ -104,8 +104,8 @@
                         <p:column style="text-align:left">
                             <h:outputLabel value="Coordenador:" />
                             <p:selectOneMenu id="coordenadorSelect"
-                                             value="#{justificativaBean.justificativa.coordenador}">
-                                <f:selectItems var="user" itemLabel="#{user.nome}"  itemValue="#{user}" value="#{justificativaBean.userList}"  />
+                                             value="#{justificativaBean.idCoordenador}">
+                                <f:selectItems value="#{justificativaBean.userList}" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -117,8 +117,8 @@
                         <p:column style="text-align:left">
                             <h:outputLabel value="Superintendente: " />
                             <p:selectOneMenu id="superintendenteSelect"
-                                             value="#{justificativaBean.justificativa.superintendente}">
-                                <f:selectItems var="user" itemLabel="#{user.nome}"  itemValue="#{user.userId}"   value="#{justificativaBean.userList}"  />
+                                             value="#{justificativaBean.idSuperintendente}">
+                                <f:selectItems value="#{justificativaBean.userList}"  />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>

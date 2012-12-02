@@ -15,6 +15,7 @@ public interface IUserService {
 	public User getUserByEmail(User user);
 	public List<User> getUsers();
 	public List<Perfil> getPerfilUser(User user);
+    User recuperar(Integer id);
 	public abstract boolean isExiteUser(User user);
 	public abstract boolean buscaPorLogin(User user);
 

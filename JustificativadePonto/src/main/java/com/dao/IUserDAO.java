@@ -16,4 +16,5 @@ public interface IUserDAO {
 	public Boolean buscaPorLogin(User user);
 	public List<Perfil> getPerfis(User user);
 	public List<User> getUsers();
+    User recuperar(Integer id);
 }

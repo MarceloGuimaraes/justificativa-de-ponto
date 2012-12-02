@@ -136,4 +136,9 @@ public class UserDAO implements IUserDAO, Serializable {
 		return Collections.unmodifiableList(list);
 		// return list;
 	}
+
+    @Override
+    public User recuperar(Integer id) {
+        return (User) getSessionFactory().getCurrentSession().load(User.class, id);
+    }
 }

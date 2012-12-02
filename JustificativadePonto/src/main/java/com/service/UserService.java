@@ -42,6 +42,11 @@ public class UserService implements IUserService,Serializable {
         return getUserDAO().getPerfis(user);
     }
 
+    @Override
+    public User recuperar(Integer id) {
+        return getUserDAO().recuperar(id);
+    }
+
     @Transactional(readOnly = false)
     public void deleteUser(User user) {
         getUserDAO().deleteUser(user);
