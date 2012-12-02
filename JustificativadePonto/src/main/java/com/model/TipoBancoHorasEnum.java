@@ -31,4 +31,14 @@ public enum TipoBancoHorasEnum implements IEnumeracaoComCodigoDescricao, Seriali
 
         return this.codigo;
     }
+
+    public static TipoBancoHorasEnum fromSigla(Integer codigo){
+        for(TipoBancoHorasEnum t : values()){
+            if(t.getCodigo().equals(codigo)){
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Tipo invalido!");
+    }
+
 }

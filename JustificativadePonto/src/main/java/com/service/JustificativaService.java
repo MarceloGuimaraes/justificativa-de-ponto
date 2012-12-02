@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dao.IJustificativaDAO;
 import com.model.JustificativaPonto;
 
+@Transactional(readOnly = true)
 public class JustificativaService implements IJustificativaService,
 		Serializable {
 

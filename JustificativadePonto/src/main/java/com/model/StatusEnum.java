@@ -37,6 +37,14 @@ public enum StatusEnum implements IEnumeracaoComCodigoDescricao, Serializable {
         return this.codigo;
     }
 
+    public static StatusEnum fromSigla(Integer codigo){
+        for(StatusEnum t : values()){
+            if(t.getCodigo().equals(codigo)){
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Tipo invalido!");
+    }
 
 }
 

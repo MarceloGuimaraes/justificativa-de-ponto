@@ -34,4 +34,14 @@ public enum TipoFaltaEnum implements IEnumeracaoComCodigoDescricao, Serializable
 
         return this.codigo;
     }
+
+    public static TipoFaltaEnum fromSigla(Integer codigo){
+        for(TipoFaltaEnum t : values()){
+            if(t.getCodigo().equals(codigo)){
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Tipo invalido!");
+    }
+
 }

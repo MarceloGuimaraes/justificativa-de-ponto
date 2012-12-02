@@ -67,7 +67,7 @@
 
     <!-- Session Factory Declaration -->
     <bean id="SessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="DataSource" />
         <property name="annotatedClasses">
             <list>
@@ -90,7 +90,7 @@
 
     <!-- Transaction Manager is defined -->
     <bean id="txManager"
-          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="SessionFactory" />
     </bean>
 

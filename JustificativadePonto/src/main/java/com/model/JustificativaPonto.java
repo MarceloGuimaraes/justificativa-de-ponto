@@ -1,8 +1,13 @@
 package com.model;
 
+import org.hibernate.annotations.*;
+
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Parameter;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "JustificativaPonto")
@@ -51,20 +56,72 @@ public class JustificativaPonto {
 	@Column(name = "obsSuperInt", length = 300)
 	private String obsSuperInt;
 
-	@Column(name = "staus")
-    @Enumerated(EnumType.ORDINAL)
+	@Column(name = "status", nullable = false)
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.StatusEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
 	private StatusEnum status;
 
-	@Column(name = "motivo") 
-	@Enumerated(EnumType.ORDINAL)
+    @Column(name = "motivo", nullable = false)
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.MotivoEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
 	private MotivoEnum motivo;
 
-	@Column(name = "tipodefalta")
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tipodefalta", nullable = false)
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.TipoFaltaEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
 	private TipoFaltaEnum tipofalta;
 
-	@Column(name = "tipobancohoras")
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tipobancohoras", nullable = false)
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.TipoBancoHorasEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
 	private TipoBancoHorasEnum tipobancohoras;
 	
 	@ManyToOne(targetEntity = User.class, optional = false)

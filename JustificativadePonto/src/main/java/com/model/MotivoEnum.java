@@ -35,4 +35,14 @@ public enum MotivoEnum implements IEnumeracaoComCodigoDescricao, Serializable  {
 
         return this.codigo;
     }
+
+    public static MotivoEnum fromSigla(Integer codigo){
+        for(MotivoEnum t : values()){
+            if(t.getCodigo().equals(codigo)){
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Tipo invalido!");
+    }
+
 }

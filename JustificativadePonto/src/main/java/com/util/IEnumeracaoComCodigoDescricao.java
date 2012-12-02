@@ -4,14 +4,14 @@ import java.io.Serializable;
 public interface IEnumeracaoComCodigoDescricao  extends Serializable {
 
     /**
-     * Recupera o código do ENUM.
+     * Recupera o codigo do ENUM.
      *
-     * @return o código do ENUM.
+     * @return o codigo do ENUM.
      */
     Integer getCodigo();
 
     /**
-     * Recupera a descricaoo do ENUM.
+     * Recupera a descricao do ENUM.
      *
      * @returna descricao do ENUM.
      */
