@@ -7,12 +7,18 @@ import javax.faces.context.FacesContext;
 
 public class Message {
 
+    private static final String PATH_MENSAGENS = "/mensagens";
+
+    private static ResourceBundle bundle;
+
 	public static String getBundleMessage(String codigo) {
-		ResourceBundle resources = ResourceBundle
-				.getBundle("/mensagens");
-		// resources.setSrc("/mensagens.properties");
+        if(bundle==null){
+		    bundle = ResourceBundle
+				.getBundle(PATH_MENSAGENS);
+        }
 		String message;
-		message = resources.getString(codigo);
+		message = bundle.getString(codigo);
+
 		return message;
 	}
 

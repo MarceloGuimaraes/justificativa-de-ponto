@@ -12,6 +12,7 @@ public enum MotivoEnum implements IEnumeracaoComCodigoDescricao, Serializable  {
     ATRASOS(4,"Atrasos"),
     SAIDAANTECIPADA(5,"Saída Antecipada");
 
+
     private final Integer codigo;
     private final String descricao;
 

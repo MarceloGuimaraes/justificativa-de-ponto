@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
 import com.model.*;
 import com.model.MotivoEnum;
 import com.service.IJustificativaService;
@@ -62,11 +65,7 @@ public class JustificativaManagedBean implements Serializable {
 
         if (this.tipoBancoHorasList == null) {
 
-            this.tipoBancoHorasList = new ArrayList<SelectItem>();
-
-            for (TipoBancoHorasEnum tipoBancoHoras : TipoBancoHorasEnum.values()) {
-                tipoBancoHorasList.add(new SelectItem(tipoBancoHoras, tipoBancoHoras.getDescricao()));
-            }
+            this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
         }
         return tipoBancoHorasList;
 
@@ -80,13 +79,11 @@ public class JustificativaManagedBean implements Serializable {
 
         if (this.tipoFaltaList == null) {
 
-            this.tipoFaltaList = new ArrayList<SelectItem>();
+            this.tipoFaltaList = new ComboTipoFaltaDatasourceImpl().findObjects();
 
-            for (TipoFaltaEnum tipoFalta : TipoFaltaEnum.values()) {
-                tipoFaltaList.add(new SelectItem(tipoFalta, tipoFalta.getDescricao()));
-            }
         }
-            return tipoFaltaList;
+
+        return tipoFaltaList;
 
     }
 
@@ -99,12 +96,8 @@ public class JustificativaManagedBean implements Serializable {
 
         if (this.tipoMotivosList == null) {
 
-            this.tipoMotivosList = new ArrayList<SelectItem>();
+            this.tipoMotivosList = new ComboMotivoDatasourceImpl().findObjects();
 
-            for (MotivoEnum tipoMotivo : MotivoEnum.values()) {
-                tipoMotivosList.add(new SelectItem(tipoMotivo, tipoMotivo
-                        .getDescricao()));
-            }
         }
 
         return tipoMotivosList;

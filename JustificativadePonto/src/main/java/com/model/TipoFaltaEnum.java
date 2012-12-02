@@ -6,8 +6,11 @@ import java.io.Serializable;
 
 public enum TipoFaltaEnum implements IEnumeracaoComCodigoDescricao, Serializable {
 
-    ATESTADOMEDICO(0,"Atestado Médico"), CASAMENTO(1,"Casamento"),
-    LICENCAPATERNIDADE(2,"Licença Paternidade"), LUTO(3,"Luto"), OUTROS(4,"Outros");
+    ATESTADOMEDICO(0,"Atestado Médico"),
+    CASAMENTO(1,"Casamento"),
+    LICENCAPATERNIDADE(2,"Licença Paternidade"),
+    LUTO(3,"Luto"),
+    OUTROS(4,"Outros");
 
     private final Integer codigo;
     private final String descricao;
