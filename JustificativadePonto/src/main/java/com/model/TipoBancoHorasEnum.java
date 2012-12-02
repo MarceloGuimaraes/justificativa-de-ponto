@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public enum TipoBancoHorasEnum implements IEnumeracaoComCodigoDescricao, Serializable {
 
-	HORAEXTRA(0,"Hora Extra"),
-    GOZO(1,"Gozo");
+	HORAEXTRA(0,"bancohoras.descricao.horaextra"),
+    GOZO(1,"bancohoras.descricao.gozo");
 
     private final Integer codigo;
     private final String descricao;

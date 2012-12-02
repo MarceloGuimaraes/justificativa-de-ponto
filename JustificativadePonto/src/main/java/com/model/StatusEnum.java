@@ -5,14 +5,14 @@ import java.io.Serializable;
 
 public enum StatusEnum implements IEnumeracaoComCodigoDescricao, Serializable {
 
-	ELABORACAO(1, "Em elaboração"),
-    APROVCOORD(2, "Aguardando aprovação do coordenador"),
-    REPROVADOCOORD(3, "Reprovado pelo coordenador"),
-    APROVSUPERINTENDENTE(4, "Aguardando aprovação do superintendente"),
-    REPROVADOSUPERINTENDENTE(5, "Reprovado pelo superintendente"),
-    EXECUCAORH(6,"Aguardando execução do RH"),
-    CONCLUIDO(7,"Concluído"),
-    CANCELADO(8, "Cancelado");
+    ELABORACAO(1, "status.descricao.emelaboracao"),
+    APROVCOORD(2, "status.descricao.aguardandoaprovacaocoordenador"),
+    REPROVADOCOORD(3, "status.descricao.reprovacoord"),
+    APROVSUPERINTENDENTE(4, "status.descricao.aprovsuperintendente"),
+    REPROVADOSUPERINTENDENTE(5, "status.descricao.reprovadosuperintendente"),
+    EXECUCAORH(6,"status.descricao.execucaorh"),
+    CONCLUIDO(7,"status.descricao.concluido"),
+    CANCELADO(8, "status.descricao.cancelado");
 
     private final Integer codigo;
     private final String descricao;

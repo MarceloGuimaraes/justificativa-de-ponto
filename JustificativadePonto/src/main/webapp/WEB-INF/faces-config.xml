@@ -58,6 +58,11 @@
         <converter-class>com.util.converter.CpfConverter</converter-class>
     </converter>
 
+    <converter>
+        <converter-id>StatusConverter</converter-id>
+        <converter-class>com.util.converter.EnumLabelConverter</converter-class>
+    </converter>
+
 <!-- 
      <lifecycle>  
          <phase-listener>com.filter.AuthorizationListener</phase-listener>  

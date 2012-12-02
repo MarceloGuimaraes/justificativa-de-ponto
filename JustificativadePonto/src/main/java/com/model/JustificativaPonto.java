@@ -51,8 +51,8 @@ public class JustificativaPonto {
 	@Column(name = "obsSuperInt", length = 300)
 	private String obsSuperInt;
 
-	@Column(name = "staus", length = 300)
-	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "staus")
+    @Enumerated(EnumType.ORDINAL)
 	private StatusEnum status;
 
 	@Column(name = "motivo") 
