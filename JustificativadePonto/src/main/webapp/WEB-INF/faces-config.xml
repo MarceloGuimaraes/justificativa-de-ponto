@@ -47,6 +47,14 @@
             <to-view-id>/pages/adm/cadPerfil.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+        <navigation-rule>
+	    <from-view-id>/pages/justificativa.xhtml</from-view-id> 
+	    <navigation-case>
+	        <from-outcome>welcome</from-outcome>
+            <to-view-id>/pages/welcome.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
     <converter>
         <converter-id>EnumConverter</converter-id>
@@ -63,10 +71,10 @@
         <converter-class>com.util.converter.EnumLabelConverter</converter-class>
     </converter>
 
-<!-- 
+ 
      <lifecycle>  
          <phase-listener>com.filter.AuthorizationListener</phase-listener>  
      </lifecycle>
-     -->
+
       
 </faces-config>

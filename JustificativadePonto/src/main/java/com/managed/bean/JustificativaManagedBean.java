@@ -29,7 +29,7 @@ import com.util.Message;
 public class JustificativaManagedBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String SUCCESS = "justificativa";
+    private static final String SUCCESS = "welcome";
     private static final String EDIT = "editJustificativa";
 
     @ManagedProperty(value = "#{JustificativaService}")

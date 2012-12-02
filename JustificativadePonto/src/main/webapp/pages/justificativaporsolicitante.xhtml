@@ -21,17 +21,17 @@
 				<f:facet name="header">CONSULTA JUSTIFIVATIVA POR ANO</f:facet>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Ano" />
-					</f:facet>
-					<h:outputText value="#{justificativa.dtCriacao}">
-						<f:convertDateTime pattern="yyyy" />
-					</h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
 						<h:outputText value="Solicitante" />
 					</f:facet>
 					<h:outputText value="#{justificativa.solicitante.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Data Solicitação" />
+					</f:facet>
+					<h:outputText value="#{justificativa.dtCriacao}">
+						<f:convertDateTime pattern="dd/mm/yyyy" />
+					</h:outputText>
 				</p:column>
 				<p:column>
 					<f:facet name="header">
