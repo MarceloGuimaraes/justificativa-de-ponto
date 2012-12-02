@@ -1,16 +1,9 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<f:loadBundle basename="mensagens" var="msgs" />
-
-<h:head>
-	<title><h:outputText
-			value="#{msgs['justificativa.label.titulo']}" /></title>
-</h:head>
-<ui:composition template="/pages/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/pages/template.xhtml">
 	<ui:define name="corpo">
 		<h:form id="justificativaPorAno">
 			<p:dataTable var="justificativa"
@@ -18,7 +11,7 @@
 				rows="10" style="width: 90%"
 				emptyMessage="Nenhuma registro encontrado">
 
-				<f:facet name="header">CONSULTA JUSTIFIVATIVA POR ANO</f:facet>
+				<f:facet name="header"><h:outputText value="#{msgs['relatorio.justificativa.pormotivo.titulo']}" /></f:facet>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Motivo" />
