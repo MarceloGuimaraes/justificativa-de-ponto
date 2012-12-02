@@ -2,7 +2,7 @@ package com.util;
 
 public class TrataAcento {
 
-    public String trataAcento(String passa) {
+    public String trataAcento(String passa) { 
         passa = passa.replaceAll("[ÂÀÁÄÃ]", "A");
         passa = passa.replaceAll("[âãàáä]", "a");
         passa = passa.replaceAll("[ÊÈÉË]", "E");

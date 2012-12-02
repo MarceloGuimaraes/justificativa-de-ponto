@@ -50,7 +50,6 @@
 
     <converter>
         <converter-id>EnumConverter</converter-id>
-        <converter-for-class>java.lang.Enum</converter-for-class>
         <converter-class>com.util.converter.EnumConverter</converter-class>
     </converter>
 
