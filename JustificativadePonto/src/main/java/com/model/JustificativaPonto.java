@@ -52,9 +52,10 @@ public class JustificativaPonto {
 	private String obsSuperInt;
 
 	@Column(name = "staus", length = 300)
-	private String status;
+	@Enumerated(EnumType.ORDINAL)
+	private StatusEnum status;
 
-	@Column(name = "motivo")
+	@Column(name = "motivo") 
 	@Enumerated(EnumType.ORDINAL)
 	private MotivoEnum motivo;
 
@@ -72,23 +73,9 @@ public class JustificativaPonto {
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User superintendente;
 	
-
-	public User getSuperintendente() {
-		return superintendente;
-	}
-
-	public void setSuperintendente(User superintendente) {
-		this.superintendente = superintendente;
-	}
-
-	public User getCoordenador() {
-		return coordenador;
-	}
-
-	public void setCoordenador(User coordenador) {
-		this.coordenador = coordenador;
-	}
-	
+	@ManyToOne(targetEntity = User.class, optional = false)
+	private User solicitante;
+		
 	/*
 	 * public JustificativaPonto(){
 	 * 
@@ -125,11 +112,11 @@ public class JustificativaPonto {
 		this.tipobancohoras = tipobancohoras;
 	}
 
-	public String getStatus() {
+	public StatusEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(StatusEnum status) {
 		this.status = status;
 	}
 
@@ -221,4 +208,29 @@ public class JustificativaPonto {
 		this.obsSuperInt = obsSuperInt;
 	}
 
+
+	public User getSuperintendente() {
+		return superintendente;
+	}
+
+	public void setSuperintendente(User superintendente) {
+		this.superintendente = superintendente;
+	}
+
+	public User getCoordenador() {
+		return coordenador;
+	}
+
+	public void setCoordenador(User coordenador) {
+		this.coordenador = coordenador;
+	}
+
+	public User getSolicitante() {
+		return solicitante;
+	}
+
+	public void setSolicitante(User solicitante) {
+		this.solicitante = solicitante;
+	}
+	
 }

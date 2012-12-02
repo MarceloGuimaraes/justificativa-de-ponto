@@ -1,21 +1,28 @@
 package com.managed.bean;
 
-import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
-import com.model.*;
-import com.service.IJustificativaService;
-import com.service.IUserService;
-import com.util.Message;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
+import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
+import com.model.JustificativaPonto;
+import com.model.MotivoEnum;
+import com.model.StatusEnum;
+import com.model.TipoBancoHorasEnum;
+import com.model.TipoFaltaEnum;
+import com.model.User;
+import com.service.IJustificativaService;
+import com.service.IUserService;
+import com.util.Message;
 
 @ManagedBean(name = "justificativaBean")
 @RequestScoped
@@ -160,15 +167,16 @@ public class JustificativaManagedBean implements Serializable {
         this.tipoFalta = tipoFalta;
     }
 
-
-
     public JustificativaManagedBean() {
         if (this.justificativa == null) {
             this.justificativa = new JustificativaPonto();
             this.justificativa.setDtCriacao(new Date());
-            this.justificativa.setStatus(StatusEnum.ELABORACAO.getDescricao());
+            this.justificativa.setStatus(StatusEnum.ELABORACAO);
+            User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
+            this.justificativa.setSolicitante(currentUser);
         }
     }
+    
 
     public String addJustificativa() {
 

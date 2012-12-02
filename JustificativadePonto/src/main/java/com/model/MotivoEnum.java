@@ -5,12 +5,12 @@ import com.util.IEnumeracaoComCodigoDescricao;
 
 public enum MotivoEnum implements IEnumeracaoComCodigoDescricao, Serializable  {
 
-    FALTAS(0,"Faltas"),
-    FALTADEMARCACAO(1,"Falta de MarcaÃ§Ã£o"),
+	FALTAS(0,"Faltas"),
+    FALTADEMARCACAO(1,"Falta de Marção"),
     ATIVIDADEFORA(2,"Atividade de Fora"),
     BANCODEHORAS(3,"Banco de Horas"),
     ATRASOS(4,"Atrasos"),
-    SAIDAANTECIPADA(5,"SaÃ­da Antecipada");
+    SAIDAANTECIPADA(5,"Saída Antecipada");
 
 
     private final Integer codigo;
