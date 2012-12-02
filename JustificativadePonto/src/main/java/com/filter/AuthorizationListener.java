@@ -1,5 +1,7 @@
 package com.filter;
 
+import com.model.User;
+
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -11,6 +13,9 @@ public class AuthorizationListener implements PhaseListener {
 
 
     private static final long serialVersionUID = 1L;
+    private static final String PAGES_LOGIN_XHTML = "/pages/login.xhtml";
+    private static final String USUARIO_LOGADO = "usuarioLogado";
+    public static final String PAGES_LOGIN_FACES_REDIRECT_TRUE = "/pages/login?faces-redirect=true";
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -19,38 +24,22 @@ public class AuthorizationListener implements PhaseListener {
 
         String currentPage = facesContext.getViewRoot().getViewId();
 
-        System.out.println("=======validado a pagina=======");
-        System.out.println("currentPage => " + currentPage);
-
-        boolean isLoginPage = (currentPage.lastIndexOf("/pages/login.xhtml") > -1);
-        System.out.println("=======validado a pagina======= 1 ");
+        boolean isLoginPage = (currentPage.lastIndexOf(PAGES_LOGIN_XHTML) > -1);
         ExternalContext context = facesContext.getExternalContext();
-        System.out.println("=======validado a pagina======= 2 ");
-        Object currentUser =  context.getSessionMap().get("usuarioLogado");
-        System.out.println("=======validado a pagina======= 3 ");
-        //  LoginBean loginBean = (LoginBean) facesContext.getApplication().evaluateExpressionGet(facesContext, "#{loginController}", LoginBean.class);
-        //	System.out.println("Login phase" + currentUser.getUser().getEmail());
+        User currentUser = (User) context.getSessionMap().get(USUARIO_LOGADO);
 
-
-        //if (!isLoginPage && !loginBean.isLogado()) {
         if (!isLoginPage && currentUser == null) {
 
-            System.out.println("<-------condicao lanaada-------->");
             NavigationHandler handler = facesContext.getApplication().getNavigationHandler();
-            handler.handleNavigation(facesContext, null, "/pages/login?faces-redirect=true");
+            handler.handleNavigation(facesContext, null, PAGES_LOGIN_FACES_REDIRECT_TRUE);
             facesContext.renderResponse();
 
-            //Util.addMessageText("usuario nao logado");
-
-            System.out.println("<-------usuario nao logado-------->");
-
         }
-    }
 
+    }
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        //System.out.println("PRINT DE IDENTIFICAcao DO EVENTO before: " + event.getPhaseId());
     }
 
     @Override
