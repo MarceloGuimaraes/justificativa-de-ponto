@@ -19,6 +19,7 @@
 					<h:outputText
 						value="#{justificativa.dtCriacao}">
 						<f:convertDateTime pattern="dd" />
+						 <f:converter converterId="MesConverter"/>
 					</h:outputText>
 				</p:column>
 				<p:column>
