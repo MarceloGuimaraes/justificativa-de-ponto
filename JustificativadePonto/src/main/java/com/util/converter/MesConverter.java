@@ -1,5 +1,7 @@
 package com.util.converter;
 
+import com.util.Message;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,25 +14,22 @@ import javax.faces.convert.ConverterException;
 
 public class MesConverter implements Converter {
 
-	
-	String meses[] = {"Janeiro","Fevereiro","Março", "Abril", "Maio", "Junho", 
-			"Julho","Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}; 
-	
+	String meses[] = {
+            "justificativa.label.mes.01",
+            "justificativa.label.mes.02",
+            "justificativa.label.mes.03",
+            "justificativa.label.mes.04",
+            "justificativa.label.mes.05",
+            "justificativa.label.mes.06",
+			"justificativa.label.mes.07",
+            "justificativa.label.mes.08",
+            "justificativa.label.mes.09",
+            "justificativa.label.mes.10",
+            "justificativa.label.mes.11",
+            "justificativa.label.mes.12"};
 
-   
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-    	if(value.trim().equals("")){
-    		return null;
-    	}	
-    		else{
-    			try{
-    				int mes =(Integer.parseInt(value));
-    				return meses[mes];
-    			} catch(NumberFormatException exception) {  
-                    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Mes Invalido"));  
-                }  
-    	}
-    	
+    	return null;
     }
 
     @Override
@@ -47,7 +46,8 @@ public class MesConverter implements Converter {
         		cal.setTime(dtSelecionada);
         		
         		int mes = cal.get(Calendar.MONTH); 
-        		return meses[mes];
+        		return Message.getBundleMessage(meses[mes]);
+
 			} catch(NumberFormatException exception) {  
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Mes Invalido"));  
             }  

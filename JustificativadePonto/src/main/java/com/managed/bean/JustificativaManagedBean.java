@@ -11,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
@@ -66,6 +67,7 @@ public class JustificativaManagedBean implements Serializable {
     private List<SelectItem> tipoBancoHorasList;
     private List<SelectItem> tipoMotivosList;
     private List<SelectItem> tipoFaltaList;
+    private List<SelectItem> tipoDecisaoList;
 
 
 
@@ -113,6 +115,20 @@ public class JustificativaManagedBean implements Serializable {
 
     public void setTipoMotivosList(List<SelectItem> tipoMotivosList) {
         this.tipoMotivosList = tipoMotivosList;
+    }
+
+    public List<SelectItem> getTipoDecisaoList() {
+        if(tipoDecisaoList == null){
+
+            tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
+
+        }
+
+        return tipoDecisaoList;
+    }
+
+    public void setTipoDecisaoList(List<SelectItem> tipoDecisaoList) {
+        this.tipoDecisaoList = tipoDecisaoList;
     }
 
     private JustificativaPonto justificativa;

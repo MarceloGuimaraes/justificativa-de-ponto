@@ -123,6 +123,23 @@ public class JustificativaPonto {
             }
     )
 	private TipoBancoHorasEnum tipobancohoras;
+
+    @Column(name = "tipodecisao")
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.TipoDecisaoEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
+    private TipoDecisaoEnum tipoDecisao;
 	
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User coordenador;
@@ -133,18 +150,6 @@ public class JustificativaPonto {
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User solicitante;
 		
-	/*
-	 * public JustificativaPonto(){
-	 * 
-	 * } public JustificativaPonto(Date dtCriacao, Date dtAprovCoord, Date
-	 * dtAprovSuper,Date dtAprovRh, Date dtOcorrenciaInit, Date dtOcorrenciaFim)
-	 * { super(); dtCriacao = new Date(); this.dtAprovCoord = dtAprovCoord;
-	 * this.dtAprovSuper = dtAprovSuper; this.dtAprovRh = dtAprovRh;
-	 * this.dtOcorrenciaInit = dtOcorrenciaInit; this.dtOcorrenciaFim =
-	 * dtOcorrenciaFim; }
-	 */
-
-
 	public int getJustificativaId() {
 		return justificativaId;
 	}
@@ -169,7 +174,15 @@ public class JustificativaPonto {
 		this.tipobancohoras = tipobancohoras;
 	}
 
-	public StatusEnum getStatus() {
+    public TipoDecisaoEnum getTipoDecisao() {
+        return tipoDecisao;
+    }
+
+    public void setTipoDecisao(TipoDecisaoEnum tipoDecisao) {
+        this.tipoDecisao = tipoDecisao;
+    }
+
+    public StatusEnum getStatus() {
 		return status;
 	}
 

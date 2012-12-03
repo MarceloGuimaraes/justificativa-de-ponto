@@ -132,9 +132,21 @@
 
 				<p:fieldset legend="Instruções ao Setor de Recursos Humanos"
 					id="rhGrid" style="margin:20px;width:99%">
-					<p:row>
-						<p:column style="text-align:left">
-							<h:outputLabel value="Observação:" />
+                    <p:row>
+                        <p:column style="text-align:left">
+                            <h:outputText value="#{msgs['form.justificativa.label.tipoDecisao']} " />
+                            <p:selectOneMenu id="comboDecisaoRh" value="#{justificativaBean.justificativa.tipoDecisao}">
+                                <f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="text-align:left">
+                            <h:outputLabel value="Observação:" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="text-align:left">
 							<p:inputTextarea id="observacaoFld" rows="5" cols="30"
 								maxlength="300" autoResize="true"
 								value="#{justificativaBean.justificativa.descricao}" />
