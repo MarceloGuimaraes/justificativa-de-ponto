@@ -3,8 +3,7 @@
     xmlns="http://java.sun.com/xml/ns/javaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-    http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
-    version="2.0">
+    http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" version="2.0">
   	
   	<!-- JSF and Spring are integrated -->
   	<application>
@@ -71,7 +70,11 @@
         <converter-class>com.util.converter.EnumLabelConverter</converter-class>
     </converter>
 
- 
+     <converter>
+        <converter-id>MesConverter</converter-id>
+        <converter-class>com.util.converter.MesConverter</converter-class>
+    </converter>
+
      <lifecycle>  
          <phase-listener>com.filter.AuthorizationListener</phase-listener>  
      </lifecycle>

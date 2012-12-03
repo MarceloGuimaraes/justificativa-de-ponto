@@ -13,8 +13,8 @@ import javax.faces.convert.ConverterException;
 public class MesConverter implements Converter {
 
 	
-	String meses[] = {"janeiro","fevereiro","março", "abril", "maio", "junho", 
-			"julho","agosto", "setembro", "outubro", "novembro", "dezembro"}; 
+	String meses[] = {"Janeiro","Fevereiro","Março", "Abril", "Maio", "Junho", 
+			"Julho","Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}; 
 	
 
    
