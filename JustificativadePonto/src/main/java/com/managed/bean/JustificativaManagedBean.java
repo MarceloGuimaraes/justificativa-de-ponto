@@ -29,17 +29,33 @@ import com.util.Message;
 @RequestScoped
 public class JustificativaManagedBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
     private static final String SUCCESS = "welcome";
     private static final String EDIT = "editJustificativa";
-
-    @ManagedProperty(value = "#{JustificativaService}")
+  
+  	@ManagedProperty(value = "#{JustificativaService}")
     private IJustificativaService justificativaService;
 
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
+    
+	@ManagedProperty(value = "#{PermissoesBean}")
+    private PermissoesBean permissoes;
+    
+    public void setPermissoes(PermissoesBean permissoes) {
+		this.permissoes = permissoes;
+	}
+    
+    public PermissoesBean getPermissoes() {
+		return permissoes;
+	}
+    
+    
+    
     List<SelectItem> userList;
+
 
     public List<SelectItem> getUserList() {
         userList = new ArrayList<SelectItem>();
@@ -47,8 +63,8 @@ public class JustificativaManagedBean implements Serializable {
             userList.add(new SelectItem(u.getUserId(), u.getNome()));
         }
         return userList;
-    }
-
+    }    
+    
     public IUserService getUserService() {
         return userService;
     }
