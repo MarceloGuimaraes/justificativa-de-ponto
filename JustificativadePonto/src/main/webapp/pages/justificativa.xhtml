@@ -182,7 +182,7 @@
                                  id="tblHistoricoJustificativa">
                         <p:column id="colDataHistorico">
                             <f:facet name="header">
-                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+                                <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
                             </f:facet>
                             <h:outputText value="#{historico.data}">
                                 <f:convertDateTime pattern="d/MM/yyyy" />
@@ -190,13 +190,13 @@
                         </p:column>
                         <p:column id="colUsuarioHistorico">
                             <f:facet name="header">
-                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+                                <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
                             </f:facet>
                             <h:outputText value="#{historico.usuario.nome}" />
                         </p:column>
                         <p:column id="colEventoHistorico">
                             <f:facet name="header">
-                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+                                <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
                             </f:facet>
                             <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
                         </p:column>
