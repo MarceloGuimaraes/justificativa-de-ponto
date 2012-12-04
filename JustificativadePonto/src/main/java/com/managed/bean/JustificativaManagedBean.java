@@ -18,6 +18,7 @@ import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
+import com.util.JsfUtil;
 import com.util.Message;
 
 @ManagedBean(name = "justificativaBean")
@@ -35,10 +36,10 @@ public class JustificativaManagedBean implements Serializable {
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
-    
-	@ManagedProperty(value = "#{PermissoesBean}")
     private PermissoesBean permissoes;
-    
+
+    List<SelectItem> userList;
+
     public void setPermissoes(PermissoesBean permissoes) {
 		this.permissoes = permissoes;
 	}
@@ -46,18 +47,18 @@ public class JustificativaManagedBean implements Serializable {
     public PermissoesBean getPermissoes() {
 		return permissoes;
 	}
-    
-    
-    
-    List<SelectItem> userList;
-
 
     public List<SelectItem> getUserList() {
-        userList = new ArrayList<SelectItem>();
-        for(User u : getUserService().getUsers()){
-            userList.add(new SelectItem(u.getUserId(), u.getNome()));
+
+        if(userList==null){
+            userList = new ArrayList<SelectItem>();
+            for(User u : getUserService().getUsers()){
+                userList.add(new SelectItem(u.getUserId(), u.getNome()));
+            }
         }
+
         return userList;
+
     }    
     
     public IUserService getUserService() {
@@ -78,8 +79,6 @@ public class JustificativaManagedBean implements Serializable {
     private List<SelectItem> tipoMotivosList;
     private List<SelectItem> tipoFaltaList;
     private List<SelectItem> tipoDecisaoList;
-
-
 
     public List<SelectItem> getTipoBancoHorasList() {
 
@@ -194,14 +193,13 @@ public class JustificativaManagedBean implements Serializable {
     }
 
     public JustificativaManagedBean() {
+
+        permissoes = JsfUtil.getValueExpression(PermissoesBean.class, "#{PermissoesBean}");
+
         if (this.justificativa == null) {
-            this.justificativa = new JustificativaPonto();
-            this.justificativa.setDtCriacao(new Date());
-            this.justificativa.setStatus(StatusEnum.ELABORACAO);
-            User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-            this.justificativa.setSolicitante(currentUser);
-            this.justificativa.adiciona(currentUser, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
+            this.justificativa = new JustificativaPonto(permissoes.getUsuarioLogado());
         }
+
     }
     
 

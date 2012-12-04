@@ -148,8 +148,18 @@ public class JustificativaPonto {
 
     @OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<HistoricoJustificativaPonto> historico;
-		
-	public int getJustificativaId() {
+
+    public JustificativaPonto() {
+    }
+
+    public JustificativaPonto(User solicitante) {
+        this.solicitante = solicitante;
+        this.dtCriacao = new Date();
+        this.status = StatusEnum.ELABORACAO;
+        adiciona(solicitante, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
+    }
+
+    public int getJustificativaId() {
 		return justificativaId;
 	}
 
