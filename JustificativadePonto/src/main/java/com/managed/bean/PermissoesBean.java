@@ -8,10 +8,12 @@ import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.User;
 
+import java.io.Serializable;
+
 
 @SessionScoped
 @ManagedBean(name = "PermissoesBean")
-public class PermissoesBean {
+public class PermissoesBean implements Serializable {
 
 	/*
 	 * Solicitante poderá: 
