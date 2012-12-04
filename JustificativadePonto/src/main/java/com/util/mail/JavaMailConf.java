@@ -29,8 +29,8 @@ public class JavaMailConf {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("celoguimaraes@gmail.com",
-                                "");
+                        return new PasswordAuthentication("contafakemail@gmail.com",
+                                "justificativa");
                     }
                 });
 

@@ -69,15 +69,8 @@ public class LoginBean implements Serializable {
 
             this.user = getUserService().getUserByEmail(this.user);
 
-            System.out.println("CPF DO USER => " + this.user.getCpf());
-
-            FacesContext.getCurrentInstance().getExternalContext()
+               FacesContext.getCurrentInstance().getExternalContext()
                     .getSessionMap().put("usuarioLogado", this.user);
-
-            // recuperando p/testar se esta sendo adicionado na sess�o
-            // User currentUser =
-            // (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
-            // System.out.println("currentUser => " + currentUser.getCpf());
 
             // verifica se contem 5 caracteres conforme a senha default
             if (this.user.getSenha().length() == 5) {
@@ -99,6 +92,14 @@ public class LoginBean implements Serializable {
             return null;
         }
     }
+    
+    
+    public boolean verificaIdQueryString(){
+    	
+    	return false;
+    }
+    
+    
 
     public String alteraSenha() {
 

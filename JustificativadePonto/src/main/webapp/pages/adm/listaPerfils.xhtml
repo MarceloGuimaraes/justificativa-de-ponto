@@ -8,12 +8,12 @@
 	<ui:define name="corpo">
 		<h:form>
 			<p:dataTable id="perfils" var="perfil" value="#{perfilMB.perfilList}"
-				paginator="true" rows="10" style="width: 90%" emptyMessage="Nenhuma registro encontrado">
-				<f:facet name="header">CONSULTA PERFIL</f:facet>
+				paginator="true" rows="10" style="width: 90%" emptyMessage="#{msgs['consulta.semregistro']}">
+				<f:facet name="header">#{msgs['consultaperfil.label']}</f:facet>
 
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Tipo" />
+						<h:outputText value="#{msgs['consultaperfil.label.tipo']}" />
 					</f:facet>
 
 					<h:commandLink value="#{perfil.tipo}"
@@ -22,11 +22,11 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Deletar" />
+						<h:outputText value="#{msgs['consultaperfil.label.exclusao']}" />
 					</f:facet>
 					<p:commandButton action="#{perfilMB.deletePerfil(perfil)}"
 						type="submit" icon="ui-icon ui-icon-trash"  style="float:center;"
-						onclick="if (!confirm('Confirma a exlucão do perfil #{perfil.tipo} ?')) return false;"
+						onclick="if (!confirm('#{msgs['consultaperfil.exclusao']} #{perfil.tipo} ?')) return false;"
 						ajax="false"  />
 				</p:column>
 

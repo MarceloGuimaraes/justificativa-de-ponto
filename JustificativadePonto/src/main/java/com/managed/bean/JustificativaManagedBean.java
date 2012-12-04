@@ -46,7 +46,6 @@ public class JustificativaManagedBean implements Serializable {
         for(User u : getUserService().getUsers()){
             userList.add(new SelectItem(u.getUserId(), u.getNome()));
         }
-//        userList.addAll(getUserService().getUsers());
         return userList;
     }
 

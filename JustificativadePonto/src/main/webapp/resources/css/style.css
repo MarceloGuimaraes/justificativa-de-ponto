@@ -48,26 +48,18 @@ a Img {
 	margin-left: -450px;
 	width: 900px;
 	height: 120px;
-	
 }
 
 #usuarioLogado {
-	color: #3232CD;
-	display: block;
-	float: right;
-	right: 50%;
-	margin-right: -450px;
-	position: absolute;
-}
-
-#usuarioLogado a {
-	color: #3232CD;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-#usuarioLogado a:hover {
+	z-index:10;
+	font-family:Verdana, Arial, sans-serif;
+	font-size:1.1em;
+	position: absolute; 
+	top: 45px;
+	margin-right:250px;
 	text-decoration: none;
+	color: #3232CD;
+
 }
 
 .jquery-ui-themeswitcher-trigger {
@@ -118,8 +110,6 @@ h2 {
 }
 
 /* FORM */
-
-
 input,textarea,select {
 	margin-bottom: 3px !important;
 }
@@ -128,7 +118,8 @@ textarea {
 	width: 300px;
 }
 
-input:not    (.ui-widget    ),textarea:not    (.ui-widget    ),select {
+input:not      (.ui-widget      ),textarea:not      (.ui-widget      ),select
+	{
 	-moz-border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
@@ -139,8 +130,8 @@ input:not    (.ui-widget    ),textarea:not    (.ui-widget    ),select {
 }
 
 label {
-	color:#155c91; 
-/* 	display: block;
+	color: #155c91;
+	/* 	display: block;
 	float: right;
 	margin-right: 20px;
 	text-align: right;
@@ -267,11 +258,11 @@ table.dados tr td {
 	background: none repeat scroll 0 0 #DDDDDD;
 }
 
-.erroPage{
-    text-align: center;
-    font-size: 80px;
-    color: #0000FF;
-    display: block;
+.erroPage {
+	text-align: center;
+	font-size: 80px;
+	color: #0000FF;
+	display: block;
 }
 
 /* validacao */

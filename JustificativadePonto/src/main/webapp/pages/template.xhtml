@@ -26,37 +26,34 @@
     <div id="conteudo">
         <h:form>
             <p:menubar styleClass="menunav">
-                <p:submenu label="Justificativa">
-                    <p:menuitem value="Nova Justificativa" url="/pages/justificativa.jsf" icon="ui-icon-document" />
+                <p:submenu label="#{msgs['template.menu.label']}">
+                    <p:menuitem value="#{msgs['template.menu.novajustificativa']}" url="/pages/justificativa.jsf" icon="ui-icon-document" />
                 </p:submenu>
 
-				<p:submenu label="Justificativas">
-					<p:menuitem value="Por ano" url="/pages/justificativaporano.jsf"/>
+				<p:submenu label="#{msgs['template.menu.consulta']}">
+					<p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf"/>
 					<p:separator />
-					<p:menuitem value="Por solicitante" url="/pages/justificativaporsolicitante.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" />
 					<p:separator />
-					<p:menuitem value="Por mês" url="/pages/justificativapormes.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" />
 					<p:separator />
-					<p:menuitem value="Por motivo" url="/pages/justificativapormotivo.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" />
 				</p:submenu>
 
-                <p:submenu label="Administração">
-                    <p:menuitem value="Manual" url="#" />
+                <p:submenu label="#{msgs['template.menu.adm.label']}">
+                    <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" />
                     <p:separator />
-                    <p:menuitem value="Novo Usuário" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
-                    <p:menuitem value="Consulta Usuários"
-                                url="/pages/adm/listaUsuarios.jsf"/>
+                    <p:menuitem value="#{msgs['template.menu.adm.novousuario']}" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
+                    <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf"/>
                     <p:separator />
-                    <p:menuitem value="Novo Perfil" url="/pages/adm/cadPerfil.jsf" icon="ui-icon-document" />
-                    <p:menuitem value="Consulta Perfils" url="/pages/adm/listaPerfils.jsf" />
+                    <p:menuitem value="#{msgs['template.menu.adm.novoperfil']}" url="/pages/adm/cadPerfil.jsf" icon="ui-icon-document" />
+                    <p:menuitem  value="#{msgs['template.menu.adm.consultaperfis']}" url="/pages/adm/listaPerfils.jsf" />
                 </p:submenu>
 
-                <p:menuitem value="Alterar senha" url="/pages/adm/senha.jsf"
+                <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" url="/pages/adm/senha.jsf"
                             ajax="false" />
-                <p:menuitem value="Sair" action="#{loginController.logOut}"
+                <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
                             ajax="false" />
-
-                <p:menuitem value="#{loginController.user.nome}" />
             </p:menubar>
         </h:form>
         <ui:insert name="corpo" />

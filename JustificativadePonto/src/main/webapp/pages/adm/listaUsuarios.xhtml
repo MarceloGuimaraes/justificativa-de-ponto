@@ -8,11 +8,11 @@
 	<ui:define name="corpo">
 		<h:form>
 			<p:dataTable id="users" var="user" value="#{userMB.userList}"
-				paginator="true" rows="10" style="width: 90%" emptyMessage="Nenhuma registro encontrado">
-					<f:facet name="header">CONSULTA USUÁRIOS</f:facet>
+				paginator="true" rows="10" style="width: 90%" emptyMessage="#{msgs['consulta.semregistro']}">
+					<f:facet name="header">#{msgs['consultausuario.label']}</f:facet>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Name" />
+						<h:outputText value="#{msgs['consultausuario.label.nome']}" />
 					</f:facet>
 
 					<h:commandLink value="#{user.nome}"
@@ -21,13 +21,13 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Cpf" />
+						<h:outputText value="#{msgs['consultausuario.label.cpf']}" />
 					</f:facet>
 					<h:outputText value="#{user.cpf}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="E-mail" />
+						<h:outputText value="#{msgs['consultausuario.label.email']}" />
 					</f:facet>
 					<h:outputText value="#{user.email}" />
 				</p:column>
@@ -37,7 +37,7 @@
 					</f:facet>
 					<p:commandButton action="#{userMB.deleteUser(user)}" type="submit"
 						icon="ui-icon ui-icon-trash"
-						onclick="if (!confirm('Confirma a exlucão do usuario #{user.nome} ?')) return false;"
+						onclick="if (!confirm('#{msgs['consultausuario.exclusao']} #{user.nome} ?')) return false;"
 						ajax="false" /> 
 				</p:column>
 				<!-- type="submit"  image="/resources/imagens/excluir16.png"  -->
