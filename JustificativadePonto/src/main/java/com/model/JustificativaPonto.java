@@ -3,9 +3,7 @@ package com.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 @Entity
 @Table(name = "JustificativaPonto")
@@ -317,4 +315,19 @@ public class JustificativaPonto {
         historico.add(new HistoricoJustificativaPonto(user, this, evento));
 
     }
+
+    public HistoricoJustificativaPonto getUltimoHistorico(){
+        if(historico==null || historico.isEmpty()){
+            return null;
+        }
+        Set<HistoricoJustificativaPonto> ordenado = new TreeSet<HistoricoJustificativaPonto>(new Comparator<HistoricoJustificativaPonto>() {
+            @Override
+            public int compare(HistoricoJustificativaPonto o1, HistoricoJustificativaPonto o2) {
+                return (o1.getId().intValue()-o2.getId().intValue())*-1;
+            }
+        });
+        ordenado.addAll(historico);
+        return ordenado.iterator().next();
+    }
+
 }

@@ -55,7 +55,7 @@ public class JustificativaDAO implements IJustificativaDAO, Serializable {
 
 	public List<JustificativaPonto> getJustificativaPontos() {
 		List list = getSessionFactory().getCurrentSession()
-				.createQuery("from JustificativaPonto").list();
+				.createQuery("from JustificativaPonto j left join fetch j.historico").list();
 		return Collections.unmodifiableList(list);
 		// return list;
 

@@ -56,6 +56,12 @@
 					</f:facet>
 					<h:outputText value="#{msgs[justificativa.motivo.descricao]}" />
 				</p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="ultimo historico" />
+                    </f:facet>
+                    <h:outputText value="#{msgs[justificativa.ultimoHistorico.tipoEvento.descricao]}" />
+                </p:column>
 			</p:dataTable>
 		</h:form>
 	</ui:define>
