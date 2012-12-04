@@ -1,32 +1,34 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/pages/template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
 	<ui:define name="corpo">
 		<h:form id="justificativaPorAno">
 			<p:dataTable var="justificativa"
 				value="#{justificativaBean.justificativaList}" paginator="true"
-				rows="10" style="width: 90%"
-				emptyMessage="Nenhuma registro encontrado">
+				rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
 
-				<f:facet name="header"><h:outputText value="#{msgs['relatorio.justificativa.pormotivo.titulo']}" /></f:facet>
+				<f:facet name="header">
+					<h:outputText
+						value="#{msgs['relatorio.justificativa.pormotivo.titulo']}" />
+				</f:facet>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Motivo" />
+						<h:outputText value="#{msgs['relatorio.justificativa.motivo']}" />
 					</f:facet>
 					<h:outputText value="#{msgs[justificativa.motivo.descricao]}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Status" />
+						<h:outputText value="#{msgs['relatorio.justificativa.status']}" />
 					</f:facet>
 					<h:outputText value="#{msgs[justificativa.status.descricao]}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Ano" />
+						<h:outputText value="#{msgs['relatorio.justificativa.ano']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.dtCriacao}">
 						<f:convertDateTime pattern="yyyy" />
@@ -34,13 +36,15 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Solicitante" />
+						<h:outputText
+							value="#{msgs['relatorio.justificativa.solicitante']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.solicitante.nome}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Coordenador" />
+						<h:outputText
+							value="#{msgs['relatorio.justificativa.coordenador']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.coordenador.nome}" />
 				</p:column>

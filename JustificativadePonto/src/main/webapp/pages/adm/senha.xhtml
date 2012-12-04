@@ -10,16 +10,18 @@
 			<p:panel id="panel" header="#{msgs['login.passw.altera']}">
 
 				<p:messages id="a"></p:messages>
-				
-					<h:inputHidden id="id" value="#{loginController.user.userId}" />
+
+				<h:inputHidden id="id" value="#{loginController.user.userId}" />
 				<h:panelGrid id="panelAltera" columns="3" cellpadding="5">
 
-					<h:outputLabel value="#{msgs['login.passw.fldSenha']}" for="txtSenhaAtual" />
+					<h:outputLabel value="#{msgs['login.passw.fldSenha']}"
+						for="txtSenhaAtual" />
 					<p:password id="txtSenhaAtual"
 						value="#{loginController.user.senha}" />
 					<p:message id="msSenhaAtual" for="txtSenhaAtual"></p:message>
 
-					<h:outputLabel value="#{msgs['login.passw.fldNovaSenha']}" for="txtSenhaNova" />
+					<h:outputLabel value="#{msgs['login.passw.fldNovaSenha']}"
+						for="txtSenhaNova" />
 					<p:password id="txtSenhaNova" value="#{loginController.senhaNova}" />
 					<p:message id="msSenhaNova" for="txtSenhaNova"></p:message>
 
@@ -35,7 +37,8 @@
 						<p:commandButton value="#{msgs['login.passw.salvar']}"
 							actionListener="#{loginController.alteraSenha}"
 							update="a msSenhaAtual msConfirmaSenhaNova msSenhaNova" />
-						<p:commandButton type="reset" value="#{msgs['login.passw.limpar']}"></p:commandButton>
+						<p:commandButton type="reset"
+							value="#{msgs['login.passw.limpar']}"></p:commandButton>
 					</p:column>
 
 				</h:panelGrid>

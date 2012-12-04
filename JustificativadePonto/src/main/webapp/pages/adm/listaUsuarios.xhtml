@@ -1,10 +1,12 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<ui:composition template="/pages/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
+	<ui:define name="titulo">
+		<h:outputText value="#{msgs['justificativa.label.titulo']}" />
+	</ui:define>
 	<ui:define name="corpo">
 		<h:form>
 			<p:dataTable id="users" var="user" value="#{userMB.userList}"
@@ -45,4 +47,3 @@
 		</h:form>
 	</ui:define>
 </ui:composition>
-</html>
