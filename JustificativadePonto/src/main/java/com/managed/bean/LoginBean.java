@@ -1,17 +1,17 @@
 package com.managed.bean;
 
-import java.io.Serializable;
+import com.model.User;
+import com.service.IUserService;
+import com.util.JsfUtil;
+import com.util.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-//import javax.servlet.http.HttpSession;
-
-import com.model.User;
-import com.service.IUserService;
-import com.util.Message;
+import java.io.Serializable;
 
 @SessionScoped
 @ManagedBean(name = "loginController")
@@ -20,9 +20,9 @@ public class LoginBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final String SUCCESS = "welcome";
-    private static final String TROCASENHA = "";
 
-    // Spring User Service is injected...
+    private static final String USUARIO_LOGADO = "usuarioLogado";
+
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
@@ -44,7 +44,6 @@ public class LoginBean implements Serializable {
 
     public void setSenhaNova(String senhaNova) {
         this.senhaNova = senhaNova;
-        // System.out.println("NOVA SENHA:" + senhaNova);
     }
 
     public User getUser() {
@@ -55,22 +54,17 @@ public class LoginBean implements Serializable {
         this.user = user;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
     public String efetuaLogin() {
         if (user.getEmail() == null || user.getSenha() == null) {
             Message.addMessage("login.userEpassw.required");
             return null;
         }
 
-        if (getUserService().buscaPorLogin(this.user)) {
+        if (userService.buscaPorLogin(this.user)) {
 
-            this.user = getUserService().getUserByEmail(this.user);
+            this.user = userService.getUserByEmail(this.user);
 
-               FacesContext.getCurrentInstance().getExternalContext()
-                    .getSessionMap().put("usuarioLogado", this.user);
+            JsfUtil.setSessionValue(USUARIO_LOGADO, this.user);
 
             // verifica se contem 5 caracteres conforme a senha default
             if (this.user.getSenha().length() == 5) {
@@ -92,14 +86,14 @@ public class LoginBean implements Serializable {
             return null;
         }
     }
-    
-    
+
+
     public boolean verificaIdQueryString(){
-    	
-    	return false;
+
+        return false;
     }
-    
-    
+
+
 
     public String alteraSenha() {
 
@@ -107,7 +101,7 @@ public class LoginBean implements Serializable {
             Message.addMessage("login.passw.atual");
             return null;
             // /dao.existe(this.user).getId() == null
-        } else if (!getUserService().buscaPorLogin(this.user)) {
+        } else if (!userService.buscaPorLogin(this.user)) {
             Message.addMessage("login.passw.atual");
             return null;
         } else if (getSenhaNova() == "") {
@@ -124,7 +118,7 @@ public class LoginBean implements Serializable {
             // user.setSenha(Criptografia.encodePassword(getSenhaNova()));
             user.setSenha(getSenhaNova());
             // /dao.altera(user);
-            getUserService().updateUser(this.user);
+            userService.updateUser(this.user);
             Message.addMessageConfig("login.passw.confirmOk");
             return "/pages/wellcome.jsf?faces-redirect=true";
             //	return "/pages/adm/senha.jsf?faces-redirect=true";
@@ -141,11 +135,13 @@ public class LoginBean implements Serializable {
     public String logOut() {
 
         this.user = new User();
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext context = facesContext.getExternalContext();
+
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
         context.invalidateSession();
-        facesContext.getExternalContext().getSessionMap()
-                .remove("usuarioLogado");
+
+        JsfUtil.removeFromSession(USUARIO_LOGADO);
+
         return "/pages/login?faces-redirect=true";
 
         /*
@@ -171,12 +167,8 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public IUserService getUserService() {
-        System.out.println("SERVICE getUserService");
-        return userService;
-    }
-
     public void setUserService(IUserService userService) {
         this.userService = userService;
     }
+
 }
