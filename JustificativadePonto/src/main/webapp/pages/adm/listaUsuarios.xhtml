@@ -8,7 +8,7 @@
 	<ui:define name="corpo">
 		<h:form>
 			<p:dataTable id="users" var="user" value="#{userMB.userList}"
-				paginator="true" rows="10" style="width: 90%" emptyMessage="#{msgs['consulta.semregistro']}">
+				paginator="true" rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
 					<f:facet name="header">#{msgs['consultausuario.label']}</f:facet>
 				<p:column>
 					<f:facet name="header">

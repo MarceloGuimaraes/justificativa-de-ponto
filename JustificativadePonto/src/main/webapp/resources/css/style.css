@@ -51,15 +51,14 @@ a Img {
 }
 
 #usuarioLogado {
-	z-index:10;
+	position: absolute;
+	right: 400px;
+	top: 120px;
+	z-index: 10;
 	font-family:Verdana, Arial, sans-serif;
 	font-size:1.1em;
-	position: absolute; 
-	top: 45px;
-	margin-right:250px;
 	text-decoration: none;
-	color: #3232CD;
-
+	color: #3232CD;	
 }
 
 .jquery-ui-themeswitcher-trigger {
@@ -118,8 +117,8 @@ textarea {
 	width: 300px;
 }
 
-input:not      (.ui-widget      ),textarea:not      (.ui-widget      ),select
-	{
+input:not       (.ui-widget       ),textarea:not       (.ui-widget      
+	),select {
 	-moz-border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
