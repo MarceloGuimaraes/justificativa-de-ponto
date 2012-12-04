@@ -3,6 +3,7 @@ package com.managed.bean;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.User;
+import com.util.JsfUtil;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -14,13 +15,12 @@ import java.io.Serializable;
 @ManagedBean(name = "PermissoesBean")
 public class PermissoesBean implements Serializable {
 
-    private static final String USUARIO_LOGADO = "usuarioLogado";
-
     private User usuarioLogado;
+
     private boolean isUsuarioLogado;
 
     public PermissoesBean() {
-        usuarioLogado = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(USUARIO_LOGADO);
+        usuarioLogado = JsfUtil.getValueExpression(User.class, "#{usuarioLogado}");
         isUsuarioLogado = usuarioLogado!=null;
     }
 
