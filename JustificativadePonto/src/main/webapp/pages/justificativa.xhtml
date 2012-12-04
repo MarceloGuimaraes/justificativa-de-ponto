@@ -15,13 +15,13 @@
 				<p:panelGrid style="margin: 10px;width:99%">
 					<p:row>
 						<p:column colspan="2" style="text-align:left">
-							<h:outputLabel value="Solicitante: " />
+							<h:outputLabel value="#{msgs['form.justificativa.label.solicitante']}#{msgs['form.label.doispontos']} " />
 							<h:outputText id="solicitante"
 								value="#{justificativaBean.justificativa.solicitante.nome}"
 								style="text-align:left" />
 						</p:column>
 						<p:column colspan="2" style="text-align:right">
-							<h:outputLabel value="Data Criação: " />
+							<h:outputLabel value="#{msgs['form.justificativa.label.datacriacao']}#{msgs['form.label.doispontos']} " />
 							<h:outputText
 								value="#{justificativaBean.justificativa.dtCriacao}">
 								<f:convertDateTime pattern="d/M/yyyy" />
@@ -35,7 +35,7 @@
 					</p:row>
 					<p:row>
 						<p:column colspan="3" style="text-align:right">
-							<h:outputLabel value="Status: " />
+							<h:outputLabel value="#{msgs['form.justificativa.label.situacao']}#{msgs['form.label.doispontos']} " />
 							<h:outputText value="#{justificativaBean.justificativa.status}">
 								<f:converter converterId="StatusConverter" />
 							</h:outputText>
@@ -49,23 +49,21 @@
 
 					<p:row>
 						<p:column colspan="2" style="text-align:left">
-							<h:outputLabel value="Motivo:" />
+							<h:outputLabel value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
 							<p:selectOneMenu id="motivo"
 								value="#{justificativaBean.justificativa.motivo}">
 								<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
 							</p:selectOneMenu>
 						</p:column>
 						<p:column colspan="2" style="text-align:right">
-							<h:outputLabel value="Horário: ">
-								<p:calendar styleClass="calendar"
-									value="#{justificativaBean.justificativa.hrIni}" id="hrini"
-									showOn="button" pattern="HH:mm" timeOnly="true" />
-							</h:outputLabel>
-							<h:outputLabel value=" às ">
-								<p:calendar styleClass="calendar"
-									value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
-									showOn="button" pattern="HH:mm" timeOnly="true" />
-							</h:outputLabel>
+							<h:outputLabel value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} " />
+                            <p:calendar styleClass="calendar"
+                                value="#{justificativaBean.justificativa.hrIni}" id="hrini"
+                                showOn="button" pattern="HH:mm" timeOnly="true" />
+							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} " />
+                            <p:calendar styleClass="calendar"
+                                value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
+                                showOn="button" pattern="HH:mm" timeOnly="true" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
@@ -73,8 +71,8 @@
 				<p:panelGrid id="faltaGrid" style="margin-top:20px;width:99%">
 					<p:row>
 						<p:column style="text-align:left">
-							<h:outputLabel value="Causa da falta:" id="tipoFalta" />
-							<p:selectOneMenu requiredMessage="#{msgs['login.required']}"
+							<h:outputLabel value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} " id="lbCausaFalta" />
+							<p:selectOneMenu required="true" requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
 								value="#{justificativaBean.justificativa.tipofalta}">
 								<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
 							</p:selectOneMenu>
@@ -85,7 +83,7 @@
 				<p:panelGrid id="bancoHoraGrid" style="margin-top:20px;width:99%">
 					<p:row>
 						<p:column style="text-align:left">
-							<h:outputLabel value="Banco de dados:" />
+							<h:outputLabel value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
 							<p:selectOneMenu id="tipobancohoras"
 								value="#{justificativaBean.justificativa.tipobancohoras}">
 								<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
@@ -97,7 +95,7 @@
 				<p:panelGrid id="coordenadorGrid" style="margin-top:20px;width:99%">
 					<p:row>
 						<p:column style="text-align:left">
-							<h:outputLabel value="Coordenador:" />
+							<h:outputLabel value="#{msgs['form.justificativa.label.coordenador']}#{msgs['form.label.doispontos']} " />
 							<p:selectOneMenu id="coordenadorSelect"
 								value="#{justificativaBean.idCoordenador}">
 								<f:selectItems value="#{justificativaBean.userList}" />
@@ -110,7 +108,7 @@
 					style="margin-top:20px;width:99%">
 					<p:row>
 						<p:column style="text-align:left">
-							<h:outputLabel value="Superintendente: " />
+							<h:outputLabel value="#{msgs['form.justificativa.label.superintendente']}#{msgs['form.label.doispontos']} " />
 							<p:selectOneMenu id="superintendenteSelect"
 								value="#{justificativaBean.idSuperintendente}">
 								<f:selectItems value="#{justificativaBean.userList}" />
@@ -119,7 +117,7 @@
 					</p:row>
 				</p:panelGrid>
 
-				<p:fieldset legend="Justificativa" id="justificativaGrid"
+				<p:fieldset legend="#{msgs['form.justificativa.legenda.justificativa']}" id="justificativaGrid"
 					style="margin:20px;width:800px">
 					<p:row>
 						<p:column style="text-align:left">
@@ -130,14 +128,13 @@
 					</p:row>
 				</p:fieldset>
 
-
-				<p:fieldset legend="Instruções ao Setor de Recursos Humanos"
+				<p:fieldset legend="#{msgs['form.justificativa.legenda.instrucoesrh']}"
 					id="rhGrid" style="margin:20px;width:800px">
 					<p:panelGrid >
 						<p:row style="border:0">
 							<p:column style="text-align:left;border:0">
-								<h:outputText
-									value="#{msgs['form.justificativa.label.tipoDecisao']} " />
+								<h:outputLabel
+									value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
 								<p:selectOneMenu id="comboDecisaoRh"
 									value="#{justificativaBean.justificativa.tipoDecisao}">
 									<f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
@@ -146,7 +143,7 @@
 						</p:row>
 						<p:row>
 							<p:column style="text-align:left">
-								<h:outputLabel value="Observação:" />
+								<h:outputLabel value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
 								<p:inputTextarea id="observacaoFld" rows="5" cols="30"
 									maxlength="300" autoResize="true"
 									value="#{justificativaBean.justificativa.descricao}" />
@@ -156,29 +153,56 @@
 				</p:fieldset>
 
 				<p:commandButton id="enviarCoord"
-					value="Enviar para aprovação do coordenador" update="panel"
+					value="#{msgs['form.justificativa.botao.enviarcoord']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 
 				<p:commandButton id="enviarSuperintendente"
-					value="Enviar para aprovação do superintendente" update="panel"
+					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 
-				<p:commandButton id="reprovarCoord" value="Reprovar" update="panel"
+				<p:commandButton id="reprovarCoord" value="#{msgs['form.justificativa.botao.reprovarcoord']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
-
 
 				<p:commandButton id="executarRH"
-					value="Enviar para execução do RH" update="panel"
+					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 
-
-				<p:commandButton id="concluidoRH" value="Concluído" update="panel"
+				<p:commandButton id="btnConcluidoRH" value="#{msgs['form.justificativa.botao.concluidorh']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 
-
-				<p:commandButton id="canceladar" value="Cancelado" update="panel"
+				<p:commandButton id="btnCancelar" value="#{msgs['form.justificativa.botao.cancelar']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 
+                <p:separator style="margin-top: 20px;" />
+
+                <p:panel header="#{msgs['form.justificativa.legenda.historico']}" style="margin-top: 20px;">
+
+                    <p:dataTable var="historico"
+                                 value="#{justificativaBean.justificativa.historico}"
+                                 id="tblHistoricoJustificativa">
+                        <p:column id="colDataHistorico">
+                            <f:facet name="header">
+                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+                            </f:facet>
+                            <h:outputText value="#{historico.data}">
+                                <f:convertDateTime pattern="d/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column id="colUsuarioHistorico">
+                            <f:facet name="header">
+                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+                            </f:facet>
+                            <h:outputText value="#{historico.usuario.nome}" />
+                        </p:column>
+                        <p:column id="colEventoHistorico">
+                            <f:facet name="header">
+                                <h:outputLabel value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+                            </f:facet>
+                            <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
+                        </p:column>
+                    </p:dataTable>
+
+                </p:panel>
 			</p:panel>
 		</h:form>
 	</ui:define>

@@ -1,13 +1,11 @@
 package com.model;
 
-import org.hibernate.annotations.*;
-
-import java.util.Date;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Parameter;
-import javax.persistence.Table;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
 
 @Entity
 @Table(name = "JustificativaPonto")
@@ -149,6 +147,9 @@ public class JustificativaPonto {
 	
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User solicitante;
+
+    @OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<HistoricoJustificativaPonto> historico;
 		
 	public int getJustificativaId() {
 		return justificativaId;
@@ -302,5 +303,18 @@ public class JustificativaPonto {
 	public void setSolicitante(User solicitante) {
 		this.solicitante = solicitante;
 	}
-	
+
+    public Collection<HistoricoJustificativaPonto> getHistorico() {
+        return historico;
+    }
+
+    public void adiciona(User user, TipoEventoJustificativaPontoEnum evento) {
+
+        if(historico==null){
+            historico = new LinkedList<HistoricoJustificativaPonto>();
+        }
+
+        historico.add(new HistoricoJustificativaPonto(user, this, evento));
+
+    }
 }

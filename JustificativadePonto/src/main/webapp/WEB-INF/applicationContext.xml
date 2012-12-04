@@ -74,6 +74,7 @@
                 <value>com.model.User</value>
                 <value>com.model.Perfil</value>
                 <value>com.model.JustificativaPonto</value>
+                <value>com.model.HistoricoJustificativaPonto</value>
             </list>
         </property>
         <property name="hibernateProperties">

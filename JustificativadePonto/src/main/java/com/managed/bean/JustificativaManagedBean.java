@@ -15,12 +15,7 @@ import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
-import com.model.JustificativaPonto;
-import com.model.MotivoEnum;
-import com.model.StatusEnum;
-import com.model.TipoBancoHorasEnum;
-import com.model.TipoFaltaEnum;
-import com.model.User;
+import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.util.Message;
@@ -205,6 +200,7 @@ public class JustificativaManagedBean implements Serializable {
             this.justificativa.setStatus(StatusEnum.ELABORACAO);
             User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioLogado");
             this.justificativa.setSolicitante(currentUser);
+            this.justificativa.adiciona(currentUser, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
         }
     }
     
