@@ -145,6 +145,9 @@ public class JustificativaPonto {
 	
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User solicitante;
+	
+	@ManyToOne(targetEntity = User.class, optional = false)
+	private User rh;
 
     @OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<HistoricoJustificativaPonto> historico;
@@ -302,6 +305,14 @@ public class JustificativaPonto {
 
 	public void setCoordenador(User coordenador) {
 		this.coordenador = coordenador;
+	}
+
+	public User getRh() {
+		return rh;
+	}
+
+	public void setRh(User rh) {
+		this.rh = rh;
 	}
 
 	public User getSolicitante() {

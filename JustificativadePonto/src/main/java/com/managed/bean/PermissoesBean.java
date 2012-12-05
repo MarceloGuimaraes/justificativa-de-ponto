@@ -1,6 +1,7 @@
 package com.managed.bean;
 
 import com.model.JustificativaPonto;
+import com.model.MotivoEnum;
 import com.model.StatusEnum;
 import com.model.User;
 import com.util.JsfUtil;
@@ -54,6 +55,7 @@ public class PermissoesBean implements Serializable {
     public boolean editAguardaAprovCoord(JustificativaPonto justificativa,User usuarioLogado) {
         if (justificativa == null || !isUsuarioLogado) {return false;}
         if (justificativa.getStatus() == null) {return false;}
+        //como o coordenador já foi selecionado, não faço validação
         if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa.getCoordenador().equals(usuarioLogado)) {
             return true;
         } else {
@@ -84,5 +86,54 @@ public class PermissoesBean implements Serializable {
           */
         return true;
     }
+    
+    
+    
+    
+    
+    /***************** REGRAs  DE OCULTAÇÃO*********************/
+    
+    /*
+     * CAMPO 'Causa da falta:'
+     */
+    public boolean showFldCausadaFalta(JustificativaPonto justificativa){
+        if (justificativa == null || !isUsuarioLogado) {return false;}
+    	if (justificativa.getMotivo().equals(MotivoEnum.FALTAS)){
+    		  return true;
+        } else {
+            return false;
+        }
+    }
+  
+    /*
+     * CAMPO 'Hora final'
+     */
+    public boolean hideFldHoraFinal(JustificativaPonto justificativa){
+        if (justificativa == null || !isUsuarioLogado) {return false;}
+    	if (justificativa.getMotivo().equals(MotivoEnum.FALTADEMARCACAO)){
+    		  return false;
+        } else {
+            return true;
+        }
+    }
+    
+    /*
+     * EXIBE AS OPÇÕES DO MOTIVO SELECIONADO BANCO DE HORAS
+     *  'HORA EXTRA' E 'GOZO'
+     */
+    public boolean showOpcoesBancoHoras(JustificativaPonto justificativa){
+        if (justificativa == null || !isUsuarioLogado) {return false;}
+    	if (justificativa.getMotivo().equals(MotivoEnum.BANCODEHORAS)){
+    		  return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
+    
 
 }

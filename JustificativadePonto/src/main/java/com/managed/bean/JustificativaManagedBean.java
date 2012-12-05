@@ -143,6 +143,7 @@ public class JustificativaManagedBean implements Serializable {
     private JustificativaPonto justificativa;
     private Integer idCoordenador;
     private Integer idSuperintendente;
+    private Integer idRh;
 
     public JustificativaPonto getJustificativa() {
         return justificativa;
@@ -168,7 +169,15 @@ public class JustificativaManagedBean implements Serializable {
         this.idSuperintendente = idSuperintendente;
     }
 
-    public MotivoEnum getTipoMotivo() {
+    public Integer getIdRh() {
+		return idRh;
+	}
+
+	public void setIdRh(Integer idRh) {
+		this.idRh = idRh;
+	}
+
+	public MotivoEnum getTipoMotivo() {
         return tipoMotivo;
     }
 
@@ -205,9 +214,10 @@ public class JustificativaManagedBean implements Serializable {
 
     public String addJustificativa() {
 
-        //Inserindo o coordenador e o superintendente escolhidos
+        //Inserindo o coordenador, superintendente e Rh escolhidos
         justificativa.setCoordenador(userService.recuperar(idCoordenador));
         justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
+        justificativa.setRh(userService.recuperar(idRh));
 
         // se a justificativa existir atualiza
         if (this.justificativa.getJustificativaId() != 0) {
