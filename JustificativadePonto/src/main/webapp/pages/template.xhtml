@@ -32,26 +32,26 @@
                 </p:submenu>
 
 				<p:submenu label="#{msgs['template.menu.consulta']}">
-					<p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf"/>
+					<p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
 					<p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" />
 					<p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" icon="ui-icon-search"/>
 					<p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" icon="ui-icon-search" />
 				</p:submenu>
 
                 <p:submenu label="#{msgs['template.menu.adm.label']}">
-                    <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" />
+                    <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" icon="ui-icon-info" />
                     <p:separator />
                     <p:menuitem value="#{msgs['template.menu.adm.novousuario']}" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
-                    <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf"/>
+                    <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf" icon="ui-icon-search"/>
                 </p:submenu>
 
                 <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" url="/pages/adm/senha.jsf"
-                            ajax="false" />
+                            ajax="false"  icon="ui-icon-wrench"/>
                 <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
-                            ajax="false" />
+                            ajax="false"  icon="ui-icon-close"/>
             </p:menubar>
         </h:form>
         <ui:insert name="corpo" />

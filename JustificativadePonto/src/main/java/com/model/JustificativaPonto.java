@@ -140,13 +140,13 @@ public class JustificativaPonto {
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User coordenador;
 	
-	@ManyToOne(targetEntity = User.class, optional = false)
+	@ManyToOne(targetEntity = User.class, optional = true)
 	private User superintendente;
 	
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User solicitante;
 	
-	@ManyToOne(targetEntity = User.class, optional = false)
+	@ManyToOne(targetEntity = User.class, optional = true)
 	private User rh;
 
     @OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)

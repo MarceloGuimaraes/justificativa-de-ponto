@@ -55,10 +55,10 @@ a Img {
 	right: 400px;
 	top: 120px;
 	z-index: 10;
-	font-family:Verdana, Arial, sans-serif;
-	font-size:1.1em;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 1.1em;
 	text-decoration: none;
-	color: #3232CD;	
+	color: #3232CD;
 }
 
 .jquery-ui-themeswitcher-trigger {
@@ -117,8 +117,8 @@ textarea {
 	width: 300px;
 }
 
-input:not       (.ui-widget       ),textarea:not       (.ui-widget      
-	),select {
+input:not        (.ui-widget        ),textarea:not        (.ui-widget      
+	 ),select {
 	-moz-border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
@@ -172,6 +172,15 @@ input[type=submit] {
 	border-radius: 5px 5px 5px 5px;
 }
 
+.tabela {
+	margin-top: 20px;
+	width: 99%;
+}
+
+/* .fieldSet{
+	margin:20px 0px 20px 0px;
+	width:830px;
+} */
 table button {
 	margin: 0 4px;
 	border-width: 0;
@@ -188,17 +197,11 @@ form {
 }
 
 form fieldset {
-	padding: 10px 0px 10px 10px;
-	margin: 5px 0 0px 0;
-	text-align: left;
-	width: 887px;
+	padding: 10px 0px 100px 10px;
+	margin: 20px 10px 20px 0;
 }
 
-form .ui-fieldset {
-	width: 873px;
-}
-
-.ui-tabs {
+.ui-tabs { 
 	clear: both;
 	margin-bottom: 20px;
 }
@@ -237,7 +240,7 @@ table.dados tr th {
 }
 
 table.dados tr td {
-	padding: 5px 10px;
+	padding: 5px 120px;
 }
 
 .campos tbody tr td {

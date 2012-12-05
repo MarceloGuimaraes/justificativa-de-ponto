@@ -12,7 +12,7 @@
 
 				<p:messages />
 
-				<p:panelGrid style="margin: 10px;width:99%">
+				<p:panelGrid style="margin-top:10px;width:99%">
 					<p:row>
 						<p:column colspan="2" style="text-align:left">
 							<h:outputLabel
@@ -46,9 +46,9 @@
 					</p:row>
 				</p:panelGrid>
 
-				<p:separator style="margin-top:20px" />
+				<p:separator styleClass="tabela" />
 
-				<p:panelGrid style="margin-top:20px;width:99%">
+				<p:panelGrid styleClass="tabela">
 					<p:row>
 						<p:column colspan="2" style="text-align:left">
 							<h:outputLabel
@@ -72,7 +72,7 @@
 					</p:row>
 				</p:panelGrid>
 
-				<p:panelGrid id="faltaGrid" style="margin-top:20px;width:99%">
+				<p:panelGrid id="faltaGrid" styleClass="tabela">
 					<p:row>
 						<p:column style="text-align:left">
 							<h:outputLabel
@@ -87,7 +87,7 @@
 					</p:row>
 				</p:panelGrid>
 
-				<p:panelGrid id="bancoHoraGrid" style="margin-top:20px;width:99%">
+				<p:panelGrid id="bancoHoraGrid" styleClass="tabela">
 					<p:row>
 						<p:column style="text-align:left">
 							<h:outputLabel
@@ -102,7 +102,7 @@
 
 				<p:fieldset
 					legend="#{msgs['form.justificativa.legenda.justificativa']}"
-					id="justificativaGrid" style="margin:20px;width:800px">
+					id="justificativaGrid">
 					<p:row>
 						<p:column style="text-align:left">
 							<p:inputTextarea id="descricao" rows="5" cols="30"
@@ -112,8 +112,7 @@
 					</p:row>
 				</p:fieldset>
 
-				<p:panelGrid  id="coordenadorGrid"
-					style="margin:20px;width:99%;table-layout:fixed;">
+				<p:panelGrid id="coordenadorGrid" styleClass="tabela">
 					<p:row>
 						<p:column style="table-layout:fixed;width:130px">
 							<h:outputLabel
@@ -129,8 +128,7 @@
 				</p:panelGrid>
 
 
-				<p:panelGrid id="superintendenteGrid"
-					style="margin:20px;width:99%">
+				<p:panelGrid id="superintendenteGrid" styleClass="tabela">
 					<p:row>
 						<p:column style="table-layout:fixed;width:130px">
 							<h:outputLabel
@@ -145,8 +143,7 @@
 					</p:row>
 				</p:panelGrid>
 
-			<p:panelGrid id="rhUserId"
-					style="margin:20px;width:99%">
+				<p:panelGrid id="rhUserId" styleClass="tabela">
 					<p:row>
 						<p:column style="table-layout:fixed;width:130px">
 							<h:outputLabel
@@ -162,10 +159,10 @@
 
 				<p:fieldset
 					legend="#{msgs['form.justificativa.legenda.instrucoesrh']}"
-					id="rhGrid" style="margin:20px;width:800px">
-					<p:panelGrid>
-						<p:row style="border:0">
-							<p:column style="text-align:left;border:0">
+					id="rhGrid">
+					<p:panelGrid styleClass="semBorda">
+						<p:row>
+							<p:column>
 								<h:outputLabel
 									value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
 								<p:selectOneMenu id="comboDecisaoRh"
