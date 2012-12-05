@@ -2,7 +2,7 @@ package com.dao;
 
 import java.util.List;
 
-import com.model.Perfil;
+import com.model.PerfilEnum;
 import com.model.User;
 
 public interface IUserDAO {
@@ -14,7 +14,7 @@ public interface IUserDAO {
 	public User getUserByCpf(User user);
 	public User getUserByEmail(User user);
 	public Boolean buscaPorLogin(User user);
-	public List<Perfil> getPerfis(User user);
+	public List<PerfilEnum> getPerfis(User user);
 	public List<User> getUsers();
     User recuperar(Integer id);
 }

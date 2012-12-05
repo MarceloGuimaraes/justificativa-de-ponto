@@ -2,7 +2,7 @@ package com.service;
 
 import java.util.List;
 
-import com.model.Perfil;
+import com.model.PerfilEnum;
 import com.model.User;
 
 public interface IUserService {
@@ -14,7 +14,7 @@ public interface IUserService {
 	public User getUserByCpf(User user);
 	public User getUserByEmail(User user);
 	public List<User> getUsers();
-	public List<Perfil> getPerfilUser(User user);
+	public List<PerfilEnum> getPerfilUser(User user);
     User recuperar(Integer id);
 	public abstract boolean isExiteUser(User user);
 	public abstract boolean buscaPorLogin(User user);

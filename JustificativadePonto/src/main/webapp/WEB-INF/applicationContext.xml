@@ -13,20 +13,12 @@
         <property name="userDAO" ref="UserDAO" />
     </bean>
 
-    <bean id="PerfilService" class="com.service.PerfilService">
-        <property name="perfilDAO" ref="PerfilDAO" />
-    </bean>
-
     <bean id="JustificativaService" class="com.service.JustificativaService">
         <property name="justificativaDAO" ref="JustificativaDAO" />
     </bean>
 
     <!-- DAO Declaration -->
     <bean id="UserDAO" class="com.dao.UserDAO">
-        <property name="sessionFactory" ref="SessionFactory" />
-    </bean>
-
-    <bean id="PerfilDAO" class="com.dao.PerfilDAO">
         <property name="sessionFactory" ref="SessionFactory" />
     </bean>
 
@@ -40,9 +32,6 @@
             <value>resources/messages</value>
         </property>
     </bean>
-
-    <!-- Validador CPF <bean id="converter.CpfValidator" class="com.util.validator.CpfValidator">
-         <property name="sessionFactory" ref="SessionFactory" /> </bean> -->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
@@ -69,7 +58,6 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.model.User</value>
-                <value>com.model.Perfil</value>
                 <value>com.model.JustificativaPonto</value>
                 <value>com.model.HistoricoJustificativaPonto</value>
             </list>
@@ -78,6 +66,7 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>

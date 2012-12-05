@@ -49,6 +49,12 @@
 					</p:inputText>
 					<p:message id="emailMsg" for="email" />
 
+                    <h:outputLabel for="chkPerfis" value="#{msgs['cadastroUsuario.label.perfil']}#{msgs['form.label.doispontos']} "/>
+                    <p:selectManyCheckbox id="chkPerfis" value="#{userMB.user.perfil}">
+                        <f:selectItems value="#{userMB.perfilList}" />
+                        <f:converter converterId="CheckBoxPerfilConverter" />
+                    </p:selectManyCheckbox>
+
 				</h:panelGrid>
 
 				<p:commandButton id="addUser"

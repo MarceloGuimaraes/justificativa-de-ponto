@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.IUserDAO;
-import com.model.Perfil;
+import com.model.PerfilEnum;
 import com.model.User;
 
 @Transactional(readOnly = true)
@@ -38,7 +38,7 @@ public class UserService implements IUserService,Serializable {
     }
 
     @Override
-    public List<Perfil> getPerfilUser(User user) {
+    public List<PerfilEnum> getPerfilUser(User user) {
         return getUserDAO().getPerfis(user);
     }
 

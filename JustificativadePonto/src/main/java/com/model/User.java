@@ -1,15 +1,11 @@
 package com.model;
 
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -31,11 +27,26 @@ public class User implements Serializable {
 	@Column(name = "email", unique = true, length = 50)
 	private String email;
 
-	@Column(name = "senha")
+	@Column(name = "senha", length = 50)
 	private String senha;
 	
-	@OneToMany 
-	private List<Perfil> perfil;
+	@ElementCollection(targetClass = PerfilEnum.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "Perfis", joinColumns = {@JoinColumn(name="id_user")})
+    @Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(
+                            name  = "enumClass",
+                            value = "com.model.PerfilEnum"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "identifierMethod",
+                            value = "getCodigo"),
+                    @org.hibernate.annotations.Parameter(
+                            name  = "valueOfMethod",
+                            value = "fromSigla")
+            }
+    )
+	private List<PerfilEnum> perfil;
 	
 	@Column(name = "ativo")
 	private boolean ativo = true;
@@ -48,11 +59,11 @@ public class User implements Serializable {
 		this.ativo = ativo;
 	}
 	
-	public List<Perfil> getPerfil() {
+	public List<PerfilEnum> getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(List<Perfil> perfil) {
+	public void setPerfil(List<PerfilEnum> perfil) {
 		this.perfil = perfil;
 	}
 	

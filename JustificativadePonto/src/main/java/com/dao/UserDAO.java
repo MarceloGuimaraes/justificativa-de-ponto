@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import com.model.PerfilEnum;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
-import com.model.Perfil;
 import com.model.User;
 
 public class UserDAO implements IUserDAO, Serializable {
@@ -114,7 +114,7 @@ public class UserDAO implements IUserDAO, Serializable {
 		}
 	}
 
-	public List<Perfil> getPerfis(User user) {
+	public List<PerfilEnum> getPerfis(User user) {
 
 		int idUser = user.getUserId();
 

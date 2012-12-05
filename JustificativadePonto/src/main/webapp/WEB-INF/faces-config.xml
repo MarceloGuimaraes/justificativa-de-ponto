@@ -75,6 +75,11 @@
         <converter-class>com.util.converter.MesConverter</converter-class>
     </converter>
 
+    <converter>
+        <converter-id>CheckBoxPerfilConverter</converter-id>
+        <converter-class>com.util.converter.CheckBoxPerfilConverter</converter-class>
+    </converter>
+
      <lifecycle>  
          <phase-listener>com.filter.AuthorizationListener</phase-listener>  
      </lifecycle>

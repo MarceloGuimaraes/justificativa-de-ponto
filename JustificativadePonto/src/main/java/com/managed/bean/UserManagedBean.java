@@ -1,20 +1,17 @@
 package com.managed.bean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import com.jsf.ds.impl.ComboPerfisDatasourceImpl;
+import com.model.User;
+import com.service.IUserService;
+import com.util.Message;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-
-import com.model.Perfil;
-import com.model.User;
-import com.service.IPerfilService;
-import com.service.IUserService;
-import com.util.Message;
-
-//@author onlinetechvision.com
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean(name = "userMB")
 @RequestScoped
@@ -23,15 +20,11 @@ public class UserManagedBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String SUCCESS = "cadUser";
     private static final String EDIT = "editUsuer";
-    public String labelCadastro;
 
     private User user;
 
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
-
-    @ManagedProperty(value = "#{PerfilService}")
-    IPerfilService perfilService;
 
     public UserManagedBean() {
         if (this.user == null) {
@@ -42,8 +35,8 @@ public class UserManagedBean implements Serializable {
     }
 
     /*
-      * public void montaPerfilList() { System.out.println("1"); List<Perfil>
-      * list; list = new ArrayList<Perfil>(); try {
+      * public void montaPerfilList() { System.out.println("1"); List<PerfilEnum>
+      * list; list = new ArrayList<PerfilEnum>(); try {
       *
       * System.out.println("2");
       *
@@ -51,15 +44,15 @@ public class UserManagedBean implements Serializable {
       * catch (Exception e) { System.out.println("4");
       * System.out.println(e.toString()); }
       *
-      * if (list != null) { for (Perfil perfilCadastro : list) {
+      * if (list != null) { for (PerfilEnum perfilCadastro : list) {
       * System.out.println("perfilCadastro" +
       * perfilCadastro.getTipo().toString()); } } }
       */
 
     /*
       * private void selecaoToPerfilEnum(User usuario) {
-      * System.out.println("selecaoToPerfilEnum = 1"); List<Perfil> perfis = new
-      * ArrayList<Perfil>(); System.out.println("selecaoToPerfilEnum = 2"); if
+      * System.out.println("selecaoToPerfilEnum = 1"); List<PerfilEnum> perfis = new
+      * ArrayList<PerfilEnum>(); System.out.println("selecaoToPerfilEnum = 2"); if
       * (perfilList != null) { System.out.println("selecaoToPerfilEnum = 3"); for
       * (int i = 0; i < this.user.getPerfil().size(); i++) {
       * System.out.println("selecaoToPerfilEnum =" + i);
@@ -81,17 +74,17 @@ public class UserManagedBean implements Serializable {
         // se o usuario existir atualiza
         if (this.user.getUserId() != 0) {
             // selecaoToPerfilEnum(this.user);
-            getUserService().updateUser(this.user);
+            userService.updateUser(this.user);
             return SUCCESS;
             // valida se existe p/adicionar
-        } else if (!getUserService().isExiteUser(this.user)) {
+        } else if (!userService.isExiteUser(this.user)) {
 
             if (this.user.getSenha() == null) {
                 this.user.setSenha(getDefaultPassword(this.user.getCpf()));
             }
 
             // /selecaoToPerfilEnum(this.user);
-            getUserService().addUser(this.user);
+            userService.addUser(this.user);
             return SUCCESS;
         } else {
             Message.addMessage("cadastroUsuario.existente");
@@ -99,16 +92,16 @@ public class UserManagedBean implements Serializable {
         }
     }
 
-    List<Perfil> perfilList;
+    List<SelectItem> perfilList;
     List<User> userList;
 
     public String deleteUser(User user) {
-        getUserService().deleteUser(user);
+        userService.deleteUser(user);
         return null;
     }
 
     public String updateUser(User user) {
-        getUserService().updateUser(user);
+        userService.updateUser(user);
         return SUCCESS;
     }
 
@@ -140,26 +133,15 @@ public class UserManagedBean implements Serializable {
 
     public List<User> getUserList() {
         userList = new ArrayList<User>();
-        userList.addAll(getUserService().getUsers());
+        userList.addAll(userService.getUsers());
         return userList;
     }
 
-    public List<Perfil> getPerfilList() {
-        perfilList = new ArrayList<Perfil>();
-        perfilList.addAll(getPerfilService().getPerfils());
+    public List<SelectItem> getPerfilList() {
+        if (perfilList==null) {
+            perfilList = new ComboPerfisDatasourceImpl().findObjects();
+        }
         return perfilList;
-    }
-
-    public IPerfilService getPerfilService() {
-        return perfilService;
-    }
-
-    public void setPerfilService(IPerfilService perfilService) {
-        this.perfilService = perfilService;
-    }
-
-    public IUserService getUserService() {
-        return userService;
     }
 
     public void setUserService(IUserService userService) {
