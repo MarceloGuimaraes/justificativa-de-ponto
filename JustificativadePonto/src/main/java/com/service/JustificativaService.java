@@ -27,26 +27,26 @@ public class JustificativaService implements IJustificativaService,
 
 	@Transactional(readOnly = false)
 	public void addJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().addJustificativaPonto(justificativa);
+		getJustificativaDAO().adicionar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
 	public void updateJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().updateJustificativaPonto(justificativa);
+		getJustificativaDAO().atualizar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
 	public void deleteJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().deleteJustificativaPonto(justificativa);
+		getJustificativaDAO().deletar(justificativa);
 	}
 
 	public JustificativaPonto getJustificativaPontoById(
 			JustificativaPonto justificativa) {
-		return getJustificativaDAO().getJustificativaPontoById(justificativa);
+		return getJustificativaDAO().recuperar(justificativa);
 	}
 
 	public List<JustificativaPonto> getJustificativaPontos() {
-		return getJustificativaDAO().getJustificativaPontos();
+		return getJustificativaDAO().todos();
 	}
 
 }

@@ -18,13 +18,13 @@
     </bean>
 
     <!-- DAO Declaration -->
-    <bean id="UserDAO" class="com.dao.UserDAO">
-        <property name="sessionFactory" ref="SessionFactory" />
+    <bean id="dao" class="com.dao.Dao" abstract="true" >
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="JustificativaDAO" class="com.dao.JustificativaDAO">
-        <property name="sessionFactory" ref="SessionFactory" />
-    </bean>
+    <bean id="UserDAO" class="com.dao.UserDAO" parent="dao" />
+
+    <bean id="JustificativaDAO" class="com.dao.JustificativaDAO" parent="dao" />
 
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -40,7 +40,7 @@
     </bean>
 
     <!-- Data Source Declaration -->
-    <bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
         <property name="jdbcUrl" value="${jdbc.url}" />
@@ -52,9 +52,9 @@
     </bean>
 
     <!-- Session Factory Declaration -->
-    <bean id="SessionFactory"
+    <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-        <property name="dataSource" ref="DataSource" />
+        <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
                 <value>com.model.User</value>
@@ -78,7 +78,7 @@
     <!-- Transaction Manager is defined -->
     <bean id="txManager"
           class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="SessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
 </beans>

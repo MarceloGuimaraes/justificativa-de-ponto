@@ -14,7 +14,6 @@ public interface IUserService {
 	public User getUserByCpf(User user);
 	public User getUserByEmail(User user);
 	public List<User> getUsers();
-	public List<PerfilEnum> getPerfilUser(User user);
     User recuperar(Integer id);
 	public abstract boolean isExiteUser(User user);
 	public abstract boolean buscaPorLogin(User user);
