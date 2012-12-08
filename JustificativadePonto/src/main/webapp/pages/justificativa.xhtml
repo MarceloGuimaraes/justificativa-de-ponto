@@ -48,16 +48,20 @@
 
 				<p:separator styleClass="tabela" />
 
-				<p:panelGrid styleClass="tabela">
+				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
 					<p:row>
-						<p:column colspan="2" style="text-align:left">
+						<p:column style="text-align:left">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
-							<p:selectOneMenu id="motivo"
-								value="#{justificativaBean.justificativa.motivo}">
-								<f:selectItems value="#{justificativaBean.tipoMotivosList}" />
-							</p:selectOneMenu>
 						</p:column>
+                        <p:column>
+                            <p:selectOneMenu id="motivo"
+                                             value="#{justificativaBean.justificativa.motivo}"
+                                             valueChangeListener="#{justificativaBean.handler.mudouMotivo}">
+                                <p:ajax event="change" update="pgrdDetalhamento" />
+                                <f:selectItems value="#{justificativaBean.handler.tipoMotivosList}" />
+                            </p:selectOneMenu>
+                        </p:column>
 						<p:column colspan="2" style="text-align:right">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} " />
@@ -70,35 +74,35 @@
 								showOn="button" pattern="HH:mm" timeOnly="true" />
 						</p:column>
 					</p:row>
-				</p:panelGrid>
-
-				<p:panelGrid id="faltaGrid" styleClass="tabela">
-					<p:row>
-						<p:column style="text-align:left">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
-								id="lbCausaFalta" />
-							<p:selectOneMenu required="true"
-								requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
-								value="#{justificativaBean.justificativa.tipofalta}">
-								<f:selectItems value="#{justificativaBean.tipoFaltaList}" />
-							</p:selectOneMenu>
-						</p:column>
-					</p:row>
-				</p:panelGrid>
-
-				<p:panelGrid id="bancoHoraGrid" styleClass="tabela">
-					<p:row>
-						<p:column style="text-align:left">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
-							<p:selectOneMenu id="tipobancohoras"
-								value="#{justificativaBean.justificativa.tipobancohoras}">
-								<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
-							</p:selectOneMenu>
-						</p:column>
-					</p:row>
-				</p:panelGrid>
+                    <p:row rendered="#{justificativaBean.handler.exibeFaltas}">
+                        <p:column style="text-align:left">
+                            <h:outputLabel
+                                    value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
+                                    id="lbCausaFalta" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu required="true"
+                                             requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
+                                             value="#{justificativaBean.justificativa.tipofalta}">
+                                <f:selectItems value="#{justificativaBean.handler.tipoFaltaList}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column colspan="2" />
+                    </p:row>
+                    <p:row>
+                        <p:column style="text-align:left">
+                            <h:outputLabel
+                                    value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="tipobancohoras"
+                                             value="#{justificativaBean.justificativa.tipobancohoras}">
+                                <f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column colspan="2" />
+                    </p:row>
+                </p:panelGrid>
 
 				<p:fieldset
 					legend="#{msgs['form.justificativa.legenda.justificativa']}"

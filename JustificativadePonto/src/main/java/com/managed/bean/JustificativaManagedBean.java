@@ -1,177 +1,158 @@
 package com.managed.bean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
-import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
-import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
+import com.managed.bean.handler.HandlerMotivosManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.util.JsfUtil;
 import com.util.Message;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @ManagedBean(name = "justificativaBean")
 @RequestScoped
 public class JustificativaManagedBean implements Serializable {
 
+
 	private static final long serialVersionUID = 1L;
-	private static final String SUCCESS = "welcome";
-	private static final String EDIT = "editJustificativa";
+    private static final String SUCCESS = "welcome";
+    private static final String EDIT = "editJustificativa";
 
-	@ManagedProperty(value = "#{JustificativaService}")
-	private IJustificativaService justificativaService;
+    @ManagedProperty(value = "#{JustificativaService}")
+    private IJustificativaService justificativaService;
 
-	@ManagedProperty(value = "#{UserService}")
-	IUserService userService;
+    @ManagedProperty(value = "#{UserService}")
+    IUserService userService;
 
-	private PermissoesBean permissoes;
+    private PermissoesBean permissoes;
 
-	List<SelectItem> userList;
+    private final HandlerMotivosManagedBean handler;
 
-	public void setPermissoes(PermissoesBean permissoes) {
+    private MotivoEnum tipoMotivo;
+    private TipoBancoHorasEnum tipoBancoHoras;
+    private TipoFaltaEnum tipoFalta;
+
+    private List<SelectItem> tipoBancoHorasList;
+    private List<SelectItem> tipoDecisaoList;
+    private List<SelectItem> userList;
+
+    private JustificativaPonto justificativa;
+
+    private Integer idCoordenador;
+    private Integer idSuperintendente;
+    private Integer idRh;
+    private boolean showFldCancelar = false;
+    private boolean showFldConcluir = false;
+    private boolean userAdmin = false;
+
+    public JustificativaManagedBean() {
+
+        permissoes = JsfUtil.getValueExpression(PermissoesBean.class, "#{PermissoesBean}");
+
+        tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
+
+        this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+
+        if (this.justificativa == null) {
+            this.justificativa = new JustificativaPonto(permissoes.getUsuarioLogado());
+        }
+
+        editElaboracao = this.permissoes.editElaboracao(this.justificativa);
+        editAguardaAprovCoord = this.permissoes.editAguardaAprovCoord(this.justificativa);
+        editAguardaAprovSuperintendente =  this.permissoes.editAguardaAprovSuperintendente(this.justificativa);
+        editAguardaAprovRh = this.permissoes.editAguardaAprovRh(this.justificativa);
+        userAdmin = this.permissoes.isAdmin();
+        showFldCancelar = this.permissoes.showFldCancelar(this.justificativa);
+        //	showFldConcluir = this.permissoes.showFldConcluir(this.justificativa);
+
+        handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
+
+    }
+
+    public HandlerMotivosManagedBean getHandler() {
+        return handler;
+    }
+
+    public void setPermissoes(PermissoesBean permissoes) {
 		this.permissoes = permissoes;
 	}
-
-	public PermissoesBean getPermissoes() {
+    
+    public PermissoesBean getPermissoes() {
 		return permissoes;
 	}
 
-	public List<SelectItem> getUserList() {
+    public List<SelectItem> getUserList() {
 
-		if (userList == null) {
-			userList = new ArrayList<SelectItem>();
-			for (User u : getUserService().getUsers()) {
-				userList.add(new SelectItem(u.getUserId(), u.getNome()));
-			}
-		}
+        if (userList==null) {
+            userList = new ArrayList<SelectItem>();
+            for(User u : getUserService().getUsers()){
+                userList.add(new SelectItem(u.getUserId(), u.getNome()));
+            }
+        }
 
-		return userList;
+        return userList;
 
-	}
+    }    
+    
+    public IUserService getUserService() {
+        return userService;
+    }
 
-	public IUserService getUserService() {
-		return userService;
-	}
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
+    public List<SelectItem> getTipoBancoHorasList() {
 
-	private List<JustificativaPonto> justificativaList;
+        return tipoBancoHorasList;
 
-	private MotivoEnum tipoMotivo;
-	private TipoBancoHorasEnum tipoBancoHoras;
-	private TipoFaltaEnum tipoFalta;
+    }
 
-	private List<SelectItem> tipoBancoHorasList;
-	private List<SelectItem> tipoMotivosList;
-	private List<SelectItem> tipoFaltaList;
-	private List<SelectItem> tipoDecisaoList;
+    public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
+        this.tipoBancoHorasList = tipoBancoHorasList;
+    }
 
-	public List<SelectItem> getTipoBancoHorasList() {
+    public List<SelectItem> getTipoDecisaoList() {
+        return tipoDecisaoList;
+    }
 
-		if (this.tipoBancoHorasList == null) {
+    public void setTipoDecisaoList(List<SelectItem> tipoDecisaoList) {
+        this.tipoDecisaoList = tipoDecisaoList;
+    }
 
-			this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
-					.findObjects();
-		}
-		return tipoBancoHorasList;
+    public JustificativaPonto getJustificativa() {
+        return justificativa;
+    }
 
-	}
+    public void setJustificativa(JustificativaPonto justificativa) {
+        this.justificativa = justificativa;
+    }
 
-	public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
-		this.tipoBancoHorasList = tipoBancoHorasList;
-	}
+    public Integer getIdCoordenador() {
+        return idCoordenador;
+    }
 
-	public List<SelectItem> getTipoFaltaList() {
+    public void setIdCoordenador(Integer idCoordenador) {
+        this.idCoordenador = idCoordenador;
+    }
 
-		if (this.tipoFaltaList == null) {
+    public Integer getIdSuperintendente() {
+        return idSuperintendente;
+    }
 
-			this.tipoFaltaList = new ComboTipoFaltaDatasourceImpl()
-					.findObjects();
+    public void setIdSuperintendente(Integer idSuperintendente) {
+        this.idSuperintendente = idSuperintendente;
+    }
 
-		}
-
-		return tipoFaltaList;
-
-	}
-
-	public void setTipoFaltaList(List<SelectItem> tipoFaltaList) {
-		this.tipoFaltaList = tipoFaltaList;
-	}
-
-	public List<SelectItem> getTipoMotivosList() {
-
-		if (this.tipoMotivosList == null) {
-
-			this.tipoMotivosList = new ComboMotivoDatasourceImpl()
-					.findObjects();
-
-		}
-
-		return tipoMotivosList;
-	}
-
-	public void setTipoMotivosList(List<SelectItem> tipoMotivosList) {
-		this.tipoMotivosList = tipoMotivosList;
-	}
-
-	public List<SelectItem> getTipoDecisaoList() {
-		if (tipoDecisaoList == null) {
-
-			tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl()
-					.findObjects();
-
-		}
-
-		return tipoDecisaoList;
-	}
-
-	public void setTipoDecisaoList(List<SelectItem> tipoDecisaoList) {
-		this.tipoDecisaoList = tipoDecisaoList;
-	}
-
-	private JustificativaPonto justificativa;
-	private Integer idCoordenador;
-	private Integer idSuperintendente;
-	private Integer idRh;
-
-	public JustificativaPonto getJustificativa() {
-		return justificativa;
-	}
-
-	public void setJustificativa(JustificativaPonto justificativa) {
-		this.justificativa = justificativa;
-	}
-
-	public Integer getIdCoordenador() {
-		return idCoordenador;
-	}
-
-	public void setIdCoordenador(Integer idCoordenador) {
-		this.idCoordenador = idCoordenador;
-	}
-
-	public Integer getIdSuperintendente() {
-		return idSuperintendente;
-	}
-
-	public void setIdSuperintendente(Integer idSuperintendente) {
-		this.idSuperintendente = idSuperintendente;
-	}
-
-	public Integer getIdRh() {
+    public Integer getIdRh() {
 		return idRh;
 	}
 
@@ -180,143 +161,136 @@ public class JustificativaManagedBean implements Serializable {
 	}
 
 	public MotivoEnum getTipoMotivo() {
-		return tipoMotivo;
-	}
+        return tipoMotivo;
+    }
 
-	public void setTipoMotivo(MotivoEnum tipoMotivo) {
-		this.tipoMotivo = tipoMotivo;
-	}
+    public void setTipoMotivo(MotivoEnum tipoMotivo) {
+        this.tipoMotivo = tipoMotivo;
+    }
 
-	public TipoBancoHorasEnum getTipoBancoHoras() {
-		return tipoBancoHoras;
-	}
+    public TipoBancoHorasEnum getTipoBancoHoras() {
+        return tipoBancoHoras;
+    }
 
-	public void setTipoBancoHoras(TipoBancoHorasEnum tipoBancoHoras) {
-		this.tipoBancoHoras = tipoBancoHoras;
-	}
+    public void setTipoBancoHoras(TipoBancoHorasEnum tipoBancoHoras) {
+        this.tipoBancoHoras = tipoBancoHoras;
+    }
 
-	public TipoFaltaEnum getTipoFalta() {
-		return tipoFalta;
-	}
+    public TipoFaltaEnum getTipoFalta() {
+        return tipoFalta;
+    }
 
-	public void setTipoFalta(TipoFaltaEnum tipoFalta) {
-		this.tipoFalta = tipoFalta;
-	}
+    public void setTipoFalta(TipoFaltaEnum tipoFalta) {
+        this.tipoFalta = tipoFalta;
+    }
 
-	public JustificativaManagedBean() {
+	private Boolean editElaboracao = false;
 
-		permissoes = JsfUtil.getValueExpression(PermissoesBean.class,
-				"#{PermissoesBean}");
-
-		if (this.justificativa == null) {
-			this.justificativa = new JustificativaPonto(
-					permissoes.getUsuarioLogado());
-		}
-
-		editElaboracao = this.permissoes.editElaboracao(this.justificativa);
-		editAguardaAprovCoord = this.permissoes
-				.editAguardaAprovCoord(this.justificativa);
-		editAguardaAprovSuperintendente = this.permissoes
-				.editAguardaAprovSuperintendente(this.justificativa);
-		editAguardaAprovRh = this.permissoes
-				.editAguardaAprovRh(this.justificativa);
-		userAdmin = this.permissoes.isAdmin();
-		showFldCancelar = this.permissoes.showFldCancelar(this.justificativa);
-	//	showFldConcluir = this.permissoes.showFldConcluir(this.justificativa);
-	}
-
-	private boolean editElaboracao = false;
-	private boolean editAguardaAprovCoord = false;
-	private boolean editAguardaAprovRh = false;
-	private boolean editAguardaAprovSuperintendente = false;
-	private boolean showFldCancelar = false;
-	private boolean showFldConcluir = false;
-	private boolean userAdmin = false;
-
-	public boolean isEditElaboracao() {
+	public Boolean getEditElaboracao() {
 		return this.editElaboracao;
 	}
-
-	public boolean isEditAguardaAprovCoord() {
-		return this.editAguardaAprovCoord;
+	
+	public void setEditElaboracao(Boolean editElaboracao) {
+		this.editElaboracao = editElaboracao;
 	}
 
-	public boolean getEditAguardaAprovRh() {
+	private Boolean editAguardaAprovCoord  = false;
+	
+	public Boolean getEditAguardaAprovCoord() {
+		return this.editElaboracao;
+	}
+	
+	 public void setEditAguardaAprovCoord(Boolean editAguardaAprovCoord) {
+			this.editAguardaAprovCoord = editAguardaAprovCoord;
+		}
+	 
+	private Boolean editAguardaAprovRh = false;
+	
+	public Boolean getEditAguardaAprovRh() {
 		return editAguardaAprovRh;
 	}
 
-	public boolean isEditAguardaAprovSuperintendente() {
-		return this.editAguardaAprovSuperintendente;
+	public void setEditAguardaAprovRh(Boolean editAguardaAprovRh) {
+		this.editAguardaAprovRh = editAguardaAprovRh;
+	}
+	
+	private Boolean editAguardaAprovSuperintendente = false;
+	
+	public Boolean getEditAguardaAprovSuperintendente() {
+		return editAguardaAprovSuperintendente;
 	}
 
-	public boolean isUserAdmin() {
-		return this.userAdmin;
+	public void setEditAguardaAprovSuperintendente(
+			Boolean editAguardaAprovSuperintendente) {
+		this.editAguardaAprovSuperintendente = editAguardaAprovSuperintendente;
 	}
 
-	public boolean isShowFldCancelar() {
-		return this.showFldCancelar;
+
+	public Boolean getIsUserAdmin() {
+		return userAdmin;
 	}
 
-	public boolean isShowFldConcluir() {
-		return showFldConcluir;
+	public void setIsUserAdmin(Boolean isUserAdmin) {
+		this.userAdmin = isUserAdmin;
 	}
 
-	public String addJustificativa() {
+    public boolean isShowFldCancelar() {
+        return showFldCancelar;
+    }
 
-		// Inserindo o coordenador, superintendente e Rh escolhidos
-		justificativa.setCoordenador(userService.recuperar(idCoordenador));
-		justificativa.setSuperintendente(userService
-				.recuperar(idSuperintendente));
-		justificativa.setRh(userService.recuperar(idRh));
+    public void setShowFldCancelar(boolean showFldCancelar) {
+        this.showFldCancelar = showFldCancelar;
+    }
 
-		// se a justificativa existir atualiza
-		if (this.justificativa.getJustificativaId() != 0) {
-			// selecaoToPerfilEnum(this.user);
-			getJustificativaService().updateJustificativaPonto(
-					this.justificativa);
-			return SUCCESS;
-		} else {
-			getJustificativaService().addJustificativaPonto(justificativa);
-			return SUCCESS;
-		}
-	}
+    public boolean isShowFldConcluir() {
+        return showFldConcluir;
+    }
 
+    public void setShowFldConcluir(boolean showFldConcluir) {
+        this.showFldConcluir = showFldConcluir;
+    }
+
+    public String addJustificativa() {
+
+        //Inserindo o coordenador, superintendente e Rh escolhidos
+        justificativa.setCoordenador(userService.recuperar(idCoordenador));
+        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
+        justificativa.setRh(userService.recuperar(idRh));
+
+        // se a justificativa existir atualiza
+        if (this.justificativa.getJustificativaId() != 0) {
+            // selecaoToPerfilEnum(this.user);
+            justificativaService.updateJustificativaPonto(
+                    this.justificativa);
+            return SUCCESS;
+        } else {
+            justificativaService.addJustificativaPonto(justificativa);
+            return SUCCESS;
+        }
+    }
+    
 	public String editJustificativa(JustificativaPonto justificativa) {
-		this.justificativa = justificativa;
-		return EDIT;
-	}
+        this.justificativa = justificativa;
+        return EDIT;
+    }
 
-	public String getLabelCadastro() {
-		if (this.justificativa.getJustificativaId() == 0) {
-			return Message
-					.getBundleMessage("cadastroJustificativa.label.titulo");
-		} else {
-			return Message
-					.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
-		}
-	}
+    public String getLabelCadastro() {
+        if (this.justificativa.getJustificativaId() == 0) {
+            return Message
+                    .getBundleMessage("cadastroJustificativa.label.titulo");
+        } else {
+            return Message
+                    .getBundleMessage("cadastroJustificativa.label.alteraUsuario");
+        }
+    }
 
-	public void reset() {
-		this.justificativa = new JustificativaPonto();
-	}
 
-	public List<JustificativaPonto> getJustificativaList() {
-		justificativaList = new ArrayList<JustificativaPonto>();
-		justificativaList.addAll(getJustificativaService()
-				.getJustificativaPontos());
-		return justificativaList;
-	}
+    public void reset() {
+        this.justificativa = new JustificativaPonto();
+    }
 
-	public void setJustificativaList(List<JustificativaPonto> justificativaList) {
-		this.justificativaList = justificativaList;
-	}
-
-	public IJustificativaService getJustificativaService() {
-		return justificativaService;
-	}
-
-	public void setJustificativaService(
-			IJustificativaService justificativaService) {
-		this.justificativaService = justificativaService;
-	}
+    public void setJustificativaService(
+            IJustificativaService justificativaService) {
+        this.justificativaService = justificativaService;
+    }
 }
