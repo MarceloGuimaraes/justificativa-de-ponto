@@ -2,6 +2,7 @@ package com.managed.bean;
 
 import com.model.JustificativaPonto;
 import com.model.MotivoEnum;
+import com.model.PerfilEnum;
 import com.model.StatusEnum;
 import com.model.User;
 import com.util.JsfUtil;
@@ -52,7 +53,7 @@ public class PermissoesBean implements Serializable {
     *  - selecionar o superintendente
     *
     */
-    public boolean editAguardaAprovCoord(JustificativaPonto justificativa,User usuarioLogado) {
+    public boolean editAguardaAprovCoord(JustificativaPonto justificativa) {
         if (justificativa == null || !isUsuarioLogado) {return false;}
         if (justificativa.getStatus() == null) {return false;}
         //como o coordenador já foi selecionado, não faço validação
@@ -79,12 +80,31 @@ public class PermissoesBean implements Serializable {
         }
     }
 
+    
+    /*
+    *  Rh poderá:
+    *  - ação 'executar(concluir)" e "cancelar"'
+    *
+    */
+    public boolean editAguardaAprovRh(JustificativaPonto justificativa) {
+        if (justificativa == null || !isUsuarioLogado) {return false;}
+        if (justificativa.getStatus() == null) {return false;}
+        if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH) && justificativa.getRh().equals(usuarioLogado)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
     public Boolean isAdmin(){
         if(!isUsuarioLogado){ return false; }
-        /*if (usuarioLogado.)
-          */
-        return true;
+        if (usuarioLogado.getPerfil().equals(PerfilEnum.ADMINISTRADOR)){
+        	return true;
+        } else {
+        	return false;
+        }
+        
     }
     
     
