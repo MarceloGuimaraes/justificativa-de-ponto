@@ -184,26 +184,27 @@
 				</p:fieldset>
 
 				<p:commandButton id="enviarCoord"
+					rendered="#{justificativaBean.editElaboracao}"
 					value="#{msgs['form.justificativa.botao.enviarcoord']}"
 					update="panel" action="#{justificativaBean.addJustificativa}"
 					ajax="false" />
 
+
 				<p:commandButton id="enviarSuperintendente"
+					rendered="#{justificativaBean.editAguardaAprovCoord}"
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
 					update="panel" action="#{justificativaBean.addJustificativa}"
 					ajax="false" />
 
-				<p:commandButton id="reprovarCoord"
-					value="#{msgs['form.justificativa.botao.reprovarcoord']}"
-					update="panel" action="#{justificativaBean.addJustificativa}"
-					ajax="false" />
 
 				<p:commandButton id="executarRH"
+					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
 					update="panel" action="#{justificativaBean.addJustificativa}"
 					ajax="false" />
 
 				<p:commandButton id="btnConcluidoRH"
+					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
 					update="panel" action="#{justificativaBean.addJustificativa}"
 					ajax="false" />

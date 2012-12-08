@@ -113,7 +113,7 @@ public class PermissoesBean implements Serializable {
 	}
 
 	/*
-	 * Rh poderá: - ação 'executar(concluir)" e "cancelar"'
+	 * Rh poderá: - ação 'executar(concluir)" e "cancelar"' serão exidas
 	 */
 	public boolean editAguardaAprovRh(JustificativaPonto justificativa) {
 		if (justificativa == null || !isUsuarioLogado) {
@@ -143,7 +143,7 @@ public class PermissoesBean implements Serializable {
 		if (justificativa.getStatus() == null) {
 			return false;
 		}
-		
+
 		if (justificativa.getStatus().equals(StatusEnum.ELABORACAO)
 				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)
 				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)) {
@@ -155,7 +155,51 @@ public class PermissoesBean implements Serializable {
 		}
 
 		return true;
-		
+
+	}
+	
+	/*
+	 * campo CONCLUIR
+	 */
+	public boolean showFldConcluir(JustificativaPonto justificativa) {
+		if (justificativa == null || !isUsuarioLogado) {
+			return false;
+		}
+
+		if (justificativa.getStatus() == null) {
+			return false;
+		}
+
+		if (justificativa.getStatus().equals(StatusEnum.ELABORACAO)
+				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)
+				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)) {
+			return false;
+		}
+
+		if (isAdmin()) {
+			return true;
+		}
+
+		return true;
+
+	}
+
+	
+
+	/*
+	 * MENU DE CADASTRO DE USUARIO
+	 */
+	public boolean showMenuCadUser() {
+		if (!isUsuarioLogado) {
+			return false;
+		}
+		if (usuarioLogado.getPerfil().equals(PerfilEnum.CADASTRADOR)
+				|| usuarioLogado.getPerfil().equals(PerfilEnum.SUPORTE)) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/*
