@@ -244,5 +244,52 @@ public class PermissoesBean implements Serializable {
 			return false;
 		}
 	}
+	
+	
+	
+	/**************************  AÇÕES  *********************/
+	
+	public void sendAprovCoord(JustificativaPonto justificativa){
+		if (justificativa != null && isUsuarioLogado) {
+			justificativa.setStatus(StatusEnum.APROVCOORD);
+			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
+						
+		}
+	}
+	
+	public void sendAprovSuper(JustificativaPonto justificativa){
+		if (justificativa != null && isUsuarioLogado) {
+			justificativa.setStatus(StatusEnum.APROVSUPERINTENDENTE);
+			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
+						
+		}
+	}
+	
+	
+	public void sendAprovRh(JustificativaPonto justificativa){
+		if (justificativa != null && isUsuarioLogado) {
+			justificativa.setStatus(StatusEnum.EXECUCAORH);
+			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
+						
+		}
+	}
+
+
+	public void cancela(JustificativaPonto justificativa){
+		if (justificativa != null && isUsuarioLogado) {
+			justificativa.setStatus(StatusEnum.CANCELADO);
+			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
+						
+		}
+	}
+
+	public void concluido(JustificativaPonto justificativa){
+		if (justificativa != null && isUsuarioLogado) {
+			justificativa.setStatus(StatusEnum.CONCLUIDO);
+			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
+						
+		}
+	}
+	
 
 }
