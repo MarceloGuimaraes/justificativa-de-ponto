@@ -38,7 +38,7 @@ public class JustificativaDAO extends CrudDaoImpl<JustificativaPonto> implements
 	}
 
     @Override
-    public List<JustificativaPonto> todos(int startIndex, int pageSize) {
+    public List<JustificativaPonto> todosPorData(int startIndex, int pageSize) {
         String hql = "from JustificativaPonto j left join fetch j.historico join fetch j.solicitante " +
                 "join fetch j.coordenador order by j.dtCriacao asc";
 
@@ -50,6 +50,26 @@ public class JustificativaDAO extends CrudDaoImpl<JustificativaPonto> implements
 
         return resultado;
 
+    }
+
+    @Override
+    public List<JustificativaPonto> todosPorMotivo(int startIndex, int pageSize) {
+        String hql = "from JustificativaPonto j join fetch j.solicitante join fetch j.coordenador" +
+                " order by j.motivo asc";
+        Query query = getSession().createQuery(hql)
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize);
+        return query.list();
+    }
+
+    @Override
+    public List<JustificativaPonto> todosPorSolicitante(int startIndex, int pageSize) {
+        String hql = "from JustificativaPonto j join fetch j.solicitante join fetch j.coordenador" +
+                " order by j.solicitante.nome asc";
+        Query query = getSession().createQuery(hql)
+                .setFirstResult(startIndex)
+                .setMaxResults(pageSize);
+        return query.list();
     }
 
     @Override

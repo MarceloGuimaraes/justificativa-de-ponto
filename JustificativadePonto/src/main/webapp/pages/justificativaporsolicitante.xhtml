@@ -10,7 +10,7 @@
 	<ui:define name="corpo">
 		<h:form id="justificativaPorAno">
 			<p:dataTable var="justificativa"
-				value="#{justificativaBean.justificativaList}" paginator="true"
+				value="#{todasJustificativasPaginadasPorSolicitante.justificativas}" paginator="true"
 				rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
 
 				<f:facet name="header">

@@ -11,6 +11,8 @@ public interface IJustificativaService {
 	public void deleteJustificativaPonto(JustificativaPonto justificativa);
 	public JustificativaPonto getJustificativaPontoById(JustificativaPonto justificativa);
 	public List<JustificativaPonto> getJustificativaPontos();
-    List<JustificativaPonto> todas(int startIndex, int pageSize);
+    List<JustificativaPonto> todasPorData(int startIndex, int pageSize);
+    List<JustificativaPonto> todasPorMotivo(int startIndex, int pageSize);
+    List<JustificativaPonto> todasPorSolicitante(int startIndex, int pageSize);
     int count();
 }

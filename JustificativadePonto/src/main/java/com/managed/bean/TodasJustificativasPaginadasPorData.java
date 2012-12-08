@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 @RequestScoped
-@ManagedBean(name = "todasJustificativasPaginadasPorMes")
-public class TodasJustificativasPaginadasPorMes implements Serializable {
+@ManagedBean(name = "todasJustificativasPaginadasPorData")
+public class TodasJustificativasPaginadasPorData implements Serializable {
 
     @ManagedProperty(value = "#{JustificativaService}")
     IJustificativaService service;
@@ -31,7 +31,7 @@ public class TodasJustificativasPaginadasPorMes implements Serializable {
                 private int totalLinhas = 0;
                 @Override
                 public List<JustificativaPonto> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
-                    List<JustificativaPonto> resultado = service.todas(i, i1);
+                    List<JustificativaPonto> resultado = service.todasPorData(i, i1);
                     totalLinhas = service.count();
                     return resultado;
                 }

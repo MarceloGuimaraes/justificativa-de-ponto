@@ -45,8 +45,18 @@ public class JustificativaService implements IJustificativaService,
 		return dao.todos();
 	}
 
-    public List<JustificativaPonto> todas(int startIndex, int pageSize){
-        return dao.todos(startIndex, pageSize);
+    public List<JustificativaPonto> todasPorData(int startIndex, int pageSize){
+        return dao.todosPorData(startIndex, pageSize);
+    }
+
+    @Override
+    public List<JustificativaPonto> todasPorMotivo(int startIndex, int pageSize) {
+        return dao.todosPorMotivo(startIndex, pageSize);
+    }
+
+    @Override
+    public List<JustificativaPonto> todasPorSolicitante(int startIndex, int pageSize) {
+        return dao.todosPorSolicitante(startIndex, pageSize);
     }
 
     public int count(){
