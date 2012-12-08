@@ -209,6 +209,7 @@
 					ajax="false" />
 
 				<p:commandButton id="btnCancelar"
+					rendered="#{justificativaBean.showFldCancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}" update="panel"
 					action="#{justificativaBean.addJustificativa}" ajax="false" />
 

@@ -213,61 +213,44 @@ public class JustificativaManagedBean implements Serializable {
         editAguardaAprovCoord = this.permissoes.editAguardaAprovCoord(this.justificativa);
         editAguardaAprovSuperintendente =  this.permissoes.editAguardaAprovSuperintendente(this.justificativa);
         editAguardaAprovRh = this.permissoes.editAguardaAprovRh(this.justificativa);
-        isUserAdmin = this.permissoes.isAdmin();
+        userAdmin = this.permissoes.isAdmin();
+        showFldCancelar = this.permissoes.showFldCancelar(this.justificativa);
       }
+    	
+
+    private boolean editElaboracao = false;
+	private boolean editAguardaAprovCoord  = false;
+	private boolean editAguardaAprovRh = false;
+	private boolean editAguardaAprovSuperintendente = false;
+	private boolean showFldCancelar = false;
+	private boolean userAdmin = false;
+	
+	public boolean isEditElaboracao(){
+		return this.editElaboracao;
+	}
+	
+    public boolean isEditAguardaAprovCoord() {
+		return this.editAguardaAprovCoord;
+	}
     
-	private Boolean editElaboracao = false;
-
-	public Boolean getEditElaboracao() {
-		return this.editElaboracao;
-	}
-	
-	public void setEditElaboracao(Boolean editElaboracao) {
-		this.editElaboracao = editElaboracao;
+	 public boolean isShowFldCancelar() {
+		return this.showFldCancelar;
 	}
 
-	private Boolean editAguardaAprovCoord  = false;
-	
-	public Boolean getEditAguardaAprovCoord() {
-		return this.editElaboracao;
-	}
-	
-	 public void setEditAguardaAprovCoord(Boolean editAguardaAprovCoord) {
-			this.editAguardaAprovCoord = editAguardaAprovCoord;
-		}
-	 
-	private Boolean editAguardaAprovRh = false;
-	
-	public Boolean getEditAguardaAprovRh() {
+	public boolean getEditAguardaAprovRh() {
 		return editAguardaAprovRh;
 	}
 
-	public void setEditAguardaAprovRh(Boolean editAguardaAprovRh) {
-		this.editAguardaAprovRh = editAguardaAprovRh;
-	}
-	
-	private Boolean editAguardaAprovSuperintendente = false;
-	
-	public Boolean getEditAguardaAprovSuperintendente() {
-		return editAguardaAprovSuperintendente;
+	public boolean isEditAguardaAprovSuperintendente() {
+		return this.editAguardaAprovSuperintendente;
 	}
 
-	public void setEditAguardaAprovSuperintendente(
-			Boolean editAguardaAprovSuperintendente) {
-		this.editAguardaAprovSuperintendente = editAguardaAprovSuperintendente;
+	public boolean isUserAdmin() {
+		return this.userAdmin;
 	}
 
 
-	private Boolean isUserAdmin = false;
-	
-	public Boolean getIsUserAdmin() {
-		return isUserAdmin;
-	}
 
-	public void setIsUserAdmin(Boolean isUserAdmin) {
-		this.isUserAdmin = isUserAdmin;
-	}
-	
 	
 
     public String addJustificativa() {
