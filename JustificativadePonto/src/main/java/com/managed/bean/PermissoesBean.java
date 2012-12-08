@@ -3,6 +3,7 @@ package com.managed.bean;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import com.model.JustificativaPonto;
@@ -21,17 +22,17 @@ public class PermissoesBean implements Serializable {
 
 	private boolean isUsuarioLogado;
 
+    @ManagedProperty(value = "#{mailApp}")
 	private JavaMailApp javaMail;
 
-	public JavaMailApp getJavaMail() {
-		return javaMail;
+	public void setJavaMail(JavaMailApp javaMail) {
+		this.javaMail = javaMail;
 	}
 
 	public PermissoesBean() {
 		this.usuarioLogado = JsfUtil.getValueExpression(User.class,
 				"#{usuarioLogado}");
 		this.isUsuarioLogado = usuarioLogado != null;
-		this.javaMail = new JavaMailApp();
 	}
 
 	public User getUsuarioLogado() {

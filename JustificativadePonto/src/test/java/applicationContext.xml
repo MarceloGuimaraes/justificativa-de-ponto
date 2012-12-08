@@ -59,13 +59,13 @@
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename">
-            <value>resources/messages</value>
+            <value>messages</value>
         </property>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
-            <value>WEB-INF/config/config.properties</value>
+            <value>config.properties</value>
         </property>
     </bean>
 

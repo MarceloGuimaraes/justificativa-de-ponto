@@ -11,7 +11,7 @@ public abstract class CrudDaoImpl<T> extends Dao implements ICrudDao<T> {
 
     @Override
     public T recuperar(Serializable id) {
-        return (T) getSession().load(getEntityClass(), id);
+        return (T) getSession().get(getEntityClass(), id);
     }
 
     @Override

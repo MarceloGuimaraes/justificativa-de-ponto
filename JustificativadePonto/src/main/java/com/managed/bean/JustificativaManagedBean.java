@@ -6,6 +6,7 @@ import com.managed.bean.handler.HandlerMotivosManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
+import com.util.JavaMailApp;
 import com.util.JsfUtil;
 import com.util.Message;
 
@@ -15,6 +16,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @ManagedBean(name = "justificativaBean")
@@ -31,6 +33,9 @@ public class JustificativaManagedBean implements Serializable {
 
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
+
+    @ManagedProperty(value = "#{mailApp}")
+    JavaMailApp mailApp;
 
     private PermissoesBean permissoes;
 
@@ -257,6 +262,12 @@ public class JustificativaManagedBean implements Serializable {
         justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
         justificativa.setRh(userService.recuperar(idRh));
 
+        List<User> destinos = new LinkedList<User>();
+        destinos.add(justificativa.getCoordenador());
+        destinos.add(justificativa.getSuperintendente());
+
+        mailApp.sendMail(justificativa.getSolicitante(), destinos, 234823);
+
         // se a justificativa existir atualiza
         if (this.justificativa.getJustificativaId() != 0) {
             // selecaoToPerfilEnum(this.user);
@@ -267,6 +278,7 @@ public class JustificativaManagedBean implements Serializable {
             justificativaService.addJustificativaPonto(justificativa);
             return SUCCESS;
         }
+
     }
     
 	public String editJustificativa(JustificativaPonto justificativa) {
@@ -292,5 +304,9 @@ public class JustificativaManagedBean implements Serializable {
     public void setJustificativaService(
             IJustificativaService justificativaService) {
         this.justificativaService = justificativaService;
+    }
+
+    public void setMailApp(JavaMailApp mailApp) {
+        this.mailApp = mailApp;
     }
 }

@@ -87,7 +87,7 @@ public class JustificativaPonto implements Serializable {
     )
 	private MotivoEnum motivo;
 
-	@Column(name = "tipodefalta", nullable = false)
+	@Column(name = "tipodefalta", nullable = true)
     @Type(
             type = "com.util.hibernate.GenericEnumUserType",
             parameters = {
