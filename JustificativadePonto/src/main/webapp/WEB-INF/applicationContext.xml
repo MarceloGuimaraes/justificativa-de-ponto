@@ -14,7 +14,7 @@
     </bean>
 
     <bean id="JustificativaService" class="com.service.JustificativaService">
-        <property name="justificativaDAO" ref="JustificativaDAO" />
+        <property name="dao" ref="JustificativaDAO" />
     </bean>
 
     <!-- DAO Declaration -->

@@ -10,6 +10,6 @@ public interface IJustificativaDAO extends ICrudDao<JustificativaPonto> {
 
 	JustificativaPonto recuperar(JustificativaPonto justificativa);
 	List<JustificativaPonto> todos();
-    List<JustificativaPonto> todos(int startIndex, int pageSize, Order... orders);
-
+    List<JustificativaPonto> todos(int startIndex, int pageSize);
+    int count();
 }

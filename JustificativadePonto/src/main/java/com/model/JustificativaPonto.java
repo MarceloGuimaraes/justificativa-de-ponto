@@ -3,11 +3,12 @@ package com.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "JustificativaPonto")
-public class JustificativaPonto {
+public class JustificativaPonto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,8 +150,11 @@ public class JustificativaPonto {
 	@ManyToOne(targetEntity = User.class, optional = true)
 	private User rh;
 
-    @OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Collection<HistoricoJustificativaPonto> historico;
+    @OneToMany(targetEntity = HistoricoJustificativaPonto.class,
+            mappedBy = "justificativaPonto",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<HistoricoJustificativaPonto> historico;
 
     public JustificativaPonto() {
     }
@@ -323,7 +327,7 @@ public class JustificativaPonto {
 		this.solicitante = solicitante;
 	}
 
-    public Collection<HistoricoJustificativaPonto> getHistorico() {
+    public List<HistoricoJustificativaPonto> getHistorico() {
         return historico;
     }
 

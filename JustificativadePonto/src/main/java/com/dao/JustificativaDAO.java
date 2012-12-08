@@ -3,7 +3,12 @@ package com.dao;
 import com.dao.impl.CrudDaoImpl;
 import com.model.JustificativaPonto;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -29,20 +34,27 @@ public class JustificativaDAO extends CrudDaoImpl<JustificativaPonto> implements
 	public List<JustificativaPonto> todos() {
 		List list = getSession()
 				.createQuery("from JustificativaPonto j left join fetch j.historico").list();
-		return Collections.unmodifiableList(list);
+		return list;
 	}
 
     @Override
-    public List<JustificativaPonto> todos(int startIndex, int pageSize, Order... orders) {
-        Criteria criteria = getSession().createCriteria(getEntityClass())
-                .setFirstResult(startIndex)
-                .setMaxResults(pageSize);
-        for(Order o : orders){
-            criteria.addOrder(o);
-        }
+    public List<JustificativaPonto> todos(int startIndex, int pageSize) {
+        String hql = "from JustificativaPonto j left join fetch j.historico join fetch j.solicitante " +
+                "join fetch j.coordenador order by j.dtCriacao asc";
 
-        return Collections.unmodifiableList(criteria.list());
+        Query query = getSession().createQuery(hql);
+        query.setFirstResult(startIndex);
+        query.setMaxResults(pageSize);
 
+        List<JustificativaPonto> resultado = query.list();
+
+        return resultado;
+
+    }
+
+    @Override
+    public int count() {
+        return ((Long)getSession().createCriteria(getEntityClass()).setProjection(Projections.rowCount()).uniqueResult()).intValue();
     }
 
 }

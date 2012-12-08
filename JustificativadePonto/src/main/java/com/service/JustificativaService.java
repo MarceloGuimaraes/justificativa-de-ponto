@@ -14,39 +14,43 @@ public class JustificativaService implements IJustificativaService,
 
 	private static final long serialVersionUID = 1L;
 	
-	private IJustificativaDAO justificativaDAO;
+	private IJustificativaDAO dao;
 	
 
-	public IJustificativaDAO getJustificativaDAO() {
-		return justificativaDAO;
-	}
-
-	public void setJustificativaDAO(IJustificativaDAO justificativaDAO) {
-		this.justificativaDAO = justificativaDAO;
+	public void setDao(IJustificativaDAO dao) {
+		this.dao = dao;
 	}
 
 	@Transactional(readOnly = false)
 	public void addJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().adicionar(justificativa);
+		dao.adicionar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
 	public void updateJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().atualizar(justificativa);
+		dao.atualizar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
 	public void deleteJustificativaPonto(JustificativaPonto justificativa) {
-		getJustificativaDAO().deletar(justificativa);
+		dao.deletar(justificativa);
 	}
 
 	public JustificativaPonto getJustificativaPontoById(
 			JustificativaPonto justificativa) {
-		return getJustificativaDAO().recuperar(justificativa);
+		return dao.recuperar(justificativa);
 	}
 
 	public List<JustificativaPonto> getJustificativaPontos() {
-		return getJustificativaDAO().todos();
+		return dao.todos();
 	}
+
+    public List<JustificativaPonto> todas(int startIndex, int pageSize){
+        return dao.todos(startIndex, pageSize);
+    }
+
+    public int count(){
+        return dao.count();
+    }
 
 }
