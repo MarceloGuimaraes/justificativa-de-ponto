@@ -11,8 +11,20 @@ public class JavaMailConf {
 
     Properties props;
 
+    boolean desenv;
+
     public JavaMailConf(Properties props){
         this.props = props;
+        if(props.containsKey("app.environment.desenv") &&
+                props.get("app.environment.desenv").equals("true")){
+            desenv = true;
+        }else{
+            desenv = false;
+        }
+    }
+
+    public boolean isDesenv() {
+        return desenv;
     }
 
     public Session newSession(){
@@ -26,8 +38,8 @@ public class JavaMailConf {
                 });
 
         /** Ativa Debug para sessao */
-        if(props.containsKey("app.environment") &&
-                props.get("app.environment").equals("true")){
+        if(props.containsKey("app.environment.debug") &&
+                props.get("app.environment.debug").equals("true")){
             session.setDebug(true);
         }
 

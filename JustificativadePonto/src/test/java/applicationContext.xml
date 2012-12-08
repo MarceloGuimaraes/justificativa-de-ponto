@@ -27,8 +27,11 @@
                 <prop key="mail.smtp.port">
                     ${mail.smtp.port}
                 </prop>
-                <prop key="app.environment">
-                    ${app.environment}
+                <prop key="app.environment.debug">
+                    ${app.environment.debug}
+                </prop>
+                <prop key="app.environment.desenv">
+                    ${app.environment.desenv}
                 </prop>
             </props>
         </constructor-arg>

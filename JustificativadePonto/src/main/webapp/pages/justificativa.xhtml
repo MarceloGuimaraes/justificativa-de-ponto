@@ -68,10 +68,12 @@
 							<p:calendar styleClass="calendar"
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
 								showOn="button" pattern="HH:mm" timeOnly="true" />
-							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} " />
+							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
+                                    rendered="#{not justificativaBean.handler.exibeFaltas}"/>
 							<p:calendar styleClass="calendar"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
-								showOn="button" pattern="HH:mm" timeOnly="true" />
+								showOn="button" pattern="HH:mm" timeOnly="true"
+                                    rendered="#{not justificativaBean.handler.exibeFaltas}"/>
 						</p:column>
 					</p:row>
                     <p:row rendered="#{justificativaBean.handler.exibeFaltas}">

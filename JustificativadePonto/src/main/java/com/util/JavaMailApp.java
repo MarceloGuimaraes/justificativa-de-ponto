@@ -16,9 +16,11 @@ import java.util.List;
 public class JavaMailApp {
 
     private Session session;
+    private boolean desenv;
 
     public JavaMailApp(JavaMailConf conf) {
         this.session = conf.newSession();
+        this.desenv = conf.isDesenv();
     }
 
     public void sendMail(User remetente, List<User> destinatarios, Integer idDoc){
@@ -65,8 +67,12 @@ public class JavaMailApp {
 
             message.setText(corpo);
 
-            /** Metodo para enviar a mensagem criada */
-            Transport.send(message);
+            //previne de ficar enviando email enquanto em desenvolvimento
+            //para comecar a enviar email, acesse o arquivo config.properties dentro de WEB-INF/config
+            //e coloque a variavel app.environment.desenv como false
+            if (!desenv) {
+                Transport.send(message);
+            }
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
