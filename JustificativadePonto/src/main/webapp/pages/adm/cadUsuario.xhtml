@@ -10,60 +10,91 @@
 	<ui:define name="corpo">
 		<h:form id="cadUsuario">
 			<p:panel id="panel" header="#{userMB.labelCadastro}">
-				<p:messages />
 				<h:inputHidden value="#{userMB.user.userId}" />
 
-				<h:panelGrid columns="3" cellpadding="5">
-					<h:outputLabel for="name"
-						value="#{msgs['cadastroUsuario.label.nome']}" />
-
-					<p:inputText id="name" value="#{userMB.user.nome}" required="true"
-						requiredMessage="#{msgs['cadastroUsuario.nome.required']}"
-						style="width:300px">
-						<f:validateLength minimum="4" />
-						<p:ajax event="blur" update="nameMsg" />
-					</p:inputText>
-					<p:message id="nameMsg" for="name" />
-
-					<h:outputLabel for="cpf"
-						value="#{msgs['cadastroUsuario.label.cpf']}" />
-					<p:inputMask id="cpf" mask="999.999.999-99"
-						value="#{userMB.user.cpf}" maxlength="14" required="true"
-						requiredMessage="#{msgs['cadastroUsuario.cpf.required']}"
-						style="width:300px">
-						<p:ajax event="blur" update="idMsg" />
-					</p:inputMask>
-					<p:message id="idMsg" for="cpf" />
-
-					<h:outputLabel for="email"
-						value="#{msgs['cadastroUsuario.label.email']}" />
-					<p:inputText id="email" value="#{userMB.user.email}"
-						required="true"
-						requiredMessage="#{msgs['cadastroUsuario.email.required']}"
-						validatorMessage="#{msgs['cadastroUsuario.email.requiredValidator']}"
-						style="width:300px">
-						<f:validateRegex
-							pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-						<f:validateLength minimum="5" />
-						<p:ajax event="blur" update="emailMsg" />
-					</p:inputText>
-					<p:message id="emailMsg" for="email" />
-
-                    <h:outputLabel for="chkPerfis" value="#{msgs['cadastroUsuario.label.perfil']}#{msgs['form.label.doispontos']} "/>
-                    <p:selectManyCheckbox id="chkPerfis" value="#{userMB.user.perfil}">
-                        <f:selectItems value="#{userMB.perfilList}" />
-                        <f:converter converterId="CheckBoxPerfilConverter" />
-                    </p:selectManyCheckbox>
-
+				<h:panelGrid id="nomeId">
+					<p:row>
+						<p:column>
+							<h:outputLabel for="name"
+								value="#{msgs['cadastroUsuario.label.nome']}" />
+							<p:inputText id="name" value="#{userMB.user.nome}"
+								required="true"
+								requiredMessage="#{msgs['cadastroUsuario.nome.required']}"
+								style="width:300px">
+								<f:validateLength minimum="4" />
+								<p:ajax event="blur" update="nameMsg" />
+							</p:inputText>
+							<p:message id="nameMsg" for="name" />
+						</p:column>
+					</p:row>
 				</h:panelGrid>
 
-				<p:commandButton id="addUser"
-					value="#{msgs['cadastroUsuario.label.add']}" update="panel"
-					action="#{userMB.addUser}" ajax="false" />
+				<h:panelGrid id="cpfId">
+					<p:row>
+						<p:column>
+							<h:outputLabel for="cpf"
+								value="#{msgs['cadastroUsuario.label.cpf']}" />
+							<p:inputMask id="cpf" mask="999.999.999-99"
+								value="#{userMB.user.cpf}" maxlength="14" required="true"
+								requiredMessage="#{msgs['cadastroUsuario.cpf.required']}"
+								style="width:300px">
+								<p:ajax event="blur" update="cpfMsg" />
+							</p:inputMask>
+							<p:message id="cpfMsg" for="cpf" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
 
-				<p:commandButton id="reset"
-					value="#{msgs['cadastroUsuario.label.reset']}"
-					action="#{userMB.reset}" type="reset" ajax="false" />
+				<p:panelGrid id="emailId">
+					<p:row>
+						<p:column>
+							<h:outputLabel for="email"
+								value="#{msgs['cadastroUsuario.label.email']}" />
+							<p:inputText id="email" value="#{userMB.user.email}"
+								required="true"
+								requiredMessage="#{msgs['cadastroUsuario.email.required']}"
+								validatorMessage="#{msgs['cadastroUsuario.email.requiredValidator']}"
+								style="width:300px">
+								<f:validateRegex
+									pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+								<f:validateLength minimum="5" />
+								<p:ajax event="blur" update="emailMsg" />
+							</p:inputText>
+							<p:message id="emailMsg" for="email" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+				<h:panelGrid id="perfilId">
+					<p:row>
+						<p:column>
+							<h:outputLabel for="chkPerfis"
+								value="#{msgs['cadastroUsuario.label.perfil']}#{msgs['form.label.doispontos']}" />
+							<p:selectManyCheckbox id="chkPerfis"
+								value="#{userMB.user.perfil}" required="true"
+								requiredMessage="#{msgs['cadastroUsuario.perfil.required']}">
+								<f:selectItems value="#{userMB.perfilList}" />
+								<f:converter converterId="CheckBoxPerfilConverter" />
+							</p:selectManyCheckbox>
+							<p:message for="chkPerfis" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+
+
+				<h:panelGrid styleClass="tabela">
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton id="addUser"
+								value="#{msgs['cadastroUsuario.label.add']}" update="panel"
+								action="#{userMB.addUser}" ajax="false" />
+
+							<p:commandButton id="reset"
+								value="#{msgs['cadastroUsuario.label.reset']}"
+								action="#{userMB.reset}" type="reset" ajax="false" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
 			</p:panel>
 		</h:form>
 	</ui:define>
