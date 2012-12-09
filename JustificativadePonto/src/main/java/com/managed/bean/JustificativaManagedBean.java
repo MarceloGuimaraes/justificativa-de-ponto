@@ -1,5 +1,12 @@
 package com.managed.bean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
@@ -12,12 +19,6 @@ import com.service.IUserService;
 import com.util.JavaMailApp;
 import com.util.JsfUtil;
 import com.util.Message;
-
-import javax.faces.model.SelectItem;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class JustificativaManagedBean implements Serializable {
 
@@ -217,7 +218,88 @@ public class JustificativaManagedBean implements Serializable {
         this.showFldConcluir = showFldConcluir;
     }
 
+    //AUTOR SOLICITANTE
     public String enviarCoordenador() {
+
+        //Inserindo o coordenador escolhido
+        justificativa.setCoordenador(userService.recuperar(idCoordenador));
+
+        List<User> destinos = new LinkedList<User>();
+        destinos.add(justificativa.getCoordenador());
+
+        mailApp.sendMail(justificativa.getSolicitante(), destinos, justificativa.getJustificativaId());
+
+        justificativa.setStatus(StatusEnum.APROVCOORD);
+
+        justificativa.adiciona(this.justificativa.getSolicitante(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+
+        justificativaService.adicionar(justificativa);
+        return SUCCESS;
+    }
+    
+    
+    //AUTOR COORDENADOR
+    public String enviarSuperintendente() {
+
+        //Inserindo o superintendente escolhido
+        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
+
+        List<User> destinos = new LinkedList<User>();
+        destinos.add(justificativa.getSolicitante());
+        destinos.add(justificativa.getSuperintendente());
+
+        mailApp.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+
+        justificativa.setStatus(StatusEnum.APROVSUPERINTENDENTE);
+        justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
+        justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
+
+        justificativaService.adicionar(justificativa);
+        return SUCCESS;
+    }
+    
+    //AUTOR SUPERINTENDENTE
+    public String enviarRh() {
+
+        //Inserindo o Rh escolhidos
+        justificativa.setRh(userService.recuperar(idRh));
+
+        List<User> destinos = new LinkedList<User>();
+        destinos.add(justificativa.getCoordenador());
+        destinos.add(justificativa.getSolicitante());
+
+        mailApp.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+
+        justificativa.setStatus(StatusEnum.EXECUCAORH);
+
+        justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
+        justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
+
+        justificativaService.adicionar(justificativa);
+        return SUCCESS;
+    }
+    
+   
+    public String concluiRh() {
+
+        List<User> destinos = new LinkedList<User>();
+        destinos.add(justificativa.getSolicitante());
+        destinos.add(justificativa.getCoordenador());
+        destinos.add(justificativa.getSuperintendente());
+
+        mailApp.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+
+        justificativa.setStatus(StatusEnum.APROVCOORD);
+
+        
+        justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.APROVADO_RH);
+
+        justificativaService.adicionar(justificativa);
+        return SUCCESS;
+    }
+    
+    /* 
+    public String enviarSuperintendente() {
 
         //Inserindo o coordenador, superintendente e Rh escolhidos
         justificativa.setCoordenador(userService.recuperar(idCoordenador));
@@ -236,8 +318,10 @@ public class JustificativaManagedBean implements Serializable {
 
         justificativaService.adicionar(justificativa);
         return SUCCESS;
-
-    }
+    }*/
+    
+    
+    
     
 	public String editJustificativa(JustificativaPonto justificativa) {
         this.justificativa = justificativa;
