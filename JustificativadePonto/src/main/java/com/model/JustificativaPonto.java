@@ -35,6 +35,10 @@ public class JustificativaPonto implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dtOcorrenciaInit;
 
+	@Column(name = "dtCancelamento")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dtCancelamento;
+
 	@Column(name = "dtOcorrenciaFim")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dtOcorrenciaFim;
@@ -54,119 +58,66 @@ public class JustificativaPonto implements Serializable {
 	private String obsSuperInt;
 
 	@Column(name = "status", nullable = false)
-    @Type(
-            type = "com.util.hibernate.GenericEnumUserType",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name  = "enumClass",
-                            value = "com.model.StatusEnum"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "identifierMethod",
-                            value = "getCodigo"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "valueOfMethod",
-                            value = "fromSigla")
-            }
-    )
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.StatusEnum"),
+			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private StatusEnum status;
 
-    @Column(name = "motivo", nullable = false)
-    @Type(
-            type = "com.util.hibernate.GenericEnumUserType",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name  = "enumClass",
-                            value = "com.model.MotivoEnum"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "identifierMethod",
-                            value = "getCodigo"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "valueOfMethod",
-                            value = "fromSigla")
-            }
-    )
+	@Column(name = "motivo", nullable = false)
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.MotivoEnum"),
+			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private MotivoEnum motivo;
 
 	@Column(name = "tipodefalta", nullable = true)
-    @Type(
-            type = "com.util.hibernate.GenericEnumUserType",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name  = "enumClass",
-                            value = "com.model.TipoFaltaEnum"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "identifierMethod",
-                            value = "getCodigo"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "valueOfMethod",
-                            value = "fromSigla")
-            }
-    )
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoFaltaEnum"),
+			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoFaltaEnum tipofalta;
 
 	@Column(name = "tipobancohoras", nullable = false)
-    @Type(
-            type = "com.util.hibernate.GenericEnumUserType",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name  = "enumClass",
-                            value = "com.model.TipoBancoHorasEnum"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "identifierMethod",
-                            value = "getCodigo"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "valueOfMethod",
-                            value = "fromSigla")
-            }
-    )
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoBancoHorasEnum"),
+			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoBancoHorasEnum tipobancohoras;
 
-    @Column(name = "tipodecisao")
-    @Type(
-            type = "com.util.hibernate.GenericEnumUserType",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name  = "enumClass",
-                            value = "com.model.TipoDecisaoEnum"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "identifierMethod",
-                            value = "getCodigo"),
-                    @org.hibernate.annotations.Parameter(
-                            name  = "valueOfMethod",
-                            value = "fromSigla")
-            }
-    )
-    private TipoDecisaoEnum tipoDecisao;
-	
+	@Column(name = "tipodecisao")
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoDecisaoEnum"),
+			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+	private TipoDecisaoEnum tipoDecisao;
+
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User coordenador;
-	
+
 	@ManyToOne(targetEntity = User.class, optional = true)
 	private User superintendente;
-	
+
 	@ManyToOne(targetEntity = User.class, optional = false)
 	private User solicitante;
-	
+
 	@ManyToOne(targetEntity = User.class, optional = true)
 	private User rh;
 
-    @OneToMany(targetEntity = HistoricoJustificativaPonto.class,
-            mappedBy = "justificativaPonto",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<HistoricoJustificativaPonto> historico;
+	@OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<HistoricoJustificativaPonto> historico;
 
-    public JustificativaPonto() {
-    }
+	public JustificativaPonto() {
+	}
 
-    public JustificativaPonto(User solicitante) {
-        this.solicitante = solicitante;
-        this.dtCriacao = new Date();
-        this.status = StatusEnum.ELABORACAO;
-        adiciona(solicitante, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
-    }
+	public JustificativaPonto(User solicitante) {
+		this.solicitante = solicitante;
+		this.dtCriacao = new Date();
+		this.status = StatusEnum.ELABORACAO;
+		adiciona(solicitante, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
+	}
 
-    public int getJustificativaId() {
+	public int getJustificativaId() {
 		return justificativaId;
 	}
 
@@ -190,15 +141,15 @@ public class JustificativaPonto implements Serializable {
 		this.tipobancohoras = tipobancohoras;
 	}
 
-    public TipoDecisaoEnum getTipoDecisao() {
-        return tipoDecisao;
-    }
+	public TipoDecisaoEnum getTipoDecisao() {
+		return tipoDecisao;
+	}
 
-    public void setTipoDecisao(TipoDecisaoEnum tipoDecisao) {
-        this.tipoDecisao = tipoDecisao;
-    }
+	public void setTipoDecisao(TipoDecisaoEnum tipoDecisao) {
+		this.tipoDecisao = tipoDecisao;
+	}
 
-    public StatusEnum getStatus() {
+	public StatusEnum getStatus() {
 		return status;
 	}
 
@@ -294,7 +245,6 @@ public class JustificativaPonto implements Serializable {
 		this.obsSuperInt = obsSuperInt;
 	}
 
-
 	public User getSuperintendente() {
 		return superintendente;
 	}
@@ -327,32 +277,43 @@ public class JustificativaPonto implements Serializable {
 		this.solicitante = solicitante;
 	}
 
-    public List<HistoricoJustificativaPonto> getHistorico() {
-        return historico;
-    }
+	public Date getDtCancelamento() {
+		return dtCancelamento;
+	}
 
-    public void adiciona(User user, TipoEventoJustificativaPontoEnum evento) {
+	public void setDtCancelamento(Date dtCancelamento) {
+		this.dtCancelamento = dtCancelamento;
+	}
 
-        if(historico==null){
-            historico = new LinkedList<HistoricoJustificativaPonto>();
-        }
+	public List<HistoricoJustificativaPonto> getHistorico() {
+		return historico;
+	}
 
-        historico.add(new HistoricoJustificativaPonto(user, this, evento));
+	public void adiciona(User user, TipoEventoJustificativaPontoEnum evento) {
 
-    }
+		if (historico == null) {
+			historico = new LinkedList<HistoricoJustificativaPonto>();
+		}
 
-    public HistoricoJustificativaPonto getUltimoHistorico(){
-        if(historico==null || historico.isEmpty()){
-            return null;
-        }
-        Set<HistoricoJustificativaPonto> ordenado = new TreeSet<HistoricoJustificativaPonto>(new Comparator<HistoricoJustificativaPonto>() {
-            @Override
-            public int compare(HistoricoJustificativaPonto o1, HistoricoJustificativaPonto o2) {
-                return (o1.getId().intValue()-o2.getId().intValue())*-1;
-            }
-        });
-        ordenado.addAll(historico);
-        return ordenado.iterator().next();
-    }
+		historico.add(new HistoricoJustificativaPonto(user, this, evento));
+
+	}
+
+	public HistoricoJustificativaPonto getUltimoHistorico() {
+		if (historico == null || historico.isEmpty()) {
+			return null;
+		}
+		Set<HistoricoJustificativaPonto> ordenado = new TreeSet<HistoricoJustificativaPonto>(
+				new Comparator<HistoricoJustificativaPonto>() {
+					@Override
+					public int compare(HistoricoJustificativaPonto o1,
+							HistoricoJustificativaPonto o2) {
+						return (o1.getId().intValue() - o2.getId().intValue())
+								* -1;
+					}
+				});
+		ordenado.addAll(historico);
+		return ordenado.iterator().next();
+	}
 
 }

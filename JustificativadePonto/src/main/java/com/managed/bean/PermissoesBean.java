@@ -18,6 +18,8 @@ import com.util.JsfUtil;
 @ManagedBean(name = "PermissoesBean")
 public class PermissoesBean implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private User usuarioLogado;
 
 	private boolean isUsuarioLogado;
@@ -245,52 +247,9 @@ public class PermissoesBean implements Serializable {
 			return false;
 		}
 	}
-	
-	
-	
-	/**************************  AÇÕES  *********************/
-	
-	public void sendAprovCoord(JustificativaPonto justificativa){
-		if (justificativa != null && isUsuarioLogado) {
-			justificativa.setStatus(StatusEnum.APROVCOORD);
-			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
-						
-		}
-	}
-	
-	public void sendAprovSuper(JustificativaPonto justificativa){
-		if (justificativa != null && isUsuarioLogado) {
-			justificativa.setStatus(StatusEnum.APROVSUPERINTENDENTE);
-			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
-						
-		}
-	}
-	
-	
-	public void sendAprovRh(JustificativaPonto justificativa){
-		if (justificativa != null && isUsuarioLogado) {
-			justificativa.setStatus(StatusEnum.EXECUCAORH);
-			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
-						
-		}
-	}
 
-
-	public void cancela(JustificativaPonto justificativa){
-		if (justificativa != null && isUsuarioLogado) {
-			justificativa.setStatus(StatusEnum.CANCELADO);
-			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
-						
-		}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-
-	public void concluido(JustificativaPonto justificativa){
-		if (justificativa != null && isUsuarioLogado) {
-			justificativa.setStatus(StatusEnum.CONCLUIDO);
-			//javaMail.sendMail(justificativa.getCoordenador().getEmail(),
-						
-		}
-	}
-	
 
 }

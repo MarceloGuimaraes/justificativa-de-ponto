@@ -9,10 +9,13 @@ public enum TipoEventoJustificativaPontoEnum implements IEnumeracaoComCodigoDesc
     REGISTRO_CRIADO(1, "tipoeventojustificativaponto.descricao.registrocriado"),
     ENVIADO_APROVACAO_COORDENADOR(2, "tipoeventojustificativaponto.descricao.enviadaaprovacaocoordenador"),
     APROVADO_COORDENADOR(2, "tipoeventojustificativaponto.descricao.aprovadocoordenador"),
+    REPROVADO_COORDENADOR(2, "tipoeventojustificativaponto.descricao.reprovadocoordenador"),
     ENVIADO_APROVACAO_SUPERINTENDENTE(3, "tipoeventojustificativaponto.descricao.enviadaaprovacaosuperintendente"),
     APROVADO_SUPERINTENDENTE(3, "tipoeventojustificativaponto.descricao.aprovadosuperintendente"),
+    REPROVADO_SUPERINTENDENTE(3,"tipoeventojustificativaponto.descricao.reprovadosuperintendente"),
     ENVIADO_APROVACAO_RH(4, "tipoeventojustificativaponto.descricao.enviadoaprovacaorh"),
-    APROVADO_RH(4, "tipoeventojustificativaponto.descricao.aprovadorh");
+    APROVADO_RH(4, "tipoeventojustificativaponto.descricao.aprovadorh"),
+    CANCELADO(5, "tipoeventojustificativaponto.descricao.cancelado");
 
     private Integer codigo;
     private String descricao;
