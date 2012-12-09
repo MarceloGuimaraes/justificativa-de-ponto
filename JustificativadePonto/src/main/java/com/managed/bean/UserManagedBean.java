@@ -77,7 +77,7 @@ public class UserManagedBean implements Serializable {
             userService.updateUser(this.user);
             return SUCCESS;
             // valida se existe p/adicionar
-        } else if (!userService.isExiteUser(this.user)) {
+        } else if (!userService.isExisteUser(this.user)) {
 
             if (this.user.getSenha() == null) {
                 this.user.setSenha(getDefaultPassword(this.user.getCpf()));

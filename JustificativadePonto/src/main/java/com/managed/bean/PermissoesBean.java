@@ -45,7 +45,7 @@ public class PermissoesBean implements Serializable {
 		if (!isUsuarioLogado) {
 			return false;
 		}
-		if (usuarioLogado.getPerfil().equals(PerfilEnum.ADMINISTRADOR)) {
+		if (usuarioLogado.getPerfil().contains(PerfilEnum.ADMINISTRADOR)) {
 			return true;
 		} else {
 			return false;

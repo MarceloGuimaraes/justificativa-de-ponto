@@ -1,12 +1,14 @@
 package com.dao;
 
 import com.dao.impl.CrudDaoImpl;
+import com.model.PerfilEnum;
 import com.model.User;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable {
@@ -80,5 +82,13 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
 		List list = getSession().createQuery("from User").list();
 		return Collections.unmodifiableList(list);
 	}
+
+    @Override
+    public List<User> listar(EnumSet<PerfilEnum> perfis) {
+        String hql = "from User u join u.perfil p where p in :perfil";
+        Query query = getSession().createQuery(hql);
+        query.setParameterList("perfil", perfis);
+        return query.list();
+    }
 
 }

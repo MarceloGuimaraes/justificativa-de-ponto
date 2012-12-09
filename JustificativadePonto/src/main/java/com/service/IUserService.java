@@ -6,15 +6,17 @@ import com.model.User;
 
 public interface IUserService {
 	
-	public void addUser(User user);
-	public void updateUser(User user);
-	public void deleteUser(User user);
-	public User getUserById(User user);
-	public User getUserByCpf(User user);
-	public User getUserByEmail(User user);
-	public List<User> getUsers();
+	void addUser(User user);
+	void updateUser(User user);
+	void deleteUser(User user);
+	User getUserById(User user);
+	User getUserByCpf(User user);
+	User getUserByEmail(User user);
+	List<User> getUsers();
     User recuperar(Integer id);
-	public abstract boolean isExiteUser(User user);
-	public abstract boolean buscaPorLogin(User user);
-
+	boolean isExisteUser(User user);
+	boolean buscaPorLogin(User user);
+    List<User> recuperaCoordenadores();
+    List<User> recuperaSuperintendentes();
+    List<User> recuperaRH();
 }

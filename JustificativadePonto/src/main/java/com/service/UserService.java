@@ -1,10 +1,12 @@
 package com.service;
 
 import com.dao.IUserDAO;
+import com.model.PerfilEnum;
 import com.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -22,7 +24,7 @@ public class UserService implements IUserService,Serializable {
     }
 
     @Override
-    public boolean isExiteUser(User user) {
+    public boolean isExisteUser(User user) {
         //Verifica se existe usuario user.getNome()
         if (getUserByCpf(user) != null || getUserByEmail(user) != null)
             return true;
@@ -33,6 +35,21 @@ public class UserService implements IUserService,Serializable {
     @Override
     public boolean buscaPorLogin(User user) {
         return userDAO.buscaPorLogin(user);
+    }
+
+    @Override
+    public List<User> recuperaCoordenadores() {
+        return userDAO.listar(EnumSet.of(PerfilEnum.COORDENADOR));
+    }
+
+    @Override
+    public List<User> recuperaSuperintendentes() {
+        return userDAO.listar(EnumSet.of(PerfilEnum.SUPERINTENDENTE));
+    }
+
+    @Override
+    public List<User> recuperaRH() {
+        return userDAO.listar(EnumSet.of(PerfilEnum.RH));
     }
 
     @Override

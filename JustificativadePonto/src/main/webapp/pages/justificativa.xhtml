@@ -152,7 +152,7 @@
 								value="#{justificativaBean.idCoordenador}" required="true"
 								requiredMessage="#{msgs['form.justificativa.coordenador.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems value="#{justificativaBean.userList}" />
+								<f:selectItems value="#{justificativaBean.coordenadorList}" />
 							</p:selectOneMenu>
 							<p:message for="coordenadorSelect" />
 						</p:column>
@@ -171,7 +171,7 @@
 								value="#{justificativaBean.idSuperintendente}" required="true"
 								requiredMessage="#{msgs['form.justificativa.superintendente.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems value="#{justificativaBean.userList}" />
+								<f:selectItems value="#{justificativaBean.superintendenteList}" />
 							</p:selectOneMenu>
 							<p:message for="superintendenteSelect" />
 						</p:column>
@@ -189,7 +189,7 @@
 								required="true"
 								requiredMessage="#{msgs['form.justificativa.rh.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems value="#{justificativaBean.userList}" />
+								<f:selectItems value="#{justificativaBean.rhList}" />
 							</p:selectOneMenu>
 							<p:message for="rhSelect" />
 						</p:column>

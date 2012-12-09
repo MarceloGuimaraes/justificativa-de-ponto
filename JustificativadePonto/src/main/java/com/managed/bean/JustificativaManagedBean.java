@@ -37,7 +37,9 @@ public class JustificativaManagedBean implements Serializable {
 
 	private List<SelectItem> tipoBancoHorasList;
 	private List<SelectItem> tipoDecisaoList;
-	private List<SelectItem> userList;
+	private List<SelectItem> coordenadorList;
+	private List<SelectItem> superintendenteList;
+	private List<SelectItem> rhList;
 
 	private JustificativaPonto justificativa;
 
@@ -64,10 +66,9 @@ public class JustificativaManagedBean implements Serializable {
 		this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
 				.findObjects();
 
-		userList = new ArrayList<SelectItem>();
-		for (User u : this.userService.getUsers()) {
-			userList.add(new SelectItem(u.getUserId(), u.getNome()));
-		}
+        coordenadorList = retornaItemAPartirDeUser(userService.recuperaCoordenadores());
+        superintendenteList = retornaItemAPartirDeUser(userService.recuperaSuperintendentes());
+        rhList = retornaItemAPartirDeUser(userService.recuperaRH());
 
 		String id = JsfUtil.getParameter("id");
 		if (id != null) {
@@ -109,13 +110,31 @@ public class JustificativaManagedBean implements Serializable {
 		return handler;
 	}
 
-	public List<SelectItem> getUserList() {
+    public List<SelectItem> getCoordenadorList() {
+        return coordenadorList;
+    }
 
-		return userList;
+    public void setCoordenadorList(List<SelectItem> coordenadorList) {
+        this.coordenadorList = coordenadorList;
+    }
 
-	}
+    public List<SelectItem> getSuperintendenteList() {
+        return superintendenteList;
+    }
 
-	public List<SelectItem> getTipoBancoHorasList() {
+    public void setSuperintendenteList(List<SelectItem> superintendenteList) {
+        this.superintendenteList = superintendenteList;
+    }
+
+    public List<SelectItem> getRhList() {
+        return rhList;
+    }
+
+    public void setRhList(List<SelectItem> rhList) {
+        this.rhList = rhList;
+    }
+
+    public List<SelectItem> getTipoBancoHorasList() {
 		return tipoBancoHorasList;
 	}
 
@@ -238,12 +257,12 @@ public class JustificativaManagedBean implements Serializable {
 		destinos.add(justificativa.getCoordenador());
 
 		mailApp.sendMail(justificativa.getSolicitante(), destinos,
-				justificativa.getJustificativaId());
+                justificativa.getJustificativaId());
 
 		justificativa.setStatus(StatusEnum.APROVCOORD);
 
 		justificativa.adiciona(this.justificativa.getSolicitante(),
-				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
 		justificativaService.adicionar(justificativa);
 		return SUCCESS;
@@ -254,7 +273,7 @@ public class JustificativaManagedBean implements Serializable {
 
 		// Inserindo o superintendente escolhido
 		justificativa.setSuperintendente(userService
-				.recuperar(idSuperintendente));
+                .recuperar(idSuperintendente));
 
 		List<User> destinos = new LinkedList<User>();
 		destinos.add(justificativa.getSolicitante());
@@ -269,8 +288,8 @@ public class JustificativaManagedBean implements Serializable {
 				TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
 		justificativa
 				.adiciona(
-						justificativa.getCoordenador(),
-						TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
+                        justificativa.getCoordenador(),
+                        TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
 		justificativaService.adicionar(justificativa);
 		return SUCCESS;
@@ -288,7 +307,7 @@ public class JustificativaManagedBean implements Serializable {
 		destinos.add(justificativa.getRh());
 
 		mailApp.sendMail(justificativa.getSuperintendente(), destinos,
-				justificativa.getJustificativaId());
+                justificativa.getJustificativaId());
 
 		justificativa.setDtAprovSuper(new Date());
 		justificativa.setStatus(StatusEnum.EXECUCAORH);
@@ -310,7 +329,7 @@ public class JustificativaManagedBean implements Serializable {
 		destinos.add(justificativa.getSuperintendente());
 
 		mailApp.sendMail(justificativa.getRh(), destinos,
-				justificativa.getJustificativaId());
+                justificativa.getJustificativaId());
 
 		justificativa.setDtAprovRh(new Date());
 		justificativa.setStatus(StatusEnum.APROVCOORD);
@@ -354,11 +373,6 @@ public class JustificativaManagedBean implements Serializable {
         return SUCCESS;
     }
 
-	public String editJustificativa(JustificativaPonto justificativa) {
-		this.justificativa = justificativa;
-		return EDIT;
-	}
-
 	public String getLabelCadastro() {
 		if (this.justificativa.getJustificativaId() == 0) {
 			return Message
@@ -369,16 +383,18 @@ public class JustificativaManagedBean implements Serializable {
 		}
 	}
 
-	public void reset() {
-		this.justificativa = new JustificativaPonto();
-	}
+    private List<SelectItem> retornaItemAPartirDeUser(List<User> users){
+        if(users==null){
+            return null;
+        }
 
-	public void setJustificativaService(
-			IJustificativaService justificativaService) {
-		this.justificativaService = justificativaService;
-	}
+        List<SelectItem> resultado = new LinkedList<SelectItem>();
 
-	public void setMailApp(JavaMailApp mailApp) {
-		this.mailApp = mailApp;
-	}
+        for(User u : users){
+            resultado.add(new SelectItem(u.getUserId(), u.getNome()));
+        }
+
+        return resultado;
+    }
+
 }
