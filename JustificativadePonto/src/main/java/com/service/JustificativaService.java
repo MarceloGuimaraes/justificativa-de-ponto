@@ -3,6 +3,7 @@ package com.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.model.HistoricoJustificativaPonto;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.IJustificativaDAO;
@@ -22,26 +23,33 @@ public class JustificativaService implements IJustificativaService,
 	}
 
 	@Transactional(readOnly = false)
-	public void addJustificativaPonto(JustificativaPonto justificativa) {
+	public void adicionar(JustificativaPonto justificativa) {
 		dao.adicionar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
-	public void updateJustificativaPonto(JustificativaPonto justificativa) {
+	public void atualizar(JustificativaPonto justificativa) {
 		dao.atualizar(justificativa);
 	}
 
 	@Transactional(readOnly = false)
-	public void deleteJustificativaPonto(JustificativaPonto justificativa) {
+	public void apagar(JustificativaPonto justificativa) {
 		dao.deletar(justificativa);
 	}
 
-	public JustificativaPonto getJustificativaPontoById(
-			JustificativaPonto justificativa) {
+	public JustificativaPonto recuperar(
+            JustificativaPonto justificativa) {
 		return dao.recuperar(justificativa);
 	}
 
-	public List<JustificativaPonto> getJustificativaPontos() {
+    @Override
+    public JustificativaPonto recuperar(Serializable id) {
+        JustificativaPonto j = dao.recuperar(id);
+        dao.initialize(j.getHistorico());
+        return j;
+    }
+
+    public List<JustificativaPonto> todas() {
 		return dao.todos();
 	}
 

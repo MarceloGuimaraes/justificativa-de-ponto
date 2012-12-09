@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@ManagedBean(name = "justificativaBean")
-@RequestScoped
 public class JustificativaManagedBean implements Serializable {
 
 
@@ -28,14 +26,9 @@ public class JustificativaManagedBean implements Serializable {
     private static final String SUCCESS = "welcome";
     private static final String EDIT = "editJustificativa";
 
-    @ManagedProperty(value = "#{JustificativaService}")
     private IJustificativaService justificativaService;
-
-    @ManagedProperty(value = "#{UserService}")
-    IUserService userService;
-
-    @ManagedProperty(value = "#{mailApp}")
-    JavaMailApp mailApp;
+    private IUserService userService;
+    private JavaMailApp mailApp;
 
     private PermissoesBean permissoes;
 
@@ -58,7 +51,13 @@ public class JustificativaManagedBean implements Serializable {
     private boolean showFldConcluir = false;
     private boolean userAdmin = false;
 
-    public JustificativaManagedBean() {
+    public JustificativaManagedBean(IJustificativaService justificativaService,
+                                    IUserService userService,
+                                    JavaMailApp mailApp) {
+
+        this.justificativaService = justificativaService;
+        this.userService = userService;
+        this.mailApp = mailApp;
 
         permissoes = JsfUtil.getValueExpression(PermissoesBean.class, "#{PermissoesBean}");
 
@@ -66,8 +65,16 @@ public class JustificativaManagedBean implements Serializable {
 
         this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
 
-        if (this.justificativa == null) {
-            this.justificativa = new JustificativaPonto(permissoes.getUsuarioLogado());
+        String id = JsfUtil.getParameter("id");
+        if(id != null ){
+            justificativa = this.justificativaService.recuperar(Integer.parseInt(id));
+            idCoordenador = justificativa.getCoordenador().getUserId();
+            idSuperintendente = justificativa.getSuperintendente().getUserId();
+            idRh = justificativa.getRh().getUserId();
+        }
+
+        if (justificativa == null) {
+            justificativa = new JustificativaPonto(permissoes.getUsuarioLogado());
         }
 
         editElaboracao = this.permissoes.editElaboracao(this.justificativa);
@@ -271,11 +278,11 @@ public class JustificativaManagedBean implements Serializable {
         // se a justificativa existir atualiza
         if (this.justificativa.getJustificativaId() != 0) {
             // selecaoToPerfilEnum(this.user);
-            justificativaService.updateJustificativaPonto(
+            justificativaService.atualizar(
                     this.justificativa);
             return SUCCESS;
         } else {
-            justificativaService.addJustificativaPonto(justificativa);
+            justificativaService.adicionar(justificativa);
             return SUCCESS;
         }
 

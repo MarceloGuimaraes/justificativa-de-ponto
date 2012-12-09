@@ -1,6 +1,8 @@
 package com.util;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 public class JsfUtil {
 
@@ -19,6 +21,15 @@ public class JsfUtil {
     public static void removeFromSession(String key){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
                 .remove(key);
+    }
+
+    public static String getParameter(String key){
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, String> parameters = context.getRequestParameterMap();
+        if(parameters.containsKey(key)){
+            return parameters.get(key);
+        }
+        return null;
     }
 
 }

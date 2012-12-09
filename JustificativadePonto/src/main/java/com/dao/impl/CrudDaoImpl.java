@@ -2,6 +2,7 @@ package com.dao.impl;
 
 import com.dao.Dao;
 import com.dao.ICrudDao;
+import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 
@@ -28,4 +29,10 @@ public abstract class CrudDaoImpl<T> extends Dao implements ICrudDao<T> {
     public void deletar(T t) {
         getSession().delete(t);
     }
+
+    @Override
+    public void initialize(Object o) {
+        Hibernate.initialize(o);
+    }
+
 }

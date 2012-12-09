@@ -7,4 +7,5 @@ public interface ICrudDao<T> {
     T adicionar(T t);
     T atualizar(T t);
     void deletar(T t);
+    void initialize(Object o);
 }

@@ -367,3 +367,7 @@ table.dados tr td {
 .menu_int UL LI SPAN {
 	COLOR: #fc0
 }
+
+a.doclink{
+    background-image: url("../resources/imagens/doclink.gif");
+}

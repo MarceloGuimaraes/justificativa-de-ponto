@@ -17,6 +17,13 @@
 					<h:outputText
 						value="#{msgs['relatorio.justificativa.porsolicitante.titulo']}" />
 				</f:facet>
+                <p:column>
+                    <f:facet name="header">
+                    </f:facet>
+                    <a href="justificativa.faces?id=#{justificativa.justificativaId}">
+                        <img src="../resources/imagens/actn103.gif" border="0" alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
+                    </a>
+                </p:column>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText

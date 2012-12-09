@@ -59,6 +59,13 @@
 
     <bean id="JustificativaDAO" class="com.dao.JustificativaDAO" parent="dao" />
 
+    <!-- ManagedBeans -->
+    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="request">
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="mailApp" />
+    </bean>
+
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename">
