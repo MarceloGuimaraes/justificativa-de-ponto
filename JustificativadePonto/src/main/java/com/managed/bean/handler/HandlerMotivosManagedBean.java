@@ -15,6 +15,8 @@ public class HandlerMotivosManagedBean implements Serializable {
     private static final String CAUSA_FALTA = "CAUSA_FALTA";
     private static final String HORA_INI = "HORA_INI";
     private static final String HORA_FIM = "HORA_FIM";
+    private static final String TIPO_BANCO_HORAS = "TIPO_BANCO_HORAS";
+
     private List<SelectItem> tipoMotivosList;
     private List<SelectItem> tipoFaltaList;
     private Map<String,Boolean> configuracao;
@@ -39,7 +41,9 @@ public class HandlerMotivosManagedBean implements Serializable {
             setConfiguracaoFaltas();
         }else if(MotivoEnum.FALTADEMARCACAO.equals(motivo)){
             setConfiguracaoFaltaMarcacao();
-        }else {
+        } else if(MotivoEnum.BANCODEHORAS.equals(motivo)){
+            setConfiguracaoBancoHoras();
+        } else {
             setConfiguracaoOutros();
         }
     }
@@ -48,18 +52,28 @@ public class HandlerMotivosManagedBean implements Serializable {
         configuracao.put(CAUSA_FALTA, true);
         configuracao.put(HORA_INI, false);
         configuracao.put(HORA_FIM, false);
+        configuracao.put(TIPO_BANCO_HORAS, false);
     }
 
     private void setConfiguracaoFaltaMarcacao(){
         configuracao.put(CAUSA_FALTA, false);
         configuracao.put(HORA_INI, true);
         configuracao.put(HORA_FIM, false);
+        configuracao.put(TIPO_BANCO_HORAS, false);
+    }
+
+    private void setConfiguracaoBancoHoras(){
+        configuracao.put(CAUSA_FALTA, false);
+        configuracao.put(HORA_INI, true);
+        configuracao.put(HORA_FIM, true);
+        configuracao.put(TIPO_BANCO_HORAS, true);
     }
 
     private void setConfiguracaoOutros(){
         configuracao.put(CAUSA_FALTA, false);
         configuracao.put(HORA_INI, true);
         configuracao.put(HORA_FIM, true);
+        configuracao.put(TIPO_BANCO_HORAS, false);
     }
 
     public List<SelectItem> getTipoMotivosList() {

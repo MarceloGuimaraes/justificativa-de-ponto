@@ -92,7 +92,7 @@
                         </p:column>
                         <p:column colspan="2" />
                     </p:row>
-                    <p:row>
+                    <p:row rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
                         <p:column style="text-align:left">
                             <h:outputLabel
                                     value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
