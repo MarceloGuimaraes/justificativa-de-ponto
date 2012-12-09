@@ -69,11 +69,11 @@
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
 								showOn="button" pattern="HH:mm" timeOnly="true" />
 							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
-                                    rendered="#{not justificativaBean.handler.exibeFaltas}"/>
+                                    rendered="#{justificativaBean.handler.exibeFaltas}"/>
 							<p:calendar styleClass="calendar"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
 								showOn="button" pattern="HH:mm" timeOnly="true"
-                                    rendered="#{not justificativaBean.handler.exibeFaltas}"/>
+                                    rendered="#{justificativaBean.handler.exibeFaltas}"/>
 						</p:column>
 					</p:row>
                     <p:row rendered="#{justificativaBean.handler.exibeFaltas}">
@@ -192,33 +192,33 @@
 				<p:commandButton id="enviarCoord"
 					rendered="#{justificativaBean.editElaboracao}"
 					value="#{msgs['form.justificativa.botao.enviarcoord']}"
-					update="panel" action="#{justificativaBean.addJustificativa}"
+					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
 
 				<p:commandButton id="enviarSuperintendente"
 					rendered="#{justificativaBean.editAguardaAprovCoord}"
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
-					update="panel" action="#{justificativaBean.addJustificativa}"
+					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
 
 				<p:commandButton id="executarRH"
 					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
-					update="panel" action="#{justificativaBean.addJustificativa}"
+					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
 				<p:commandButton id="btnConcluidoRH"
 					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
-					update="panel" action="#{justificativaBean.addJustificativa}"
+					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
 				<p:commandButton id="btnCancelar"
 					rendered="#{justificativaBean.showFldCancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}" update="panel"
-					action="#{justificativaBean.addJustificativa}" ajax="false" />
+					action="#{justificativaBean.enviarCoordenador}" ajax="false" />
 
 				<p:separator style="margin-top: 20px;" />
 

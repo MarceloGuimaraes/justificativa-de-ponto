@@ -34,10 +34,6 @@ public class JustificativaManagedBean implements Serializable {
 
     private final HandlerMotivosManagedBean handler;
 
-    private MotivoEnum tipoMotivo;
-    private TipoBancoHorasEnum tipoBancoHoras;
-    private TipoFaltaEnum tipoFalta;
-
     private List<SelectItem> tipoBancoHorasList;
     private List<SelectItem> tipoDecisaoList;
     private List<SelectItem> userList;
@@ -47,6 +43,7 @@ public class JustificativaManagedBean implements Serializable {
     private Integer idCoordenador;
     private Integer idSuperintendente;
     private Integer idRh;
+
     private boolean showFldCancelar = false;
     private boolean showFldConcluir = false;
     private boolean userAdmin = false;
@@ -64,6 +61,11 @@ public class JustificativaManagedBean implements Serializable {
         tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
 
         this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+
+        userList = new ArrayList<SelectItem>();
+        for(User u : this.userService.getUsers()){
+            userList.add(new SelectItem(u.getUserId(), u.getNome()));
+        }
 
         String id = JsfUtil.getParameter("id");
         if(id != null ){
@@ -93,35 +95,12 @@ public class JustificativaManagedBean implements Serializable {
         return handler;
     }
 
-    public void setPermissoes(PermissoesBean permissoes) {
-		this.permissoes = permissoes;
-	}
-    
-    public PermissoesBean getPermissoes() {
-		return permissoes;
-	}
-
     public List<SelectItem> getUserList() {
-
-        if (userList==null) {
-            userList = new ArrayList<SelectItem>();
-            for(User u : getUserService().getUsers()){
-                userList.add(new SelectItem(u.getUserId(), u.getNome()));
-            }
-        }
 
         return userList;
 
     }    
     
-    public IUserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
-
     public List<SelectItem> getTipoBancoHorasList() {
 
         return tipoBancoHorasList;
@@ -171,30 +150,6 @@ public class JustificativaManagedBean implements Serializable {
 	public void setIdRh(Integer idRh) {
 		this.idRh = idRh;
 	}
-
-	public MotivoEnum getTipoMotivo() {
-        return tipoMotivo;
-    }
-
-    public void setTipoMotivo(MotivoEnum tipoMotivo) {
-        this.tipoMotivo = tipoMotivo;
-    }
-
-    public TipoBancoHorasEnum getTipoBancoHoras() {
-        return tipoBancoHoras;
-    }
-
-    public void setTipoBancoHoras(TipoBancoHorasEnum tipoBancoHoras) {
-        this.tipoBancoHoras = tipoBancoHoras;
-    }
-
-    public TipoFaltaEnum getTipoFalta() {
-        return tipoFalta;
-    }
-
-    public void setTipoFalta(TipoFaltaEnum tipoFalta) {
-        this.tipoFalta = tipoFalta;
-    }
 
 	private Boolean editElaboracao = false;
 
@@ -262,7 +217,7 @@ public class JustificativaManagedBean implements Serializable {
         this.showFldConcluir = showFldConcluir;
     }
 
-    public String addJustificativa() {
+    public String enviarCoordenador() {
 
         //Inserindo o coordenador, superintendente e Rh escolhidos
         justificativa.setCoordenador(userService.recuperar(idCoordenador));
@@ -275,16 +230,12 @@ public class JustificativaManagedBean implements Serializable {
 
         mailApp.sendMail(justificativa.getSolicitante(), destinos, 234823);
 
-        // se a justificativa existir atualiza
-        if (this.justificativa.getJustificativaId() != 0) {
-            // selecaoToPerfilEnum(this.user);
-            justificativaService.atualizar(
-                    this.justificativa);
-            return SUCCESS;
-        } else {
-            justificativaService.adicionar(justificativa);
-            return SUCCESS;
-        }
+        justificativa.setStatus(StatusEnum.APROVCOORD);
+
+        justificativa.adiciona(justificativa.getSolicitante(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+
+        justificativaService.adicionar(justificativa);
+        return SUCCESS;
 
     }
     
