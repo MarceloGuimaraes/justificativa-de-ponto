@@ -78,7 +78,7 @@ public class JustificativaPonto implements Serializable {
 			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoFaltaEnum tipofalta;
 
-	@Column(name = "tipobancohoras", nullable = false)
+	@Column(name = "tipobancohoras")
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
 			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoBancoHorasEnum"),
 			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
