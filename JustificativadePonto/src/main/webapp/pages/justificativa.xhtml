@@ -63,20 +63,21 @@
                             </p:selectOneMenu>
                         </p:column>
 						<p:column colspan="2" style="text-align:right">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} " />
+							<h:outputLabel value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
+                                           rendered="#{justificativaBean.handler.configuracao['HORA_INI']}"/>
 							<p:calendar styleClass="calendar"
-								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
-								showOn="button" pattern="HH:mm" timeOnly="true" />
+                                        value="#{justificativaBean.justificativa.hrIni}" id="hrini"
+                                        showOn="button" pattern="HH:mm" timeOnly="true"
+                                        rendered="#{justificativaBean.handler.configuracao['HORA_INI']}"/>
 							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
-                                    rendered="#{justificativaBean.handler.exibeFaltas}"/>
+                                    rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}"/>
 							<p:calendar styleClass="calendar"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
 								showOn="button" pattern="HH:mm" timeOnly="true"
-                                    rendered="#{justificativaBean.handler.exibeFaltas}"/>
+                                    rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}"/>
 						</p:column>
 					</p:row>
-                    <p:row rendered="#{justificativaBean.handler.exibeFaltas}">
+                    <p:row rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
                         <p:column style="text-align:left">
                             <h:outputLabel
                                     value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
