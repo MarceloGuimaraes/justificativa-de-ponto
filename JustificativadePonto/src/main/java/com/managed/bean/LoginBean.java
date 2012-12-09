@@ -115,22 +115,12 @@ public class LoginBean implements Serializable {
             Message.addMessage("login.passw.confirmError");
             return null;
         } else {
-            // user.setSenha(Criptografia.encodePassword(getSenhaNova()));
             user.setSenha(getSenhaNova());
-            // /dao.altera(user);
             userService.updateUser(this.user);
             Message.addMessageConfig("login.passw.confirmOk");
             return "/pages/wellcome.jsf?faces-redirect=true";
-            //	return "/pages/adm/senha.jsf?faces-redirect=true";
-            // return SUCCESS;
         }
     }
-
-    /*
-      * public boolean isLogado() {
-      * System.out.println("==========================Usuario: " +
-      * user.getEmail()); return user.getEmail() != null; }
-      */
 
     public String logOut() {
 
@@ -144,21 +134,6 @@ public class LoginBean implements Serializable {
 
         return "/pages/login?faces-redirect=true";
 
-        /*
-           *
-           * this.user = new User();
-           * FacesContext.getCurrentInstance().getExternalContext
-           * ().getSessionMap() .remove("loginController"); return
-           * "/pages/login?faces-redirect=true"; //return "login.xhtml";
-           *
-           *
-           * this.usuario = new Usuario(); FacesContext facesContext =
-           * FacesContext.getCurrentInstance(); HttpSession session =
-           * (HttpSession) facesContext.getExternalContext().getSession(false);
-           * session.invalidate();
-           * facesContext.getExternalContext().getSessionMap(
-           * ).remove("loginController"); return "login";
-           */
     }
 
     public LoginBean() {

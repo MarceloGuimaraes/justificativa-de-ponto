@@ -1,5 +1,13 @@
 package com.managed.bean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
@@ -12,12 +20,6 @@ import com.service.IUserService;
 import com.util.JavaMailApp;
 import com.util.JsfUtil;
 import com.util.Message;
-
-import javax.faces.model.SelectItem;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class JustificativaManagedBean implements Serializable {
 
@@ -250,9 +252,12 @@ public class JustificativaManagedBean implements Serializable {
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getSuperintendente());
+        
+       
 
         mailApp.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
 
+       justificativa.setDtAprovCoord(new Date());
         justificativa.setStatus(StatusEnum.APROVSUPERINTENDENTE);
         justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
         justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
@@ -273,8 +278,8 @@ public class JustificativaManagedBean implements Serializable {
 
         mailApp.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
 
+        justificativa.setDtAprovSuper(new Date());
         justificativa.setStatus(StatusEnum.EXECUCAORH);
-
         justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
         justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
@@ -291,12 +296,10 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSuperintendente());
 
         mailApp.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
-
-        justificativa.setStatus(StatusEnum.APROVCOORD);
-
         
+        justificativa.setDtAprovRh(new Date());
+        justificativa.setStatus(StatusEnum.APROVCOORD);
         justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.APROVADO_RH);
-
         justificativaService.adicionar(justificativa);
         return SUCCESS;
     }
