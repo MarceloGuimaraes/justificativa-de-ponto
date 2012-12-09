@@ -1,12 +1,5 @@
 package com.managed.bean;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.faces.model.SelectItem;
-
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
@@ -19,6 +12,12 @@ import com.service.IUserService;
 import com.util.JavaMailApp;
 import com.util.JsfUtil;
 import com.util.Message;
+
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JustificativaManagedBean implements Serializable {
 
@@ -72,8 +71,12 @@ public class JustificativaManagedBean implements Serializable {
         if(id != null ){
             justificativa = this.justificativaService.recuperar(Integer.parseInt(id));
             idCoordenador = justificativa.getCoordenador().getUserId();
-            idSuperintendente = justificativa.getSuperintendente().getUserId();
-            idRh = justificativa.getRh().getUserId();
+            if (justificativa.getSuperintendente()!=null) {
+                idSuperintendente = justificativa.getSuperintendente().getUserId();
+            }
+            if (justificativa.getRh()!=null) {
+                idRh = justificativa.getRh().getUserId();
+            }
         }
 
         if (justificativa == null) {
