@@ -88,7 +88,7 @@ public class JustificativaManagedBean implements Serializable {
 					permissoes.getUsuarioLogado());
 		}
 
-		editElaboracao = this.permissoes.editElaboracao(this.justificativa);
+		editElaboracao = this.permissoes.editElaboracao(justificativa);
 		editAguardaAprovCoord = this.permissoes
 				.editAguardaAprovCoord(this.justificativa);
 		editAguardaAprovSuperintendente = this.permissoes
@@ -347,8 +347,7 @@ public class JustificativaManagedBean implements Serializable {
         }
     
         
-        
-        
+                
         justificativa.setDtCancelamento(new Date());
         justificativa.setStatus(StatusEnum.CANCELADO);
         justificativaService.adicionar(justificativa);
