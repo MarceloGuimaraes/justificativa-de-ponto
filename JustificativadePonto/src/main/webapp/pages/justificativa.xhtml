@@ -48,7 +48,7 @@
 
 				<p:separator styleClass="tabela" />
 
-				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
+				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela" >
 					<p:row>
 						<p:column style="text-align:left">
 							<h:outputLabel
@@ -56,6 +56,7 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="motivo"
+								disabled="#{justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.motivo}"
 								valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
 								required="true"
@@ -65,26 +66,28 @@
 								<f:selectItems
 									value="#{justificativaBean.handler.tipoMotivosList}" />
 							</p:selectOneMenu>
-							<p:message for="motivo" />
+							<p:message id="motivoMsg" for="motivo" />
 						</p:column>
 						<p:column colspan="2" style="text-align:right">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
 							<p:calendar styleClass="calendar"
+								disabled="#{justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
 								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.hrini.required']}"
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
-							<p:message for="hrini" />
+							<p:message id="hriniMsg"  for="hrini" />
 							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
 							<p:calendar styleClass="calendar"
+								disabled="#{justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
 								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
 								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
-							<p:message for="hrfim" />
+							<p:message id="hrfimMsg" for="hrfim" />
 						</p:column>
 					</p:row>
 					<p:row
@@ -96,13 +99,14 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="causafalta" required="true"
+								disabled="#{justificativaBean.editElaboracao}"
 								requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
 								value="#{justificativaBean.justificativa.tipofalta}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems
 									value="#{justificativaBean.handler.tipoFaltaList}" />
 							</p:selectOneMenu>
-							<p:message for="causafalta" />
+							<p:message id="causafaltaMsg" for="causafalta" />
 
 						</p:column>
 						<p:column colspan="2" />
@@ -115,13 +119,14 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="tipobancohoras"
+								disabled="#{justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.tipobancohoras}"
 								required="true"
 								requiredMessage="#{msgs['form.justificativa.tipobancohoras.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
 							</p:selectOneMenu>
-							<p:message for="tipobancohoras" />
+							<p:message id="tipobancohorasMsg" for="tipobancohoras" />
 						</p:column>
 						<p:column colspan="2" />
 					</p:row>
@@ -133,10 +138,11 @@
 					<p:row>
 						<p:column style="text-align:left">
 							<p:inputTextarea id="descricao" rows="5" cols="30"
+								disabled="#{justificativaBean.editElaboracao}"
 								maxlength="300" autoResize="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
 								value="#{justificativaBean.justificativa.descricao}" />
-							<p:message for="descricao" />
+							<p:message id="descricaoMsg" for="descricao" />
 						</p:column>
 					</p:row>
 				</p:fieldset>
@@ -150,11 +156,12 @@
 						<p:column>
 							<p:selectOneMenu id="coordenadorSelect"
 								value="#{justificativaBean.idCoordenador}" required="true"
+								disabled="#{justificativaBean.editElaboracao}"
 								requiredMessage="#{msgs['form.justificativa.coordenador.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.coordenadorList}" />
 							</p:selectOneMenu>
-							<p:message for="coordenadorSelect" />
+							<p:message id="coordenadorSelectMsg" for="coordenadorSelect" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
@@ -168,12 +175,13 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="superintendenteSelect"
+								disabled="#{justificativaBean.editAguardaAprovSuperintendente}"
 								value="#{justificativaBean.idSuperintendente}" required="true"
 								requiredMessage="#{msgs['form.justificativa.superintendente.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.superintendenteList}" />
 							</p:selectOneMenu>
-							<p:message for="superintendenteSelect" />
+							<p:message id="superintendenteSelectMsg" for="superintendenteSelect" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
@@ -186,12 +194,13 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="rhSelect" value="#{justificativaBean.idRh}"
+									disabled="#{justificativaBean.editAguardaAprovRh}"
 								required="true"
 								requiredMessage="#{msgs['form.justificativa.rh.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.rhList}" />
 							</p:selectOneMenu>
-							<p:message for="rhSelect" />
+							<p:message id="rhSelectMsg" for="rhSelect"/>
 						</p:column>
 					</p:row>
 				</p:panelGrid>
@@ -205,24 +214,26 @@
 								<h:outputLabel
 									value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
 								<p:selectOneMenu id="decisaoRh"
+									disabled="#{justificativaBean.editAguardaAprovRh}"
 									value="#{justificativaBean.justificativa.tipoDecisao}"
 									required="true"
 									requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
 									<f:selectItem itemValue="" itemLabel="" />
 									<f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
 								</p:selectOneMenu>
-								<p:message for="decisaoRh" />
+								<p:message id="decisaoRhMsg" for="decisaoRh"/>
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column style="text-align:left">
 								<h:outputLabel
 									value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
-								<p:inputTextarea id="observacaoFld" rows="5" cols="30"
+								<p:inputTextarea id="observacaoFld" rows="5" cols="30" 
+									disabled="#{justificativaBean.editAguardaAprovRh}"
 									maxlength="300" autoResize="true" required="true"
 									requiredMessage="#{msgs['form.justificativa.observacao.required']}"
 									value="#{justificativaBean.justificativa.descricao}" />
-								<p:message for="observacaoFld" />
+								<p:message id="observacaoFldMsg" for="observacaoFld" />
 							</p:column>
 						</p:row>
 					</p:panelGrid>
@@ -232,24 +243,23 @@
 					rendered="#{justificativaBean.editElaboracao}"
 					value="#{msgs['form.justificativa.botao.enviarcoord']}"
 					update="panel" action="#{justificativaBean.enviarCoordenador}"
-					ajax="false" />
+					ajax="false" /> 
 
 
 				<p:commandButton id="enviarSuperintendente"
-					rendered="#{justificativaBean.editAguardaAprovCoord}"
+					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
 					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
-
 				<p:commandButton id="executarRH"
-					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
+					rendered="#{justificativaBean.editAguardaAprovRh}"
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
 					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />
 
 				<p:commandButton id="btnConcluidoRH"
-					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
+					rendered="#{justificativaBean.editAguardaAprovRh}"
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
 					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					ajax="false" />

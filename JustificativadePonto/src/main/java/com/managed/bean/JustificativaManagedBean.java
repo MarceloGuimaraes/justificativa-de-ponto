@@ -46,10 +46,15 @@ public class JustificativaManagedBean implements Serializable {
 	private Integer idCoordenador;
 	private Integer idSuperintendente;
 	private Integer idRh;
+	
 
+	private boolean editElaboracao = false;
 	private boolean showFldCancelar = false;
 	private boolean showFldConcluir = false;
 	private boolean userAdmin = false;
+	private boolean editAguardaAprovCoord = false;
+	private boolean editAguardaAprovRh = false;
+	private boolean editAguardaAprovSuperintendente = false;
 
 	public JustificativaManagedBean(IJustificativaService justificativaService,
 			IUserService userService, JavaMailApp mailApp) {
@@ -63,7 +68,7 @@ public class JustificativaManagedBean implements Serializable {
 
 		tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
 
-		this.tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
+		tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
 				.findObjects();
 
         coordenadorList = retornaItemAPartirDeUser(userService.recuperaCoordenadores());
@@ -89,19 +94,19 @@ public class JustificativaManagedBean implements Serializable {
 					permissoes.getUsuarioLogado());
 		}
 
-		editElaboracao = this.permissoes.editElaboracao(justificativa);
-		editAguardaAprovCoord = this.permissoes
-				.editAguardaAprovCoord(this.justificativa);
-		editAguardaAprovSuperintendente = this.permissoes
-				.editAguardaAprovSuperintendente(this.justificativa);
-		editAguardaAprovRh = this.permissoes
-				.editAguardaAprovRh(this.justificativa);
-		userAdmin = this.permissoes.isAdmin();
-		showFldCancelar = this.permissoes.showFldCancelar(this.justificativa);
+		editElaboracao = !permissoes.editElaboracao(justificativa);
+		editAguardaAprovCoord = !permissoes
+				.editAguardaAprovCoord(justificativa);
+		editAguardaAprovSuperintendente = !permissoes
+				.editAguardaAprovSuperintendente(justificativa);
+		editAguardaAprovRh = !permissoes
+				.editAguardaAprovRh(justificativa);
+		userAdmin = !permissoes.isAdmin();
+		showFldCancelar = !permissoes.showFldCancelar(justificativa);
 		// showFldConcluir =
-		// this.permissoes.showFldConcluir(this.justificativa);
+		// permissoes.showFldConcluir(this.justificativa);
 
-		handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
+		this.handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
 
 	}
 
@@ -181,72 +186,9 @@ public class JustificativaManagedBean implements Serializable {
 	public void setIdRh(Integer idRh) {
 		this.idRh = idRh;
 	}
+	
 
-	private Boolean editElaboracao = false;
-
-	public Boolean getEditElaboracao() {
-		return this.editElaboracao;
-	}
-
-	public void setEditElaboracao(Boolean editElaboracao) {
-		this.editElaboracao = editElaboracao;
-	}
-
-	private Boolean editAguardaAprovCoord = false;
-
-	public Boolean getEditAguardaAprovCoord() {
-		return this.editElaboracao;
-	}
-
-	public void setEditAguardaAprovCoord(Boolean editAguardaAprovCoord) {
-		this.editAguardaAprovCoord = editAguardaAprovCoord;
-	}
-
-	private Boolean editAguardaAprovRh = false;
-
-	public Boolean getEditAguardaAprovRh() {
-		return editAguardaAprovRh;
-	}
-
-	public void setEditAguardaAprovRh(Boolean editAguardaAprovRh) {
-		this.editAguardaAprovRh = editAguardaAprovRh;
-	}
-
-	private Boolean editAguardaAprovSuperintendente = false;
-
-	public Boolean getEditAguardaAprovSuperintendente() {
-		return editAguardaAprovSuperintendente;
-	}
-
-	public void setEditAguardaAprovSuperintendente(
-			Boolean editAguardaAprovSuperintendente) {
-		this.editAguardaAprovSuperintendente = editAguardaAprovSuperintendente;
-	}
-
-	public Boolean getIsUserAdmin() {
-		return userAdmin;
-	}
-
-	public void setIsUserAdmin(Boolean isUserAdmin) {
-		this.userAdmin = isUserAdmin;
-	}
-
-	public boolean isShowFldCancelar() {
-		return showFldCancelar;
-	}
-
-	public void setShowFldCancelar(boolean showFldCancelar) {
-		this.showFldCancelar = showFldCancelar;
-	}
-
-	public boolean isShowFldConcluir() {
-		return showFldConcluir;
-	}
-
-	public void setShowFldConcluir(boolean showFldConcluir) {
-		this.showFldConcluir = showFldConcluir;
-	}
-
+	
 	// AUTOR SOLICITANTE
 	public String enviarCoordenador() {
 
@@ -343,20 +285,20 @@ public class JustificativaManagedBean implements Serializable {
 
         List<User> destinos = new LinkedList<User>();
                     
-        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) || this.permissoes.isAdmin()){
+        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) || permissoes.isAdmin()){
         	//AUTOR COORDENADOR
         	destinos.add(justificativa.getSolicitante());
             mailApp.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
             justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
-        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || this.permissoes.isAdmin()){
+        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
         	//AUTOR SUPERINTENDENTE  
         		destinos.add(justificativa.getSolicitante());
         		destinos.add(justificativa.getCoordenador());
                 mailApp.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
                 justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
-        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || this.permissoes.isAdmin()){
+        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
         	//AUTOR RH  
     		destinos.add(justificativa.getSolicitante());
     		destinos.add(justificativa.getCoordenador());
@@ -365,13 +307,48 @@ public class JustificativaManagedBean implements Serializable {
             justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
         }
     
-        
-                
         justificativa.setDtCancelamento(new Date());
         justificativa.setStatus(StatusEnum.CANCELADO);
         justificativaService.adicionar(justificativa);
         return SUCCESS;
     }
+	
+	
+
+	public boolean isEditElaboracao() {
+		return editElaboracao;
+	}
+
+
+	public boolean isShowFldCancelar() {
+		return showFldCancelar;
+	}
+
+
+	public boolean isShowFldConcluir() {
+		return showFldConcluir;
+	}
+
+
+	public boolean isUserAdmin() {
+		return userAdmin;
+	}
+
+
+	public boolean isEditAguardaAprovCoord() {
+		return editAguardaAprovCoord;
+	}
+
+
+	public boolean isEditAguardaAprovRh() {
+		return editAguardaAprovRh;
+	}
+
+
+	public boolean isEditAguardaAprovSuperintendente() {
+		return editAguardaAprovSuperintendente;
+	}
+
 
 	public String getLabelCadastro() {
 		if (this.justificativa.getJustificativaId() == 0) {

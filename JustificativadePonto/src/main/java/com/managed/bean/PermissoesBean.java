@@ -89,8 +89,10 @@ public class PermissoesBean implements Serializable {
 		// como o coordenador já foi selecionado, não faço validação
 		if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
 				&& justificativa.getCoordenador().equals(usuarioLogado)) {
+			System.out.println("editAguardaAprovCoord 4");
 			return true;
 		} else {
+			System.out.println("editAguardaAprovCoord 5");
 			return false;
 		}
 	}
