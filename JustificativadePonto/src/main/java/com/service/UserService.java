@@ -33,7 +33,7 @@ public class UserService implements IUserService,Serializable {
     }
 
     @Override
-    public boolean buscaPorLogin(User user) {
+    public User buscaPorLogin(User user) {
         return userDAO.buscaPorLogin(user);
     }
 

@@ -1,28 +1,29 @@
 package com.managed.bean;
 
 import com.model.JustificativaPonto;
-import com.service.IJustificativaService;
+import com.service.IConsultaPaginadaService;
+import com.util.JsfUtil;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@RequestScoped
-@ManagedBean(name = "todasJustificativasPaginadasPorData")
 public class TodasJustificativasPaginadasPorData implements Serializable {
 
-    @ManagedProperty(value = "#{JustificativaService}")
-    IJustificativaService service;
+    IConsultaPaginadaService<JustificativaPonto> service;
 
     private LazyDataModel<JustificativaPonto> justificativas;
 
-    public void setService(IJustificativaService service) {
-        this.service = service;
+    public TodasJustificativasPaginadasPorData(IConsultaPaginadaService<JustificativaPonto> service,
+                                               IConsultaPaginadaService<JustificativaPonto> serviceUser) {
+        PermissoesBean permissoes = JsfUtil.getValueExpression(PermissoesBean.class, "#{PermissoesBean}");
+        if(permissoes.isAdmin() || permissoes.isSupport()){
+            this.service = service;
+        }else{
+            this.service = serviceUser;
+        }
     }
 
     public LazyDataModel<JustificativaPonto> getJustificativas() {
@@ -31,7 +32,7 @@ public class TodasJustificativasPaginadasPorData implements Serializable {
                 private int totalLinhas = 0;
                 @Override
                 public List<JustificativaPonto> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
-                    List<JustificativaPonto> resultado = service.todasPorData(i, i1);
+                    List<JustificativaPonto> resultado = service.todas(i, i1);
                     totalLinhas = service.count();
                     return resultado;
                 }

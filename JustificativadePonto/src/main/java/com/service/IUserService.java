@@ -15,7 +15,7 @@ public interface IUserService {
 	List<User> getUsers();
     User recuperar(Integer id);
 	boolean isExisteUser(User user);
-	boolean buscaPorLogin(User user);
+	User buscaPorLogin(User user);
     List<User> recuperaCoordenadores();
     List<User> recuperaSuperintendentes();
     List<User> recuperaRH();

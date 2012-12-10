@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
-@SessionScoped
+@RequestScoped
 @ManagedBean(name = "loginController")
 public class LoginBean implements Serializable {
 
@@ -23,8 +24,13 @@ public class LoginBean implements Serializable {
 
     private static final String USUARIO_LOGADO = "usuarioLogado";
 
+    public static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
+
     @ManagedProperty(value = "#{UserService}")
     IUserService userService;
+
+    @ManagedProperty(value = "#{PermissoesBean}")
+    IPermissoesBean permissoesBean;
 
     private User user;
     private String senhaNova;
@@ -60,20 +66,25 @@ public class LoginBean implements Serializable {
             return null;
         }
 
-        if (userService.buscaPorLogin(this.user)) {
+        user = userService.buscaPorLogin(user);
 
-            this.user = userService.getUserByEmail(this.user);
+        if (user != null) {
 
             JsfUtil.setSessionValue(USUARIO_LOGADO, this.user);
 
+            permissoesBean.setUsuarioLogado(user);
+
             // verifica se contem 5 caracteres conforme a senha default
-            if (this.user.getSenha().length() == 5) {
-                if (this.user.getSenha().equals(
-                        this.user.getSenha().replace(".", "").replace("-", "")
+            if(user.getSenha()==null){
+                Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
+                return REDIRECT_TROCA_SENHA;
+            }
+            if (user.getSenha().length() == 5) {
+                if (user.getSenha().equals(
+                        user.getSenha().replace(".", "").replace("-", "")
                                 .substring(0, 5))) {
-                    // return TROCASENHA;
                     Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
-                    return "/pages/adm/senha.jsf?faces-redirect=true";
+                    return REDIRECT_TROCA_SENHA;
                 } else {
                     return SUCCESS;
                 }
@@ -101,7 +112,7 @@ public class LoginBean implements Serializable {
             Message.addMessage("login.passw.atual");
             return null;
             // /dao.existe(this.user).getId() == null
-        } else if (!userService.buscaPorLogin(this.user)) {
+        } else if (userService.buscaPorLogin(user) != null) {
             Message.addMessage("login.passw.atual");
             return null;
         } else if (getSenhaNova() == "") {
@@ -146,4 +157,7 @@ public class LoginBean implements Serializable {
         this.userService = userService;
     }
 
+    public void setPermissoesBean(IPermissoesBean permissoesBean) {
+        this.permissoesBean = permissoesBean;
+    }
 }

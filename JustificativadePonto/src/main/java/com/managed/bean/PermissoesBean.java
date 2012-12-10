@@ -1,22 +1,12 @@
 package com.managed.bean;
 
+import com.model.*;
+import com.util.JavaMailApp;
+
+import javax.faces.bean.ManagedProperty;
 import java.io.Serializable;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
-
-import com.model.JustificativaPonto;
-import com.model.MotivoEnum;
-import com.model.PerfilEnum;
-import com.model.StatusEnum;
-import com.model.User;
-import com.util.JavaMailApp;
-import com.util.JsfUtil;
-
-@SessionScoped
-@ManagedBean(name = "PermissoesBean")
-public class PermissoesBean implements Serializable {
+public class PermissoesBean implements IPermissoesBean, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,33 +17,29 @@ public class PermissoesBean implements Serializable {
     @ManagedProperty(value = "#{mailApp}")
 	private JavaMailApp javaMail;
 
-	public void setJavaMail(JavaMailApp javaMail) {
+    private boolean support;
+    private boolean admin;
+
+    public void setJavaMail(JavaMailApp javaMail) {
 		this.javaMail = javaMail;
 	}
 
 	public PermissoesBean() {
-		this.usuarioLogado = JsfUtil.getValueExpression(User.class,
-				"#{usuarioLogado}");
-		this.isUsuarioLogado = usuarioLogado != null;
+        isUsuarioLogado = false;
 	}
 
 	public User getUsuarioLogado() {
 		return usuarioLogado;
 	}
 
-	public Boolean isAdmin() {
-		if (!isUsuarioLogado) {
-			return false;
-		}
-		if (usuarioLogado.getPerfil().contains(PerfilEnum.ADMINISTRADOR)) {
-			return true;
-		} else {
-			return false;
-		}
+    public void setUsuarioLogado(User usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+        this.isUsuarioLogado = usuarioLogado != null;
+        support = PerfilEnum.SUPORTE.equals(usuarioLogado.getPerfil());
+        admin = PerfilEnum.ADMINISTRADOR.equals(usuarioLogado.getPerfil());
+    }
 
-	}
-
-	/************************* CONTROLE DE EDIÇÃO ************************************************/
+    /************************* CONTROLE DE EDIÇÃO ************************************************/
 
 	/*
 	 * Solicitante poderá: - ação 'Enviar para o coordenador' - corpo da
@@ -254,4 +240,11 @@ public class PermissoesBean implements Serializable {
 		return serialVersionUID;
 	}
 
+    public boolean isSupport() {
+        return support;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
 }

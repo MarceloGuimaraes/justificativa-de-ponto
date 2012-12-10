@@ -1,12 +1,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 				http://www.springframework.org/schema/tx 
 		        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 		        http://www.springframework.org/schema/context 
-		        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
     <!-- Bean de envio de email -->
     <bean id="mailFactory" class="com.util.mail.JavaMailConf">
@@ -50,6 +51,15 @@
         <property name="dao" ref="JustificativaDAO" />
     </bean>
 
+    <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPorDataPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUser" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
+    <bean id="consultaJustificativasPorDataPaginadaService" class="com.service.impl.ConsultaJustificativasPorDataPaginadaService">
+        <constructor-arg ref="JustificativaDAO" />
+    </bean>
+
     <!-- DAO Declaration -->
     <bean id="dao" class="com.dao.Dao" abstract="true" >
         <property name="sessionFactory" ref="sessionFactory" />
@@ -59,13 +69,25 @@
 
     <bean id="JustificativaDAO" class="com.dao.JustificativaDAO" parent="dao" />
 
+    <bean id="consultaJustificativaPontoPorUser" class="com.dao.impl.ConsultaJustificativaPontoPorUsuario" parent="dao" />
+
     <!-- ManagedBeans -->
+    <bean id="PermissoesBean" class="com.managed.bean.PermissoesBean" scope="session">
+        <aop:scoped-proxy />
+    </bean>
+
     <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="request">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="UserService" />
         <constructor-arg ref="mailApp" />
     </bean>
 
+    <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.TodasJustificativasPaginadasPorData" scope="request">
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaPorUserService" />
+    </bean>
+
+    <!-- Resource bundle -->
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename">

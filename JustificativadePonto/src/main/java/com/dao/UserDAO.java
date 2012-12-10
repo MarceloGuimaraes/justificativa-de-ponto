@@ -57,7 +57,7 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
 
 	}
 
-	public Boolean buscaPorLogin(User user) {
+	public User buscaPorLogin(User user) {
 
 		Query q = getSession().createQuery(
                 "from User u where u.email = :pLogin and u.senha = :pSenha");
@@ -66,12 +66,7 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
 		q.setParameter("pSenha", user.getSenha());
 
 		try {
-            User p = (User) q.uniqueResult();
-			if (p == null) {
-				return false;
-			} else {
-				return true;
-			}
+            return (User) q.uniqueResult();
 		} catch (NonUniqueResultException e) {
 			throw new RuntimeException("Ocorreu um erro ao tentar encontrar o usuário");
 		}
