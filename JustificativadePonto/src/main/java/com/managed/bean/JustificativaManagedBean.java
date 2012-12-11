@@ -94,15 +94,15 @@ public class JustificativaManagedBean implements Serializable {
 					permissoes.getUsuarioLogado());
 		}
 
-		editElaboracao = !permissoes.editElaboracao(justificativa);
-		editAguardaAprovCoord = !permissoes
+		editElaboracao = permissoes.editElaboracao(justificativa);
+		editAguardaAprovCoord = permissoes
 				.editAguardaAprovCoord(justificativa);
-		editAguardaAprovSuperintendente = !permissoes
+		editAguardaAprovSuperintendente = permissoes
 				.editAguardaAprovSuperintendente(justificativa);
-		editAguardaAprovRh = !permissoes
+		editAguardaAprovRh = permissoes
 				.editAguardaAprovRh(justificativa);
-		userAdmin = !permissoes.isAdmin();
-		showFldCancelar = !permissoes.showFldCancelar(justificativa);
+		userAdmin = permissoes.isAdmin();
+		showFldCancelar = permissoes.showFldCancelar(justificativa);
 		// showFldConcluir =
 		// permissoes.showFldConcluir(this.justificativa);
 

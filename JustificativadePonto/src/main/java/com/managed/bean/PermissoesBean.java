@@ -14,32 +14,32 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 
 	private boolean isUsuarioLogado;
 
-    @ManagedProperty(value = "#{mailApp}")
+	@ManagedProperty(value = "#{mailApp}")
 	private JavaMailApp javaMail;
 
-    private boolean support;
-    private boolean admin;
+	private boolean support;
+	private boolean admin;
 
-    public void setJavaMail(JavaMailApp javaMail) {
+	public void setJavaMail(JavaMailApp javaMail) {
 		this.javaMail = javaMail;
 	}
 
 	public PermissoesBean() {
-        isUsuarioLogado = false;
+		isUsuarioLogado = false;
 	}
 
 	public User getUsuarioLogado() {
 		return usuarioLogado;
 	}
 
-    public void setUsuarioLogado(User usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
-        this.isUsuarioLogado = usuarioLogado != null;
-        support = PerfilEnum.SUPORTE.equals(usuarioLogado.getPerfil());
-        admin = PerfilEnum.ADMINISTRADOR.equals(usuarioLogado.getPerfil());
-    }
+	public void setUsuarioLogado(User usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+		this.isUsuarioLogado = usuarioLogado != null;
+		support = PerfilEnum.SUPORTE.equals(usuarioLogado.getPerfil());
+		admin = PerfilEnum.ADMINISTRADOR.equals(usuarioLogado.getPerfil());
+	}
 
-    /************************* CONTROLE DE EDIÇÃO ************************************************/
+	/************************* CONTROLE DE EDIÇÃO ************************************************/
 
 	/*
 	 * Solicitante poderá: - ação 'Enviar para o coordenador' - corpo da
@@ -66,15 +66,30 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 	 * selecionar o superintendente
 	 */
 	public boolean editAguardaAprovCoord(JustificativaPonto justificativa) {
+		System.out.println("editAguardaAprovCoord 1");
 		if (justificativa == null || !isUsuarioLogado) {
 			return false;
 		}
+		System.out.println("editAguardaAprovCoord 2");
 		if (justificativa.getStatus() == null) {
 			return false;
 		}
+		System.out.println("editAguardaAprovCoord 3");
+		System.out.println("STATUS JUSTIFICATIVA=> "
+				+ justificativa.getStatus().toString());
+		System.out.println("STATUS COMPARAÇÃO=> "
+				+ StatusEnum.APROVCOORD.toString());
+		System.out.println("COORDENADOR JUSTIFICATIVA=> "
+				+ justificativa.getCoordenador().getNome().toString());
+		System.out.println("USUÁRIO LOGADO COMPARAÇÃO=> "
+				+ usuarioLogado.getNome().toString());
+
 		// como o coordenador já foi selecionado, não faço validação
-		if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
-				&& justificativa.getCoordenador().equals(usuarioLogado)) {
+		if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)) {
+			System.out.println("editAguardaAprovCoord 33333333");
+			/* return true; */
+		}
+		if (justificativa.getCoordenador().equals(usuarioLogado)) {
 			System.out.println("editAguardaAprovCoord 4");
 			return true;
 		} else {
@@ -89,16 +104,22 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 	 */
 	public boolean editAguardaAprovSuperintendente(
 			JustificativaPonto justificativa) {
+		System.out.println("editAguardaAprovSuperintendente 1");
+
 		if (justificativa == null || !isUsuarioLogado) {
 			return false;
 		}
+		System.out.println("editAguardaAprovSuperintendente 2");
 		if (justificativa.getStatus() == null) {
 			return false;
 		}
+		System.out.println("editAguardaAprovSuperintendente 3");
 		if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)
 				&& justificativa.getSuperintendente().equals(usuarioLogado)) {
+			System.out.println("editAguardaAprovSuperintendente 4");
 			return true;
 		} else {
+			System.out.println("editAguardaAprovSuperintendente 5");
 			return false;
 		}
 	}
@@ -113,8 +134,15 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		if (justificativa.getStatus() == null) {
 			return false;
 		}
-		if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
-				&& justificativa.getRh().equals(usuarioLogado)) {
+
+		if ((justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
+				.getCoordenador().equals(usuarioLogado))
+				|| (justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
+						.getCoordenador().equals(usuarioLogado))
+				|| (justificativa.getStatus().equals(
+						StatusEnum.APROVSUPERINTENDENTE) && justificativa
+						.getSuperintendente().equals(usuarioLogado))
+				|| this.isAdmin()) {
 			return true;
 		} else {
 			return false;
@@ -148,7 +176,7 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		return true;
 
 	}
-	
+
 	/*
 	 * campo CONCLUIR
 	 */
@@ -174,8 +202,6 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		return true;
 
 	}
-
-	
 
 	/*
 	 * MENU DE CADASTRO DE USUARIO
@@ -240,11 +266,11 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		return serialVersionUID;
 	}
 
-    public boolean isSupport() {
-        return support;
-    }
+	public boolean isSupport() {
+		return support;
+	}
 
-    public boolean isAdmin() {
-        return admin;
-    }
+	public boolean isAdmin() {
+		return admin;
+	}
 }
