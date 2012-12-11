@@ -19,9 +19,5 @@ public interface IPermissoesBean {
     boolean editAguardaAprovRh(JustificativaPonto justificativa);
     boolean showFldCancelar(JustificativaPonto justificativa);
     boolean showFldConcluir(JustificativaPonto justificativa);
-    boolean showMenuCadUser();
-    boolean showFldCausadaFalta(JustificativaPonto justificativa);
-    boolean hideFldHoraFinal(JustificativaPonto justificativa);
-    boolean showOpcoesBancoHoras(JustificativaPonto justificativa);
-
+    boolean isShowMenuCadUser();
 }

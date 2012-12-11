@@ -7,10 +7,10 @@ public enum StatusEnum implements IEnumeracaoComCodigoDescricao, Serializable {
 
     ELABORACAO(1, "status.descricao.emelaboracao"),
     APROVCOORD(2, "status.descricao.aguardandoaprovacaocoordenador"),
-    APROVSUPERINTENDENTE(4, "status.descricao.aprovsuperintendente"),
-    EXECUCAORH(6,"status.descricao.execucaorh"),
-    CONCLUIDO(7,"status.descricao.concluido"),
-    CANCELADO(8, "status.descricao.cancelado");
+    APROVSUPERINTENDENTE(3, "status.descricao.aprovsuperintendente"),
+    EXECUCAORH(4,"status.descricao.execucaorh"),
+    CONCLUIDO(5,"status.descricao.concluido"),
+    CANCELADO(6, "status.descricao.cancelado");
 
     private final Integer codigo;
     private final String descricao;

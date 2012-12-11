@@ -54,8 +54,8 @@ public class JustificativaPonto implements Serializable {
 	@Column(name = "descricao", length = 300)
 	private String descricao;
 
-	@Column(name = "obsSuperInt", length = 300)
-	private String obsSuperInt;
+	@Column(name = "obsRh", length = 300)
+	private String obsRh;
 
 	@Column(name = "status", nullable = false)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
@@ -237,13 +237,7 @@ public class JustificativaPonto implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public String getObsSuperInt() {
-		return obsSuperInt;
-	}
 
-	public void setObsSuperInt(String obsSuperInt) {
-		this.obsSuperInt = obsSuperInt;
-	}
 
 	public User getSuperintendente() {
 		return superintendente;
@@ -251,6 +245,14 @@ public class JustificativaPonto implements Serializable {
 
 	public void setSuperintendente(User superintendente) {
 		this.superintendente = superintendente;
+	}
+
+	public String getObsRh() {
+		return obsRh;
+	}
+
+	public void setObsRh(String obsRh) {
+		this.obsRh = obsRh;
 	}
 
 	public User getCoordenador() {

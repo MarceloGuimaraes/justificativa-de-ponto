@@ -12,6 +12,8 @@ body {
 	text-align: center;
 }
 
+
+
 A:LINK {
 	text-decoration: underline
 }
@@ -116,6 +118,13 @@ input,textarea,select {
 textarea {
 	width: 300px;
 }
+
+.ui-inputfield[disabled], .ui-inputfield[disabled].ui-state-focus {
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
 
 input:not        (.ui-widget        ),textarea:not        (.ui-widget      
 	 ),select {
@@ -224,6 +233,7 @@ form fieldset {
 .ui-tabs fieldset {
 	width: 830px;
 }
+
 
 form fieldset legend {
 	font-weight: bold;
