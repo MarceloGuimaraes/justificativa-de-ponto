@@ -115,22 +115,20 @@ public class User implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
+
 		if (!(object instanceof User)) {
 			return false;
 		}
 
 		User usuario = (User) object;
-/*		System.out.println("equals 4");
-		System.out.println("this.nome" + this.nome);
-		System.out.println("usuario.nome" + usuario.nome);
-		System.out.println("this.cpf" + this.cpf);
-		System.out.println("usuario.cpf" + usuario.cpf);
-		System.out.println("this.email" + this.email);
-		System.out.println("usuario.email" + usuario.email); */
-		
-		return new EqualsBuilder().appendSuper(super.equals(object))
-				.append(this.nome, usuario.nome).append(this.cpf, usuario.cpf)
-				.append(this.email, usuario.email).isEquals();
+
+        boolean resultado = new EqualsBuilder()
+                .append(nome, usuario.nome)
+                .append(cpf, usuario.cpf)
+                .append(email, usuario.email).isEquals();
+
+
+		return resultado;
 	}
 
 }

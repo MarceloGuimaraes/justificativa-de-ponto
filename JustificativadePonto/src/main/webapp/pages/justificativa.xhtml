@@ -175,8 +175,9 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="superintendenteSelect"
-							
-								value="#{justificativaBean.idSuperintendente}" required="true"
+								value="#{justificativaBean.idSuperintendente}"
+                                required="true"
+                                disabled="#{not justificativaBean.editAguardaAprovCoord}"
 								requiredMessage="#{msgs['form.justificativa.superintendente.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.superintendenteList}" />
