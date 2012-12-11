@@ -23,10 +23,11 @@ public class UserManagedBean implements Serializable {
 
     private User user;
 
-    @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
-    public UserManagedBean() {
+    public UserManagedBean(IUserService userService) {
+        this.userService = userService;
+
         if (this.user == null) {
             this.user = new User();
         }

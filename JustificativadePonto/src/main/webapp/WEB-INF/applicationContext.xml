@@ -51,13 +51,31 @@
         <property name="dao" ref="JustificativaDAO" />
     </bean>
 
-    <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPorDataPaginadaPorUserService">
-        <constructor-arg ref="consultaJustificativaPontoPorUser" />
+    <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorDataDao" />
         <constructor-arg ref="PermissoesBean" />
     </bean>
 
-    <bean id="consultaJustificativasPorDataPaginadaService" class="com.service.impl.ConsultaJustificativasPorDataPaginadaService">
-        <constructor-arg ref="JustificativaDAO" />
+    <bean id="consultaJustificativasPorDataPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorDataDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorSolicitanteDao" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorSolicitanteDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorMotivoDao" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorMotivoDao" />
     </bean>
 
     <!-- DAO Declaration -->
@@ -65,26 +83,71 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="UserDAO" class="com.dao.UserDAO" parent="dao" />
+    <bean id="UserDAO" class="com.dao.impl.UserDAO" parent="dao" />
 
-    <bean id="JustificativaDAO" class="com.dao.JustificativaDAO" parent="dao" />
+    <bean id="JustificativaDAO" class="com.dao.impl.JustificativaDAO" parent="dao" />
 
-    <bean id="consultaJustificativaPontoPorUser" class="com.dao.impl.ConsultaJustificativaPontoPorUsuario" parent="dao" />
+    <bean id="consultaJustificativaPontoPorUserPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="dtCriacao" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="dtCriacao" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
 
     <!-- ManagedBeans -->
     <bean id="PermissoesBean" class="com.managed.bean.PermissoesBean" scope="session">
-        <aop:scoped-proxy />
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+
+    <bean id="loginController" class="com.managed.bean.LoginBean" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="UserService" />
+    </bean>
+
+    <bean id="userMB" class="com.managed.bean.UserManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
     </bean>
 
     <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="request">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="UserService" />
         <constructor-arg ref="mailApp" />
+        <constructor-arg ref="PermissoesBean" />
     </bean>
 
-    <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.TodasJustificativasPaginadasPorData" scope="request">
+    <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="consultaJustificativasPorDataPaginadaService" />
         <constructor-arg ref="consultaJustificativasPorDataPaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorSolicitante" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorMotivo" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaPorUserService" />
     </bean>
 
     <!-- Resource bundle -->

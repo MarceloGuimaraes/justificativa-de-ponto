@@ -1,5 +1,6 @@
-package com.dao;
+package com.dao.impl;
 
+import com.dao.IUserDAO;
 import com.dao.impl.CrudDaoImpl;
 import com.model.PerfilEnum;
 import com.model.User;

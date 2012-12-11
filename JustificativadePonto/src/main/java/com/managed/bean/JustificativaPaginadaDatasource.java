@@ -1,28 +1,29 @@
 package com.managed.bean;
 
 import com.model.JustificativaPonto;
-import com.service.IJustificativaService;
+import com.service.IConsultaPaginadaService;
+import com.util.JsfUtil;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@RequestScoped
-@ManagedBean(name = "todasJustificativasPaginadasPorSolicitante")
-public class TodasJustificativasPaginadasPorSolicitante implements Serializable {
+public class JustificativaPaginadaDatasource implements Serializable {
 
-    @ManagedProperty(value = "#{JustificativaService}")
-    IJustificativaService service;
+    IConsultaPaginadaService<JustificativaPonto> service;
 
     private LazyDataModel<JustificativaPonto> justificativas;
 
-    public void setService(IJustificativaService service) {
-        this.service = service;
+    public JustificativaPaginadaDatasource(IPermissoesBean permissoes,
+                                           IConsultaPaginadaService<JustificativaPonto> serviceAdmin,
+                                           IConsultaPaginadaService<JustificativaPonto> serviceUser) {
+        if(permissoes.isAdmin() || permissoes.isSupport() || permissoes.isRh()){
+            this.service = serviceAdmin;
+        }else{
+            this.service = serviceUser;
+        }
     }
 
     public LazyDataModel<JustificativaPonto> getJustificativas() {
@@ -31,7 +32,7 @@ public class TodasJustificativasPaginadasPorSolicitante implements Serializable 
                 private int totalLinhas = 0;
                 @Override
                 public List<JustificativaPonto> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
-                    List<JustificativaPonto> resultado = service.todasPorSolicitante(i, i1);
+                    List<JustificativaPonto> resultado = service.todas(i, i1);
                     totalLinhas = service.count();
                     return resultado;
                 }

@@ -22,21 +22,25 @@ public class JustificativaService implements IJustificativaService,
 		this.dao = dao;
 	}
 
+    @Override
 	@Transactional(readOnly = false)
 	public void adicionar(JustificativaPonto justificativa) {
 		dao.adicionar(justificativa);
 	}
 
+    @Override
 	@Transactional(readOnly = false)
 	public void atualizar(JustificativaPonto justificativa) {
 		dao.atualizar(justificativa);
 	}
 
+    @Override
 	@Transactional(readOnly = false)
 	public void apagar(JustificativaPonto justificativa) {
 		dao.deletar(justificativa);
 	}
 
+    @Override
 	public JustificativaPonto recuperar(
             JustificativaPonto justificativa) {
 		return dao.recuperar(justificativa);
@@ -47,28 +51,6 @@ public class JustificativaService implements IJustificativaService,
         JustificativaPonto j = dao.recuperar(id);
         dao.initialize(j.getHistorico());
         return j;
-    }
-
-    public List<JustificativaPonto> todas() {
-		return dao.todos();
-	}
-
-    public List<JustificativaPonto> todasPorData(int startIndex, int pageSize){
-        return dao.todosPorData(startIndex, pageSize);
-    }
-
-    @Override
-    public List<JustificativaPonto> todasPorMotivo(int startIndex, int pageSize) {
-        return dao.todosPorMotivo(startIndex, pageSize);
-    }
-
-    @Override
-    public List<JustificativaPonto> todasPorSolicitante(int startIndex, int pageSize) {
-        return dao.todosPorSolicitante(startIndex, pageSize);
-    }
-
-    public int count(){
-        return dao.count();
     }
 
 }

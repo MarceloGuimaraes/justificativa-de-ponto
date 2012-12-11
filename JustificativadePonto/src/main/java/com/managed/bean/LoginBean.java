@@ -4,18 +4,12 @@ import com.model.User;
 import com.service.IUserService;
 import com.util.JsfUtil;
 import com.util.Message;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
-@RequestScoped
-@ManagedBean(name = "loginController")
 public class LoginBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,12 +18,10 @@ public class LoginBean implements Serializable {
 
     private static final String USUARIO_LOGADO = "usuarioLogado";
 
-    public static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
+    private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
 
-    @ManagedProperty(value = "#{UserService}")
     IUserService userService;
 
-    @ManagedProperty(value = "#{PermissoesBean}")
     IPermissoesBean permissoesBean;
 
     private User user;
@@ -70,7 +62,7 @@ public class LoginBean implements Serializable {
 
         if (user != null) {
 
-            JsfUtil.setSessionValue(USUARIO_LOGADO, this.user);
+            JsfUtil.setSessionValue(USUARIO_LOGADO, user);
 
             permissoesBean.setUsuarioLogado(user);
 
@@ -147,10 +139,16 @@ public class LoginBean implements Serializable {
 
     }
 
-    public LoginBean() {
+    public LoginBean(IPermissoesBean permissoes,
+                     IUserService userService) {
+
+        this.permissoesBean = permissoes;
+        this.userService = userService;
+
         if (this.user == null) {
             this.user = new User();
         }
+
     }
 
     public void setUserService(IUserService userService) {

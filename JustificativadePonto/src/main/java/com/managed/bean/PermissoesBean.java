@@ -14,32 +14,34 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 
 	private boolean isUsuarioLogado;
 
-	@ManagedProperty(value = "#{mailApp}")
+    @ManagedProperty(value = "#{mailApp}")
 	private JavaMailApp javaMail;
 
-	private boolean support;
-	private boolean admin;
+    private boolean support;
+    private boolean admin;
+    private boolean rh;
 
-	public void setJavaMail(JavaMailApp javaMail) {
+    public void setJavaMail(JavaMailApp javaMail) {
 		this.javaMail = javaMail;
 	}
 
 	public PermissoesBean() {
-		isUsuarioLogado = false;
+        isUsuarioLogado = false;
 	}
 
 	public User getUsuarioLogado() {
 		return usuarioLogado;
 	}
 
-	public void setUsuarioLogado(User usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
-		this.isUsuarioLogado = usuarioLogado != null;
-		support = PerfilEnum.SUPORTE.equals(usuarioLogado.getPerfil());
-		admin = PerfilEnum.ADMINISTRADOR.equals(usuarioLogado.getPerfil());
-	}
+    public void setUsuarioLogado(User usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+        this.isUsuarioLogado = usuarioLogado != null;
+        support = usuarioLogado.getPerfil().contains(PerfilEnum.SUPORTE);
+        admin = usuarioLogado.getPerfil().contains(PerfilEnum.ADMINISTRADOR);
+        rh = usuarioLogado.getPerfil().contains(PerfilEnum.RH);
+    }
 
-	/************************* CONTROLE DE EDIÇÃO ************************************************/
+    /************************* CONTROLE DE EDIÇÃO ************************************************/
 
 	/*
 	 * Solicitante poderá: - ação 'Enviar para o coordenador' - corpo da
@@ -176,7 +178,7 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		return true;
 
 	}
-
+	
 	/*
 	 * campo CONCLUIR
 	 */
@@ -262,15 +264,16 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		}
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+    public boolean isSupport() {
+        return support;
+    }
 
-	public boolean isSupport() {
-		return support;
-	}
+    public boolean isAdmin() {
+        return admin;
+    }
 
-	public boolean isAdmin() {
-		return admin;
-	}
+    @Override
+    public boolean isRh() {
+        return rh;
+    }
 }

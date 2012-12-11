@@ -55,9 +55,9 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="UserDAO" class="com.dao.UserDAO" parent="dao" />
+    <bean id="UserDAO" class="com.dao.impl.UserDAO" parent="dao" />
 
-    <bean id="JustificativaDAO" class="com.dao.JustificativaDAO" parent="dao" />
+    <bean id="JustificativaDAO" class="com.dao.impl.JustificativaDAO" parent="dao" />
 
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">

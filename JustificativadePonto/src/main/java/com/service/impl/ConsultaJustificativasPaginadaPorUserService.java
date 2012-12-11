@@ -1,6 +1,6 @@
 package com.service.impl;
 
-import com.dao.IConsultaJustificativaPontoPorUsuario;
+import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
 import com.managed.bean.IPermissoesBean;
 import com.model.JustificativaPonto;
 import com.service.IConsultaPaginadaService;
@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public class ConsultaJustificativasPorDataPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPonto> {
+public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPonto> {
 
-    IConsultaJustificativaPontoPorUsuario dao;
+    IConsultaJustificativaPontoPorUsuarioDao dao;
 
     IPermissoesBean permissoes;
 
-    public ConsultaJustificativasPorDataPaginadaPorUserService(IConsultaJustificativaPontoPorUsuario dao,
-                                                               IPermissoesBean permissoes) {
+    public ConsultaJustificativasPaginadaPorUserService(IConsultaJustificativaPontoPorUsuarioDao dao,
+                                                        IPermissoesBean permissoes) {
         this.dao = dao;
         this.permissoes = permissoes;
     }
@@ -26,7 +26,7 @@ public class ConsultaJustificativasPorDataPaginadaPorUserService implements ICon
         if(permissoes.getUsuarioLogado()==null){
             throw new IllegalStateException("O usuario logado nao foi informado");
         }
-        return dao.todosPorData(startIndex, pageSize, permissoes.getUsuarioLogado());
+        return dao.todos(startIndex, pageSize, permissoes.getUsuarioLogado());
     }
 
     @Override

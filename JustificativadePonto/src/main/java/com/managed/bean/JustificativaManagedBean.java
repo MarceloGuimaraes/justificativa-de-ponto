@@ -31,7 +31,7 @@ public class JustificativaManagedBean implements Serializable {
 	private IUserService userService;
 	private JavaMailApp mailApp;
 
-	private PermissoesBean permissoes;
+	private IPermissoesBean permissoes;
 
 	private final HandlerMotivosManagedBean handler;
 
@@ -57,14 +57,15 @@ public class JustificativaManagedBean implements Serializable {
 	private boolean editAguardaAprovSuperintendente = false;
 
 	public JustificativaManagedBean(IJustificativaService justificativaService,
-			IUserService userService, JavaMailApp mailApp) {
+                                    IUserService userService,
+                                    JavaMailApp mailApp,
+                                    IPermissoesBean permissoes) {
 
 		this.justificativaService = justificativaService;
 		this.userService = userService;
 		this.mailApp = mailApp;
 
-		permissoes = JsfUtil.getValueExpression(PermissoesBean.class,
-				"#{PermissoesBean}");
+		this.permissoes = permissoes;
 
 		tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
 
