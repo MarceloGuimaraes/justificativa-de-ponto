@@ -310,7 +310,7 @@ public class JustificativaManagedBean implements Serializable {
     
         justificativa.setDtCancelamento(new Date());
         justificativa.setStatus(StatusEnum.CANCELADO);
-        justificativaService.adicionar(justificativa);
+        justificativaService.atualizar(justificativa);
         return SUCCESS;
     }
 	

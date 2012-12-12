@@ -235,7 +235,7 @@
 							</p:column>
 						</p:row>
 					</p:panelGrid>
-				</p:fieldset>
+								</p:fieldset>
 
 				<!-- AUTOR SOLICITANTE -->
 				<p:commandButton id="enviarCoord"
@@ -248,28 +248,28 @@
 				<p:commandButton id="enviarSuperintendente"
 					rendered="#{justificativaBean.editAguardaAprovCoord}"
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
-					update="panel" action="#{justificativaBean.enviarCoordenador}"
+					update="panel" action="#{justificativaBean.enviarSuperintendente}"
 					icon="ui-icon-circle-arrow-e" ajax="false" />
 
 				<!-- AUTOR SUPERINTENDENTE -->
 				<p:commandButton id="executarRH"
 					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
-					update="panel" action="#{justificativaBean.enviarCoordenador}"
+					update="panel" action="#{justificativaBean.enviarRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false" />
 
 				<!-- AUTOR RH -->
 				<p:commandButton id="btnConcluidoRH"
 					rendered="#{justificativaBean.editAguardaAprovRh}"
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
-					update="panel" action="#{justificativaBean.enviarCoordenador}"
+					update="panel" action="#{justificativaBean.concluiRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false" />
 
 				<!-- AUTORES: COORDENADOR;SUPERINTENDENTE;RH;ADMIN -->
 				<p:commandButton id="btnCancelar"
 					rendered="#{justificativaBean.showFldCancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}" update="panel"
-					action="#{justificativaBean.enviarCoordenador}"
+					action="#{justificativaBean.cancelado}"
 					icon="ui-icon-circle-arrow-e" ajax="false" />
 
 				<p:separator style="margin-top: 20px;" />
