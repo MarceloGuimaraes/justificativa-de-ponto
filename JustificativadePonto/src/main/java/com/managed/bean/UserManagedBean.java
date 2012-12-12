@@ -1,151 +1,89 @@
 package com.managed.bean;
 
+import com.domain.dto.CadastroUsuario;
 import com.jsf.ds.impl.ComboPerfisDatasourceImpl;
-import com.model.User;
 import com.service.IUserService;
 import com.util.Message;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-@ManagedBean(name = "userMB")
-@RequestScoped
 public class UserManagedBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String SUCCESS = "cadUser";
     private static final String EDIT = "editUsuer";
 
-    private User user;
+    private CadastroUsuario usuario;
 
     IUserService userService;
 
     public UserManagedBean(IUserService userService) {
         this.userService = userService;
 
-        if (this.user == null) {
-            this.user = new User();
-        }
+        usuario = new CadastroUsuario();
 
-        // montaPerfilList();
+        perfilList = new ComboPerfisDatasourceImpl().findObjects();
     }
 
-    /*
-      * public void montaPerfilList() { System.out.println("1"); List<PerfilEnum>
-      * list; list = new ArrayList<PerfilEnum>(); try {
-      *
-      * System.out.println("2");
-      *
-      * list.addAll(getPerfilService().getPerfils()); System.out.println("3"); }
-      * catch (Exception e) { System.out.println("4");
-      * System.out.println(e.toString()); }
-      *
-      * if (list != null) { for (PerfilEnum perfilCadastro : list) {
-      * System.out.println("perfilCadastro" +
-      * perfilCadastro.getTipo().toString()); } } }
-      */
+    public String salvar() {
 
-    /*
-      * private void selecaoToPerfilEnum(User usuario) {
-      * System.out.println("selecaoToPerfilEnum = 1"); List<PerfilEnum> perfis = new
-      * ArrayList<PerfilEnum>(); System.out.println("selecaoToPerfilEnum = 2"); if
-      * (perfilList != null) { System.out.println("selecaoToPerfilEnum = 3"); for
-      * (int i = 0; i < this.user.getPerfil().size(); i++) {
-      * System.out.println("selecaoToPerfilEnum =" + i);
-      * perfis.add(perfilList.get(i)); }
-      * System.out.println("selecaoToPerfilEnum = 4"); usuario.setPerfil(perfis);
-      * } }
-      */
+        if (usuario.getId() != null && usuario.getId() != 0) {
 
+            userService.atualizar(usuario);
 
-    private String getDefaultPassword(String strCpf){
-        //Senha default  composto pelos 5 primeiros numeros do CPF
-        return strCpf.replace(".","").replace("-", "").substring(0, 5);
-    }
-
-
-    public String addUser() {
-
-
-        // se o usuario existir atualiza
-        if (this.user.getUserId() != 0) {
-            // selecaoToPerfilEnum(this.user);
-            userService.updateUser(this.user);
             return SUCCESS;
-            // valida se existe p/adicionar
-        } else if (!userService.isExisteUser(this.user)) {
 
-            if (this.user.getSenha() == null) {
-                this.user.setSenha(getDefaultPassword(this.user.getCpf()));
-            }
+        } else if (!userService.isExisteUser(usuario)) {
 
-            // /selecaoToPerfilEnum(this.user);
-            userService.addUser(this.user);
+            userService.adicionar(usuario);
+
             return SUCCESS;
+
         } else {
             Message.addMessage("cadastroUsuario.existente");
             return null;
         }
     }
 
-    List<SelectItem> perfilList;
-    List<User> userList;
-
-    public String deleteUser(User user) {
-        userService.deleteUser(user);
-        return null;
-    }
-
-    public String updateUser(User user) {
-        userService.updateUser(user);
-        return SUCCESS;
-    }
-
-    public String editUser(User user) {
-        this.user = user;
+    public String editar(){
         return EDIT;
     }
 
+    public String deletar(){
+        userService.apagar(usuario);
+        return SUCCESS;
+    }
+
+    private List<SelectItem> perfilList;
+
     public String getLabelCadastro() {
-        if (this.user.getUserId() == 0) {
+        if (usuario.getId() == null) {
             return Message.getBundleMessage("cadastroUsuario.label.titulo");
         } else {
-            return Message
-                    .getBundleMessage("cadastroUsuario.label.alteraUsuario");
+            return Message.getBundleMessage("cadastroUsuario.label.alteraUsuario");
         }
     }
 
-    public User getUser() {
-        return user;
+    public CadastroUsuario getUsuario() {
+        return usuario;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsuario(CadastroUsuario usuario) {
+        this.usuario = usuario;
     }
 
-    public void reset() {
-        this.user = new User();
-    }
-
-    public List<User> getUserList() {
-        userList = new ArrayList<User>();
-        userList.addAll(userService.getUsers());
-        return userList;
+    public void limpar() {
+        usuario = new CadastroUsuario();
     }
 
     public List<SelectItem> getPerfilList() {
-        if (perfilList==null) {
-            perfilList = new ComboPerfisDatasourceImpl().findObjects();
-        }
         return perfilList;
     }
 
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
+    public List<CadastroUsuario> getUserList() {
+        return userService.todos();
     }
+
 }

@@ -1,11 +1,12 @@
 package com.dao.impl;
 
 import com.dao.IUserDAO;
-import com.dao.impl.CrudDaoImpl;
 import com.model.PerfilEnum;
 import com.model.User;
+import org.hibernate.Criteria;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
+import org.hibernate.criterion.Property;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
     }
 
 	public User recuperar(User user) {
-		return recuperar(user.getUserId());
+		return recuperar(user.getId());
 	}
 
 	public User recuperarPorCpf(User user) {
@@ -40,6 +41,25 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
 		}
 
 	}
+
+    public User encontraPorAmostra(User user){
+        Criteria criteria = getSession().createCriteria(User.class);
+        if(user.getNome()!=null){
+            criteria.add(Property.forName("nome").eq(user.getNome()));
+        }
+        if(user.getCpf()!=null){
+            criteria.add(Property.forName("cpf").eq(user.getCpf()));
+        }
+        if(user.getEmail()!=null){
+            criteria.add(Property.forName("email").eq(user.getEmail()));
+        }
+        if(user.getPerfil()!=null && !user.getPerfil().isEmpty()){
+            criteria.add(Property.forName("perfil").in(user.getPerfil()));
+        }
+
+        return (User) criteria.uniqueResult();
+
+    }
 
 	public User recuperarPorEmail(User user) {
 		

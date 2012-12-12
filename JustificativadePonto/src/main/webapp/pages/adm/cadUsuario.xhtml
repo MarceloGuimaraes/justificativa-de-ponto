@@ -10,14 +10,14 @@
 	<ui:define name="corpo">
 		<h:form id="cadUsuario">
 			<p:panel id="panel" header="#{userMB.labelCadastro}">
-				<h:inputHidden value="#{userMB.user.userId}" />
+				<h:inputHidden value="#{userMB.usuario.id}" />
 
 				<h:panelGrid id="nomeId">
 					<p:row>
 						<p:column>
 							<h:outputLabel for="name"
 								value="#{msgs['cadastroUsuario.label.nome']}" />
-							<p:inputText id="name" value="#{userMB.user.nome}"
+							<p:inputText id="name" value="#{userMB.usuario.nome}"
 								required="true"
 								requiredMessage="#{msgs['cadastroUsuario.nome.required']}"
 								style="width:300px">
@@ -35,7 +35,7 @@
 							<h:outputLabel for="cpf"
 								value="#{msgs['cadastroUsuario.label.cpf']}" />
 							<p:inputMask id="cpf" mask="999.999.999-99"
-								value="#{userMB.user.cpf}" maxlength="14" required="true"
+								value="#{userMB.usuario.cpf}" maxlength="14" required="true"
 								requiredMessage="#{msgs['cadastroUsuario.cpf.required']}"
 								style="width:300px">
 								<p:ajax event="blur" update="cpfMsg" />
@@ -50,7 +50,7 @@
 						<p:column>
 							<h:outputLabel for="email"
 								value="#{msgs['cadastroUsuario.label.email']}" />
-							<p:inputText id="email" value="#{userMB.user.email}"
+							<p:inputText id="email" value="#{userMB.usuario.email}"
 								required="true"
 								requiredMessage="#{msgs['cadastroUsuario.email.required']}"
 								validatorMessage="#{msgs['cadastroUsuario.email.requiredValidator']}"
@@ -71,7 +71,7 @@
 							<h:outputLabel for="chkPerfis"
 								value="#{msgs['cadastroUsuario.label.perfil']}#{msgs['form.label.doispontos']}" />
 							<p:selectManyCheckbox id="chkPerfis"
-								value="#{userMB.user.perfil}" required="true"
+								value="#{userMB.usuario.perfil}" required="true"
 								requiredMessage="#{msgs['cadastroUsuario.perfil.required']}">
 								<f:selectItems value="#{userMB.perfilList}" />
 								<f:converter converterId="CheckBoxPerfilConverter" />
@@ -87,11 +87,11 @@
 						<p:column colspan="2">
 							<p:commandButton id="addUser"
 								value="#{msgs['cadastroUsuario.label.add']}" update="panel"
-								action="#{userMB.addUser}" ajax="false" />
+								action="#{userMB.salvar}" ajax="false" />
 
 							<p:commandButton id="reset"
 								value="#{msgs['cadastroUsuario.label.reset']}"
-								action="#{userMB.reset}" type="reset" ajax="false" />
+								action="#{userMB.limpar}" type="reset" ajax="false" />
 						</p:column>
 					</p:row>
 				</h:panelGrid>

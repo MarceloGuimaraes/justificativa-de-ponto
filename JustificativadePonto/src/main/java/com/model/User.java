@@ -17,7 +17,7 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId")
-	private int userId;
+	private int id;
 
 	@Column(name = "cpf", unique = true, nullable = false, length = 14)
 	private String cpf;
@@ -58,12 +58,12 @@ public class User implements Serializable {
 		this.perfil = perfil;
 	}
 
-	public int getUserId() {
-		return userId;
+	public int getId() {
+		return id;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getCpf() {

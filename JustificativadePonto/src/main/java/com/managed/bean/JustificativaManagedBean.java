@@ -1,7 +1,6 @@
 package com.managed.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,13 +79,13 @@ public class JustificativaManagedBean implements Serializable {
 		if (id != null) {
 			justificativa = this.justificativaService.recuperar(Integer
 					.parseInt(id));
-			idCoordenador = justificativa.getCoordenador().getUserId();
+			idCoordenador = justificativa.getCoordenador().getId();
 			if (justificativa.getSuperintendente() != null) {
 				idSuperintendente = justificativa.getSuperintendente()
-						.getUserId();
+						.getId();
 			}
 			if (justificativa.getRh() != null) {
-				idRh = justificativa.getRh().getUserId();
+				idRh = justificativa.getRh().getId();
 			}
 		}
 
@@ -370,7 +369,7 @@ public class JustificativaManagedBean implements Serializable {
         List<SelectItem> resultado = new LinkedList<SelectItem>();
 
         for(User u : users){
-            resultado.add(new SelectItem(u.getUserId(), u.getNome()));
+            resultado.add(new SelectItem(u.getId(), u.getNome()));
         }
 
         return resultado;

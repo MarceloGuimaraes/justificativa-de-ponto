@@ -44,7 +44,8 @@
 
     <!-- Service Declaration -->
     <bean id="UserService" class="com.service.UserService">
-        <property name="userDAO" ref="UserDAO" />
+        <constructor-arg ref="UserDAO" />
+        <constructor-arg ref="mapper" />
     </bean>
 
     <bean id="JustificativaService" class="com.service.JustificativaService">
@@ -161,6 +162,15 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
             <value>WEB-INF/config/config.properties</value>
+        </property>
+    </bean>
+
+    <!-- Dozzer BeanMapper -->
+    <bean id="mapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-bean-mappings.xml</value>
+            </list>
         </property>
     </bean>
 

@@ -17,8 +17,8 @@
 						<h:outputText value="#{msgs['consultausuario.label.nome']}" />
 					</f:facet>
 
-					<h:commandLink value="#{user.nome}"
-						action="#{userMB.editUser(user)}">
+					<h:commandLink value="#{user.nome}" action="#{userMB.editar}">
+                        <f:setPropertyActionListener target="#{userMB.usuario}" value="#{user}" />
 					</h:commandLink>
 				</p:column>
 				<p:column>
@@ -37,10 +37,13 @@
 					<f:facet name="header">
 						<h:outputText value="" />
 					</f:facet>
-					<p:commandButton action="#{userMB.deleteUser(user)}" type="submit"
-						icon="ui-icon ui-icon-trash"
-						onclick="if (!confirm('#{msgs['consultausuario.exclusao']} #{user.nome} ?')) return false;"
-						ajax="false" /> 
+					<p:commandButton action="#{userMB.deletar}"
+                                     type="submit"
+                                    icon="ui-icon ui-icon-trash"
+                                    onclick="if (!confirm('#{msgs['consultausuario.exclusao']} #{user.nome} ?')) return false;"
+                                    ajax="false">
+                                    <f:setPropertyActionListener target="#{userMB.usuario}" value="#{user}" />
+					</p:commandButton>
 				</p:column>
 				<!-- type="submit"  image="/resources/imagens/excluir16.png"  -->
 			</p:dataTable>

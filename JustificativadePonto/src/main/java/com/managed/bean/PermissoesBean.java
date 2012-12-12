@@ -1,9 +1,10 @@
 package com.managed.bean;
 
-import com.model.*;
-import com.util.JavaMailApp;
+import com.model.JustificativaPonto;
+import com.model.PerfilEnum;
+import com.model.StatusEnum;
+import com.model.User;
 
-import javax.faces.bean.ManagedProperty;
 import java.io.Serializable;
 
 public class PermissoesBean implements IPermissoesBean, Serializable {
@@ -14,19 +15,12 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 
 	private boolean isUsuarioLogado;
 
-	@ManagedProperty(value = "#{mailApp}")
-	private JavaMailApp javaMail;
-
 	private boolean support;
 	private boolean admin;
 	private boolean rh;
 	
 	private boolean showMenuCadUser;
 	
-
-	public void setJavaMail(JavaMailApp javaMail) {
-		this.javaMail = javaMail;
-	}
 
 	public PermissoesBean() {
 		isUsuarioLogado = false;

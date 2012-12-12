@@ -16,8 +16,8 @@ public abstract class CrudDaoImpl<T> extends Dao implements ICrudDao<T> {
     }
 
     @Override
-    public T adicionar(T t) {
-        return (T) getSession().save(t);
+    public Serializable adicionar(T t) {
+        return getSession().save(t);
     }
 
     @Override

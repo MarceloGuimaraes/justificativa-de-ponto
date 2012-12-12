@@ -12,6 +12,7 @@ public interface IUserDAO extends ICrudDao<User> {
     User recuperarPorCpf(User user);
     User recuperarPorEmail(User user);
     User buscaPorLogin(User user);
+    User encontraPorAmostra(User user);
     List<User> todos();
     List<User> listar(EnumSet<PerfilEnum> perfis);
 }

@@ -11,7 +11,6 @@ public interface IPermissoesBean {
     boolean isAdmin();
     boolean isRh();
 
-    void setJavaMail(JavaMailApp javaMail);
     boolean editElaboracao(JustificativaPonto justificativa);
     boolean editAguardaAprovCoord(JustificativaPonto justificativa);
     boolean editAguardaAprovSuperintendente(
