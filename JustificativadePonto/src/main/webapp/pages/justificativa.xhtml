@@ -235,7 +235,7 @@
 							</p:column>
 						</p:row>
 					</p:panelGrid>
-								</p:fieldset>
+				</p:fieldset>
 
 				<!-- AUTOR SOLICITANTE -->
 				<p:commandButton id="enviarCoord"
@@ -268,44 +268,84 @@
 				<!-- AUTORES: COORDENADOR;SUPERINTENDENTE;RH;ADMIN -->
 				<p:commandButton id="btnCancelar"
 					rendered="#{justificativaBean.showFldCancelar}"
-					value="#{msgs['form.justificativa.botao.cancelar']}" update="panel"
-					action="#{justificativaBean.cancelado}"
-					icon="ui-icon-circle-arrow-e" ajax="false" />
+					value="#{msgs['form.justificativa.botao.cancelar']}"
+					oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e" />
+			</p:panel>
 
-				<p:separator style="margin-top: 20px;" />
 
-				<p:panel header="#{msgs['form.justificativa.legenda.historico']}"
-					style="margin-top: 20px;">
+			<p:dialog widgetVar="cadDialog" header="Motivo do Cancelamento"
+				closable="false" resizable="false" modal="true" hideEffect="slide"
+				showEffect="clip" draggable="false">
 
-					<p:dataTable var="historico"
-						value="#{justificativaBean.justificativa.historico}"
-						id="tblHistoricoJustificativa">
-						<p:column id="colDataHistorico">
-							<f:facet name="header">
-								<h:outputText
-									value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
-							</f:facet>
-							<h:outputText value="#{historico.data}">
-								<f:convertDateTime pattern="d/MM/yyyy" />
-							</h:outputText>
-						</p:column>
-						<p:column id="colUsuarioHistorico">
-							<f:facet name="header">
-								<h:outputText
-									value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
-							</f:facet>
-							<h:outputText value="#{historico.usuario.nome}" />
-						</p:column>
-						<p:column id="colEventoHistorico">
-							<f:facet name="header">
-								<h:outputText
-									value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
-							</f:facet>
-							<h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
-						</p:column>
-					</p:dataTable>
+				<h:panelGrid id="display" columns="3" cellpadding="4"
+					style="margin:0 auto;">
 
-				</p:panel>
+						<p:inputTextarea id="obsRh2" rows="5" cols="30"
+							maxlength="300" autoResize="true" required="true"
+						requiredMessage="#{msgs['form.justificativa.observacao.required']}"
+						value="#{justificativaBean.justificativa.obsRh}" />
+					<p:message id="obsRhMsg2" for="obsRh2" />
+					<h:outputText></h:outputText>
+					<p:column>
+						<p:commandButton id="btsalvar" value="Salvar"
+							update="display panel"
+							actionListener="#{justificativaBean.cancelado}"
+							oncomplete="handleCadastroRequest(xhr, status, args)">
+						</p:commandButton>
+
+						<p:commandButton value="Voltar"
+							action="/pages/justificativa.jsf?faces-redirect=true"
+							ajax="false" immediate="true"></p:commandButton>
+					</p:column>
+				</h:panelGrid>
+			</p:dialog>
+
+			<script type="text/javascript">
+				function handleCadastroRequest(xhr, status, args) {
+					if (args.validationFailed || !args.gravado) {
+						jQuery('#cadDialog').effect("shake", {
+							times : 3
+						}, 100);
+					} else {
+						cadDialog.hide();
+					}
+				}
+			</script>
+
+			<!-- 		</h:form>
+		<h:form> -->
+			<p:separator style="margin-top: 20px;" />
+
+			<p:panel header="#{msgs['form.justificativa.legenda.historico']}"
+				style="margin-top: 20px;">
+
+				<p:dataTable var="historico"
+					value="#{justificativaBean.justificativa.historico}"
+					id="tblHistoricoJustificativa">
+					<p:column id="colDataHistorico">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+						</f:facet>
+						<h:outputText value="#{historico.data}">
+							<f:convertDateTime pattern="d/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column id="colUsuarioHistorico">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+						</f:facet>
+						<h:outputText value="#{historico.usuario.nome}" />
+					</p:column>
+					<p:column id="colEventoHistorico">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+						</f:facet>
+						<h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
+					</p:column>
+				</p:dataTable>
 			</p:panel>
 		</h:form>
 	</ui:define>

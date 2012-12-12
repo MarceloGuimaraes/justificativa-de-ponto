@@ -35,7 +35,7 @@
 					<h:outputText></h:outputText>
 					<p:column colspan="1">
 						<p:commandButton value="#{msgs['login.passw.salvar']}"
-                                         action="#{alteraSenhaManagedBean.alteraSenha}" />
+                                         action="#{alteraSenhaManagedBean.alteraSenha}"  update="panel" ajax="false"/>
 						<p:commandButton type="reset"
 							value="#{msgs['login.passw.limpar']}"></p:commandButton>
 					</p:column>
