@@ -234,7 +234,8 @@ public class JustificativaManagedBean implements Serializable {
                         justificativa.getCoordenador(),
                         TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
-		justificativaService.adicionar(justificativa);
+	justificativaService.atualizar(justificativa);
+		
 		return SUCCESS;
 	}
 
@@ -259,7 +260,7 @@ public class JustificativaManagedBean implements Serializable {
 		justificativa.adiciona(justificativa.getSuperintendente(),
 				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
-		justificativaService.adicionar(justificativa);
+	justificativaService.atualizar(justificativa);
 		return SUCCESS;
 	}
 
@@ -278,7 +279,7 @@ public class JustificativaManagedBean implements Serializable {
 		justificativa.setStatus(StatusEnum.APROVCOORD);
 		justificativa.adiciona(justificativa.getRh(),
 				TipoEventoJustificativaPontoEnum.APROVADO_RH);
-		justificativaService.adicionar(justificativa);
+	justificativaService.atualizar(justificativa);
 		return SUCCESS;
 	}
 
