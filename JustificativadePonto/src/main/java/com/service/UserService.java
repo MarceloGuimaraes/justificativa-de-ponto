@@ -66,25 +66,8 @@ public class UserService implements IUserService,Serializable {
     }
 
     @Transactional(readOnly = false)
-    public void deleteUser(User user) {
-        dao.deletar(user);
-    }
-
-    @Transactional(readOnly = false)
     public void updateUser(User user) {
         dao.atualizar(user);
-    }
-
-    public User getUserById(User user) {
-        return dao.recuperar(user);
-    }
-
-    private User getUserByCpf(User user) {
-        return dao.recuperarPorCpf(user);
-    }
-
-    private User getUserByEmail(User user) {
-        return dao.recuperarPorEmail(user);
     }
 
     @Override
