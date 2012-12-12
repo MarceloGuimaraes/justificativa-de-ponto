@@ -46,29 +46,33 @@
 				<p:separator styleClass="tabela" />
 
 				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
-					<p:row>
-						<p:column style="text-align:left">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
-						</p:column>
-						<p:column>
-							<p:selectOneMenu id="motivo"
-								disabled="#{!justificativaBean.editElaboracao}"
-								value="#{justificativaBean.justificativa.motivo}"
-								valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
-								required="true"
-								requiredMessage="#{msgs['form.justificativa.motivo.required']}">
-								<p:ajax event="change" update="pgrdDetalhamento" />
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems
-									value="#{justificativaBean.handler.tipoMotivosList}" />
-							</p:selectOneMenu>
-							<p:message id="motivoMsg" for="motivo" />
-						</p:column>
-						<p:column colspan="2" style="text-align:right">
+                    <p:row>
+                        <p:column style="text-align:left; width:110px;">
+                            <h:outputLabel
+                                    value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
+                        </p:column>
+                        <p:column colspan="3">
+                            <p:selectOneMenu id="motivo"
+                                             disabled="#{!justificativaBean.editElaboracao}"
+                                             value="#{justificativaBean.justificativa.motivo}"
+                                             valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
+                                             required="true"
+                                             requiredMessage="#{msgs['form.justificativa.motivo.required']}">
+                                <p:ajax event="change" update="pgrdDetalhamento" />
+                                <f:selectItem itemValue="" itemLabel="" />
+                                <f:selectItems
+                                        value="#{justificativaBean.handler.tipoMotivosList}" />
+                            </p:selectOneMenu>
+                            <p:message id="motivoMsg" for="motivo" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
+                        </p:column>
+                        <p:column>
 							<p:calendar styleClass="calendar"
 								disabled="#{!justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
@@ -76,8 +80,12 @@
 								requiredMessage="#{msgs['form.justificativa.hrini.required']}"
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
 							<p:message id="hriniMsg" for="hrini" />
+                        </p:column>
+                        <p:column style="text-align:right">
 							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
+                        </p:column>
+                        <p:column>
 							<p:calendar styleClass="calendar"
 								disabled="#{!justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
@@ -87,14 +95,13 @@
 							<p:message id="hrfimMsg" for="hrfim" />
 						</p:column>
 					</p:row>
-					<p:row
-						rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
-						<p:column style="text-align:left">
+					<p:row rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
+						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
 								id="lbCausaFalta" />
 						</p:column>
-						<p:column>
+						<p:column colspan="3">
 							<p:selectOneMenu id="causafalta" required="true"
 								disabled="#{!justificativaBean.editElaboracao}"
 								requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
@@ -104,17 +111,14 @@
 									value="#{justificativaBean.handler.tipoFaltaList}" />
 							</p:selectOneMenu>
 							<p:message id="causafaltaMsg" for="causafalta" />
-
 						</p:column>
-						<p:column colspan="2" />
 					</p:row>
-					<p:row
-						rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
-						<p:column style="text-align:left">
+					<p:row rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
+						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
 						</p:column>
-						<p:column>
+						<p:column colspan="3">
 							<p:selectOneMenu id="tipobancohoras"
 								disabled="#{!justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.tipobancohoras}"
@@ -125,7 +129,6 @@
 							</p:selectOneMenu>
 							<p:message id="tipobancohorasMsg" for="tipobancohoras" />
 						</p:column>
-						<p:column colspan="2" />
 					</p:row>
 				</p:panelGrid>
 
