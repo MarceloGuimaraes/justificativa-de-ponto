@@ -126,6 +126,11 @@
         <constructor-arg ref="UserService" />
     </bean>
 
+    <bean id="alteraSenhaManagedBean" class="com.managed.bean.AlteraSenhaManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
     <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="request">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="UserService" />

@@ -1,9 +1,12 @@
 package com.service;
 
 import com.dao.IUserDAO;
+import com.domain.dto.CadastroSenha;
 import com.domain.dto.CadastroUsuario;
+import com.domain.dto.exception.BusinessException;
 import com.model.PerfilEnum;
 import com.model.User;
+import com.util.Message;
 import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +61,24 @@ public class UserService implements IUserService,Serializable {
     @Override
     public List<User> recuperaRH() {
         return dao.listar(EnumSet.of(PerfilEnum.RH));
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void alteraSenha(CadastroSenha cadastroSenha) {
+
+        User user = dao.recuperar(cadastroSenha.getId());
+
+        if(user==null){
+            throw new IllegalArgumentException("Usuário não existe no sistema!");
+        }
+
+        if(!user.getSenha().equals(cadastroSenha.getSenha())){
+            throw new BusinessException("login.passw.confirm");
+        }
+
+        user.setSenha(cadastroSenha.getNovaSenha());
+
     }
 
     @Override

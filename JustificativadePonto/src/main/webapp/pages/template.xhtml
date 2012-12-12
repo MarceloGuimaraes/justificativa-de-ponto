@@ -48,7 +48,7 @@
                     <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf" icon="ui-icon-search"/>
                 </p:submenu>
 
-                <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" url="/pages/adm/senha.jsf"
+                <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" action="#{alteraSenhaManagedBean.preparaAlteracaoSenha}"
                             ajax="false"  icon="ui-icon-wrench"/>
                 <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
                             ajax="false"  icon="ui-icon-close"/>

@@ -11,32 +11,31 @@
 
 				<p:messages id="a"></p:messages>
 
-				<h:inputHidden id="id" value="#{loginController.user.id}" />
+				<h:inputHidden id="id" value="#{alteraSenhaManagedBean.cadastroSenha.id}" />
 				<h:panelGrid id="panelAltera" columns="3" cellpadding="5">
 
 					<h:outputLabel value="#{msgs['login.passw.fldSenha']}"
 						for="txtSenhaAtual" />
 					<p:password id="txtSenhaAtual"
-						value="#{loginController.user.senha}" />
+						value="#{alteraSenhaManagedBean.cadastroSenha.senha}" />
 					<p:message id="msSenhaAtual" for="txtSenhaAtual"></p:message>
 
 					<h:outputLabel value="#{msgs['login.passw.fldNovaSenha']}"
 						for="txtSenhaNova" />
-					<p:password id="txtSenhaNova" value="#{loginController.senhaNova}" />
+					<p:password id="txtSenhaNova" value="#{alteraSenhaManagedBean.cadastroSenha.novaSenha}" />
 					<p:message id="msSenhaNova" for="txtSenhaNova"></p:message>
 
 
 					<h:outputLabel value="#{msgs['login.passw.fldNovaSenhaConfirm']}"
 						for="txtConfirmaSenhaNova" />
 					<p:password id="txtConfirmaSenhaNova"
-						value="#{loginController.confirmaSenhaNova}" />
+						value="#{alteraSenhaManagedBean.cadastroSenha.confirmaNovaSenha}" />
 					<p:message id="msConfirmaSenhaNova" for="txtConfirmaSenhaNova"></p:message>
 
 					<h:outputText></h:outputText>
 					<p:column colspan="1">
 						<p:commandButton value="#{msgs['login.passw.salvar']}"
-							actionListener="#{loginController.alteraSenha}"
-							update="a msSenhaAtual msConfirmaSenhaNova msSenhaNova" />
+                                         action="#{alteraSenhaManagedBean.alteraSenha}" />
 						<p:commandButton type="reset"
 							value="#{msgs['login.passw.limpar']}"></p:commandButton>
 					</p:column>

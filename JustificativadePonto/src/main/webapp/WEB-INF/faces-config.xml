@@ -55,6 +55,21 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>alterasenha</from-outcome>
+            <to-view-id>/pages/adm/senha.jsf</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/pages/adm/senha.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>senhaalterada</from-outcome>
+            <to-view-id>/pages/welcome.xhtml?faces-redirect=true</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
     <converter>
         <converter-id>EnumConverter</converter-id>
         <converter-class>com.util.converter.EnumConverter</converter-class>

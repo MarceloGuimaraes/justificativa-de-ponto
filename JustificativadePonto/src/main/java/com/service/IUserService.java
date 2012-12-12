@@ -3,6 +3,7 @@ package com.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.domain.dto.CadastroSenha;
 import com.domain.dto.CadastroUsuario;
 import com.model.User;
 
@@ -22,4 +23,6 @@ public interface IUserService {
     List<User> recuperaCoordenadores();
     List<User> recuperaSuperintendentes();
     List<User> recuperaRH();
+
+    void alteraSenha(CadastroSenha cadastroSenha);
 }

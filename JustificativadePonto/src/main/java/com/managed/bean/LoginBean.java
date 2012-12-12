@@ -25,27 +25,9 @@ public class LoginBean implements Serializable {
     IPermissoesBean permissoesBean;
 
     private User user;
-    private String senhaNova;
-    private String confirmaSenhaNova;
-
-    public String getConfirmaSenhaNova() {
-        return confirmaSenhaNova;
-    }
-
-    public void setConfirmaSenhaNova(String confirmaSenhaNova) {
-        this.confirmaSenhaNova = confirmaSenhaNova;
-    }
-
-    public String getSenhaNova() {
-        return senhaNova;
-    }
-
-    public void setSenhaNova(String senhaNova) {
-        this.senhaNova = senhaNova;
-    }
 
     public User getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(User user) {
@@ -90,41 +72,6 @@ public class LoginBean implements Serializable {
         }
     }
 
-
-    public boolean verificaIdQueryString(){
-
-        return false;
-    }
-
-
-
-    public String alteraSenha() {
-
-        if (this.user.getSenha() == "") {
-            Message.addMessage("login.passw.atual");
-            return null;
-            // /dao.existe(this.user).getId() == null
-        } else if (userService.buscaPorLogin(user) != null) {
-            Message.addMessage("login.passw.atual");
-            return null;
-        } else if (getSenhaNova() == "") {
-            Message.addMessage("login.passw.nova");
-            return null;
-
-        } else if (getConfirmaSenhaNova() == "") {
-            Message.addMessage("login.passw.confirm");
-            return null;
-        } else if (!getSenhaNova().equals(getConfirmaSenhaNova())) {
-            Message.addMessage("login.passw.confirmError");
-            return null;
-        } else {
-            user.setSenha(getSenhaNova());
-            userService.updateUser(this.user);
-            Message.addMessageConfig("login.passw.confirmOk");
-            return "/pages/wellcome.jsf?faces-redirect=true";
-        }
-    }
-
     public String logOut() {
 
         this.user = new User();
@@ -151,11 +98,4 @@ public class LoginBean implements Serializable {
 
     }
 
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-    }
-
-    public void setPermissoesBean(IPermissoesBean permissoesBean) {
-        this.permissoesBean = permissoesBean;
-    }
 }
