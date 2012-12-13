@@ -1,17 +1,17 @@
 #summary Configurações para deploy da aplicação
 #labels Featured,Phase-Deploy
 
-= Introduction =
+= Introdução =
 
 Configurando a aplicação
 
 
-= Details =
+= Detalhes =
 
 A aplicação precisa de 2 recursos JNDI configurados no servidor que for hospedá-la.
 As configurações abaixo são específicas para o Apache Tomcat versão 6 ou superior.
 
-Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
+Entrar no arquivo _*<DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml*
 
 <code language="xml">
 <!-- MySql Datasource, no caso do banco ser outro trocar o driverClassName e colcocar a url apropriada -->
@@ -44,7 +44,7 @@ Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
 
 O mais importante nas configurações são o tipo e o nome do recurso.
 
-Depois de configurar o arquivo de context, tem que colocar as seguintes librarys no diretório <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/lib:
+Depois de configurar o arquivo de context, tem que colocar as seguintes librarys no diretório _*<DIRETÓRIO_DE_INSTALACAO_TOMCAT>/lib*:
  * activation.jar
  * mail.jar
  * mysql-connector-java-5.xxx.jar
