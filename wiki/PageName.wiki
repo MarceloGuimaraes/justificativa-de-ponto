@@ -1,0 +1,43 @@
+#summary One-sentence summary of this page.
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+Configurando a aplicação
+
+
+= Details =
+
+A aplicação precisa de 2 recursos JNDI configurados no servidor que for hospedá-la.
+As configurações abaixo são específicas para o Apache Tomcat versão 6 ou superior.
+
+Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
+
+<!-- MySql Datasource -->
+
+<Resource name="jdbc/sescoopDB" auth="Container" 
+          type="javax.sql.DataSource" 
+          maxActive="100" maxIdle="30" maxWait="10000" 
+          username="root" password="itamonte" 
+          driverClassName="com.mysql.jdbc.Driver" 
+          url="jdbc:mysql://localhost:3306/justificativadeponto?useOldUTF8Behavior=true&amp;characterEncoding=latin1" 
+/>
+
+<!-- JavaMail session factory -->
+
+<Resource name="mail/session"
+          auth="Container"
+          type="javax.mail.Session"
+          username="[conta-do-usuario@mailserver.com]"
+          password="[senha-da-conta-de-email]"
+          mail.user="[conta-do-usuario@mailserver.com]"
+          mail.password="[senha-da-conta-de-email]"
+          mail.transport.protocol="smtp"
+          mail.smtp.host="smtp.mailserver.com"
+          mail.smtp.port="587"
+          mail.smtp.auth="true"
+          mail.smtp.starttls.enable="true"
+          mail.debug="true"
+/>
+
+O mais importante nas configurações são o tipo e o nome do recurso.
