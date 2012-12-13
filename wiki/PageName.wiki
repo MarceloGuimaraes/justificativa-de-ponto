@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Configurações para deploy da aplicação
 #labels Featured,Phase-Deploy
 
 = Introduction =
