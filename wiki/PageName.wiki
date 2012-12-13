@@ -45,6 +45,6 @@ Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
 O mais importante nas configurações são o tipo e o nome do recurso.
 
 Depois de configurar o arquivo de context, tem que colocar as seguintes librarys no diretório <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/lib:
- *activation.jar
- *mail.jar
- *mysql-connector-java-5.xxx.jar
+ * activation.jar
+ * mail.jar
+ * mysql-connector-java-5.xxx.jar
