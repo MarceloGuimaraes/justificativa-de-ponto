@@ -13,7 +13,7 @@ As configurações abaixo são específicas para o Apache Tomcat versão 6 ou su
 
 Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
 
-`<!-- MySql Datasource, no caso do banco ser outro trocar o driverClassName e colcocar a url apropriada -->
+{{{<!-- MySql Datasource, no caso do banco ser outro trocar o driverClassName e colcocar a url apropriada -->
 
 <Resource name="jdbc/sescoopDB" auth="Container" 
           type="javax.sql.DataSource" 
@@ -38,7 +38,7 @@ Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
           mail.smtp.auth="true"
           mail.smtp.starttls.enable="true"
           mail.debug="true"
-/>`
+/>}}}
 
 O mais importante nas configurações são o tipo e o nome do recurso.
 
