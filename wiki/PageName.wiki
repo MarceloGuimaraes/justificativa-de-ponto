@@ -13,12 +13,12 @@ As configurações abaixo são específicas para o Apache Tomcat versão 6 ou su
 
 Entrar no arquivo <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml
 
-<!-- MySql Datasource -->
+<!-- MySql Datasource, no caso do banco ser outro trocar o driverClassName e colcocar a url apropriada -->
 
 <Resource name="jdbc/sescoopDB" auth="Container" 
           type="javax.sql.DataSource" 
           maxActive="100" maxIdle="30" maxWait="10000" 
-          username="root" password="itamonte" 
+          username="[usuario-do-banco]" password="[senha-do-banco]" 
           driverClassName="com.mysql.jdbc.Driver" 
           url="jdbc:mysql://localhost:3306/justificativadeponto?useOldUTF8Behavior=true&amp;characterEncoding=latin1" 
 />
