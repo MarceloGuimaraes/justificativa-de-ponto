@@ -19,12 +19,8 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 	private boolean admin;
 	private boolean rh;
 	
-	private boolean showMenuCadUser;
-	
-
 	public PermissoesBean() {
 		isUsuarioLogado = false;
-		showMenuCadUser = false;
 	}
 
 	public User getUsuarioLogado() {

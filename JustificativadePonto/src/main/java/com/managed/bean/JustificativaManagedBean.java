@@ -1,12 +1,5 @@
 package com.managed.bean;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.faces.model.SelectItem;
-
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
@@ -20,11 +13,16 @@ import com.util.JavaMailApp;
 import com.util.JsfUtil;
 import com.util.Message;
 
+import javax.faces.model.SelectItem;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 public class JustificativaManagedBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String SUCCESS = "welcome";
-    private static final String EDIT = "editJustificativa";
 
     private IJustificativaService justificativaService;
     private IUserService userService;
@@ -32,7 +30,7 @@ public class JustificativaManagedBean implements Serializable {
 
     private IPermissoesBean permissoes;
 
-    private final HandlerMotivosManagedBean handler;
+    private HandlerMotivosManagedBean handler;
 
     private List<SelectItem> tipoBancoHorasList;
     private List<SelectItem> tipoDecisaoList;
@@ -48,12 +46,10 @@ public class JustificativaManagedBean implements Serializable {
 
 
     private boolean editElaboracao = false;
-    private boolean showFldCancelar = false;
-    private boolean showFldConcluir = false;
-    private boolean userAdmin = false;
     private boolean editAguardaAprovCoord = false;
     private boolean editAguardaAprovRh = false;
     private boolean editAguardaAprovSuperintendente = false;
+    private boolean showFldCancelar = false;
 
     public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IUserService userService,
@@ -75,38 +71,29 @@ public class JustificativaManagedBean implements Serializable {
         superintendenteList = retornaItemAPartirDeUser(userService.recuperaSuperintendentes());
         rhList = retornaItemAPartirDeUser(userService.recuperaRH());
 
+        JustificativaPonto justificativaRecebida = null;
+
         String id = JsfUtil.getParameter("id");
+
         if (id != null) {
-            justificativa = this.justificativaService.recuperar(Integer
+            justificativaRecebida = this.justificativaService.recuperar(Integer
                     .parseInt(id));
-            idCoordenador = justificativa.getCoordenador().getId();
-            if (justificativa.getSuperintendente() != null) {
-                idSuperintendente = justificativa.getSuperintendente()
+            idCoordenador = justificativaRecebida.getCoordenador().getId();
+            if (justificativaRecebida.getSuperintendente() != null) {
+                idSuperintendente = justificativaRecebida.getSuperintendente()
                         .getId();
             }
-            if (justificativa.getRh() != null) {
-                idRh = justificativa.getRh().getId();
+            if (justificativaRecebida.getRh() != null) {
+                idRh = justificativaRecebida.getRh().getId();
             }
         }
 
-        if (justificativa == null) {
-            justificativa = new JustificativaPonto(
+        if (justificativaRecebida == null) {
+            justificativaRecebida = new JustificativaPonto(
                     permissoes.getUsuarioLogado());
         }
 
-        editElaboracao = permissoes.editElaboracao(justificativa);
-        editAguardaAprovCoord = permissoes
-                .editAguardaAprovCoord(justificativa);
-        editAguardaAprovSuperintendente = permissoes
-                .editAguardaAprovSuperintendente(justificativa);
-        editAguardaAprovRh = permissoes
-                .editAguardaAprovRh(justificativa);
-        userAdmin = permissoes.isAdmin();
-        showFldCancelar = permissoes.showFldCancelar(justificativa);
-        // showFldConcluir =
-        // permissoes.showFldConcluir(this.justificativa);
-
-        this.handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
+        setJustificativa(justificativaRecebida);
 
     }
 
@@ -160,6 +147,15 @@ public class JustificativaManagedBean implements Serializable {
     }
 
     public void setJustificativa(JustificativaPonto justificativa) {
+
+        editElaboracao = permissoes.editElaboracao(justificativa);
+        editAguardaAprovCoord = permissoes.editAguardaAprovCoord(justificativa);
+        editAguardaAprovSuperintendente = permissoes.editAguardaAprovSuperintendente(justificativa);
+        editAguardaAprovRh = permissoes.editAguardaAprovRh(justificativa);
+        showFldCancelar = permissoes.showFldCancelar(justificativa);
+
+        handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
+
         this.justificativa = justificativa;
     }
 
@@ -203,7 +199,7 @@ public class JustificativaManagedBean implements Serializable {
 
         justificativa.setStatus(StatusEnum.APROVCOORD);
 
-        justificativa.adiciona(this.justificativa.getSolicitante(),
+        justificativa.adiciona(permissoes.getUsuarioLogado(),
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
         justificativaService.adicionar(justificativa);
@@ -214,8 +210,7 @@ public class JustificativaManagedBean implements Serializable {
     public String enviarSuperintendente() {
 
         // Inserindo o superintendente escolhido
-        justificativa.setSuperintendente(userService
-                .recuperar(idSuperintendente));
+        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
 
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getSolicitante());
@@ -229,8 +224,7 @@ public class JustificativaManagedBean implements Serializable {
         justificativa.adiciona(justificativa.getCoordenador(),
                 TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
         justificativa
-                .adiciona(
-                        justificativa.getCoordenador(),
+                .adiciona(permissoes.getUsuarioLogado(),
                         TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
         justificativaService.atualizar(justificativa);
@@ -254,9 +248,9 @@ public class JustificativaManagedBean implements Serializable {
 
         justificativa.setDtAprovSuper(new Date());
         justificativa.setStatus(StatusEnum.EXECUCAORH);
-        justificativa.adiciona(justificativa.getSuperintendente(),
+        justificativa.adiciona(permissoes.getUsuarioLogado(),
                 TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
-        justificativa.adiciona(justificativa.getSuperintendente(),
+        justificativa.adiciona(permissoes.getUsuarioLogado(),
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
         justificativaService.atualizar(justificativa);
@@ -275,8 +269,8 @@ public class JustificativaManagedBean implements Serializable {
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovRh(new Date());
-        justificativa.setStatus(StatusEnum.APROVCOORD);
-        justificativa.adiciona(justificativa.getRh(),
+        justificativa.setStatus(StatusEnum.CONCLUIDO);
+        justificativa.adiciona(permissoes.getUsuarioLogado(),
                 TipoEventoJustificativaPontoEnum.APROVADO_RH);
         justificativaService.atualizar(justificativa);
         return SUCCESS;
@@ -324,17 +318,6 @@ public class JustificativaManagedBean implements Serializable {
     public boolean isShowFldCancelar() {
         return showFldCancelar;
     }
-
-
-    public boolean isShowFldConcluir() {
-        return showFldConcluir;
-    }
-
-
-    public boolean isUserAdmin() {
-        return userAdmin;
-    }
-
 
     public boolean isEditAguardaAprovCoord() {
         return editAguardaAprovCoord;

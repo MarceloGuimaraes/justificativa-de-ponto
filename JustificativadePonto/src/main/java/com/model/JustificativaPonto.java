@@ -10,6 +10,21 @@ import java.util.*;
 @Table(name = "JustificativaPonto")
 public class JustificativaPonto implements Serializable {
 
+    private class OrdenadorPorIdDesc implements Comparator<HistoricoJustificativaPonto> {
+        @Override
+        public int compare(HistoricoJustificativaPonto o1, HistoricoJustificativaPonto o2) {
+            return new OrdenadoPorIdAsc().compare(o1, o2) * -1;
+        }
+    }
+
+    private class OrdenadoPorIdAsc implements Comparator<HistoricoJustificativaPonto>{
+        @Override
+        public int compare(HistoricoJustificativaPonto o1,
+                           HistoricoJustificativaPonto o2) {
+            return (o1.getId().intValue() - o2.getId().intValue());
+        }
+    }
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "justificativaId")
@@ -106,6 +121,9 @@ public class JustificativaPonto implements Serializable {
 
 	@OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HistoricoJustificativaPonto> historico;
+
+    @Transient
+    private List<HistoricoJustificativaPonto> historicoOrdenado;
 
 	public JustificativaPonto() {
 	}
@@ -301,21 +319,26 @@ public class JustificativaPonto implements Serializable {
 
 	}
 
+    private void ordenaHistorico(){
+        Set<HistoricoJustificativaPonto> resultado = new TreeSet<HistoricoJustificativaPonto>(new OrdenadoPorIdAsc());
+        historicoOrdenado = new LinkedList<HistoricoJustificativaPonto>();
+        resultado.addAll(getHistorico());
+        for(HistoricoJustificativaPonto h : resultado){
+            historicoOrdenado.add(h);
+        }
+    }
+
+    public List<HistoricoJustificativaPonto> getHistoricoOrdenado(){
+        if(historicoOrdenado==null){
+            ordenaHistorico();
+        }
+        return historicoOrdenado;
+    }
+
 	public HistoricoJustificativaPonto getUltimoHistorico() {
-		if (historico == null || historico.isEmpty()) {
-			return null;
-		}
-		Set<HistoricoJustificativaPonto> ordenado = new TreeSet<HistoricoJustificativaPonto>(
-				new Comparator<HistoricoJustificativaPonto>() {
-					@Override
-					public int compare(HistoricoJustificativaPonto o1,
-							HistoricoJustificativaPonto o2) {
-						return (o1.getId().intValue() - o2.getId().intValue())
-								* -1;
-					}
-				});
-		ordenado.addAll(historico);
-		return ordenado.iterator().next();
+        Set<HistoricoJustificativaPonto> resultado = new TreeSet<HistoricoJustificativaPonto>(new OrdenadorPorIdDesc());
+        resultado.addAll(historico);
+		return resultado.iterator().next();
 	}
 
 }
