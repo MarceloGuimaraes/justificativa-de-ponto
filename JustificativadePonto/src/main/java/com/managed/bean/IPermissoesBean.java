@@ -2,7 +2,6 @@ package com.managed.bean;
 
 import com.model.JustificativaPonto;
 import com.model.User;
-import com.util.JavaMailApp;
 
 public interface IPermissoesBean {
     User getUsuarioLogado();

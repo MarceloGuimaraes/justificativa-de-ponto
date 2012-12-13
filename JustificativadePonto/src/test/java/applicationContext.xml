@@ -37,7 +37,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="mailApp" class="com.util.JavaMailApp">
+    <bean id="mailService" class="com.service.mail.JavaMailService">
         <constructor-arg ref="mailFactory" />
     </bean>
 

@@ -9,7 +9,7 @@ import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
 import com.service.IJustificativaService;
 import com.service.IUserService;
-import com.util.JavaMailApp;
+import com.service.mail.JavaMailService;
 import com.util.JsfUtil;
 import com.util.Message;
 
@@ -26,7 +26,7 @@ public class JustificativaManagedBean implements Serializable {
 
     private IJustificativaService justificativaService;
     private IUserService userService;
-    private JavaMailApp mailApp;
+    private JavaMailService mailService;
 
     private IPermissoesBean permissoes;
 
@@ -53,12 +53,12 @@ public class JustificativaManagedBean implements Serializable {
 
     public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IUserService userService,
-                                    JavaMailApp mailApp,
+                                    JavaMailService mailService,
                                     IPermissoesBean permissoes) {
 
         this.justificativaService = justificativaService;
         this.userService = userService;
-        this.mailApp = mailApp;
+        this.mailService = mailService;
 
         this.permissoes = permissoes;
 
@@ -194,7 +194,7 @@ public class JustificativaManagedBean implements Serializable {
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getCoordenador());
 
-        mailApp.sendMail(justificativa.getSolicitante(), destinos,
+        mailService.sendMail(justificativa.getSolicitante(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setStatus(StatusEnum.APROVCOORD);
@@ -216,7 +216,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getSuperintendente());
 
-        mailApp.sendMail(justificativa.getCoordenador(), destinos,
+        mailService.sendMail(justificativa.getCoordenador(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovCoord(new Date());
@@ -243,7 +243,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getRh());
 
-        mailApp.sendMail(justificativa.getSuperintendente(), destinos,
+        mailService.sendMail(justificativa.getSuperintendente(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovSuper(new Date());
@@ -265,7 +265,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getCoordenador());
         destinos.add(justificativa.getSuperintendente());
 
-        mailApp.sendMail(justificativa.getRh(), destinos,
+        mailService.sendMail(justificativa.getRh(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovRh(new Date());
@@ -283,14 +283,14 @@ public class JustificativaManagedBean implements Serializable {
         if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) || permissoes.isAdmin()){
             //AUTOR COORDENADOR
             destinos.add(justificativa.getSolicitante());
-            mailApp.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+            mailService.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
             justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
         }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
             //AUTOR SUPERINTENDENTE
             destinos.add(justificativa.getSolicitante());
             destinos.add(justificativa.getCoordenador());
-            mailApp.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+            mailService.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
             justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
         }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
@@ -298,7 +298,7 @@ public class JustificativaManagedBean implements Serializable {
             destinos.add(justificativa.getSolicitante());
             destinos.add(justificativa.getCoordenador());
             destinos.add(justificativa.getSuperintendente());
-            mailApp.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+            mailService.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
             justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
         }
 
