@@ -18,7 +18,7 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 	private boolean support;
 	private boolean admin;
 	private boolean rh;
-	
+
 	public PermissoesBean() {
 		isUsuarioLogado = false;
 	}
@@ -123,8 +123,6 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 		}
 	}
 
-	/***************** REGRAs DE OCULTAÇÃO *********************/
-
 	/*
 	 * campo cancelar
 	 */
@@ -144,7 +142,8 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 				|| (justificativa.getStatus().equals(
 						StatusEnum.APROVSUPERINTENDENTE) && justificativa
 						.getSuperintendente().equals(usuarioLogado))
-				|| this.isAdmin()) {
+				|| ((!justificativa.getStatus().equals(StatusEnum.ELABORACAO)) && this
+						.isAdmin())) {
 			return true;
 		} else {
 			return false;
@@ -166,7 +165,7 @@ public class PermissoesBean implements IPermissoesBean, Serializable {
 
 		if (justificativa.getStatus().equals(StatusEnum.ELABORACAO)
 				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)
-				|| justificativa.getStatus().equals(StatusEnum.CANCELADO)) {
+				|| justificativa.getStatus().equals(StatusEnum.CONCLUIDO)) {
 			return false;
 		}
 

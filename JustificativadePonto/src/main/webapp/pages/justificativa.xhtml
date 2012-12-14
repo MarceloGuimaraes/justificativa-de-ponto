@@ -1,9 +1,12 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/pages/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/pages/template.xhtml">
 	<ui:define name="corpo">
 		<h:form id="justificativaForm">
 			<h:inputHidden
@@ -46,33 +49,33 @@
 				<p:separator styleClass="tabela" />
 
 				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
-                    <p:row>
-                        <p:column style="text-align:left; width:110px;">
-                            <h:outputLabel
-                                    value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
-                        </p:column>
-                        <p:column colspan="3">
-                            <p:selectOneMenu id="motivo"
-                                             disabled="#{!justificativaBean.editElaboracao}"
-                                             value="#{justificativaBean.justificativa.motivo}"
-                                             valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
-                                             required="true"
-                                             requiredMessage="#{msgs['form.justificativa.motivo.required']}">
-                                <p:ajax event="change" update="pgrdDetalhamento" />
-                                <f:selectItem itemValue="" itemLabel="" />
-                                <f:selectItems
-                                        value="#{justificativaBean.handler.tipoMotivosList}" />
-                            </p:selectOneMenu>
-                            <p:message id="motivoMsg" for="motivo" />
-                        </p:column>
-                    </p:row>
-                    <p:row>
+					<p:row>
+						<p:column style="text-align:left; width:110px;">
+							<h:outputLabel
+								value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
+						</p:column>
+						<p:column colspan="3">
+							<p:selectOneMenu id="motivo"
+								disabled="#{!justificativaBean.editElaboracao}"
+								value="#{justificativaBean.justificativa.motivo}"
+								valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
+								required="true"
+								requiredMessage="#{msgs['form.justificativa.motivo.required']}">
+								<p:ajax event="change" update="pgrdDetalhamento" />
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItems
+									value="#{justificativaBean.handler.tipoMotivosList}" />
+							</p:selectOneMenu>
+							<p:message id="motivoMsg" for="motivo" />
+						</p:column>
+					</p:row>
+					<p:row>
 						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
-                        </p:column>
-                        <p:column>
+						</p:column>
+						<p:column>
 							<p:calendar styleClass="calendar"
 								disabled="#{!justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
@@ -80,12 +83,12 @@
 								requiredMessage="#{msgs['form.justificativa.hrini.required']}"
 								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
 							<p:message id="hriniMsg" for="hrini" />
-                        </p:column>
-                        <p:column style="text-align:right">
+						</p:column>
+						<p:column style="text-align:right">
 							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
 								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
-                        </p:column>
-                        <p:column>
+						</p:column>
+						<p:column>
 							<p:calendar styleClass="calendar"
 								disabled="#{!justificativaBean.editElaboracao}"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
@@ -95,7 +98,8 @@
 							<p:message id="hrfimMsg" for="hrfim" />
 						</p:column>
 					</p:row>
-					<p:row rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
+					<p:row
+						rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
 						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
@@ -113,7 +117,8 @@
 							<p:message id="causafaltaMsg" for="causafalta" />
 						</p:column>
 					</p:row>
-					<p:row rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
+					<p:row
+						rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
 						<p:column style="text-align:left; width:110px;">
 							<h:outputLabel
 								value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
@@ -253,8 +258,9 @@
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
 					update="panel" action="#{justificativaBean.enviarSuperintendente}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
-                    <f:param value="#{justificativaBean.justificativa.justificativaId}" name="id" />
-                </p:commandButton>
+					<f:param value="#{justificativaBean.justificativa.justificativaId}"
+						name="id" />
+				</p:commandButton>
 
 				<!-- AUTOR SUPERINTENDENTE -->
 				<p:commandButton id="executarRH"
@@ -262,8 +268,9 @@
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
 					update="panel" action="#{justificativaBean.enviarRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
-                    <f:param value="#{justificativaBean.justificativa.justificativaId}" name="id" />
-                </p:commandButton>
+					<f:param value="#{justificativaBean.justificativa.justificativaId}"
+						name="id" />
+				</p:commandButton>
 
 				<!-- AUTOR RH -->
 				<p:commandButton id="btnConcluidoRH"
@@ -271,17 +278,15 @@
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
 					update="panel" action="#{justificativaBean.concluiRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
-                    <f:param value="#{justificativaBean.justificativa.justificativaId}" name="id" />
-                </p:commandButton>
+					<f:param value="#{justificativaBean.justificativa.justificativaId}"
+						name="id" />
+				</p:commandButton>
 
 				<!-- AUTORES: COORDENADOR;SUPERINTENDENTE;RH;ADMIN -->
 				<p:commandButton id="btnCancelar"
 					rendered="#{justificativaBean.showFldCancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}"
-                    action="#{justificativaBean.cancelado}"
-					icon="ui-icon-circle-arrow-e">
-                    <f:param value="#{justificativaBean.justificativa.justificativaId}" name="id" />
-                </p:commandButton>
+					oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e" />
 			</p:panel>
 
 
@@ -318,6 +323,47 @@
 					</p:column>
 				</p:dataTable>
 			</p:panel>
-        </h:form>
-    </ui:define>
+		</h:form>
+		<h:form id="formCancelaId">
+			<p:dialog widgetVar="cadDialog" header="Motivo do Cancelamento"
+				closable="false" resizable="false" modal="true" hideEffect="slide"
+				showEffect="clip" draggable="false">
+
+				<h:panelGrid id="display" columns="3" cellpadding="4"
+					style="margin:0 auto;">
+
+					<p:inputTextarea id="obsRh2" rows="5" cols="30" maxlength="300"
+						autoResize="true" required="true"
+						requiredMessage="#{msgs['form.justificativa.observacao.required']}"
+						value="#{justificativaBean.justificativa.obsRh}" />
+					<p:message id="obsRhMsg2" for="obsRh2" />
+					<h:outputText></h:outputText>
+					<p:column>
+						<p:commandButton id="btsalvar" value="Salvar"
+							actionListener="#{justificativaBean.cancelado}"
+							oncomplete="handleCadastroRequest(xhr, status, args)"
+							ajax="false">
+						</p:commandButton>
+
+						<p:commandButton value="Voltar" update="display" process="@this"
+							oncomplete="cadDialog.hide()">
+						</p:commandButton>
+					</p:column>
+				</h:panelGrid>
+			</p:dialog>
+
+			<script type="text/javascript">
+				function handleCadastroRequest(xhr, status, args) {
+					if (args.validationFailed || !args.gravado) {
+						jQuery('#cadDialog').effect("shake", {
+							times : 3
+						}, 100);
+					} else {
+						cadDialog.hide();
+					}
+				}
+			</script>
+		</h:form>
+	</ui:define>
 </ui:composition>
+</html>
