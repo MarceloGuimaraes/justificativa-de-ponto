@@ -23,6 +23,11 @@ public class Message {
 		return message;
 	}
 
+    public static String getBundleMessage(String codigo, String... placeholders){
+        String resolvedMsg = MessageFormat.format(getBundleMessage(codigo), placeholders);
+        return resolvedMsg;
+    }
+
 	/**
 	 * 
 	 * @param codigo
@@ -30,17 +35,15 @@ public class Message {
 	 * 
 	 */
 	public static void addMessage(String codigo) {
-
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 				getBundleMessage(codigo), "");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
     public static void addMessage(String codigo, String... placeholders){
-        String msg = getBundleMessage(codigo);
-        String resolvedMsg = MessageFormat.format(msg, placeholders);
-        FacesMessage jsfMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, resolvedMsg, "");
-        FacesContext.getCurrentInstance().addMessage(null, jsfMsg);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                getBundleMessage(codigo, placeholders), "");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
 	public static void addMessageText(String texto) {
