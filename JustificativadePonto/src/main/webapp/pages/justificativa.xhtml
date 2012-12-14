@@ -283,7 +283,9 @@
 				<p:commandButton id="btnCancelar"
 					rendered="#{justificativaBean.showFldCancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}"
-					oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e" />
+					oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e">
+                    <f:param name="id" value="#{justificativaBean.justificativa.justificativaId}" />
+                </p:commandButton>
 			</p:panel>
 
 
@@ -322,46 +324,44 @@
 			</p:panel>
 		</h:form>
 		<h:form id="formCancelaId">
-			<p:dialog widgetVar="cadDialog" header="Motivo do Cancelamento"
-				closable="false" resizable="false" modal="true" hideEffect="slide"
-				showEffect="clip" draggable="false">
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide()"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Status"
+                      draggable="false" closable="false" resizable="false" >
+                <p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
+            </p:dialog>
+
+            <p:dialog id="idDialogCancel" widgetVar="cadDialog" header="#{msgs['dialog.cancelar.titulo']}"
+				closable="true" resizable="false" modal="true" hideEffect="slide"
+				showEffect="slide" draggable="false">
 
 				<h:panelGrid id="display" columns="3" cellpadding="4"
 					style="margin:0 auto;">
 
 					<p:inputTextarea id="motivoCancela" rows="5" cols="30"
-						maxlength="300" autoResize="true" required="true"
-						requiredMessage="#{msgs['form.justificativa.motivocancelamento.required']}"
+						maxlength="300" autoResize="true"
+                        requiredMessage="#{msgs['dialog.cancelar.valida.justificativa']}"
+                        required="true"
 						value="#{justificativaBean.justificativa.cancelamento}" />
-					<p:message id="motivoCancelaMsg" for="motivoCancela" />
-					<h:outputText></h:outputText>
+					<p:message for="motivoCancela" />
+					<p:separator />
 					<p:column>
-						<p:commandButton id="btsalvar" value="Salvar"
-							actionListener="#{justificativaBean.cancelado}"
-							oncomplete="handleCadastroRequest(xhr, status, args)" ajax="true">
-							<f:param
-								value="#{justificativaBean.justificativa.justificativaId}"
-								name="id" />
-						</p:commandButton>
-
-						<p:commandButton value="Voltar" update="display" process="@this"
-							oncomplete="cadDialog.hide()">
+						<p:commandButton id="btsalvar"
+                                         value="#{msgs['dialog.cancelar.botao.salvar']}"
+                                         update="display"
+							             action="#{justificativaBean.cancelado}"
+                                         oncomplete="handleCancelRequest()">
+							<f:param name="id" value="#{justificativaBean.justificativa.justificativaId}"/>
 						</p:commandButton>
 					</p:column>
 				</h:panelGrid>
 			</p:dialog>
-
-			<script type="text/javascript">
-				function handleCadastroRequest(xhr, status, args) {
-					if (args.validationFailed || !args.gravado) {
-						jQuery('#cadDialog').effect("shake", {
-							times : 3
-						}, 100);
-					} else {
-						cadDialog.hide();
-					}
-				}
-			</script>
 		</h:form>
-	</ui:define>
+        <script type="text/javascript">
+            function handleCancelRequest() {
+                cadDialog.hide();
+                location.href='welcome.jsf';
+            }
+        </script>
+    </ui:define>
 </ui:composition>

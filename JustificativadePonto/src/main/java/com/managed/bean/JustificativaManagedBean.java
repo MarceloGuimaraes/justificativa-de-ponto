@@ -280,32 +280,41 @@ public class JustificativaManagedBean implements Serializable {
 
         List<User> destinos = new LinkedList<User>();
 
-        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) || permissoes.isAdmin()){
-            //AUTOR COORDENADOR
-            destinos.add(justificativa.getSolicitante());
-            mailService.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
-            justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
+        if(permissoes.isAdmin()){
+            if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
+                //AUTOR COORDENADOR
+                destinos.add(justificativa.getSolicitante());
+                mailService.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+                justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
-        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
-            //AUTOR SUPERINTENDENTE
-            destinos.add(justificativa.getSolicitante());
-            destinos.add(justificativa.getCoordenador());
-            mailService.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
-            justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
+            }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
+                //AUTOR SUPERINTENDENTE
+                destinos.add(justificativa.getSolicitante());
+                destinos.add(justificativa.getCoordenador());
+                mailService.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+                justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
-        }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) || permissoes.isAdmin()){
-            //AUTOR RH
-            destinos.add(justificativa.getSolicitante());
-            destinos.add(justificativa.getCoordenador());
-            destinos.add(justificativa.getSuperintendente());
-            mailService.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
-            justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
+            }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
+                //AUTOR RH
+                destinos.add(justificativa.getSolicitante());
+                destinos.add(justificativa.getCoordenador());
+                destinos.add(justificativa.getSuperintendente());
+                mailService.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+                justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
+
+            } else {
+                throw new IllegalStateException("Usuário inválido");
+            }
+        } else {
+            throw new IllegalStateException("Usuário inválido");
         }
 
         justificativa.setDtCancelamento(new Date());
         justificativa.setStatus(StatusEnum.CANCELADO);
         justificativaService.atualizar(justificativa);
+
         return SUCCESS;
+
     }
 
 
