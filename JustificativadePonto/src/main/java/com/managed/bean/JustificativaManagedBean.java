@@ -194,7 +194,7 @@ public class JustificativaManagedBean implements Serializable {
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getCoordenador());
 
-        mailService.sendMail(justificativa.getSolicitante(), destinos,
+        mailService.enviarCoordenador(justificativa.getSolicitante(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setStatus(StatusEnum.APROVCOORD);
@@ -216,7 +216,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getSuperintendente());
 
-        mailService.sendMail(justificativa.getCoordenador(), destinos,
+        mailService.enviarSuperintendente(justificativa.getCoordenador(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovCoord(new Date());
@@ -243,7 +243,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getRh());
 
-        mailService.sendMail(justificativa.getSuperintendente(), destinos,
+        mailService.enviarRh(justificativa.getSuperintendente(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovSuper(new Date());
@@ -265,7 +265,7 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getCoordenador());
         destinos.add(justificativa.getSuperintendente());
 
-        mailService.sendMail(justificativa.getRh(), destinos,
+        mailService.concluiRh(justificativa.getRh(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovRh(new Date());
@@ -284,14 +284,14 @@ public class JustificativaManagedBean implements Serializable {
             if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
                 //AUTOR COORDENADOR
                 destinos.add(justificativa.getSolicitante());
-                mailService.sendMail(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+                mailService.cancelado(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
                 justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
             }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
                 //AUTOR SUPERINTENDENTE
                 destinos.add(justificativa.getSolicitante());
                 destinos.add(justificativa.getCoordenador());
-                mailService.sendMail(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+                mailService.cancelado(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
                 justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
             }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
@@ -299,7 +299,7 @@ public class JustificativaManagedBean implements Serializable {
                 destinos.add(justificativa.getSolicitante());
                 destinos.add(justificativa.getCoordenador());
                 destinos.add(justificativa.getSuperintendente());
-                mailService.sendMail(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+                mailService.cancelado(justificativa.getRh(), destinos, justificativa.getJustificativaId());
                 justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
 
             } else {

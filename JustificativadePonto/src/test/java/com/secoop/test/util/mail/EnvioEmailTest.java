@@ -2,6 +2,7 @@ package com.secoop.test.util.mail;
 
 import com.model.User;
 import com.service.mail.JavaMailService;
+import com.util.Message;
 import org.junit.Ignore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -18,6 +19,8 @@ public class EnvioEmailTest {
         ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");
 
         JavaMailService mailService = (JavaMailService) context.getBean("mailApp");
+        Message msgService = (Message) context.getBean("messageSource");
+        
         List<User> destinatarios = new LinkedList<User>();
         User u1 = new User();
         User u2 = new User();
@@ -28,7 +31,8 @@ public class EnvioEmailTest {
         u2.setEmail("celoguimaraes@gmail.com");
         u3.setNome("Beltrano da Silva");
         u3.setEmail("beltrano@secoop.com.br");
-        destinatarios.add(u1);
-        mailService.sendMail(u3, destinatarios, 23984);
+        destinatarios.add(u2);
+        //mailService.enviarCoordenador msgService
+
     }
 }
