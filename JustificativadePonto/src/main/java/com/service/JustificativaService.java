@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.model.HistoricoJustificativaPonto;
-import com.model.StatusEnum;
+import com.model.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.IJustificativaDAO;
-import com.model.JustificativaPonto;
 
 @Transactional(readOnly = true)
 public class JustificativaService implements IJustificativaService,
@@ -44,9 +42,10 @@ public class JustificativaService implements IJustificativaService,
 
     @Override
     @Transactional(readOnly = false)
-    public void cancelar(JustificativaPonto justificativa) {
+    public void cancelar(User user, JustificativaPonto justificativa) {
         justificativa.setDtCancelamento(new Date());
         justificativa.setStatus(StatusEnum.CANCELADO);
+        justificativa.adiciona(user, TipoEventoJustificativaPontoEnum.CANCELADO);
         atualizar(justificativa);
     }
 

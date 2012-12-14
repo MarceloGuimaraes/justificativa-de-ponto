@@ -296,7 +296,6 @@ public class JustificativaManagedBean implements Serializable {
                     //AUTOR COORDENADOR
                     destinos.add(justificativa.getSolicitante());
                     mailService.cancelado(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
-                    justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
                     cancelado = true;
 
                 }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
@@ -304,7 +303,6 @@ public class JustificativaManagedBean implements Serializable {
                     destinos.add(justificativa.getSolicitante());
                     destinos.add(justificativa.getCoordenador());
                     mailService.cancelado(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
-                    justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
                     cancelado = true;
 
                 }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
@@ -313,18 +311,18 @@ public class JustificativaManagedBean implements Serializable {
                     destinos.add(justificativa.getCoordenador());
                     destinos.add(justificativa.getSuperintendente());
                     mailService.cancelado(justificativa.getRh(), destinos, justificativa.getJustificativaId());
-                    justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
                     cancelado = true;
 
                 } else {
                     Message.addMessage("dialog.cancelar.valida.situacaoinvalida", textoSituacao);
                 }
             } else {
-                Message.addMessage("dialog.cancelar.valida.situacaoinvalida", textoSituacao);
+                Message.addMessage("dialog.cancelar.valida.usuarioinvalido", permissoes.getUsuarioLogado().getNome());
             }
 
-            justificativaService.cancelar(justificativa);
-
+            if (cancelado) {
+                justificativaService.cancelar(permissoes.getUsuarioLogado(), justificativa);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
