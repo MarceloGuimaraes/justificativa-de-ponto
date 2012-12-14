@@ -2,6 +2,7 @@ package com.secoop.test.util.mail;
 
 import com.model.User;
 import com.service.mail.JavaMailService;
+import org.junit.Ignore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import java.util.List;
 public class EnvioEmailTest {
 
     @Test
+    @Ignore
     public void enviaUmEmailDeTesteParamaisDeUmDestinatario(){
         ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");
 

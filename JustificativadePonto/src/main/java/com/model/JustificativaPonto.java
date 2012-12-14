@@ -21,6 +21,9 @@ public class JustificativaPonto implements Serializable {
         @Override
         public int compare(HistoricoJustificativaPonto o1,
                            HistoricoJustificativaPonto o2) {
+            if(o2==null){
+                return 1;
+            }
             return (o1.getId().intValue() - o2.getId().intValue());
         }
     }
