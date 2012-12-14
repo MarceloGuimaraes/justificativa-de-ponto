@@ -12,7 +12,11 @@ import com.service.IUserService;
 import com.service.mail.JavaMailService;
 import com.util.JsfUtil;
 import com.util.Message;
+import org.primefaces.context.RequestContext;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.Date;
@@ -276,44 +280,59 @@ public class JustificativaManagedBean implements Serializable {
         return SUCCESS;
     }
 
-    public String cancelado() {
+    public void cancelado(ActionEvent event) {
 
-        List<User> destinos = new LinkedList<User>();
+        RequestContext context = RequestContext.getCurrentInstance();
+        boolean cancelado = false;
 
-        if(permissoes.isAdmin()){
-            if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
-                //AUTOR COORDENADOR
-                destinos.add(justificativa.getSolicitante());
-                mailService.cancelado(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
-                justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
+        try {
 
-            }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
-                //AUTOR SUPERINTENDENTE
-                destinos.add(justificativa.getSolicitante());
-                destinos.add(justificativa.getCoordenador());
-                mailService.cancelado(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
-                justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
+            String textoSituacao = Message.getBundleMessage(justificativa.getStatus().getDescricao());
 
-            }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
-                //AUTOR RH
-                destinos.add(justificativa.getSolicitante());
-                destinos.add(justificativa.getCoordenador());
-                destinos.add(justificativa.getSuperintendente());
-                mailService.cancelado(justificativa.getRh(), destinos, justificativa.getJustificativaId());
-                justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
+            List<User> destinos = new LinkedList<User>();
 
+            if(permissoes.isAdmin()){
+                if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
+                    //AUTOR COORDENADOR
+                    destinos.add(justificativa.getSolicitante());
+                    mailService.cancelado(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+                    justificativa.adiciona(justificativa.getCoordenador(), TipoEventoJustificativaPontoEnum.CANCELADO);
+                    cancelado = true;
+
+                }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
+                    //AUTOR SUPERINTENDENTE
+                    destinos.add(justificativa.getSolicitante());
+                    destinos.add(justificativa.getCoordenador());
+                    mailService.cancelado(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+                    justificativa.adiciona(justificativa.getSuperintendente(), TipoEventoJustificativaPontoEnum.CANCELADO);
+                    cancelado = true;
+
+                }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
+                    //AUTOR RH
+                    destinos.add(justificativa.getSolicitante());
+                    destinos.add(justificativa.getCoordenador());
+                    destinos.add(justificativa.getSuperintendente());
+                    mailService.cancelado(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+                    justificativa.adiciona(justificativa.getRh(), TipoEventoJustificativaPontoEnum.CANCELADO);
+                    cancelado = true;
+
+                } else {
+                    Message.addMessage("dialog.cancelar.valida.situacaoinvalida", textoSituacao);
+                }
             } else {
-                throw new IllegalStateException("Usuário inválido");
+                Message.addMessage("dialog.cancelar.valida.situacaoinvalida", textoSituacao);
             }
-        } else {
-            throw new IllegalStateException("Usuário inválido");
+
+            justificativaService.cancelar(justificativa);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            cancelado = false;
+            Message.addMessage("dialog.cancelar.erro.inesperado", e.getMessage());
         }
 
-        justificativa.setDtCancelamento(new Date());
-        justificativa.setStatus(StatusEnum.CANCELADO);
-        justificativaService.atualizar(justificativa);
-
-        return SUCCESS;
+        context.addCallbackParam("cancelado", cancelado);
 
     }
 

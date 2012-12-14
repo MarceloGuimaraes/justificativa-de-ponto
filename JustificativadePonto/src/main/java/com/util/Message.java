@@ -1,5 +1,6 @@
 package com.util;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
@@ -32,25 +33,32 @@ public class Message {
 
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 				getBundleMessage(codigo), "");
-		FacesContext.getCurrentInstance().addMessage("message1", msg);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
+
+    public static void addMessage(String codigo, String... placeholders){
+        String msg = getBundleMessage(codigo);
+        String resolvedMsg = MessageFormat.format(msg, placeholders);
+        FacesMessage jsfMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, resolvedMsg, "");
+        FacesContext.getCurrentInstance().addMessage(null, jsfMsg);
+    }
 
 	public static void addMessageText(String texto) {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, texto,
 				"");
-		FacesContext.getCurrentInstance().addMessage("message1", msg);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public static void addMessageTextConfig(String texto) {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, texto,
 				"");
-		FacesContext.getCurrentInstance().addMessage("message1", msg);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public static void addMessageConfig(String codigo) {
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				getBundleMessage(codigo), "");
-		FacesContext.getCurrentInstance().addMessage("message1", msg);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public static FacesMessage getMsgErro(String codigo) {

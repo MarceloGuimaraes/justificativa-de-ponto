@@ -323,44 +323,49 @@
 				</p:dataTable>
 			</p:panel>
 		</h:form>
-		<h:form id="formCancelaId">
-            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide()"/>
 
-            <p:dialog modal="true" widgetVar="statusDialog" header="Status"
-                      draggable="false" closable="false" resizable="false" >
-                <p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
-            </p:dialog>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide()"/>
 
-            <p:dialog id="idDialogCancel" widgetVar="cadDialog" header="#{msgs['dialog.cancelar.titulo']}"
+        <p:dialog modal="true" widgetVar="statusDialog" header="Status"
+                  draggable="false" closable="false" resizable="false" >
+            <p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
+        </p:dialog>
+
+
+        <p:dialog id="idDialogCancel" widgetVar="cadDialog" header="#{msgs['dialog.cancelar.titulo']}"
 				closable="true" resizable="false" modal="true" hideEffect="slide"
 				showEffect="slide" draggable="false">
 
-				<h:panelGrid id="display" columns="3" cellpadding="4"
+            <h:form id="formCancelaId">
+                <h:panelGrid id="display" columns="3" cellpadding="4"
 					style="margin:0 auto;">
-
-					<p:inputTextarea id="motivoCancela" rows="5" cols="30"
+                    <p:messages />
+                    <p:separator />
+                    <p:inputTextarea id="motivoCancela" rows="5" cols="30"
 						maxlength="300" autoResize="true"
                         requiredMessage="#{msgs['dialog.cancelar.valida.justificativa']}"
                         required="true"
 						value="#{justificativaBean.justificativa.cancelamento}" />
-					<p:message for="motivoCancela" />
-					<p:separator />
 					<p:column>
 						<p:commandButton id="btsalvar"
                                          value="#{msgs['dialog.cancelar.botao.salvar']}"
                                          update="display"
-							             action="#{justificativaBean.cancelado}"
-                                         oncomplete="handleCancelRequest()" ajax="true">
+							             actionListener="#{justificativaBean.cancelado}"
+                                         oncomplete="handleCancelRequest(xhr, status, args)">
 							<f:param name="id" value="#{justificativaBean.justificativa.justificativaId}"/>
 						</p:commandButton>
 					</p:column>
-				</h:panelGrid>
-			</p:dialog>
-		</h:form>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
         <script type="text/javascript">
-            function handleCancelRequest() {
-                cadDialog.hide();
-                location.href='welcome.jsf';
+            function handleCancelRequest(xhr, status, args) {
+                if(args.validationFailed || !args.cancelado) {
+                    jQuery('#idDialogCancel').effect("shake", { times:3 }, 100);
+                } else {
+                    cadDialog.hide();
+                    location.href='welcome.jsf';
+                }
             }
         </script>
     </ui:define>

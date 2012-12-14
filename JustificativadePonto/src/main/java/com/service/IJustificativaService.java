@@ -12,4 +12,6 @@ public interface IJustificativaService {
     void adicionar(JustificativaPonto justificativa);
     void atualizar(JustificativaPonto justificativa);
     void apagar(JustificativaPonto justificativa);
+
+    void cancelar(JustificativaPonto justificativa);
 }
