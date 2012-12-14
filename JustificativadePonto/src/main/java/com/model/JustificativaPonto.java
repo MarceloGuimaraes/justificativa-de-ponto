@@ -21,6 +21,12 @@ public class JustificativaPonto implements Serializable {
         @Override
         public int compare(HistoricoJustificativaPonto o1,
                            HistoricoJustificativaPonto o2) {
+            if(o1==o2){
+                return 0;
+            }
+            if(o1==null){
+                return -1;
+            }
             if(o2==null){
                 return 1;
             }
