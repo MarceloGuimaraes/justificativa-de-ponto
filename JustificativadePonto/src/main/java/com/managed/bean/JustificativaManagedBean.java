@@ -9,6 +9,7 @@ import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
 import com.service.IJustificativaService;
 import com.service.IUserService;
+import com.service.mail.IMailService;
 import com.service.mail.JavaMailService;
 import com.util.JsfUtil;
 import com.util.Message;
@@ -30,7 +31,7 @@ public class JustificativaManagedBean implements Serializable {
 
     private IJustificativaService justificativaService;
     private IUserService userService;
-    private JavaMailService mailService;
+    private IMailService mailService;
 
     private IPermissoesBean permissoes;
 
@@ -57,7 +58,7 @@ public class JustificativaManagedBean implements Serializable {
 
     public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IUserService userService,
-                                    JavaMailService mailService,
+                                    IMailService mailService,
                                     IPermissoesBean permissoes) {
 
         this.justificativaService = justificativaService;

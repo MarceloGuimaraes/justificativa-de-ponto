@@ -8,7 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JavaMailService {
+public class JavaMailService implements IMailService {
 
 	private MailSender mailSender;
 	private boolean desenv;
