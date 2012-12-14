@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-<ui:composition template="/pages/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
 	<ui:define name="corpo">
 		<h:form id="justificativaForm">
 			<h:inputHidden
@@ -332,17 +329,19 @@
 				<h:panelGrid id="display" columns="3" cellpadding="4"
 					style="margin:0 auto;">
 
-					<p:inputTextarea id="obsRh2" rows="5" cols="30" maxlength="300"
-						autoResize="true" required="true"
-						requiredMessage="#{msgs['form.justificativa.observacao.required']}"
-						value="#{justificativaBean.justificativa.obsRh}" />
-					<p:message id="obsRhMsg2" for="obsRh2" />
+					<p:inputTextarea id="motivoCancela" rows="5" cols="30"
+						maxlength="300" autoResize="true" required="true"
+						requiredMessage="#{msgs['form.justificativa.motivocancelamento.required']}"
+						value="#{justificativaBean.justificativa.cancelamento}" />
+					<p:message id="motivoCancelaMsg" for="motivoCancela" />
 					<h:outputText></h:outputText>
 					<p:column>
 						<p:commandButton id="btsalvar" value="Salvar"
 							actionListener="#{justificativaBean.cancelado}"
-							oncomplete="handleCadastroRequest(xhr, status, args)"
-							ajax="false">
+							oncomplete="handleCadastroRequest(xhr, status, args)" ajax="true">
+							<f:param
+								value="#{justificativaBean.justificativa.justificativaId}"
+								name="id" />
 						</p:commandButton>
 
 						<p:commandButton value="Voltar" update="display" process="@this"
@@ -366,4 +365,3 @@
 		</h:form>
 	</ui:define>
 </ui:composition>
-</html>

@@ -81,6 +81,9 @@ public class JustificativaPonto implements Serializable {
 	@Column(name = "obsRh", length = 300)
 	private String obsRh;
 
+	@Column(name = "cancelamento", length = 300)
+	private String cancelamento;
+	
 	@Column(name = "status", nullable = false)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
 			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.StatusEnum"),
@@ -348,6 +351,14 @@ public class JustificativaPonto implements Serializable {
         Set<HistoricoJustificativaPonto> resultado = new TreeSet<HistoricoJustificativaPonto>(new OrdenadorPorIdDesc());
         resultado.addAll(historico);
 		return resultado.iterator().next();
+	}
+
+	public String getCancelamento() {
+		return cancelamento;
+	}
+
+	public void setCancelamento(String cancelamento) {
+		this.cancelamento = cancelamento;
 	}
 
 }
