@@ -350,7 +350,7 @@
                                          value="#{msgs['dialog.cancelar.botao.salvar']}"
                                          update="display"
 							             action="#{justificativaBean.cancelado}"
-                                         oncomplete="handleCancelRequest()">
+                                         oncomplete="handleCancelRequest()" ajax="true">
 							<f:param name="id" value="#{justificativaBean.justificativa.justificativaId}"/>
 						</p:commandButton>
 					</p:column>
