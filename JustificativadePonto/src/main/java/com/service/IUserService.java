@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.domain.dto.CadastroSenha;
 import com.domain.dto.CadastroUsuario;
+import com.domain.dto.UsuarioLogado;
+import com.domain.dto.UsuarioLogin;
 import com.model.User;
 
 public interface IUserService {
@@ -19,7 +21,7 @@ public interface IUserService {
 	void updateUser(User user);
     User recuperar(Integer id);
 	boolean isExisteUser(CadastroUsuario usuario);
-	User buscaPorLogin(User user);
+	UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin);
     List<User> recuperaCoordenadores();
     List<User> recuperaSuperintendentes();
     List<User> recuperaRH();

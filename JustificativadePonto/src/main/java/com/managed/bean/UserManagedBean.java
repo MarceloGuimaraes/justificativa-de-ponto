@@ -52,7 +52,12 @@ public class UserManagedBean implements Serializable {
     }
 
     public String deletar(){
-        userService.apagar(usuario);
+        try {
+            userService.apagar(usuario);
+        } catch (Exception e) {
+            Message.addMessage("usuario.operacao.erro.naofoipossivelapagar", usuario.getNome());
+            return null;
+        }
         return SUCCESS;
     }
 

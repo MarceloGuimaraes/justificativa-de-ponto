@@ -1,4 +1,6 @@
-package com.jsf.dto;
+package com.domain.dto;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.io.Serializable;
 
@@ -32,5 +34,19 @@ public class UsuarioLogin implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public boolean equals(Object o){
+
+        if(!(o instanceof UsuarioLogin)){
+            return false;
+        }
+
+        UsuarioLogin outro = (UsuarioLogin) o;
+
+        return new EqualsBuilder()
+                .append(nome, outro.getNome())
+                .append(email, outro.getEmail())
+                .isEquals();
     }
 }

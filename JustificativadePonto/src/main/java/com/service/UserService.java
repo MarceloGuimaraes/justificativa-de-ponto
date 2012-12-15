@@ -3,10 +3,11 @@ package com.service;
 import com.dao.IUserDAO;
 import com.domain.dto.CadastroSenha;
 import com.domain.dto.CadastroUsuario;
+import com.domain.dto.UsuarioLogado;
+import com.domain.dto.UsuarioLogin;
 import com.domain.dto.exception.BusinessException;
 import com.model.PerfilEnum;
 import com.model.User;
-import com.util.Message;
 import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,8 +45,15 @@ public class UserService implements IUserService,Serializable {
     }
 
     @Override
-    public User buscaPorLogin(User user) {
-        return dao.buscaPorLogin(user);
+    public UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin) {
+        User user = new User();
+        user.setEmail(usuarioLogin.getEmail());
+        user.setSenha(usuarioLogin.getSenha());
+        user = dao.encontraPorAmostra(user);
+        if(user==null){
+            return null;
+        }
+        return mapper.map(user, UsuarioLogado.class);
     }
 
     @Override

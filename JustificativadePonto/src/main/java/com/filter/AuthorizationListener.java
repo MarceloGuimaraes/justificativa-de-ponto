@@ -1,6 +1,9 @@
 package com.filter;
 
-import com.model.User;
+import com.domain.SescoopConstants;
+import com.managed.bean.IPermissoesBean;
+import com.managed.bean.PermissoesBean;
+import com.util.JsfUtil;
 
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
@@ -13,9 +16,8 @@ public class AuthorizationListener implements PhaseListener {
 
 
     private static final long serialVersionUID = 1L;
-    private static final String PAGES_LOGIN_XHTML = "/pages/login.xhtml";
-    private static final String USUARIO_LOGADO = "usuarioLogado";
-    public static final String PAGES_LOGIN_FACES_REDIRECT_TRUE = "/pages/login?faces-redirect=true";
+    private static final String PAGE_LOGIN = "/pages/login.xhtml";
+    public static final String PAGE_LOGIN_REDIRECT = "/pages/login?faces-redirect=true";
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -24,14 +26,14 @@ public class AuthorizationListener implements PhaseListener {
 
         String currentPage = facesContext.getViewRoot().getViewId();
 
-        boolean isLoginPage = (currentPage.lastIndexOf(PAGES_LOGIN_XHTML) > -1);
-        ExternalContext context = facesContext.getExternalContext();
-        User currentUser = (User) context.getSessionMap().get(USUARIO_LOGADO);
+        boolean isLoginPage = (currentPage.lastIndexOf(PAGE_LOGIN) > -1);
 
-        if (!isLoginPage && currentUser == null) {
+        IPermissoesBean permissoes = JsfUtil.getValueExpression(IPermissoesBean.class, SescoopConstants.USUARIO_LOGADO);
+
+        if (!isLoginPage && (permissoes == null || !permissoes.isLogged())) {
 
             NavigationHandler handler = facesContext.getApplication().getNavigationHandler();
-            handler.handleNavigation(facesContext, null, PAGES_LOGIN_FACES_REDIRECT_TRUE);
+            handler.handleNavigation(facesContext, null, PAGE_LOGIN_REDIRECT);
             facesContext.renderResponse();
 
         }

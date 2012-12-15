@@ -16,11 +16,11 @@
 			<h:panelGrid columns="2">
 
 				<h:outputText value="#{msgs['login.label']}" />
-				<h:inputText id="username" value="#{loginController.user.email}"
+				<h:inputText id="username" value="#{loginController.usuarioLogin.email}"
 					required="true" requiredMessage="#{msgs['login.required']}" />
 
 				<h:outputText value="#{msgs['login.label.passw']}" />
-				<h:inputSecret id="password" value="#{loginController.user.senha}"
+				<h:inputSecret id="password" value="#{loginController.usuarioLogin.senha}"
 					required="true" requiredMessage="#{msgs['login.passw.required']}" />
 			</h:panelGrid>
 			

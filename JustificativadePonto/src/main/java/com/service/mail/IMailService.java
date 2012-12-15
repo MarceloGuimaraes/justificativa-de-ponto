@@ -1,5 +1,6 @@
 package com.service.mail;
 
+import com.domain.dto.UsuarioLogado;
 import com.model.User;
 
 import java.io.Serializable;
@@ -7,14 +8,14 @@ import java.util.List;
 
 public interface IMailService extends Serializable {
 
-    void enviarCoordenador(User remetente, List<User> destinatarios,
+    void enviarCoordenador(UsuarioLogado usuarioLogado, List<User> destinatarios,
                            Integer idDoc);
-    void enviarSuperintendente(User remetente, List<User> destinatarios,
+    void enviarSuperintendente(UsuarioLogado usuarioLogado, List<User> destinatarios,
                                Integer idDoc);
-    void enviarRh(User remetente, List<User> destinatarios, Integer idDoc);
-    void concluiRh(User remetente, List<User> destinatarios,
+    void enviarRh(UsuarioLogado usuarioLogado, List<User> destinatarios, Integer idDoc);
+    void concluiRh(UsuarioLogado usuarioLogado, List<User> destinatarios,
                    Integer idDoc);
-    void cancelado(User remetente, List<User> destinatarios,
+    void cancelado(UsuarioLogado usuarioLogado, List<User> destinatarios,
                    Integer idDoc);
 
 }

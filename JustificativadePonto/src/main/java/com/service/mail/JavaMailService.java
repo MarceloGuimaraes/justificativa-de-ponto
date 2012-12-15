@@ -1,5 +1,6 @@
 package com.service.mail;
 
+import com.domain.dto.UsuarioLogado;
 import com.model.User;
 import com.util.Message;
 import org.springframework.mail.MailSender;
@@ -21,13 +22,21 @@ public class JavaMailService implements IMailService {
 		this.desenv = desenv;
 	}
 
+    private String formata(String nome, String email){
+        StringBuilder endereco = new StringBuilder(nome);
+        endereco.append("<");
+        endereco.append(email);
+        endereco.append(">");
+        return endereco.toString();
+    }
+
 	private String formata(User user) {
-		StringBuilder endereco = new StringBuilder(user.getNome());
-		endereco.append("<");
-		endereco.append(user.getEmail());
-		endereco.append(">");
-		return endereco.toString();
+		return formata(user.getNome(), user.getEmail());
 	}
+
+    private String formata(UsuarioLogado user){
+        return formata(user.getNome(), user.getEmail());
+    }
 
     private List<String> formata(List<User> users){
         List<String> destinatarios = new LinkedList<String>();
@@ -65,7 +74,7 @@ public class JavaMailService implements IMailService {
 		}
 	}
 
-	public void enviarCoordenador(User remetente, List<User> destinatarios,
+	public void enviarCoordenador(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
 
 		assunto = Message
@@ -75,7 +84,7 @@ public class JavaMailService implements IMailService {
 		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto, corpo);
 	}
 
-	public void enviarSuperintendente(User remetente, List<User> destinatarios,
+	public void enviarSuperintendente(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
 
 		assunto = Message
@@ -85,7 +94,7 @@ public class JavaMailService implements IMailService {
 		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto, corpo);
 	}
 
-	public void enviarRh(User remetente, List<User> destinatarios, Integer idDoc) {
+	public void enviarRh(UsuarioLogado remetente, List<User> destinatarios, Integer idDoc) {
 
 		assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.rh");
@@ -95,7 +104,7 @@ public class JavaMailService implements IMailService {
 	}
 
 	
-	public void concluiRh(User remetente, List<User> destinatarios,
+	public void concluiRh(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
 
 		assunto = Message
@@ -106,7 +115,7 @@ public class JavaMailService implements IMailService {
 	}
 
 	
-	public void cancelado(User remetente, List<User> destinatarios,
+	public void cancelado(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
 
 		assunto = Message

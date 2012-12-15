@@ -1,11 +1,12 @@
 package com.managed.bean;
 
-import com.model.User;
+import com.domain.SescoopConstants;
+import com.domain.dto.UsuarioLogado;
+import com.domain.dto.UsuarioLogin;
 import com.service.IUserService;
 import com.util.JsfUtil;
 import com.util.Message;
 
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -16,46 +17,55 @@ public class LoginBean implements Serializable {
 
     private static final String SUCCESS = "welcome";
 
-    private static final String USUARIO_LOGADO = "usuarioLogado";
-
     private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
+
+    public static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
 
     IUserService userService;
 
     IPermissoesBean permissoesBean;
 
-    private User user;
+    private UsuarioLogin usuarioLogin;
 
-    public User getUser() {
-        return user;
+    public LoginBean(IPermissoesBean permissoes,
+                     IUserService userService) {
+
+        this.permissoesBean = permissoes;
+
+        this.userService = userService;
+
+        usuarioLogin = new UsuarioLogin();
+
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public UsuarioLogin getUsuarioLogin() {
+        return usuarioLogin;
+    }
+
+    public void setUsuarioLogin(UsuarioLogin usuarioLogin) {
+        this.usuarioLogin = usuarioLogin;
     }
 
     public String efetuaLogin() {
-        if (user.getEmail() == null || user.getSenha() == null) {
+        if (usuarioLogin.getEmail() == null || usuarioLogin.getSenha() == null) {
             Message.addMessage("login.userEpassw.required");
             return null;
         }
 
-        user = userService.buscaPorLogin(user);
+        UsuarioLogado usuarioLogado = userService.buscaPorLogin(usuarioLogin);
 
-        if (user != null) {
+        if (usuarioLogado != null) {
 
-            JsfUtil.setSessionValue(USUARIO_LOGADO, user);
-
-            permissoesBean.setUsuarioLogado(user);
+            permissoesBean.setUsuarioLogado(usuarioLogado);
 
             // verifica se contem 5 caracteres conforme a senha default
-            if(user.getSenha()==null){
+            if(usuarioLogin.getSenha()==null){
                 Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
                 return REDIRECT_TROCA_SENHA;
             }
-            if (user.getSenha().length() == 5) {
-                if (user.getSenha().equals(
-                        user.getSenha().replace(".", "").replace("-", "")
+            if (usuarioLogin.getSenha().length() == 5) {
+                if (usuarioLogin.getSenha().equals(
+                        usuarioLogin.getSenha().replace(".", "").replace("-", "")
                                 .substring(0, 5))) {
                     Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
                     return REDIRECT_TROCA_SENHA;
@@ -74,27 +84,13 @@ public class LoginBean implements Serializable {
 
     public String logOut() {
 
-        this.user = new User();
-
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
         context.invalidateSession();
 
-        JsfUtil.removeFromSession(USUARIO_LOGADO);
+        permissoesBean.logOut();
 
-        return "/pages/login?faces-redirect=true";
-
-    }
-
-    public LoginBean(IPermissoesBean permissoes,
-                     IUserService userService) {
-
-        this.permissoesBean = permissoes;
-        this.userService = userService;
-
-        if (this.user == null) {
-            this.user = new User();
-        }
+        return REDIREC_LOGOUT;
 
     }
 

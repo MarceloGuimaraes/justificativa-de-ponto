@@ -1,5 +1,7 @@
 package com.managed.bean;
 
+import com.domain.dto.AcessoJustificativa;
+import com.domain.service.IWorkflow;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
@@ -10,13 +12,10 @@ import com.model.User;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
-import com.service.mail.JavaMailService;
 import com.util.JsfUtil;
 import com.util.Message;
 import org.primefaces.context.RequestContext;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
@@ -32,6 +31,7 @@ public class JustificativaManagedBean implements Serializable {
     private IJustificativaService justificativaService;
     private IUserService userService;
     private IMailService mailService;
+    private IWorkflow workflow;
 
     private IPermissoesBean permissoes;
 
@@ -49,21 +49,18 @@ public class JustificativaManagedBean implements Serializable {
     private Integer idSuperintendente;
     private Integer idRh;
 
-
-    private boolean editElaboracao = false;
-    private boolean editAguardaAprovCoord = false;
-    private boolean editAguardaAprovRh = false;
-    private boolean editAguardaAprovSuperintendente = false;
-    private boolean showFldCancelar = false;
+    private AcessoJustificativa acesso;
 
     public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IUserService userService,
                                     IMailService mailService,
-                                    IPermissoesBean permissoes) {
+                                    IPermissoesBean permissoes,
+                                    IWorkflow workflow) {
 
         this.justificativaService = justificativaService;
         this.userService = userService;
         this.mailService = mailService;
+        this.workflow = workflow;
 
         this.permissoes = permissoes;
 
@@ -94,8 +91,7 @@ public class JustificativaManagedBean implements Serializable {
         }
 
         if (justificativaRecebida == null) {
-            justificativaRecebida = new JustificativaPonto(
-                    permissoes.getUsuarioLogado());
+            justificativaRecebida = justificativaService.nova(permissoes.getUsuarioLogado());
         }
 
         setJustificativa(justificativaRecebida);
@@ -153,11 +149,7 @@ public class JustificativaManagedBean implements Serializable {
 
     public void setJustificativa(JustificativaPonto justificativa) {
 
-        editElaboracao = permissoes.editElaboracao(justificativa);
-        editAguardaAprovCoord = permissoes.editAguardaAprovCoord(justificativa);
-        editAguardaAprovSuperintendente = permissoes.editAguardaAprovSuperintendente(justificativa);
-        editAguardaAprovRh = permissoes.editAguardaAprovRh(justificativa);
-        showFldCancelar = permissoes.showFldCancelar(justificativa);
+        acesso = workflow.verificaAcesso(justificativa);
 
         handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
 
@@ -188,8 +180,6 @@ public class JustificativaManagedBean implements Serializable {
         this.idRh = idRh;
     }
 
-
-
     // AUTOR SOLICITANTE
     public String enviarCoordenador() {
 
@@ -199,15 +189,11 @@ public class JustificativaManagedBean implements Serializable {
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getCoordenador());
 
-        mailService.enviarCoordenador(justificativa.getSolicitante(), destinos,
+        mailService.enviarCoordenador(permissoes.getUsuarioLogado(), destinos,
                 justificativa.getJustificativaId());
 
-        justificativa.setStatus(StatusEnum.APROVCOORD);
+        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(), StatusEnum.APROVCOORD, TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
-        justificativa.adiciona(permissoes.getUsuarioLogado(),
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
-
-        justificativaService.adicionar(justificativa);
         return SUCCESS;
     }
 
@@ -221,18 +207,16 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getSuperintendente());
 
-        mailService.enviarSuperintendente(justificativa.getCoordenador(), destinos,
+        mailService.enviarSuperintendente(permissoes.getUsuarioLogado(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovCoord(new Date());
-        justificativa.setStatus(StatusEnum.APROVSUPERINTENDENTE);
-        justificativa.adiciona(justificativa.getCoordenador(),
-                TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
-        justificativa
-                .adiciona(permissoes.getUsuarioLogado(),
-                        TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
-        justificativaService.atualizar(justificativa);
+        justificativaService.mudaSituacao(justificativa,
+                permissoes.getUsuarioLogado(),
+                StatusEnum.APROVSUPERINTENDENTE,
+                TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
         return SUCCESS;
     }
@@ -248,17 +232,16 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getSolicitante());
         destinos.add(justificativa.getRh());
 
-        mailService.enviarRh(justificativa.getSuperintendente(), destinos,
+        mailService.enviarRh(permissoes.getUsuarioLogado(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovSuper(new Date());
-        justificativa.setStatus(StatusEnum.EXECUCAORH);
-        justificativa.adiciona(permissoes.getUsuarioLogado(),
-                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
-        justificativa.adiciona(permissoes.getUsuarioLogado(),
+
+        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(),
+                StatusEnum.EXECUCAORH,
+                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
-        justificativaService.atualizar(justificativa);
         return SUCCESS;
     }
 
@@ -270,14 +253,16 @@ public class JustificativaManagedBean implements Serializable {
         destinos.add(justificativa.getCoordenador());
         destinos.add(justificativa.getSuperintendente());
 
-        mailService.concluiRh(justificativa.getRh(), destinos,
+        mailService.concluiRh(permissoes.getUsuarioLogado(), destinos,
                 justificativa.getJustificativaId());
 
         justificativa.setDtAprovRh(new Date());
-        justificativa.setStatus(StatusEnum.CONCLUIDO);
-        justificativa.adiciona(permissoes.getUsuarioLogado(),
+
+        justificativaService.mudaSituacao(justificativa,
+                permissoes.getUsuarioLogado(),
+                StatusEnum.CONCLUIDO,
                 TipoEventoJustificativaPontoEnum.APROVADO_RH);
-        justificativaService.atualizar(justificativa);
+
         return SUCCESS;
     }
 
@@ -296,14 +281,14 @@ public class JustificativaManagedBean implements Serializable {
                 if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
                     //AUTOR COORDENADOR
                     destinos.add(justificativa.getSolicitante());
-                    mailService.cancelado(justificativa.getCoordenador(), destinos, justificativa.getJustificativaId());
+                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
                     cancelado = true;
 
                 }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
                     //AUTOR SUPERINTENDENTE
                     destinos.add(justificativa.getSolicitante());
                     destinos.add(justificativa.getCoordenador());
-                    mailService.cancelado(justificativa.getSuperintendente(), destinos, justificativa.getJustificativaId());
+                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
                     cancelado = true;
 
                 }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
@@ -311,7 +296,7 @@ public class JustificativaManagedBean implements Serializable {
                     destinos.add(justificativa.getSolicitante());
                     destinos.add(justificativa.getCoordenador());
                     destinos.add(justificativa.getSuperintendente());
-                    mailService.cancelado(justificativa.getRh(), destinos, justificativa.getJustificativaId());
+                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
                     cancelado = true;
 
                 } else {
@@ -335,34 +320,8 @@ public class JustificativaManagedBean implements Serializable {
 
     }
 
-
-
-    public boolean isEditElaboracao() {
-        return editElaboracao;
-    }
-
-
-    public boolean isShowFldCancelar() {
-        return showFldCancelar;
-    }
-
-    public boolean isEditAguardaAprovCoord() {
-        return editAguardaAprovCoord;
-    }
-
-
-    public boolean isEditAguardaAprovRh() {
-        return editAguardaAprovRh;
-    }
-
-
-    public boolean isEditAguardaAprovSuperintendente() {
-        return editAguardaAprovSuperintendente;
-    }
-
-
     public String getLabelCadastro() {
-        if (this.justificativa.getJustificativaId() == 0) {
+        if (justificativa.getJustificativaId()==null || justificativa.getJustificativaId() == 0) {
             return Message
                     .getBundleMessage("cadastroJustificativa.label.titulo");
         } else {
@@ -385,4 +344,11 @@ public class JustificativaManagedBean implements Serializable {
         return resultado;
     }
 
+    public AcessoJustificativa getAcesso() {
+        return acesso;
+    }
+
+    public void setAcesso(AcessoJustificativa acesso) {
+        this.acesso = acesso;
+    }
 }

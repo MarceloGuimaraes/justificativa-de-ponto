@@ -37,7 +37,7 @@ public class JustificativaPonto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "justificativaId")
-	private int justificativaId;
+	private Integer justificativaId;
 
 	@Column(name = "dtCriacao")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -147,11 +147,11 @@ public class JustificativaPonto implements Serializable {
 		adiciona(solicitante, TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO);
 	}
 
-	public int getJustificativaId() {
+	public Integer getJustificativaId() {
 		return justificativaId;
 	}
 
-	public void setJustificativaId(int justificativaId) {
+	public void setJustificativaId(Integer justificativaId) {
 		this.justificativaId = justificativaId;
 	}
 

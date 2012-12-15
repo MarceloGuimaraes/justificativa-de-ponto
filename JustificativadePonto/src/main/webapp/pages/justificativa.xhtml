@@ -53,7 +53,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:selectOneMenu id="motivo"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}"
 								value="#{justificativaBean.justificativa.motivo}"
 								valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
 								required="true"
@@ -74,7 +74,7 @@
 						</p:column>
 						<p:column>
 							<p:calendar styleClass="calendar"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}"
 								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
 								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.hrini.required']}"
@@ -87,7 +87,7 @@
 						</p:column>
 						<p:column>
 							<p:calendar styleClass="calendar"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}"
 								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
 								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
@@ -104,7 +104,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:selectOneMenu id="causafalta" required="true"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}"
 								requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
 								value="#{justificativaBean.justificativa.tipofalta}">
 								<f:selectItem itemValue="" itemLabel="" />
@@ -122,7 +122,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:selectOneMenu id="tipobancohoras"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}"
 								value="#{justificativaBean.justificativa.tipobancohoras}"
 								required="true"
 								requiredMessage="#{msgs['form.justificativa.tipobancohoras.required']}">
@@ -140,7 +140,7 @@
 					<p:row>
 						<p:column style="text-align:left">
 							<p:inputTextarea id="descricao" rows="5" cols="30"
-								disabled="#{!justificativaBean.editElaboracao}" maxlength="300"
+								disabled="#{!justificativaBean.acesso.editaSolicitante}" maxlength="300"
 								autoResize="true" required="true"
 								requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
 								value="#{justificativaBean.justificativa.descricao}" />
@@ -158,7 +158,7 @@
 						<p:column>
 							<p:selectOneMenu id="coordenadorSelect"
 								value="#{justificativaBean.idCoordenador}" required="true"
-								disabled="#{!justificativaBean.editElaboracao}"
+								disabled="#{not justificativaBean.acesso.editaSolicitante}"
 								requiredMessage="#{msgs['form.justificativa.coordenador.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.coordenadorList}" />
@@ -178,7 +178,7 @@
 						<p:column>
 							<p:selectOneMenu id="superintendenteSelect"
 								value="#{justificativaBean.idSuperintendente}" required="true"
-								disabled="#{not justificativaBean.editAguardaAprovCoord}"
+								disabled="#{not justificativaBean.acesso.editaCoordenador}"
 								requiredMessage="#{msgs['form.justificativa.superintendente.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
 								<f:selectItems value="#{justificativaBean.superintendenteList}" />
@@ -197,7 +197,7 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="rhSelect" value="#{justificativaBean.idRh}"
-								disabled="#{!justificativaBean.editAguardaAprovSuperintendente}"
+								disabled="#{not justificativaBean.acesso.editaSuperintendente}"
 								required="true"
 								requiredMessage="#{msgs['form.justificativa.rh.required']}">
 								<f:selectItem itemValue="" itemLabel="" />
@@ -217,7 +217,7 @@
 								<h:outputLabel
 									value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
 								<p:selectOneMenu id="decisaoRh"
-									disabled="#{!justificativaBean.editAguardaAprovRh}"
+									disabled="#{not justificativaBean.acesso.editaRh}"
 									value="#{justificativaBean.justificativa.tipoDecisao}"
 									required="true"
 									requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
@@ -232,7 +232,7 @@
 								<h:outputLabel
 									value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
 								<p:inputTextarea id="obsRh" rows="5" cols="30"
-									disabled="#{!justificativaBean.editAguardaAprovRh}"
+									disabled="#{not justificativaBean.acesso.editaRh}"
 									maxlength="300" autoResize="true" required="true"
 									requiredMessage="#{msgs['form.justificativa.observacao.required']}"
 									value="#{justificativaBean.justificativa.obsRh}" />
@@ -244,14 +244,14 @@
 
 				<!-- AUTOR SOLICITANTE -->
 				<p:commandButton id="enviarCoord"
-					rendered="#{justificativaBean.editElaboracao}"
+					rendered="#{justificativaBean.acesso.editaSolicitante}"
 					value="#{msgs['form.justificativa.botao.enviarcoord']}"
 					update="panel" action="#{justificativaBean.enviarCoordenador}"
 					icon="ui-icon-circle-arrow-e" ajax="false" />
 
 				<!-- AUTOR COORDENADOR -->
 				<p:commandButton id="enviarSuperintendente"
-					rendered="#{justificativaBean.editAguardaAprovCoord}"
+					rendered="#{justificativaBean.acesso.editaCoordenador}"
 					value="#{msgs['form.justificativa.botao.enviarsuperintendente']}"
 					update="panel" action="#{justificativaBean.enviarSuperintendente}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
@@ -261,7 +261,7 @@
 
 				<!-- AUTOR SUPERINTENDENTE -->
 				<p:commandButton id="executarRH"
-					rendered="#{justificativaBean.editAguardaAprovSuperintendente}"
+					rendered="#{justificativaBean.acesso.editaSuperintendente}"
 					value="#{msgs['form.justificativa.botao.enviarexecucaorh']}"
 					update="panel" action="#{justificativaBean.enviarRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
@@ -271,7 +271,7 @@
 
 				<!-- AUTOR RH -->
 				<p:commandButton id="btnConcluidoRH"
-					rendered="#{justificativaBean.editAguardaAprovRh}"
+					rendered="#{justificativaBean.acesso.editaRh}"
 					value="#{msgs['form.justificativa.botao.concluidorh']}"
 					update="panel" action="#{justificativaBean.concluiRh}"
 					icon="ui-icon-circle-arrow-e" ajax="false">
@@ -281,7 +281,7 @@
 
 				<!-- AUTORES: COORDENADOR;SUPERINTENDENTE;RH;ADMIN -->
 				<p:commandButton id="btnCancelar"
-					rendered="#{justificativaBean.showFldCancelar}"
+					rendered="#{justificativaBean.acesso.cancelar}"
 					value="#{msgs['form.justificativa.botao.cancelar']}"
 					oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e">
                     <f:param name="id" value="#{justificativaBean.justificativa.justificativaId}" />

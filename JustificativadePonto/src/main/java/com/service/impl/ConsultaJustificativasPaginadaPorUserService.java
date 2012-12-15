@@ -3,7 +3,9 @@ package com.service.impl;
 import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
 import com.managed.bean.IPermissoesBean;
 import com.model.JustificativaPonto;
+import com.model.User;
 import com.service.IConsultaPaginadaService;
+import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,10 +17,14 @@ public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPa
 
     IPermissoesBean permissoes;
 
+    Mapper mapper;
+
     public ConsultaJustificativasPaginadaPorUserService(IConsultaJustificativaPontoPorUsuarioDao dao,
-                                                        IPermissoesBean permissoes) {
+                                                        IPermissoesBean permissoes,
+                                                        Mapper mapper) {
         this.dao = dao;
         this.permissoes = permissoes;
+        this.mapper = mapper;
     }
 
     @Override
@@ -26,7 +32,10 @@ public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPa
         if(permissoes.getUsuarioLogado()==null){
             throw new IllegalStateException("O usuario logado nao foi informado");
         }
-        return dao.todos(startIndex, pageSize, permissoes.getUsuarioLogado());
+
+        User user = mapper.map(permissoes.getUsuarioLogado(), User.class);
+
+        return dao.todos(startIndex, pageSize, user);
     }
 
     @Override
@@ -34,6 +43,9 @@ public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPa
         if(permissoes.getUsuarioLogado()==null){
             throw new IllegalStateException("O usuario logado nao foi informado");
         }
-        return dao.count(permissoes.getUsuarioLogado());
+
+        User user = mapper.map(permissoes.getUsuarioLogado(), User.class);
+
+        return dao.count(user);
     }
 }

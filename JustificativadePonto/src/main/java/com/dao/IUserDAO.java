@@ -9,9 +9,6 @@ import java.util.List;
 public interface IUserDAO extends ICrudDao<User> {
 
     User recuperar(User user);
-    User recuperarPorCpf(User user);
-    User recuperarPorEmail(User user);
-    User buscaPorLogin(User user);
     User encontraPorAmostra(User user);
     List<User> todos();
     List<User> listar(EnumSet<PerfilEnum> perfis);
