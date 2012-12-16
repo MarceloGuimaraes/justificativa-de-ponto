@@ -78,9 +78,9 @@ public class JavaMailService implements IMailService {
 			Integer idDoc) {
 
 		assunto = Message
-				.getBundleMessage("mail.teste.subject"); //mail.subject.aguardandoaprovacao.coordenador");
-		corpo = Message.getBundleMessage("mail.teste.corpo"); //mail.corpo.enviocoord");
-
+				.getBundleMessage("mail.subject.aguardandoaprovacao.coordenador");
+		corpo = Message.getBundleMessage("mail.corpo.enviocoord"); 
+		
 		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto, corpo);
 	}
 

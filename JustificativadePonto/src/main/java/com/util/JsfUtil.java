@@ -1,8 +1,10 @@
 package com.util;
 
+import java.util.Map;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 public class JsfUtil {
 
@@ -31,5 +33,17 @@ public class JsfUtil {
         }
         return null;
     }
+    
+   
+    
+    public static String getUrlToSendMail(){
+        	
+    	FacesContext fc = FacesContext.getCurrentInstance(); 
+    	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest(); 
+    	final String url = request .getRequestURI(); 
+        
+        return url;
+    }
+    
 
 }
