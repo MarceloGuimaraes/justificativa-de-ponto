@@ -1,5 +1,6 @@
 package com.model;
 
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -86,37 +87,37 @@ public class JustificativaPonto implements Serializable {
 	
 	@Column(name = "status", nullable = false)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.StatusEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+			@Parameter(name = "enumClass", value = "com.model.StatusEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private StatusEnum status;
 
 	@Column(name = "motivo", nullable = false)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.MotivoEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+			@Parameter(name = "enumClass", value = "com.model.MotivoEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private MotivoEnum motivo;
 
 	@Column(name = "tipodefalta", nullable = true)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoFaltaEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+			@Parameter(name = "enumClass", value = "com.model.TipoFaltaEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoFaltaEnum tipofalta;
 
 	@Column(name = "tipobancohoras")
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoBancoHorasEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+			@Parameter(name = "enumClass", value = "com.model.TipoBancoHorasEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoBancoHorasEnum tipobancohoras;
 
 	@Column(name = "tipodecisao")
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.TipoDecisaoEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+			@Parameter(name = "enumClass", value = "com.model.TipoDecisaoEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoDecisaoEnum tipoDecisao;
 
 	@ManyToOne(targetEntity = User.class, optional = false)
