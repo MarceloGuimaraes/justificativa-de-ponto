@@ -37,12 +37,12 @@ public class JsfUtil {
    
     
     public static String getUrlToSendMail(){
-        	
+    	
     	FacesContext fc = FacesContext.getCurrentInstance(); 
     	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest(); 
-    	final String url = request .getRequestURI(); 
-        
-        return url;
+    	String contextURL = request.getRequestURL().toString().replace(request.getRequestURI().substring(0), "") + request.getContextPath();
+    	
+        return contextURL;
     }
     
 
