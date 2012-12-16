@@ -4,6 +4,7 @@ import com.dao.Dao;
 import com.dao.IConsultaJustificativaPontoDao;
 import com.model.JustificativaPonto;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 
@@ -11,7 +12,8 @@ public class ConsultaJustificativaPontoDao extends Dao implements IConsultaJusti
 
     private String ordenacao;
 
-    public ConsultaJustificativaPontoDao(String ordenacao) {
+    public ConsultaJustificativaPontoDao(SessionFactory sessionFactory, String ordenacao) {
+        super(sessionFactory);
         this.ordenacao = ordenacao;
     }
 

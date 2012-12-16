@@ -1,15 +1,14 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<ui:composition template="/pages/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/pages/template.xhtml">
 	<ui:define name="corpo">
 		<h:form id="senhaForm">
 			<p:panel id="panel" header="#{msgs['login.passw.altera']}">
 
-				<p:messages id="a"></p:messages>
+				<p:messages id="a"/>
 
 				<h:inputHidden id="id" value="#{alteraSenhaManagedBean.cadastroSenha.id}" />
 				<h:panelGrid id="panelAltera" columns="3" cellpadding="5">
@@ -45,4 +44,3 @@
 		</h:form>
 	</ui:define>
 </ui:composition>
-</html>

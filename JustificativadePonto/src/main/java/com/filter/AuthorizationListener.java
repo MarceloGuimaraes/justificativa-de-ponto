@@ -2,11 +2,9 @@ package com.filter;
 
 import com.domain.SescoopConstants;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.PermissoesBean;
 import com.util.JsfUtil;
 
 import javax.faces.application.NavigationHandler;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;

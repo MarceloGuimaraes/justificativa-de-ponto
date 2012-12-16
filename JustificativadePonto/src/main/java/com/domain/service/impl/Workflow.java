@@ -9,20 +9,18 @@ import com.model.User;
 import com.service.IUserService;
 import org.dozer.Mapper;
 
-public class Workflow implements IWorkflow {
+import java.io.Serializable;
 
-    IPermissoesBean permissoes;
+public class Workflow implements IWorkflow, Serializable {
 
-    IUserService userService;
+    private IPermissoesBean permissoes;
 
-    Mapper mapper;
+    private IUserService userService;
 
     public Workflow(IPermissoesBean permissoes,
-                    IUserService userService,
-                    Mapper mapper) {
+                    IUserService userService) {
         this.permissoes = permissoes;
         this.userService = userService;
-        this.mapper = mapper;
     }
 
     @Override

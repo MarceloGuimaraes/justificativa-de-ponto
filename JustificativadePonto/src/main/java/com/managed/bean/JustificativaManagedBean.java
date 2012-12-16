@@ -1,5 +1,6 @@
 package com.managed.bean;
 
+import com.spring.util.ApplicationContextProvider;
 import com.domain.dto.AcessoJustificativa;
 import com.domain.service.IWorkflow;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
@@ -18,6 +19,8 @@ import org.primefaces.context.RequestContext;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
@@ -28,10 +31,10 @@ public class JustificativaManagedBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String SUCCESS = "welcome";
 
-    private IJustificativaService justificativaService;
-    private IUserService userService;
-    private IMailService mailService;
-    private IWorkflow workflow;
+    private transient IJustificativaService justificativaService;
+    private transient IUserService userService;
+    private transient IMailService mailService;
+    private transient IWorkflow workflow;
 
     private IPermissoesBean permissoes;
 
@@ -78,8 +81,7 @@ public class JustificativaManagedBean implements Serializable {
         String id = JsfUtil.getParameter("id");
 
         if (id != null) {
-            justificativaRecebida = this.justificativaService.recuperar(Integer
-                    .parseInt(id));
+            justificativaRecebida = this.justificativaService.recuperar(Integer.parseInt(id));
             idCoordenador = justificativaRecebida.getCoordenador().getId();
             if (justificativaRecebida.getSuperintendente() != null) {
                 idSuperintendente = justificativaRecebida.getSuperintendente()
@@ -350,5 +352,15 @@ public class JustificativaManagedBean implements Serializable {
 
     public void setAcesso(AcessoJustificativa acesso) {
         this.acesso = acesso;
+    }
+
+    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
+        s.defaultReadObject();
+
+        justificativaService = (IJustificativaService) ApplicationContextProvider.getBean("JustificativaService");
+        userService = (IUserService) ApplicationContextProvider.getBean("UserService");
+        mailService = (IMailService) ApplicationContextProvider.getBean("mailService");
+        workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+
     }
 }

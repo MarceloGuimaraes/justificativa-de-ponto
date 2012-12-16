@@ -22,9 +22,9 @@ public class UserService implements IUserService,Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    IUserDAO dao;
+    private IUserDAO dao;
 
-    Mapper mapper;
+    private transient Mapper mapper;
 
     public UserService(IUserDAO dao, Mapper mapper) {
         this.dao = dao;

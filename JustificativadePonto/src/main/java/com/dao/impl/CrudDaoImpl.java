@@ -3,10 +3,15 @@ package com.dao.impl;
 import com.dao.Dao;
 import com.dao.ICrudDao;
 import org.hibernate.Hibernate;
+import org.hibernate.SessionFactory;
 
 import java.io.Serializable;
 
 public abstract class CrudDaoImpl<T> extends Dao implements ICrudDao<T> {
+
+    protected CrudDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
 
     protected abstract Class<T> getEntityClass();
 

@@ -5,6 +5,7 @@ import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
 import com.model.JustificativaPonto;
 import com.model.User;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 
@@ -12,7 +13,8 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
 
     private String ordenador;
 
-    public ConsultaJustificativaPontoPorUsuarioDao(String ordenador) {
+    public ConsultaJustificativaPontoPorUsuarioDao(SessionFactory sessionFactory, String ordenador) {
+        super(sessionFactory);
         this.ordenador = ordenador;
     }
 

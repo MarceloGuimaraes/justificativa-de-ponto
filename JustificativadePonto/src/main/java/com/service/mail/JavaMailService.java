@@ -14,14 +14,10 @@ public class JavaMailService implements IMailService {
 
 	private MailSender mailSender;
 	private boolean desenv;
-	private String assunto;
-	private String corpo;
-	private String urlAux;
 
 	private static final String URL_ID = "/pages/justificativa.faces?id=";
 
-	public JavaMailService(org.springframework.mail.MailSender mailSender,
-			boolean desenv) {
+	public JavaMailService(MailSender mailSender, boolean desenv) {
 		this.mailSender = mailSender;
 		this.desenv = desenv;
 	}
@@ -80,8 +76,11 @@ public class JavaMailService implements IMailService {
 
 	public void enviarCoordenador(UsuarioLogado remetente,
 			List<User> destinatarios, Integer idDoc) {
+        String assunto;
+        String corpo;
+        String urlAux;
 
-		assunto = Message
+        assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.coordenador");
 
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
@@ -94,8 +93,11 @@ public class JavaMailService implements IMailService {
 
 	public void enviarSuperintendente(UsuarioLogado remetente,
 			List<User> destinatarios, Integer idDoc) {
+        String assunto;
+        String corpo;
+        String urlAux;
 
-		assunto = Message
+        assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.superintendente");
 
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
@@ -107,8 +109,11 @@ public class JavaMailService implements IMailService {
 
 	public void enviarRh(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
+        String assunto;
+        String corpo;
+        String urlAux;
 
-		assunto = Message
+        assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.rh");
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
 		corpo = Message.getBundleMessage("mail.corpo.enviorh", urlAux);
@@ -119,8 +124,11 @@ public class JavaMailService implements IMailService {
 
 	public void concluiRh(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
+        String assunto;
+        String corpo;
+        String urlAux;
 
-		assunto = Message.getBundleMessage("mail.subject.aprovado.rh.concluir");
+        assunto = Message.getBundleMessage("mail.subject.aprovado.rh.concluir");
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
 		corpo = Message.getBundleMessage("mail.corpo.concluirh", urlAux);
 
@@ -130,8 +138,11 @@ public class JavaMailService implements IMailService {
 
 	public void cancelado(UsuarioLogado remetente, List<User> destinatarios,
 			Integer idDoc) {
+        String assunto;
+        String corpo;
+        String urlAux;
 
-		assunto = Message.getBundleMessage("mail.subject.cancelado");
+        assunto = Message.getBundleMessage("mail.subject.cancelado");
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
 		corpo = Message.getBundleMessage("mail.corpo.cancelado", urlAux);
 

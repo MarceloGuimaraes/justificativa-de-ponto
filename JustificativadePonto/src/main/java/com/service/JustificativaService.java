@@ -20,7 +20,8 @@ public class JustificativaService implements IJustificativaService,
 	
 	private IJustificativaDAO dao;
 
-    private Mapper mapper;
+
+    private transient Mapper mapper;
 
     public JustificativaService(IJustificativaDAO dao, Mapper mapper) {
         this.dao = dao;

@@ -6,6 +6,7 @@ import com.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Property;
 
 import java.io.Serializable;
@@ -16,6 +17,10 @@ import java.util.List;
 public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+    protected UserDAO(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
 
     @Override
     protected Class<User> getEntityClass() {

@@ -67,7 +67,7 @@
 
     <!-- DAO Declaration -->
     <bean id="dao" class="com.dao.Dao" abstract="true" >
-        <property name="sessionFactory" ref="sessionFactory" />
+        <constructor-arg ref="sessionFactory" />
     </bean>
 
     <bean id="UserDAO" class="com.dao.impl.UserDAO" parent="dao" />
@@ -102,7 +102,6 @@
     <bean id="workflow" class="com.domain.service.impl.Workflow">
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="UserService" />
-        <constructor-arg ref="mapper" />
     </bean>
 
     <!-- ManagedBeans -->
@@ -124,7 +123,7 @@
         <constructor-arg ref="PermissoesBean" />
     </bean>
 
-    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="request">
+    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="UserService" />
         <constructor-arg ref="mailService" />
@@ -211,5 +210,18 @@
           class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+
+    <!-- Criando o scopo de View -->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="view">
+                    <bean class="com.spring.scope.ViewScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean class="com.spring.util.ApplicationContextProvider" id="applicationContextProvider" />
 
 </beans>
