@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import java.io.Serializable;
 
 public class UsuarioLogin implements Serializable {
+
     private String nome;
     private String email;
     private String senha;
@@ -49,4 +50,5 @@ public class UsuarioLogin implements Serializable {
                 .append(email, outro.getEmail())
                 .isEquals();
     }
+
 }

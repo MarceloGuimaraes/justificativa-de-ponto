@@ -191,10 +191,12 @@ public class JustificativaManagedBean implements Serializable {
         List<User> destinos = new LinkedList<User>();
         destinos.add(justificativa.getCoordenador());
 
-        mailService.enviarCoordenador(permissoes.getUsuarioLogado(), destinos,
-                justificativa.getJustificativaId());
+        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(),
+                StatusEnum.APROVCOORD, TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
-        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(), StatusEnum.APROVCOORD, TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+        mailService.enviarCoordenador(permissoes.getUsuarioLogado(),
+                destinos, justificativa.getJustificativaId());
+
 
         return SUCCESS;
     }

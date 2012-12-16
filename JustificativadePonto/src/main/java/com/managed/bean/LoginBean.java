@@ -1,10 +1,8 @@
 package com.managed.bean;
 
-import com.domain.SescoopConstants;
 import com.domain.dto.UsuarioLogado;
 import com.domain.dto.UsuarioLogin;
 import com.service.IUserService;
-import com.util.JsfUtil;
 import com.util.Message;
 
 import javax.faces.context.ExternalContext;
@@ -19,13 +17,15 @@ public class LoginBean implements Serializable {
 
     private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
 
-    public static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
+    private static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
 
-    IUserService userService;
+    private IUserService userService;
 
-    IPermissoesBean permissoesBean;
+    private IPermissoesBean permissoesBean;
 
     private UsuarioLogin usuarioLogin;
+
+    private String id;
 
     public LoginBean(IPermissoesBean permissoes,
                      IUserService userService) {
@@ -36,6 +36,8 @@ public class LoginBean implements Serializable {
 
         usuarioLogin = new UsuarioLogin();
 
+        id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+
     }
 
     public UsuarioLogin getUsuarioLogin() {
@@ -44,6 +46,14 @@ public class LoginBean implements Serializable {
 
     public void setUsuarioLogin(UsuarioLogin usuarioLogin) {
         this.usuarioLogin = usuarioLogin;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String efetuaLogin() {
@@ -69,11 +79,12 @@ public class LoginBean implements Serializable {
                                 .substring(0, 5))) {
                     Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
                     return REDIRECT_TROCA_SENHA;
-                } else {
-                    return SUCCESS;
                 }
-            } else {
+            }
+            if(id==null){
                 return SUCCESS;
+            } else {
+                return "/pages/justificativa.jsf?faces-redirect=true&id="+id;
             }
 
         } else {

@@ -15,7 +15,8 @@ public class AuthorizationListener implements PhaseListener {
 
     private static final long serialVersionUID = 1L;
     private static final String PAGE_LOGIN = "/pages/login.xhtml";
-    public static final String PAGE_LOGIN_REDIRECT = "/pages/login?faces-redirect=true";
+    private static final String PAGE_LOGIN_REDIRECT = "/pages/login?faces-redirect=true";
+    private static final String PAGE_WELCOME = "/pages/welcome.xhtml";
 
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -30,8 +31,16 @@ public class AuthorizationListener implements PhaseListener {
 
         if (!isLoginPage && (permissoes == null || !permissoes.isLogged())) {
 
+            String id = facesContext.getExternalContext().getRequestParameterMap().get("id");
+
             NavigationHandler handler = facesContext.getApplication().getNavigationHandler();
-            handler.handleNavigation(facesContext, null, PAGE_LOGIN_REDIRECT);
+
+            if (id == null) {
+                handler.handleNavigation(facesContext, null, PAGE_LOGIN_REDIRECT);
+            } else {
+                handler.handleNavigation(facesContext, null, PAGE_LOGIN_REDIRECT+"&id="+id);
+            }
+
             facesContext.renderResponse();
 
         }
