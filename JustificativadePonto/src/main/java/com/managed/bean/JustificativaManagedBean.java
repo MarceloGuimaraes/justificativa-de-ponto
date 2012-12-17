@@ -28,341 +28,358 @@ import java.util.List;
 
 public class JustificativaManagedBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static final String SUCCESS = "welcome";
+	private static final long serialVersionUID = 1L;
+	private static final String SUCCESS = "welcome";
 
-    private transient IJustificativaService justificativaService;
-    private transient IUserService userService;
-    private transient IMailService mailService;
-    private transient IWorkflow workflow;
+	private transient IJustificativaService justificativaService;
+	private transient IUserService userService;
+	private transient IMailService mailService;
+	private transient IWorkflow workflow;
 
-    private IPermissoesBean permissoes;
+	private IPermissoesBean permissoes;
 
-    private HandlerMotivosManagedBean handler;
+	private HandlerMotivosManagedBean handler;
 
-    private List<SelectItem> tipoBancoHorasList;
-    private List<SelectItem> tipoDecisaoList;
-    private List<SelectItem> coordenadorList;
-    private List<SelectItem> superintendenteList;
-    private List<SelectItem> rhList;
+	private List<SelectItem> tipoBancoHorasList;
+	private List<SelectItem> tipoDecisaoList;
+	private List<SelectItem> coordenadorList;
+	private List<SelectItem> superintendenteList;
+	private List<SelectItem> rhList;
 
-    private JustificativaPonto justificativa;
+	private JustificativaPonto justificativa;
 
-    private Integer idCoordenador;
-    private Integer idSuperintendente;
-    private Integer idRh;
+	private Integer idCoordenador;
+	private Integer idSuperintendente;
+	private Integer idRh;
 
-    private AcessoJustificativa acesso;
+	private AcessoJustificativa acesso;
 
-    public JustificativaManagedBean(IJustificativaService justificativaService,
-                                    IUserService userService,
-                                    IMailService mailService,
-                                    IPermissoesBean permissoes,
-                                    IWorkflow workflow) {
+	public JustificativaManagedBean(IJustificativaService justificativaService,
+			IUserService userService, IMailService mailService,
+			IPermissoesBean permissoes, IWorkflow workflow) {
 
-        this.justificativaService = justificativaService;
-        this.userService = userService;
-        this.mailService = mailService;
-        this.workflow = workflow;
+		this.justificativaService = justificativaService;
+		this.userService = userService;
+		this.mailService = mailService;
+		this.workflow = workflow;
 
-        this.permissoes = permissoes;
+		this.permissoes = permissoes;
 
-        tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
+		tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
 
-        tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
-                .findObjects();
+		tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
+				.findObjects();
 
-        coordenadorList = retornaItemAPartirDeUser(userService.recuperaCoordenadores());
-        superintendenteList = retornaItemAPartirDeUser(userService.recuperaSuperintendentes());
-        rhList = retornaItemAPartirDeUser(userService.recuperaRH());
+		coordenadorList = retornaItemAPartirDeUser(userService
+				.recuperaCoordenadores());
+		superintendenteList = retornaItemAPartirDeUser(userService
+				.recuperaSuperintendentes());
+		rhList = retornaItemAPartirDeUser(userService.recuperaRH());
 
-        JustificativaPonto justificativaRecebida = null;
+		JustificativaPonto justificativaRecebida = null;
 
-        String id = JsfUtil.getParameter("id");
+		String id = JsfUtil.getParameter("id");
 
-        if (id != null) {
-            justificativaRecebida = this.justificativaService.recuperar(Integer.parseInt(id));
-            idCoordenador = justificativaRecebida.getCoordenador().getId();
-            if (justificativaRecebida.getSuperintendente() != null) {
-                idSuperintendente = justificativaRecebida.getSuperintendente()
-                        .getId();
-            }
-            if (justificativaRecebida.getRh() != null) {
-                idRh = justificativaRecebida.getRh().getId();
-            }
-        }
+		if (id != null) {
+			justificativaRecebida = this.justificativaService.recuperar(Integer
+					.parseInt(id));
+			idCoordenador = justificativaRecebida.getCoordenador().getId();
+			if (justificativaRecebida.getSuperintendente() != null) {
+				idSuperintendente = justificativaRecebida.getSuperintendente()
+						.getId();
+			}
+			if (justificativaRecebida.getRh() != null) {
+				idRh = justificativaRecebida.getRh().getId();
+			}
+		}
 
-        if (justificativaRecebida == null) {
-            justificativaRecebida = justificativaService.nova(permissoes.getUsuarioLogado());
-        }
+		if (justificativaRecebida == null) {
+			justificativaRecebida = justificativaService.nova(permissoes
+					.getUsuarioLogado());
+		}
 
-        setJustificativa(justificativaRecebida);
+		setJustificativa(justificativaRecebida);
 
-    }
+	}
 
+	public HandlerMotivosManagedBean getHandler() {
+		return handler;
+	}
 
-    public HandlerMotivosManagedBean getHandler() {
-        return handler;
-    }
+	public List<SelectItem> getCoordenadorList() {
+		return coordenadorList;
+	}
 
-    public List<SelectItem> getCoordenadorList() {
-        return coordenadorList;
-    }
+	public void setCoordenadorList(List<SelectItem> coordenadorList) {
+		this.coordenadorList = coordenadorList;
+	}
 
-    public void setCoordenadorList(List<SelectItem> coordenadorList) {
-        this.coordenadorList = coordenadorList;
-    }
+	public List<SelectItem> getSuperintendenteList() {
+		return superintendenteList;
+	}
 
-    public List<SelectItem> getSuperintendenteList() {
-        return superintendenteList;
-    }
+	public void setSuperintendenteList(List<SelectItem> superintendenteList) {
+		this.superintendenteList = superintendenteList;
+	}
 
-    public void setSuperintendenteList(List<SelectItem> superintendenteList) {
-        this.superintendenteList = superintendenteList;
-    }
+	public List<SelectItem> getRhList() {
+		return rhList;
+	}
 
-    public List<SelectItem> getRhList() {
-        return rhList;
-    }
+	public void setRhList(List<SelectItem> rhList) {
+		this.rhList = rhList;
+	}
 
-    public void setRhList(List<SelectItem> rhList) {
-        this.rhList = rhList;
-    }
+	public List<SelectItem> getTipoBancoHorasList() {
+		return tipoBancoHorasList;
+	}
 
-    public List<SelectItem> getTipoBancoHorasList() {
-        return tipoBancoHorasList;
-    }
+	public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
+		this.tipoBancoHorasList = tipoBancoHorasList;
+	}
 
-    public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
-        this.tipoBancoHorasList = tipoBancoHorasList;
-    }
+	public List<SelectItem> getTipoDecisaoList() {
+		return tipoDecisaoList;
+	}
 
-    public List<SelectItem> getTipoDecisaoList() {
-        return tipoDecisaoList;
-    }
+	public void setTipoDecisaoList(List<SelectItem> tipoDecisaoList) {
+		this.tipoDecisaoList = tipoDecisaoList;
+	}
 
-    public void setTipoDecisaoList(List<SelectItem> tipoDecisaoList) {
-        this.tipoDecisaoList = tipoDecisaoList;
-    }
+	public JustificativaPonto getJustificativa() {
+		return justificativa;
+	}
 
-    public JustificativaPonto getJustificativa() {
-        return justificativa;
-    }
+	public void setJustificativa(JustificativaPonto justificativa) {
 
-    public void setJustificativa(JustificativaPonto justificativa) {
+		acesso = workflow.verificaAcesso(justificativa);
 
-        acesso = workflow.verificaAcesso(justificativa);
+		handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
 
-        handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
+		this.justificativa = justificativa;
+	}
 
-        this.justificativa = justificativa;
-    }
+	public Integer getIdCoordenador() {
+		return idCoordenador;
+	}
 
-    public Integer getIdCoordenador() {
-        return idCoordenador;
-    }
+	public void setIdCoordenador(Integer idCoordenador) {
+		this.idCoordenador = idCoordenador;
+	}
 
-    public void setIdCoordenador(Integer idCoordenador) {
-        this.idCoordenador = idCoordenador;
-    }
+	public Integer getIdSuperintendente() {
+		return idSuperintendente;
+	}
 
-    public Integer getIdSuperintendente() {
-        return idSuperintendente;
-    }
+	public void setIdSuperintendente(Integer idSuperintendente) {
+		this.idSuperintendente = idSuperintendente;
+	}
 
-    public void setIdSuperintendente(Integer idSuperintendente) {
-        this.idSuperintendente = idSuperintendente;
-    }
+	public Integer getIdRh() {
+		return idRh;
+	}
 
-    public Integer getIdRh() {
-        return idRh;
-    }
+	public void setIdRh(Integer idRh) {
+		this.idRh = idRh;
+	}
 
-    public void setIdRh(Integer idRh) {
-        this.idRh = idRh;
-    }
+	// AUTOR SOLICITANTE
+	public String enviarCoordenador() {
 
-    // AUTOR SOLICITANTE
-    public String enviarCoordenador() {
+		// Inserindo o coordenador escolhido
+		justificativa.setCoordenador(userService.recuperar(idCoordenador));
 
-        // Inserindo o coordenador escolhido
-        justificativa.setCoordenador(userService.recuperar(idCoordenador));
+		List<User> destinos = new LinkedList<User>();
+		destinos.add(justificativa.getCoordenador());
 
-        List<User> destinos = new LinkedList<User>();
-        destinos.add(justificativa.getCoordenador());
+		justificativaService.mudaSituacao(justificativa,
+				permissoes.getUsuarioLogado(), StatusEnum.APROVCOORD,
+				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
-        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(),
-                StatusEnum.APROVCOORD, TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+		mailService.enviarCoordenador(permissoes.getUsuarioLogado(), destinos,
+				justificativa.getJustificativaId());
 
-        mailService.enviarCoordenador(permissoes.getUsuarioLogado(),
-                destinos, justificativa.getJustificativaId());
+		return SUCCESS;
+	}
 
+	// AUTOR COORDENADOR
+	public String enviarSuperintendente() {
 
-        return SUCCESS;
-    }
+		// Inserindo o superintendente escolhido
+		justificativa.setSuperintendente(userService
+				.recuperar(idSuperintendente));
 
-    // AUTOR COORDENADOR
-    public String enviarSuperintendente() {
+		List<User> destinos = new LinkedList<User>();
+		destinos.add(justificativa.getSolicitante());
+		destinos.add(justificativa.getSuperintendente());
 
-        // Inserindo o superintendente escolhido
-        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
+		mailService.enviarSuperintendente(permissoes.getUsuarioLogado(),
+				destinos, justificativa.getJustificativaId());
 
-        List<User> destinos = new LinkedList<User>();
-        destinos.add(justificativa.getSolicitante());
-        destinos.add(justificativa.getSuperintendente());
+		justificativa.setDtAprovCoord(new Date());
 
-        mailService.enviarSuperintendente(permissoes.getUsuarioLogado(), destinos,
-                justificativa.getJustificativaId());
+		justificativaService
+				.mudaSituacao(
+						justificativa,
+						permissoes.getUsuarioLogado(),
+						StatusEnum.APROVSUPERINTENDENTE,
+						TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR,
+						TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
-        justificativa.setDtAprovCoord(new Date());
+		return SUCCESS;
+	}
 
-        justificativaService.mudaSituacao(justificativa,
-                permissoes.getUsuarioLogado(),
-                StatusEnum.APROVSUPERINTENDENTE,
-                TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR,
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
+	// AUTOR SUPERINTENDENTE
+	public String enviarRh() {
+
+		// Inserindo o Rh escolhidos
+		justificativa.setRh(userService.recuperar(idRh));
 
-        return SUCCESS;
-    }
+		List<User> destinos = new LinkedList<User>();
+		destinos.add(justificativa.getCoordenador());
+		destinos.add(justificativa.getSolicitante());
+		destinos.add(justificativa.getRh());
 
-    // AUTOR SUPERINTENDENTE
-    public String enviarRh() {
-
-        // Inserindo o Rh escolhidos
-        justificativa.setRh(userService.recuperar(idRh));
-
-        List<User> destinos = new LinkedList<User>();
-        destinos.add(justificativa.getCoordenador());
-        destinos.add(justificativa.getSolicitante());
-        destinos.add(justificativa.getRh());
-
-        mailService.enviarRh(permissoes.getUsuarioLogado(), destinos,
-                justificativa.getJustificativaId());
-
-        justificativa.setDtAprovSuper(new Date());
-
-        justificativaService.mudaSituacao(justificativa, permissoes.getUsuarioLogado(),
-                StatusEnum.EXECUCAORH,
-                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE,
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
-
-        return SUCCESS;
-    }
-
-    // AUTOR RH
-    public String concluiRh() {
-
-        List<User> destinos = new LinkedList<User>();
-        destinos.add(justificativa.getSolicitante());
-        destinos.add(justificativa.getCoordenador());
-        destinos.add(justificativa.getSuperintendente());
-
-        mailService.concluiRh(permissoes.getUsuarioLogado(), destinos,
-                justificativa.getJustificativaId());
-
-        justificativa.setDtAprovRh(new Date());
-
-        justificativaService.mudaSituacao(justificativa,
-                permissoes.getUsuarioLogado(),
-                StatusEnum.CONCLUIDO,
-                TipoEventoJustificativaPontoEnum.APROVADO_RH);
-
-        return SUCCESS;
-    }
-
-    public void cancelado(ActionEvent event) {
-
-        RequestContext context = RequestContext.getCurrentInstance();
-        boolean cancelado = false;
-
-        try {
-
-            String textoSituacao = Message.getBundleMessage(justificativa.getStatus().getDescricao());
-
-            List<User> destinos = new LinkedList<User>();
-
-            if(permissoes.isAdmin()){
-                if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)){
-                    //AUTOR COORDENADOR
-                    destinos.add(justificativa.getSolicitante());
-                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
-                    cancelado = true;
-
-                }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
-                    //AUTOR SUPERINTENDENTE
-                    destinos.add(justificativa.getSolicitante());
-                    destinos.add(justificativa.getCoordenador());
-                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
-                    cancelado = true;
-
-                }else if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)){
-                    //AUTOR RH
-                    destinos.add(justificativa.getSolicitante());
-                    destinos.add(justificativa.getCoordenador());
-                    destinos.add(justificativa.getSuperintendente());
-                    mailService.cancelado(permissoes.getUsuarioLogado(), destinos, justificativa.getJustificativaId());
-                    cancelado = true;
-
-                } else {
-                    Message.addMessage("dialog.cancelar.valida.situacaoinvalida", textoSituacao);
-                }
-            } else {
-                Message.addMessage("dialog.cancelar.valida.usuarioinvalido", permissoes.getUsuarioLogado().getNome());
-            }
-
-            if (cancelado) {
-                justificativaService.cancelar(permissoes.getUsuarioLogado(), justificativa);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            cancelado = false;
-            Message.addMessage("dialog.cancelar.erro.inesperado", e.getMessage());
-        }
-
-        context.addCallbackParam("cancelado", cancelado);
-
-    }
-
-    public String getLabelCadastro() {
-        if (justificativa.getJustificativaId()==null || justificativa.getJustificativaId() == 0) {
-            return Message
-                    .getBundleMessage("cadastroJustificativa.label.titulo");
-        } else {
-            return Message
-                    .getBundleMessage("cadastroJustificativa.label.alteraUsuario");
-        }
-    }
-
-    private List<SelectItem> retornaItemAPartirDeUser(List<User> users){
-        if(users==null){
-            return null;
-        }
-
-        List<SelectItem> resultado = new LinkedList<SelectItem>();
-
-        for(User u : users){
-            resultado.add(new SelectItem(u.getId(), u.getNome()));
-        }
-
-        return resultado;
-    }
-
-    public AcessoJustificativa getAcesso() {
-        return acesso;
-    }
-
-    public void setAcesso(AcessoJustificativa acesso) {
-        this.acesso = acesso;
-    }
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
-        s.defaultReadObject();
-
-        justificativaService = (IJustificativaService) ApplicationContextProvider.getBean("JustificativaService");
-        userService = (IUserService) ApplicationContextProvider.getBean("UserService");
-        mailService = (IMailService) ApplicationContextProvider.getBean("mailService");
-        workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
-
-    }
+		mailService.enviarRh(permissoes.getUsuarioLogado(), destinos,
+				justificativa.getJustificativaId());
+
+		justificativa.setDtAprovSuper(new Date());
+
+		justificativaService.mudaSituacao(justificativa,
+				permissoes.getUsuarioLogado(), StatusEnum.EXECUCAORH,
+				TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE,
+				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
+
+		return SUCCESS;
+	}
+
+	// AUTOR RH
+	public String concluiRh() {
+
+		List<User> destinos = new LinkedList<User>();
+		destinos.add(justificativa.getSolicitante());
+		destinos.add(justificativa.getCoordenador());
+		destinos.add(justificativa.getSuperintendente());
+
+		mailService.concluiRh(permissoes.getUsuarioLogado(), destinos,
+				justificativa.getJustificativaId());
+
+		justificativa.setDtAprovRh(new Date());
+
+		justificativaService.mudaSituacao(justificativa,
+				permissoes.getUsuarioLogado(), StatusEnum.CONCLUIDO,
+				TipoEventoJustificativaPontoEnum.APROVADO_RH);
+
+		return SUCCESS;
+	}
+
+	public void cancelado(ActionEvent event) {
+
+		RequestContext context = RequestContext.getCurrentInstance();
+		boolean cancelado = false;
+
+		try {
+
+			String textoSituacao = Message.getBundleMessage(justificativa
+					.getStatus().getDescricao());
+
+			List<User> destinos = new LinkedList<User>();
+
+			if (permissoes.isAdmin()) {
+				cancelado = true;
+			} else if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)) {
+				// AUTOR COORDENADOR
+				destinos.add(justificativa.getSolicitante());
+				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
+						justificativa.getJustificativaId());
+				cancelado = true;
+
+			} else if (justificativa.getStatus().equals(
+					StatusEnum.APROVSUPERINTENDENTE)) {
+				// AUTOR SUPERINTENDENTE
+				destinos.add(justificativa.getSolicitante());
+				destinos.add(justificativa.getCoordenador());
+				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
+						justificativa.getJustificativaId());
+				cancelado = true;
+
+			} else if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)) {
+				// AUTOR RH
+				destinos.add(justificativa.getSolicitante());
+				destinos.add(justificativa.getCoordenador());
+				destinos.add(justificativa.getSuperintendente());
+				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
+						justificativa.getJustificativaId());
+				cancelado = true;
+				/*
+				 * } else {
+				 * Message.addMessage("dialog.cancelar.valida.situacaoinvalida",
+				 * textoSituacao); }
+				 */
+			} else {
+				Message.addMessage("dialog.cancelar.valida.usuarioinvalido",
+						permissoes.getUsuarioLogado().getNome());
+			}
+			if (cancelado) {
+				justificativaService.cancelar(permissoes.getUsuarioLogado(),
+						justificativa);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			cancelado = false;
+			Message.addMessage("dialog.cancelar.erro.inesperado",
+					e.getMessage());
+		}
+
+		context.addCallbackParam("cancelado", cancelado);
+
+	}
+
+	public String getLabelCadastro() {
+		if (justificativa.getJustificativaId() == null
+				|| justificativa.getJustificativaId() == 0) {
+			return Message
+					.getBundleMessage("cadastroJustificativa.label.titulo");
+		} else {
+			return Message
+					.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
+		}
+	}
+
+	private List<SelectItem> retornaItemAPartirDeUser(List<User> users) {
+		if (users == null) {
+			return null;
+		}
+
+		List<SelectItem> resultado = new LinkedList<SelectItem>();
+
+		for (User u : users) {
+			resultado.add(new SelectItem(u.getId(), u.getNome()));
+		}
+
+		return resultado;
+	}
+
+	public AcessoJustificativa getAcesso() {
+		return acesso;
+	}
+
+	public void setAcesso(AcessoJustificativa acesso) {
+		this.acesso = acesso;
+	}
+
+	private void readObject(ObjectInputStream s) throws ClassNotFoundException,
+			IOException {
+		s.defaultReadObject();
+
+		justificativaService = (IJustificativaService) ApplicationContextProvider
+				.getBean("JustificativaService");
+		userService = (IUserService) ApplicationContextProvider
+				.getBean("UserService");
+		mailService = (IMailService) ApplicationContextProvider
+				.getBean("mailService");
+		workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+
+	}
 }

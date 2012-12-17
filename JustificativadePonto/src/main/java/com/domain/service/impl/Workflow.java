@@ -65,11 +65,11 @@ public class Workflow implements IWorkflow, Serializable {
 
         if ((justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
                 .getCoordenador().equals(usuarioLogado))
-                || (justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
-                .getCoordenador().equals(usuarioLogado))
-                || (justificativa.getStatus().equals(
-                StatusEnum.APROVSUPERINTENDENTE) && justificativa
+                || (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) && justificativa
                 .getSuperintendente().equals(usuarioLogado))
+                || (justificativa.getStatus().equals(
+                StatusEnum.EXECUCAORH) && justificativa
+                .getRh().equals(usuarioLogado))
                 || ((!justificativa.getStatus().equals(StatusEnum.ELABORACAO)) && permissoes
                 .isAdmin())) {
 
