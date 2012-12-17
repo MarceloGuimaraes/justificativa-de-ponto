@@ -1,5 +1,8 @@
 package com.domain.service.impl;
 
+import java.io.Serializable;
+import java.util.EnumSet;
+
 import com.domain.dto.AcessoJustificativa;
 import com.domain.service.IWorkflow;
 import com.managed.bean.IPermissoesBean;
@@ -7,9 +10,6 @@ import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.User;
 import com.service.IUserService;
-import org.dozer.Mapper;
-
-import java.io.Serializable;
 
 public class Workflow implements IWorkflow, Serializable {
 
@@ -63,15 +63,25 @@ public class Workflow implements IWorkflow, Serializable {
 
         }
 
-        if ((justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
-                .getCoordenador().equals(usuarioLogado))
-                || (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) && justificativa
-                .getSuperintendente().equals(usuarioLogado))
-                || (justificativa.getStatus().equals(
-                StatusEnum.EXECUCAORH) && justificativa
-                .getRh().equals(usuarioLogado))
-                || ((!justificativa.getStatus().equals(StatusEnum.ELABORACAO)) && permissoes
-                .isAdmin())) {
+        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
+                .getCoordenador().equals(usuarioLogado)) {
+
+            showFldCancelar = true;
+
+        }
+        if(justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) && justificativa
+                .getSuperintendente().equals(usuarioLogado)){
+            showFldCancelar = true;
+
+        }
+        if(justificativa.getStatus().equals(StatusEnum.EXECUCAORH) && justificativa
+                .getRh().equals(usuarioLogado)){
+
+            showFldCancelar = true;
+
+        }
+        if(!EnumSet.of(StatusEnum.ELABORACAO, StatusEnum.CANCELADO, StatusEnum.CONCLUIDO).contains(justificativa.getStatus()) &&  permissoes
+                .isAdmin()) {
 
             showFldCancelar = true;
 
