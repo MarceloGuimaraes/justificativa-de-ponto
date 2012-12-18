@@ -24,7 +24,6 @@
     <div id="cabecalho">
         <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
     </div>
-    <div id="usuarioLogado">Logado como: #{PermissoesBean.usuarioLogado.nome}</div>
     <div id="conteudo">
         <h:form>
             <p:menubar styleClass="menunav">
@@ -54,6 +53,7 @@
                 <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
                             ajax="false"  icon="ui-icon-close"/>
             </p:menubar>
+                <div id="usuarioLogado">Logado como: #{PermissoesBean.usuarioLogado.nome}</div>
         </h:form>
         <ui:insert name="corpo" />
     </div>
