@@ -102,6 +102,8 @@
     <bean id="workflow" class="com.domain.service.impl.Workflow">
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="UserService" />
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="mailService" />
     </bean>
 
     <!-- ManagedBeans -->
@@ -126,7 +128,6 @@
     <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="UserService" />
-        <constructor-arg ref="mailService" />
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="workflow" />
     </bean>

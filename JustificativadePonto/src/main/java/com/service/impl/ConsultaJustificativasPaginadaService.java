@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ConsultaJustificativasPaginadaService implements IConsultaPaginadaService<JustificativaPonto> {
 
-    IConsultaJustificativaPontoDao dao;
+    private IConsultaJustificativaPontoDao dao;
 
     public ConsultaJustificativasPaginadaService(IConsultaJustificativaPontoDao dao) {
         this.dao = dao;

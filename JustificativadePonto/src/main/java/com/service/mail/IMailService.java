@@ -8,14 +8,10 @@ import java.util.List;
 
 public interface IMailService extends Serializable {
 
-    void enviarCoordenador(UsuarioLogado usuarioLogado, List<User> destinatarios,
-                           Integer idDoc);
-    void enviarSuperintendente(UsuarioLogado usuarioLogado, List<User> destinatarios,
-                               Integer idDoc);
-    void enviarRh(UsuarioLogado usuarioLogado, List<User> destinatarios, Integer idDoc);
-    void concluiRh(UsuarioLogado usuarioLogado, List<User> destinatarios,
-                   Integer idDoc);
-    void cancelado(UsuarioLogado usuarioLogado, List<User> destinatarios,
-                   Integer idDoc);
+    void enviarCoordenador(UsuarioLogado usuarioLogado, User coordenador, Integer idDoc);
+    void enviarSuperintendente(UsuarioLogado usuarioLogado, User solicitante, User superIntendente, Integer idDoc);
+    void enviarRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User rh, Integer idDoc);
+    void concluiRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User superintendente, Integer idDoc);
+    void cancelado(UsuarioLogado usuarioLogado, User solicitante,  List<User> copyTo, Integer idDoc);
 
 }

@@ -1,18 +1,16 @@
 package com.managed.bean;
 
-import com.spring.util.ApplicationContextProvider;
 import com.domain.dto.AcessoJustificativa;
+import com.domain.dto.exception.BusinessException;
 import com.domain.service.IWorkflow;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
 import com.model.JustificativaPonto;
-import com.model.StatusEnum;
-import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
 import com.service.IJustificativaService;
 import com.service.IUserService;
-import com.service.mail.IMailService;
+import com.spring.util.ApplicationContextProvider;
 import com.util.JsfUtil;
 import com.util.Message;
 import org.primefaces.context.RequestContext;
@@ -22,7 +20,6 @@ import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,12 +28,9 @@ public class JustificativaManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String SUCCESS = "welcome";
 
-	private transient IJustificativaService justificativaService;
-	private transient IUserService userService;
-	private transient IMailService mailService;
 	private transient IWorkflow workflow;
 
-	private IPermissoesBean permissoes;
+	private transient IPermissoesBean permissoes;
 
 	private HandlerMotivosManagedBean handler;
 
@@ -55,25 +49,22 @@ public class JustificativaManagedBean implements Serializable {
 	private AcessoJustificativa acesso;
 
 	public JustificativaManagedBean(IJustificativaService justificativaService,
-			IUserService userService, IMailService mailService,
-			IPermissoesBean permissoes, IWorkflow workflow) {
+                                    IUserService userService,
+                                    IPermissoesBean permissoes,
+                                    IWorkflow workflow) {
 
-		this.justificativaService = justificativaService;
-		this.userService = userService;
-		this.mailService = mailService;
 		this.workflow = workflow;
 
 		this.permissoes = permissoes;
 
 		tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
 
-		tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl()
-				.findObjects();
+		tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
 
-		coordenadorList = retornaItemAPartirDeUser(userService
-				.recuperaCoordenadores());
-		superintendenteList = retornaItemAPartirDeUser(userService
-				.recuperaSuperintendentes());
+		coordenadorList = retornaItemAPartirDeUser(userService.recuperaCoordenadores());
+
+		superintendenteList = retornaItemAPartirDeUser(userService.recuperaSuperintendentes());
+
 		rhList = retornaItemAPartirDeUser(userService.recuperaRH());
 
 		JustificativaPonto justificativaRecebida = null;
@@ -81,21 +72,25 @@ public class JustificativaManagedBean implements Serializable {
 		String id = JsfUtil.getParameter("id");
 
 		if (id != null) {
-			justificativaRecebida = this.justificativaService.recuperar(Integer
-					.parseInt(id));
+
+			justificativaRecebida = justificativaService.recuperar(Integer.parseInt(id));
+
 			idCoordenador = justificativaRecebida.getCoordenador().getId();
+
 			if (justificativaRecebida.getSuperintendente() != null) {
-				idSuperintendente = justificativaRecebida.getSuperintendente()
-						.getId();
+				idSuperintendente = justificativaRecebida.getSuperintendente().getId();
 			}
+
 			if (justificativaRecebida.getRh() != null) {
 				idRh = justificativaRecebida.getRh().getId();
 			}
+
 		}
 
 		if (justificativaRecebida == null) {
-			justificativaRecebida = justificativaService.nova(permissoes
-					.getUsuarioLogado());
+			justificativaRecebida = justificativaService.nova(
+                    permissoes.getUsuarioLogado()
+            );
 		}
 
 		setJustificativa(justificativaRecebida);
@@ -186,69 +181,25 @@ public class JustificativaManagedBean implements Serializable {
 	// AUTOR SOLICITANTE
 	public String enviarCoordenador() {
 
-		// Inserindo o coordenador escolhido
-		justificativa.setCoordenador(userService.recuperar(idCoordenador));
-
-		List<User> destinos = new LinkedList<User>();
-		destinos.add(justificativa.getCoordenador());
-
-		justificativaService.mudaSituacao(justificativa,
-				permissoes.getUsuarioLogado(), StatusEnum.APROVCOORD,
-				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
-
-		mailService.enviarCoordenador(permissoes.getUsuarioLogado(), destinos,
-				justificativa.getJustificativaId());
+		workflow.enviarCoordenador(justificativa, idCoordenador);
 
 		return SUCCESS;
+
 	}
 
 	// AUTOR COORDENADOR
 	public String enviarSuperintendente() {
 
-		// Inserindo o superintendente escolhido
-		justificativa.setSuperintendente(userService
-				.recuperar(idSuperintendente));
-
-		List<User> destinos = new LinkedList<User>();
-		destinos.add(justificativa.getSolicitante());
-		destinos.add(justificativa.getSuperintendente());
-
-		mailService.enviarSuperintendente(permissoes.getUsuarioLogado(),
-				destinos, justificativa.getJustificativaId());
-
-		justificativa.setDtAprovCoord(new Date());
-
-		justificativaService
-				.mudaSituacao(
-						justificativa,
-						permissoes.getUsuarioLogado(),
-						StatusEnum.APROVSUPERINTENDENTE,
-						TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR,
-						TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
+		workflow.enviarSuperintendente(justificativa, idSuperintendente);
 
 		return SUCCESS;
+
 	}
 
 	// AUTOR SUPERINTENDENTE
 	public String enviarRh() {
 
-		// Inserindo o Rh escolhidos
-		justificativa.setRh(userService.recuperar(idRh));
-
-		List<User> destinos = new LinkedList<User>();
-		destinos.add(justificativa.getCoordenador());
-		destinos.add(justificativa.getSolicitante());
-		destinos.add(justificativa.getRh());
-
-		mailService.enviarRh(permissoes.getUsuarioLogado(), destinos,
-				justificativa.getJustificativaId());
-
-		justificativa.setDtAprovSuper(new Date());
-
-		justificativaService.mudaSituacao(justificativa,
-				permissoes.getUsuarioLogado(), StatusEnum.EXECUCAORH,
-				TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE,
-				TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
+		workflow.enviarRh(justificativa, idRh);
 
 		return SUCCESS;
 	}
@@ -256,19 +207,7 @@ public class JustificativaManagedBean implements Serializable {
 	// AUTOR RH
 	public String concluiRh() {
 
-		List<User> destinos = new LinkedList<User>();
-		destinos.add(justificativa.getSolicitante());
-		destinos.add(justificativa.getCoordenador());
-		destinos.add(justificativa.getSuperintendente());
-
-		mailService.concluiRh(permissoes.getUsuarioLogado(), destinos,
-				justificativa.getJustificativaId());
-
-		justificativa.setDtAprovRh(new Date());
-
-		justificativaService.mudaSituacao(justificativa,
-				permissoes.getUsuarioLogado(), StatusEnum.CONCLUIDO,
-				TipoEventoJustificativaPontoEnum.APROVADO_RH);
+		workflow.concluir(justificativa);
 
 		return SUCCESS;
 	}
@@ -276,61 +215,20 @@ public class JustificativaManagedBean implements Serializable {
 	public void cancelado(ActionEvent event) {
 
 		RequestContext context = RequestContext.getCurrentInstance();
-		boolean cancelado = false;
 
-		try {
+        boolean cancelado = true;
 
-			String textoSituacao = Message.getBundleMessage(justificativa
-					.getStatus().getDescricao());
+        try {
 
-			List<User> destinos = new LinkedList<User>();
+            workflow.cancelar(justificativa);
 
-			if (permissoes.isAdmin()) {
-				cancelado = true;
-			} else if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)) {
-				// AUTOR COORDENADOR
-				destinos.add(justificativa.getSolicitante());
-				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
-						justificativa.getJustificativaId());
-				cancelado = true;
-
-			} else if (justificativa.getStatus().equals(
-					StatusEnum.APROVSUPERINTENDENTE)) {
-				// AUTOR SUPERINTENDENTE
-				destinos.add(justificativa.getSolicitante());
-				destinos.add(justificativa.getCoordenador());
-				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
-						justificativa.getJustificativaId());
-				cancelado = true;
-
-			} else if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)) {
-				// AUTOR RH
-				destinos.add(justificativa.getSolicitante());
-				destinos.add(justificativa.getCoordenador());
-				destinos.add(justificativa.getSuperintendente());
-				mailService.cancelado(permissoes.getUsuarioLogado(), destinos,
-						justificativa.getJustificativaId());
-				cancelado = true;
-				/*
-				 * } else {
-				 * Message.addMessage("dialog.cancelar.valida.situacaoinvalida",
-				 * textoSituacao); }
-				 */
-			} else {
-				Message.addMessage("dialog.cancelar.valida.usuarioinvalido",
-						permissoes.getUsuarioLogado().getNome());
-			}
-			if (cancelado) {
-				justificativaService.cancelar(permissoes.getUsuarioLogado(),
-						justificativa);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			cancelado = false;
-			Message.addMessage("dialog.cancelar.erro.inesperado",
-					e.getMessage());
-		}
+		} catch (BusinessException be) {
+			Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
+            cancelado = false;
+		} catch (Exception e){
+            Message.addMessage("dialog.cancelar.erro.inesperado", permissoes.getUsuarioLogado().getNome());
+            cancelado = false;
+        }
 
 		context.addCallbackParam("cancelado", cancelado);
 
@@ -373,13 +271,9 @@ public class JustificativaManagedBean implements Serializable {
 			IOException {
 		s.defaultReadObject();
 
-		justificativaService = (IJustificativaService) ApplicationContextProvider
-				.getBean("JustificativaService");
-		userService = (IUserService) ApplicationContextProvider
-				.getBean("UserService");
-		mailService = (IMailService) ApplicationContextProvider
-				.getBean("mailService");
 		workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+
+        permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
 
 	}
 }

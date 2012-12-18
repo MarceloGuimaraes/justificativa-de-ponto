@@ -13,11 +13,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPonto> {
 
-    IConsultaJustificativaPontoPorUsuarioDao dao;
+    private IConsultaJustificativaPontoPorUsuarioDao dao;
 
-    IPermissoesBean permissoes;
+    private IPermissoesBean permissoes;
 
-    Mapper mapper;
+    private Mapper mapper;
 
     public ConsultaJustificativasPaginadaPorUserService(IConsultaJustificativaPontoPorUsuarioDao dao,
                                                         IPermissoesBean permissoes,

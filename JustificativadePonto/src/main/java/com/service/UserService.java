@@ -24,7 +24,7 @@ public class UserService implements IUserService,Serializable {
 
     private IUserDAO dao;
 
-    private transient Mapper mapper;
+    private Mapper mapper;
 
     public UserService(IUserDAO dao, Mapper mapper) {
         this.dao = dao;

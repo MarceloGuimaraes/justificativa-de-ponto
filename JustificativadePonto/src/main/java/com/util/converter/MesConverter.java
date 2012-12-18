@@ -14,7 +14,7 @@ import javax.faces.convert.ConverterException;
 
 public class MesConverter implements Converter {
 
-	String meses[] = {
+	private static String MESES[] = {
             "justificativa.label.mes.01",
             "justificativa.label.mes.02",
             "justificativa.label.mes.03",
@@ -46,7 +46,7 @@ public class MesConverter implements Converter {
         		cal.setTime(dtSelecionada);
         		
         		int mes = cal.get(Calendar.MONTH); 
-        		return Message.getBundleMessage(meses[mes]);
+        		return Message.getBundleMessage(MESES[mes]);
 
 			} catch(NumberFormatException exception) {  
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Mes Invalido"));  

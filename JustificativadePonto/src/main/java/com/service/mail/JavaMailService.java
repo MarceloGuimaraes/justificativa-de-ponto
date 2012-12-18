@@ -49,6 +49,12 @@ public class JavaMailService implements IMailService {
 		return destinatarios;
 	}
 
+    private List<String> retornaListaFormatada(User user){
+        List<String> resultado = new LinkedList<String>();
+        resultado.add(formata(user));
+        return resultado;
+    }
+
 	public void sendMail(String remetente, List<String> destinatarios,
 			Integer idDoc, String subject, String body) {
 
@@ -74,25 +80,30 @@ public class JavaMailService implements IMailService {
 		}
 	}
 
+    @Override
 	public void enviarCoordenador(UsuarioLogado remetente,
-			List<User> destinatarios, Integer idDoc) {
+			User coordenador, Integer idDoc) {
         String assunto;
         String corpo;
         String urlAux;
+
+        List<String> destinatarios = new LinkedList<String>();
+        destinatarios.add(formata(coordenador));
 
         assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.coordenador");
 
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
 
-		corpo = Message.getBundleMessage("mail.corpo.enviocoord", urlAux);
+		corpo = Message.getBundleMessage("mail.corpo.enviocoord",
+                coordenador.getNome(), idDoc.toString(), urlAux);
 
-		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto,
+		sendMail(formata(remetente), destinatarios, idDoc, assunto,
 				corpo);
 	}
 
-	public void enviarSuperintendente(UsuarioLogado remetente,
-			List<User> destinatarios, Integer idDoc) {
+    @Override
+	public void enviarSuperintendente(UsuarioLogado remetente,User solicitante, User superIntendente, Integer idDoc) {
         String assunto;
         String corpo;
         String urlAux;
@@ -101,53 +112,71 @@ public class JavaMailService implements IMailService {
 				.getBundleMessage("mail.subject.aguardandoaprovacao.superintendente");
 
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
-		corpo = Message.getBundleMessage("mail.corpo.enviosuper", urlAux);
+		corpo = Message.getBundleMessage("mail.corpo.enviosuper",
+                superIntendente.getNome(), idDoc.toString(), urlAux);
 
-		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto,
-				corpo);
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        destinatarios.add(formata(superIntendente));
+
+		sendMail(formata(remetente), destinatarios, idDoc, assunto, corpo);
 	}
 
-	public void enviarRh(UsuarioLogado remetente, List<User> destinatarios,
-			Integer idDoc) {
+    @Override
+	public void enviarRh(UsuarioLogado remetente, User solicitante, User coordenador, User rh, Integer idDoc) {
         String assunto;
         String corpo;
         String urlAux;
 
         assunto = Message
 				.getBundleMessage("mail.subject.aguardandoaprovacao.rh");
-		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
-		corpo = Message.getBundleMessage("mail.corpo.enviorh", urlAux);
 
-		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto,
-				corpo);
+		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
+
+		corpo = Message.getBundleMessage("mail.corpo.enviorh",rh.getNome(), idDoc.toString(), urlAux);
+
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        destinatarios.add(formata(coordenador));
+        destinatarios.add(formata(rh));
+
+		sendMail(formata(remetente), destinatarios, idDoc, assunto, corpo);
+
 	}
 
-	public void concluiRh(UsuarioLogado remetente, List<User> destinatarios,
-			Integer idDoc) {
+    @Override
+	public void concluiRh(UsuarioLogado remetente, User solicitante, User coordenador, User superintendente, Integer idDoc) {
         String assunto;
         String corpo;
         String urlAux;
 
         assunto = Message.getBundleMessage("mail.subject.aprovado.rh.concluir");
 		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
-		corpo = Message.getBundleMessage("mail.corpo.concluirh", urlAux);
+		corpo = Message.getBundleMessage("mail.corpo.concluirh", solicitante.getNome(), idDoc.toString(), urlAux);
 
-		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto,
-				corpo);
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        destinatarios.add(formata(coordenador));
+        destinatarios.add(formata(superintendente));
+
+		sendMail(formata(remetente), destinatarios, idDoc, assunto, corpo);
+
 	}
 
-	public void cancelado(UsuarioLogado remetente, List<User> destinatarios,
-			Integer idDoc) {
+    @Override
+	public void cancelado(UsuarioLogado remetente, User solicitante,  List<User> copyTo, Integer idDoc) {
+
         String assunto;
         String corpo;
         String urlAux;
 
         assunto = Message.getBundleMessage("mail.subject.cancelado");
-		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
-		corpo = Message.getBundleMessage("mail.corpo.cancelado", urlAux);
 
-		sendMail(formata(remetente), formata(destinatarios), idDoc, assunto,
-				corpo);
+		urlAux = JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();
+
+		corpo = Message.getBundleMessage("mail.corpo.cancelado", solicitante.getNome(), idDoc.toString(), urlAux);
+
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        destinatarios.addAll(formata(copyTo));
+
+		sendMail(formata(remetente), destinatarios, idDoc, assunto, corpo);
 
 	}
 
