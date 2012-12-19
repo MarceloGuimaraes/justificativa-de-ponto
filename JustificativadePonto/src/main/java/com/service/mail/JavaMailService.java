@@ -55,29 +55,37 @@ public class JavaMailService implements IMailService {
         return resultado;
     }
 
-	public void sendMail(String remetente, List<String> destinatarios,
-			Integer idDoc, String subject, String body) {
+	public void sendMail(final String remetente, final List<String> destinatarios,
+			final Integer idDoc, final String subject, final String body) {
 
-		SimpleMailMessage message = new SimpleMailMessage();
+        Runnable mailThread = new Runnable() {
+            @Override
+            public void run() {
+                SimpleMailMessage message = new SimpleMailMessage();
 
-		String[] toUser = new String[destinatarios.size()];
-		int index = 0;
-		for (String destinatario : destinatarios) {
-			toUser[index++] = destinatario;
-		}
+                String[] toUser = new String[destinatarios.size()];
+                int index = 0;
+                for (String destinatario : destinatarios) {
+                    toUser[index++] = destinatario;
+                }
 
-		message.setFrom(remetente);
-		message.setTo(toUser);
-		message.setSubject(subject);
-		message.setText(body);
+                message.setFrom(remetente);
+                message.setTo(toUser);
+                message.setSubject(subject);
+                message.setText(body);
 
-		// previne de ficar enviando email enquanto em desenvolvimento
-		// para comecar a enviar email, acesse o arquivo config.properties
-		// dentro de WEB-INF/config
-		// e coloque a variavel app.environment.desenv como false
-		if (!desenv) {
-			mailSender.send((SimpleMailMessage) message);
-		}
+                // previne de ficar enviando email enquanto em desenvolvimento
+                // para comecar a enviar email, acesse o arquivo config.properties
+                // dentro de WEB-INF/config
+                // e coloque a variavel app.environment.desenv como false
+                if (!desenv) {
+                    mailSender.send((SimpleMailMessage) message);
+                }
+            }
+        };
+
+        new Thread(mailThread).start();
+
 	}
 
     @Override
