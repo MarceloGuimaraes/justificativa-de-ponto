@@ -10,27 +10,40 @@
 <f:loadBundle basename="mensagens" var="msgs" />
 
 <h:head>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1;" />
-    <title><h:outputText value="#{msgs['sistema.titulo']}" /></title>
+	<meta http-equiv="content-type"
+		content="text/html; charset=ISO-8859-1;" />
+	<title><h:outputText value="#{msgs['sistema.titulo']}" /></title>
 </h:head>
 <h:body>
-	<h:form>
-		<p:panel id="panel" header="#{msgs['login.label.titulo']}" style="margin:auto;width: 60%">
-			<p:messages/>
+	<h:form id="loginPage">
+		<p:growl id="growl" life="2500"></p:growl>
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog modal="true" widgetVar="statusDialog" header="Carregando"
+			draggable="false" closable="false">
+			<p:graphicImage value="/resources/imagens/ajax-loader-bar.gif"></p:graphicImage>
+		</p:dialog>
+		<p:panel id="panel" header="#{msgs['login.label.titulo']}"
+			style="margin:auto;width: 40%">
+			<p:messages />
 			<h:panelGrid columns="2">
 
 				<h:outputText value="#{msgs['login.label']}" />
-				<h:inputText id="username" value="#{loginController.usuarioLogin.email}"
-					required="true" requiredMessage="#{msgs['login.required']}" />
+				<h:inputText value="#{loginController.usuarioLogin.email}"
+					required="true" requiredMessage="#{msgs['login.required']}"
+					style="width:300px" />
 
 				<h:outputText value="#{msgs['login.label.passw']}" />
-				<h:inputSecret id="password" value="#{loginController.usuarioLogin.senha}"
-					required="true" requiredMessage="#{msgs['login.passw.required']}" />
-                <h:inputHidden id="idRedirect" value="#{loginController.id}" />
+				<h:inputSecret id="password"
+					value="#{loginController.usuarioLogin.senha}" required="true"
+					requiredMessage="#{msgs['login.passw.required']}"
+					style="width:300px" />
+				<h:inputHidden id="idRedirect" value="#{loginController.id}" />
 			</h:panelGrid>
-			
-			<h:commandButton action="#{loginController.efetuaLogin}"
-				value="#{msgs['login.acao']}" />
+
+			<p:commandButton action="#{loginController.efetuaLogin}" update="growl"
+				value="#{msgs['login.acao']}"  />
 		</p:panel>
 	</h:form>
 </h:body>
