@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+	<meta http-equiv="content-type"
+		content="text/html; charset=ISO-8859-1;" />
+	<title><h:outputText value="#{msgs['sistema.titulo']}" /></title>
+</h:head>
+<h:body>
+	<h:form id="loginPage">
+		<p:growl id="growl" life="2500"></p:growl>
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog modal="true" widgetVar="statusDialog" header="Carregando"
+			draggable="false" closable="false">
+			<p:graphicImage value="/resources/imagens/ajax-loader-bar.gif"></p:graphicImage>
+		</p:dialog>
+		<p:panel id="panel" header="#{msgs['login.label.titulo']}"
+			style="margin:auto;width: 50%">
+			<p:messages />
+			<h:panelGrid columns="2">
+
+				<h:outputText value="#{msgs['login.label']}" />
+				<h:inputText value="#{loginController.usuarioLogin.email}"
+					required="true" requiredMessage="#{msgs['login.required']}"
+					style="width:300px" />
+
+				<h:outputText value="#{msgs['login.label.passw']}" />
+				<h:inputSecret id="password"
+					value="#{loginController.usuarioLogin.senha}" required="true"
+					requiredMessage="#{msgs['login.passw.required']}"
+					style="width:300px" />
+				<h:inputHidden id="idRedirect" value="#{loginController.id}" />
+			</h:panelGrid>
+
+			<p:commandButton action="#{loginController.efetuaLogin}" update="growl"
+				value="#{msgs['login.acao']}"  />
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

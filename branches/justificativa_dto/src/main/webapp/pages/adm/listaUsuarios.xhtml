@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
+	<ui:define name="titulo">
+		<h:outputText value="#{msgs['justificativa.label.titulo']}" />
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form>
+			<p:dataTable id="users" var="user" value="#{userMB.userList}"
+				paginator="true" rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
+					<f:facet name="header">#{msgs['consultausuario.label']}</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['consultausuario.label.nome']}" />
+					</f:facet>
+
+					<h:commandLink value="#{user.nome}" action="#{userMB.editar}">
+                        <f:setPropertyActionListener target="#{userMB.usuario}" value="#{user}" />
+					</h:commandLink>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['consultausuario.label.cpf']}" />
+					</f:facet>
+					<h:outputText value="#{user.cpf}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['consultausuario.label.email']}" />
+					</f:facet>
+					<h:outputText value="#{user.email}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="" />
+					</f:facet>
+					<p:commandButton action="#{userMB.deletar}"
+                                     type="submit"
+                                    icon="ui-icon ui-icon-trash"
+                                    onclick="if (!confirm('#{msgs['consultausuario.exclusao']} #{user.nome} ?')) return false;"
+                                    ajax="false">
+                                    <f:setPropertyActionListener target="#{userMB.usuario}" value="#{user}" />
+					</p:commandButton>
+				</p:column>
+				<!-- type="submit"  image="/resources/imagens/excluir16.png"  -->
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
