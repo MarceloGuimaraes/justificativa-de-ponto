@@ -1,0 +1,228 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				http://www.springframework.org/schema/tx 
+		        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		        http://www.springframework.org/schema/context 
+		        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+    <!-- Bean de envio de email -->
+    <jee:jndi-lookup id="mailSession"
+                     jndi-name="mail/session"
+                     resource-ref="true"
+            />
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="session" ref="mailSession"/>
+    </bean>
+
+    <bean id="mailService" class="com.service.mail.JavaMailService">
+        <constructor-arg ref="mailSender" />
+        <constructor-arg value="${app.environment.desenv}" />
+    </bean>
+
+    <!-- Service Declaration -->
+    <bean id="UserService" class="com.service.UserService">
+        <constructor-arg ref="UserDAO" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="JustificativaService" class="com.service.JustificativaService">
+        <constructor-arg ref="JustificativaDAO" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorDataDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorDataPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorDataDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorSolicitanteDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorSolicitanteDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorMotivoDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorMotivoDao" />
+    </bean>
+
+    <!-- DAO Declaration -->
+    <bean id="dao" class="com.dao.Dao" abstract="true" >
+        <constructor-arg ref="sessionFactory" />
+    </bean>
+
+    <bean id="UserDAO" class="com.dao.impl.UserDAO" parent="dao" />
+
+    <bean id="JustificativaDAO" class="com.dao.impl.JustificativaDAO" parent="dao" />
+
+    <bean id="consultaJustificativaPontoPorUserPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="dtCriacao" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="dtCriacao" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
+
+    <!-- Facades -->
+    <bean id="workflow" class="com.domain.service.impl.Workflow">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="mailService" />
+    </bean>
+
+    <!-- ManagedBeans -->
+    <bean id="PermissoesBean" class="com.managed.bean.PermissoesBean" scope="session">
+        <aop:scoped-proxy proxy-target-class="false" />
+    </bean>
+
+    <bean id="loginController" class="com.managed.bean.LoginBean" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="UserService" />
+    </bean>
+
+    <bean id="userMB" class="com.managed.bean.UserManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
+    </bean>
+
+    <bean id="alteraSenhaManagedBean" class="com.managed.bean.AlteraSenhaManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
+    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="workflow" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorSolicitante" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorMotivo" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaPorUserService" />
+    </bean>
+
+    <!-- Resource bundle -->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>resources/messages</value>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>WEB-INF/config/config.properties</value>
+        </property>
+    </bean>
+
+    <!-- Dozzer BeanMapper -->
+    <bean id="mapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-bean-mappings.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Data Source Declaration -->
+    <jee:jndi-lookup id="dataSource"
+                     jndi-name="jdbc/sescoopDB"
+                     cache="true"
+                     resource-ref="true"
+                     lookup-on-startup="false"
+                     proxy-interface="javax.sql.DataSource"
+            />
+
+    <!-- Session Factory Declaration -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>com.model.User</value>
+                <value>com.model.JustificativaPonto</value>
+                <value>com.model.HistoricoJustificativaPonto</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager" />
+
+    <!-- Transaction Manager is defined -->
+    <bean id="txManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- Criando o scopo de View -->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="view">
+                    <bean class="com.spring.scope.ViewScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean class="com.spring.util.ApplicationContextProvider" id="applicationContextProvider" />
+
+</beans>
