@@ -8,6 +8,29 @@ Configurando a aplicação
 
 = Detalhes =
 
+A configuração se dá em 2 passos, primeiro configurar o encoding do servidor MySQL e segundo configurar os recursos JNDI.
+
+Configurando o encoding
+
+O encoding utilizado será latin1 com collate latin1_swedish_ci.
+Para isso, será informado no servidor que este é o default encoding no arquivo my.cnf.
+Para informações em como configurar o my.cnf clique [http://dev.mysql.com/doc/refman/5.5/en/option-files.html aqui]
+
+Dentro do arquivo adicionar o seguinte:
+
+<code>
+[client]
+default-character-set = latin1
+
+[mysql]
+default-character-set = latin1
+
+[mysqld]
+character-set-client-handshake = FALSE
+character-set-server = latin1
+collation-server = latin1_swedish_ci
+</code>
+
 A aplicação precisa de 2 recursos JNDI configurados no servidor que for hospedá-la.
 As configurações abaixo são específicas para o Apache Tomcat versão 6 ou superior.
 
@@ -21,8 +44,7 @@ Entrar no arquivo _*<DIRETÓRIO_DE_INSTALACAO_TOMCAT>/conf/Context.xml*
           maxActive="100" maxIdle="30" maxWait="10000" 
           username="[usuario-do-banco]" password="[senha-do-banco]" 
           driverClassName="com.mysql.jdbc.Driver" 
-          url="jdbc:mysql://localhost:3306/justificativadeponto?useOldUTF8Behavior=true&amp;characterEncoding=latin1" 
-/>
+          url="jdbc:mysql://localhost/justificativadeponto"/>
 
 <!-- JavaMail session factory -->
 
