@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipoEventoHistorico", discriminatorType = DiscriminatorType.CHAR)
+@DiscriminatorValue(value = "A")
 @Table(name = "HistoricoJustificativaPonto")
 public class HistoricoJustificativaPonto implements Serializable {
     @Id
@@ -18,9 +21,8 @@ public class HistoricoJustificativaPonto implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date data;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
-    @JoinColumn(name = "id_usuario")
-    private User usuario;
+    @Embedded
+    private Identificacao usuario;
 
     @ManyToOne(targetEntity = JustificativaPonto.class, optional = false)
     @JoinColumn(name = "id_justificativa_ponto")
@@ -45,7 +47,7 @@ public class HistoricoJustificativaPonto implements Serializable {
 
     public HistoricoJustificativaPonto() {}
 
-    public HistoricoJustificativaPonto(User usuario,
+    public HistoricoJustificativaPonto(Identificacao usuario,
                                        JustificativaPonto justificativaPonto,
                                        TipoEventoJustificativaPontoEnum tipoEvento) {
 
@@ -64,7 +66,7 @@ public class HistoricoJustificativaPonto implements Serializable {
         return data;
     }
 
-    public User getUsuario() {
+    public Identificacao getUsuario() {
         return usuario;
     }
 
@@ -74,5 +76,25 @@ public class HistoricoJustificativaPonto implements Serializable {
 
     public TipoEventoJustificativaPontoEnum getTipoEvento() {
         return tipoEvento;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public void setUsuario(Identificacao usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setJustificativaPonto(JustificativaPonto justificativaPonto) {
+        this.justificativaPonto = justificativaPonto;
+    }
+
+    public void setTipoEvento(TipoEventoJustificativaPontoEnum tipoEvento) {
+        this.tipoEvento = tipoEvento;
     }
 }

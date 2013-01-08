@@ -20,7 +20,7 @@
                 <p:column>
                     <f:facet name="header">
                     </f:facet>
-                    <a href="justificativa.faces?id=#{justificativa.justificativaId}">
+                    <a href="justificativa.jsf?id=#{justificativa.id}">
                         <img src="../resources/imagens/actn103.gif" border="0" alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
                     </a>
                 </p:column>
@@ -28,7 +28,7 @@
 					<f:facet name="header">
 						<h:outputText value="#{msgs['relatorio.justificativa.ano']}" />
 					</f:facet>
-					<h:outputText value="#{justificativa.dtCriacao}">
+					<h:outputText value="#{justificativa.data}">
 						<f:convertDateTime pattern="yyyy" />
 					</h:outputText>
 				</p:column>

@@ -13,4 +13,16 @@
             <b>perfil</b>
         </field>
     </mapping>
+    <mapping>
+        <class-a>com.domain.dto.JustificativaPontoDTO</class-a>
+        <class-b>com.model.JustificativaPonto</class-b>
+        <field remove-orphans="true">
+            <a>historico</a>
+            <b>historico</b>
+        </field>
+    </mapping>
+    <mapping>
+        <class-a>com.domain.dto.HistoricoJustificativaPontoDTO</class-a>
+        <class-b bean-factory="com.util.dozer.DozerBeanFactory">com.model.HistoricoJustificativaPonto</class-b>
+    </mapping>
 </mappings>

@@ -1,12 +1,15 @@
 package com.service;
 
 import com.dao.IJustificativaDAO;
+import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
 import org.dozer.Mapper;
+import org.hibernate.Hibernate;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -47,49 +50,99 @@ public class JustificativaService implements IJustificativaService,
 	}
 
     @Override
-    @Transactional(readOnly = false)
-    public void mudaSituacao(JustificativaPonto justificativa,
-                             UsuarioLogado usuarioLogado,
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public JustificativaPontoDTO mudaSituacao(UsuarioLogado usuarioLogado,
+                             UsuarioLogado proximoResponsavel,
+                             JustificativaPontoDTO justificativaTela,
                              StatusEnum novoStatus,
-                             TipoEventoJustificativaPontoEnum... eventoHistorico) {
-        justificativa.setStatus(novoStatus);
+                             TipoEventoJustificativaPontoEnum eventoHistorico) {
+
+        JustificativaPonto justificativa = null;
+
         User user = mapper.map(usuarioLogado, User.class);
-        if(eventoHistorico!=null){
-            for(TipoEventoJustificativaPontoEnum tipoEvento : eventoHistorico){
-                justificativa.adiciona(user, tipoEvento);
-            }
+        User delegado = mapper.map(proximoResponsavel, User.class);
+
+        if(justificativaTela.getId()==null || justificativaTela.getId()==0){
+            justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
+        } else {
+            justificativa = recuperar(justificativaTela);
+            mapper.map(justificativaTela, justificativa);
         }
-        if(justificativa.getJustificativaId()==null || justificativa.getJustificativaId()==0){
+
+        justificativa.setStatus(novoStatus);
+
+        if(eventoHistorico!=null){
+            justificativa.encaminha(user, delegado, eventoHistorico);
+        }
+
+        if(justificativa.getId()==null || justificativa.getId()==0){
             adicionar(justificativa);
         }else{
             atualizar(justificativa);
         }
+
+        return mapper.map(justificativa, JustificativaPontoDTO.class);
+
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public void cancelar(UsuarioLogado usuarioLogado, JustificativaPonto justificativa) {
-        justificativa.setDtCancelamento(new Date());
-        mudaSituacao(justificativa, usuarioLogado, StatusEnum.CANCELADO, TipoEventoJustificativaPontoEnum.CANCELADO);
-    }
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public JustificativaPontoDTO atua(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativaTela, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico) {
+        JustificativaPonto justificativa = null;
 
-    @Override
-    public JustificativaPonto nova(UsuarioLogado usuarioLogado) {
         User user = mapper.map(usuarioLogado, User.class);
-        return new JustificativaPonto(user);
+
+        if(justificativaTela.getId()==null || justificativaTela.getId()==0){
+            justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
+        } else {
+            justificativa = recuperar(justificativaTela);
+            mapper.map(justificativaTela, justificativa);
+        }
+
+        justificativa.setStatus(novoStatus);
+
+        if(eventoHistorico!=null){
+            justificativa.adiciona(user, eventoHistorico);
+        }
+
+        if(justificativa.getId()==null || justificativa.getId()==0){
+            adicionar(justificativa);
+        }else{
+            atualizar(justificativa);
+        }
+
+        return mapper.map(justificativa, JustificativaPontoDTO.class);
+
     }
 
     @Override
-	public JustificativaPonto recuperar(
-            JustificativaPonto justificativa) {
-		return dao.recuperar(justificativa);
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void cancelar(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativa) {
+        atua(usuarioLogado, justificativa, StatusEnum.CANCELADO, TipoEventoJustificativaPontoEnum.CANCELADO);
+    }
+
+    @Override
+    public JustificativaPontoDTO nova(UsuarioLogado usuarioLogado) {
+        User user = mapper.map(usuarioLogado, User.class);
+        JustificativaPonto novaJustificativa = new JustificativaPonto(user);
+        JustificativaPontoDTO retorno = mapper.map(novaJustificativa, JustificativaPontoDTO.class);
+        return retorno;
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+	public JustificativaPonto recuperar(JustificativaPontoDTO justificativa) {
+        JustificativaPonto resultado = dao.recuperar(justificativa.getId());
+        dao.initialize(resultado.getHistorico());
+        return resultado;
 	}
 
     @Override
-    public JustificativaPonto recuperar(Serializable id) {
+    public JustificativaPontoDTO recuperar(Serializable id) {
         JustificativaPonto j = dao.recuperar(id);
         dao.initialize(j.getHistorico());
-        return j;
+        JustificativaPontoDTO retorno = mapper.map(j, JustificativaPontoDTO.class);
+        return retorno;
     }
 
 }

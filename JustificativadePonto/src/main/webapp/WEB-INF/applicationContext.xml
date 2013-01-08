@@ -75,11 +75,11 @@
     <bean id="JustificativaDAO" class="com.dao.impl.JustificativaDAO" parent="dao" />
 
     <bean id="consultaJustificativaPontoPorUserPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
-        <constructor-arg value="dtCriacao" />
+        <constructor-arg value="data" />
     </bean>
 
     <bean id="consultaJustificativaPontoPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
-        <constructor-arg value="dtCriacao" />
+        <constructor-arg value="data" />
     </bean>
 
     <bean id="consultaJustificativaPontoPorUserPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
@@ -104,6 +104,7 @@
         <constructor-arg ref="UserService" />
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="mailService" />
+        <constructor-arg ref="mapper" />
     </bean>
 
     <!-- ManagedBeans -->
@@ -127,7 +128,6 @@
 
     <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
         <constructor-arg ref="JustificativaService" />
-        <constructor-arg ref="UserService" />
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="workflow" />
     </bean>
@@ -191,6 +191,7 @@
                 <value>com.model.User</value>
                 <value>com.model.JustificativaPonto</value>
                 <value>com.model.HistoricoJustificativaPonto</value>
+                <value>com.model.EncaminhamentoJustificativaPonto</value>
             </list>
         </property>
         <property name="hibernateProperties">

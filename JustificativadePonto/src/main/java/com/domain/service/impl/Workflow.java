@@ -1,21 +1,17 @@
 package com.domain.service.impl;
 
-import com.domain.dto.AcessoJustificativa;
+import com.domain.dto.*;
 import com.domain.dto.exception.BusinessException;
 import com.domain.service.IWorkflow;
 import com.managed.bean.IPermissoesBean;
-import com.model.JustificativaPonto;
-import com.model.StatusEnum;
-import com.model.TipoEventoJustificativaPontoEnum;
-import com.model.User;
+import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
+import org.dozer.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Workflow implements IWorkflow {
 
@@ -27,194 +23,236 @@ public class Workflow implements IWorkflow {
 
     private IMailService mailService;
 
+    private Mapper mapper;
+
     public Workflow(IPermissoesBean permissoes,
                     IUserService userService,
                     IJustificativaService justificativaService,
-                    IMailService mailService) {
+                    IMailService mailService,
+                    Mapper mapper) {
         this.permissoes = permissoes;
         this.userService = userService;
         this.justificativaService = justificativaService;
         this.mailService = mailService;
+        this.mapper = mapper;
     }
 
     @Override
-    public AcessoJustificativa verificaAcesso(JustificativaPonto justificativa) {
+    public ProximoPasso retornaProximoPasso(JustificativaPontoDTO justificativaTela){
 
-        boolean editElaboracao = false;
-        boolean editAguardaAprovCoord = false;
-        boolean editAguardaAprovSuperintendente = false;
-        boolean editAguardaAprovRh = false;
-        boolean showFldCancelar = false;
+        Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
+        JustificativaPonto justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
 
         if (justificativa.getStatus().equals(StatusEnum.ELABORACAO)
-                && justificativa.getSolicitante().equals(usuarioLogado)) {
+                && justificativa.getSolicitante().equals(mapper.map(permissoes.getUsuarioLogado(), User.class))) {
 
-            editElaboracao = true;
+            return new EnviarCoordenador(this);
 
         }
 
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativa);
+
         // como o coordenador já foi selecionado, não faço validação
         if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
-                && justificativa.getCoordenador().equals(usuarioLogado)) {
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel().equals(usuarioLogado)) {
 
-            editAguardaAprovCoord = true;
+            return new EnviarSuperintendente(this);
 
         }
 
         if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)
-                && justificativa.getSuperintendente().equals(usuarioLogado)) {
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(usuarioLogado)) {
 
-            editAguardaAprovSuperintendente = true;
+            return new EnviarRH(this);
 
         }
 
         if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
-                && justificativa.getRh().equals(usuarioLogado)) {
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(usuarioLogado)) {
 
-            editAguardaAprovRh = true;
-
-        }
-
-        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD) && justificativa
-                .getCoordenador().equals(usuarioLogado)) {
-
-            showFldCancelar = true;
+            return new Concluir(this);
 
         }
-        if(justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE) && justificativa
-                .getSuperintendente().equals(usuarioLogado)){
-            showFldCancelar = true;
 
-        }
-        if(justificativa.getStatus().equals(StatusEnum.EXECUCAORH) && justificativa
-                .getRh().equals(usuarioLogado)){
-
-            showFldCancelar = true;
-
-        }
         if(!EnumSet.of(StatusEnum.ELABORACAO, StatusEnum.CANCELADO, StatusEnum.CONCLUIDO).contains(justificativa.getStatus()) &&  permissoes
                 .isAdmin()) {
 
-            showFldCancelar = true;
+            return null;
 
         }
 
-        return new AcessoJustificativa(editElaboracao,
-                editAguardaAprovCoord,
-                editAguardaAprovSuperintendente,
-                editAguardaAprovRh,
-                showFldCancelar);
+        return new PassoSemAcesso();
+
+    }
+
+    private Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> retornaHistoricosMapeados(JustificativaPonto justificativa) {
+        EnumSet<TipoEventoJustificativaPontoEnum> tiposEventosEncaminhamento = EnumSet.of(
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH
+        );
+
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = new LinkedHashMap<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto>();
+        for(HistoricoJustificativaPonto h : justificativa.getHistorico()){
+            if(tiposEventosEncaminhamento.contains(h.getTipoEvento())){
+                historicos.put(h.getTipoEvento(), (EncaminhamentoJustificativaPonto)h);
+            }
+        }
+        return historicos;
+    }
+
+    public IUserService getUserService() {
+        return userService;
     }
 
     @Override
-    public void enviarCoordenador(JustificativaPonto justificativa, Integer idCoordenador) {
+    @Transactional(readOnly = false)
+    public void enviarCoordenador(JustificativaPontoDTO justificativa, Integer idCoordenador) {
 
         // Inserindo o coordenador escolhido
-        justificativa.setCoordenador(userService.recuperar(idCoordenador));
+        User coordenador = userService.recuperar(idCoordenador);
 
         List<User> destinos = new LinkedList<User>();
-        destinos.add(justificativa.getCoordenador());
+        destinos.add(coordenador);
 
-        justificativaService.mudaSituacao(justificativa,
-                permissoes.getUsuarioLogado(), StatusEnum.APROVCOORD,
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
+        justificativa = justificativaService.mudaSituacao(
+                permissoes.getUsuarioLogado(),
+                mapper.map(coordenador, UsuarioLogado.class),
+                justificativa,
+                StatusEnum.APROVCOORD,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR
+        );
 
         mailService.enviarCoordenador(
                 permissoes.getUsuarioLogado(),
-                justificativa.getCoordenador(),
-                justificativa.getJustificativaId()
+                coordenador,
+                justificativa.getId()
         );
 
     }
 
     @Override
-    public void enviarSuperintendente(JustificativaPonto justificativa, Integer idSuperintendente) {
+    @Transactional(readOnly = false)
+    public void enviarSuperintendente(JustificativaPontoDTO justificativa, Integer idSuperintendente) {
         // Inserindo o superintendente escolhido
-        justificativa.setSuperintendente(userService.recuperar(idSuperintendente));
+        User superintendente=userService.recuperar(idSuperintendente);
+        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
-        justificativa.setDtAprovCoord(new Date());
+        justificativaService.atua(
+                permissoes.getUsuarioLogado(),
+                justificativa,
+                StatusEnum.APROVSUPERINTENDENTE,
+                TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
 
         justificativaService.mudaSituacao(
-                justificativa,
                 permissoes.getUsuarioLogado(),
+                mapper.map(superintendente, UsuarioLogado.class),
+                justificativa,
                 StatusEnum.APROVSUPERINTENDENTE,
-                TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
         mailService.enviarSuperintendente(
                 permissoes.getUsuarioLogado(),
-                justificativa.getSolicitante(),
-                justificativa.getSuperintendente(),
-                justificativa.getJustificativaId()
+                solicitante,
+                superintendente,
+                justificativa.getId()
         );
     }
 
     @Override
-    public void enviarRh(JustificativaPonto justificativa, Integer idRh) {
+    @Transactional(readOnly = false)
+    public void enviarRh(JustificativaPontoDTO justificativa, Integer idRh) {
 
         // Inserindo o Rh escolhidos
-        justificativa.setRh(userService.recuperar(idRh));
+        User rh = userService.recuperar(idRh);
+        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
-        justificativa.setDtAprovSuper(new Date());
+        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
 
-        justificativaService.mudaSituacao(justificativa,
-                permissoes.getUsuarioLogado(), StatusEnum.EXECUCAORH,
-                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE,
+        User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+
+        justificativaService.atua(
+                permissoes.getUsuarioLogado(),
+                justificativa,
+                StatusEnum.EXECUCAORH,
+                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
+
+        justificativaService.mudaSituacao(
+                permissoes.getUsuarioLogado(),
+                mapper.map(rh, UsuarioLogado.class),
+                justificativa,
+                StatusEnum.EXECUCAORH,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
         mailService.enviarRh(
                 permissoes.getUsuarioLogado(),
-                justificativa.getSolicitante(),
-                justificativa.getCoordenador(),
-                justificativa.getRh(),
-                justificativa.getJustificativaId());
+                solicitante,
+                coordenador,
+                rh,
+                justificativa.getId());
     }
 
     @Override
-    public void concluir(JustificativaPonto justificativa) {
+    @Transactional(readOnly = false)
+    public void concluir(JustificativaPontoDTO justificativa) {
 
-        justificativa.setDtAprovRh(new Date());
-
-        justificativaService.mudaSituacao(justificativa,
-                permissoes.getUsuarioLogado(), StatusEnum.CONCLUIDO,
+        justificativaService.atua(
+                permissoes.getUsuarioLogado(),
+                justificativa,
+                StatusEnum.CONCLUIDO,
                 TipoEventoJustificativaPontoEnum.APROVADO_RH);
+
+        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
+
+        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
+
+        User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+        User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
 
         mailService.concluiRh(
                 permissoes.getUsuarioLogado(),
-                justificativa.getSolicitante(),
-                justificativa.getCoordenador(),
-                justificativa.getSuperintendente(),
-                justificativa.getJustificativaId());
+                solicitante,
+                coordenador,
+                superintendente,
+                justificativa.getId());
 
     }
 
     @Override
-    public void cancelar(JustificativaPonto justificativa) {
+    @Transactional(readOnly = false)
+    public void cancelar(JustificativaPontoDTO justificativaTela) {
 
         boolean cancela = false;
 
-        User userCorrente = userService.recuperar(permissoes.getUsuarioLogado().getId());
+        Identificacao userCorrente = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
         List<User> destinos = new LinkedList<User>();
-
+        JustificativaPonto justificativa = justificativaService.recuperar(justificativaTela);
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativa);
         if (StatusEnum.APROVCOORD.equals(justificativa.getStatus()) &&
-                justificativa.getCoordenador().equals(userCorrente)) {
+                historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel().equals(userCorrente)) {
             // AUTOR COORDENADOR
             cancela = true;
 
         } else if (StatusEnum.APROVSUPERINTENDENTE.equals(justificativa.getStatus()) &&
-                (justificativa.getSuperintendente().equals(userCorrente) || permissoes.isAdmin())) {
+                (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(userCorrente)
+                        || permissoes.isAdmin())) {
             // AUTOR SUPERINTENDENTE
-            destinos.add(justificativa.getCoordenador());
+            User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+            destinos.add(coordenador);
             cancela = true;
 
         } else if (StatusEnum.EXECUCAORH.equals(justificativa.getStatus()) &&
-                (justificativa.getRh().equals(userCorrente) || permissoes.isAdmin())) {
+                (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(userCorrente)
+                        || permissoes.isAdmin())) {
             // AUTOR RH
-            destinos.add(justificativa.getCoordenador());
-            destinos.add(justificativa.getSuperintendente());
+            User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+            User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
+            destinos.add(coordenador);
+            destinos.add(superintendente);
             cancela = true;
 
         } else if (permissoes.isAdmin()) {
@@ -225,18 +263,19 @@ public class Workflow implements IWorkflow {
 
             justificativaService.cancelar(
                     permissoes.getUsuarioLogado(),
-                    justificativa
+                    justificativaTela
             );
 
             mailService.cancelado(
                     permissoes.getUsuarioLogado(),
                     justificativa.getSolicitante(),
                     destinos,
-                    justificativa.getJustificativaId()
+                    justificativa.getId()
             );
 
         } else {
             throw new BusinessException("dialog.cancelar.valida.usuarioinvalido");
         }
     }
+
 }

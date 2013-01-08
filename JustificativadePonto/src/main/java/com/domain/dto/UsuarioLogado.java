@@ -2,6 +2,7 @@ package com.domain.dto;
 
 import com.model.PerfilEnum;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.List;
@@ -40,6 +41,7 @@ public class UsuarioLogado extends UsuarioLogin implements Serializable {
     }
 
     public boolean equals(Object o){
+
         if(!(o instanceof UsuarioLogado)){
             return false;
         }
@@ -48,8 +50,18 @@ public class UsuarioLogado extends UsuarioLogin implements Serializable {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(id, outro.getId())
+                .append(cpf, outro.getCpf())
                 .isEquals();
+
+    }
+
+    public int hashCode(){
+
+        return new HashCodeBuilder(HASH1, HASH2)
+                .appendSuper(super.hashCode())
+                .append(cpf)
+                .toHashCode();
+
     }
 
 }

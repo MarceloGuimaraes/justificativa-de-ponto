@@ -1,5 +1,6 @@
 package com.managed.bean;
 
+import com.domain.dto.JustificativaPontoGrid;
 import com.model.JustificativaPonto;
 import com.service.IConsultaPaginadaService;
 import com.util.JsfUtil;
@@ -12,13 +13,13 @@ import java.util.Map;
 
 public class JustificativaPaginadaDatasource implements Serializable {
 
-    IConsultaPaginadaService<JustificativaPonto> service;
+    IConsultaPaginadaService<JustificativaPontoGrid> service;
 
-    private LazyDataModel<JustificativaPonto> justificativas;
+    private LazyDataModel<JustificativaPontoGrid> justificativas;
 
     public JustificativaPaginadaDatasource(IPermissoesBean permissoes,
-                                           IConsultaPaginadaService<JustificativaPonto> serviceAdmin,
-                                           IConsultaPaginadaService<JustificativaPonto> serviceUser) {
+                                           IConsultaPaginadaService<JustificativaPontoGrid> serviceAdmin,
+                                           IConsultaPaginadaService<JustificativaPontoGrid> serviceUser) {
         if(permissoes.isAdmin() || permissoes.isSupport() || permissoes.isRh()){
             this.service = serviceAdmin;
         }else{
@@ -26,13 +27,13 @@ public class JustificativaPaginadaDatasource implements Serializable {
         }
     }
 
-    public LazyDataModel<JustificativaPonto> getJustificativas() {
+    public LazyDataModel<JustificativaPontoGrid> getJustificativas() {
         if(justificativas == null){
-            justificativas = new LazyDataModel<JustificativaPonto>() {
+            justificativas = new LazyDataModel<JustificativaPontoGrid>() {
                 private int totalLinhas = 0;
                 @Override
-                public List<JustificativaPonto> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
-                    List<JustificativaPonto> resultado = service.todas(i, i1);
+                public List<JustificativaPontoGrid> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
+                    List<JustificativaPontoGrid> resultado = service.todas(i, i1);
                     totalLinhas = service.count();
                     return resultado;
                 }

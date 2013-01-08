@@ -1,10 +1,14 @@
 package com.domain.dto;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
 public class UsuarioLogin implements Serializable {
+
+    protected static final int HASH1 = 1156070685;
+    protected static final int HASH2 = 119119943;
 
     private String nome;
     private String email;
@@ -49,6 +53,13 @@ public class UsuarioLogin implements Serializable {
                 .append(nome, outro.getNome())
                 .append(email, outro.getEmail())
                 .isEquals();
+    }
+
+    public int hashCode(){
+        return new HashCodeBuilder(HASH1, HASH2)
+                .append(nome)
+                .append(email)
+                .toHashCode();
     }
 
 }

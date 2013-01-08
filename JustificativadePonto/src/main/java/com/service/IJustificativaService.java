@@ -1,5 +1,6 @@
 package com.service;
 
+import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
@@ -10,13 +11,15 @@ import java.io.Serializable;
 
 public interface IJustificativaService {
 
-    JustificativaPonto nova(UsuarioLogado usuarioLogado);
-    JustificativaPonto recuperar(JustificativaPonto justificativa);
-    JustificativaPonto recuperar(Serializable id);
+    JustificativaPontoDTO nova(UsuarioLogado usuarioLogado);
+    JustificativaPonto recuperar(JustificativaPontoDTO justificativa);
+    JustificativaPontoDTO recuperar(Serializable id);
     void adicionar(JustificativaPonto justificativa);
     void atualizar(JustificativaPonto justificativa);
     void apagar(JustificativaPonto justificativa);
-    void mudaSituacao(JustificativaPonto justificativaPonto, UsuarioLogado usuarioLogado, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum... eventoHistorico);
 
-    void cancelar(UsuarioLogado usuarioLogado, JustificativaPonto justificativa);
+    JustificativaPontoDTO mudaSituacao(UsuarioLogado usuarioLogado, UsuarioLogado proximoResponsavel, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico);
+    JustificativaPontoDTO atua(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento);
+
+    void cancelar(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativa);
 }

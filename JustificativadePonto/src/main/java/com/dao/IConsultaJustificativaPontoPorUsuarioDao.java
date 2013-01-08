@@ -1,11 +1,11 @@
 package com.dao;
 
-import com.model.JustificativaPonto;
+import com.domain.dto.JustificativaPontoGrid;
 import com.model.User;
 
 import java.util.List;
 
 public interface IConsultaJustificativaPontoPorUsuarioDao {
-    List<JustificativaPonto> todos(int startIndex, int pageSize, User user);
+    List<JustificativaPontoGrid> todos(int startIndex, int pageSize, User user);
     int count(User user);
 }

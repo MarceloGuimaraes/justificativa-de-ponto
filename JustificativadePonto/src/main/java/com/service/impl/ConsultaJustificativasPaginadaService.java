@@ -1,16 +1,14 @@
 package com.service.impl;
 
 import com.dao.IConsultaJustificativaPontoDao;
-import com.dao.IJustificativaDAO;
-import com.model.JustificativaPonto;
-import com.model.User;
+import com.domain.dto.JustificativaPontoGrid;
 import com.service.IConsultaPaginadaService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional(readOnly = true)
-public class ConsultaJustificativasPaginadaService implements IConsultaPaginadaService<JustificativaPonto> {
+public class ConsultaJustificativasPaginadaService implements IConsultaPaginadaService<JustificativaPontoGrid> {
 
     private IConsultaJustificativaPontoDao dao;
 
@@ -19,7 +17,7 @@ public class ConsultaJustificativasPaginadaService implements IConsultaPaginadaS
     }
 
     @Override
-    public List<JustificativaPonto> todas(int startIndex, int pageSize) {
+    public List<JustificativaPontoGrid> todas(int startIndex, int pageSize) {
         return dao.todos(startIndex, pageSize);
     }
 

@@ -13,8 +13,10 @@ import java.util.List;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -8772516708049621911L;
+    private static final int hash1 = 1156070685;
+    private static final int hash2 = 119119943;
 
-	@Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId")
 	private int id;
@@ -28,7 +30,7 @@ public class User implements Serializable {
 	@Column(name = "email", unique = true, length = 50)
 	private String email;
 
-	@Column(name = "senha", length = 50)
+	@Column(name = "senha", length = 200)
 	private String senha;
 
 	@ElementCollection(targetClass = PerfilEnum.class, fetch = FetchType.EAGER)
@@ -98,19 +100,13 @@ public class User implements Serializable {
 		this.senha = senha;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
-	private static final int hash1 = 1156070685;
-	private static final int hash2 = 119119943;
-	
-
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(hash1,hash2 )
-				.appendSuper(super.hashCode()).append(this.nome)
-				.append(this.cpf).append(this.email).toHashCode();
+                .append(this.nome)
+				.append(this.cpf)
+                .append(this.email)
+                .toHashCode();
 	}
 
 	@Override

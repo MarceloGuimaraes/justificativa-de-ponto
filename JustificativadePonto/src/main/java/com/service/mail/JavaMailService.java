@@ -111,7 +111,7 @@ public class JavaMailService implements IMailService {
 	}
 
     @Override
-	public void enviarSuperintendente(UsuarioLogado remetente,User solicitante, User superIntendente, Integer idDoc) {
+	public void enviarSuperintendente(UsuarioLogado remetente, User solicitante, User superIntendente, Integer idDoc) {
         String assunto;
         String corpo;
         String urlAux;

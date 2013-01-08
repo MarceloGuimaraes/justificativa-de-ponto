@@ -22,9 +22,9 @@ public interface IUserService {
     User recuperar(Integer id);
 	boolean isExisteUser(CadastroUsuario usuario);
 	UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin);
-    List<User> recuperaCoordenadores();
-    List<User> recuperaSuperintendentes();
-    List<User> recuperaRH();
+    List<CadastroUsuario> recuperaCoordenadores();
+    List<CadastroUsuario> recuperaSuperintendentes();
+    List<CadastroUsuario> recuperaRH();
 
     void alteraSenha(CadastroSenha cadastroSenha);
 }

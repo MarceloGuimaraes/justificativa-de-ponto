@@ -1,8 +1,8 @@
 package com.service.impl;
 
 import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
+import com.domain.dto.JustificativaPontoGrid;
 import com.managed.bean.IPermissoesBean;
-import com.model.JustificativaPonto;
 import com.model.User;
 import com.service.IConsultaPaginadaService;
 import org.dozer.Mapper;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPonto> {
+public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPontoGrid> {
 
     private IConsultaJustificativaPontoPorUsuarioDao dao;
 
@@ -28,7 +28,7 @@ public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPa
     }
 
     @Override
-    public List<JustificativaPonto> todas(int startIndex, int pageSize) {
+    public List<JustificativaPontoGrid> todas(int startIndex, int pageSize) {
         if(permissoes.getUsuarioLogado()==null){
             throw new IllegalStateException("O usuario logado nao foi informado");
         }
