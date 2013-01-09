@@ -63,11 +63,12 @@ public class JustificativaService implements IJustificativaService,
         User delegado = mapper.map(proximoResponsavel, User.class);
 
         if(justificativaTela.getId()==null || justificativaTela.getId()==0){
-            justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
+            justificativa = new JustificativaPonto(user);
         } else {
             justificativa = recuperar(justificativaTela);
-            mapper.map(justificativaTela, justificativa);
         }
+
+        mapper.map(justificativaTela, justificativa);
 
         justificativa.setStatus(novoStatus);
 
@@ -91,6 +92,7 @@ public class JustificativaService implements IJustificativaService,
         JustificativaPonto justificativa = null;
 
         User user = mapper.map(usuarioLogado, User.class);
+
 
         if(justificativaTela.getId()==null || justificativaTela.getId()==0){
             justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
@@ -123,10 +125,7 @@ public class JustificativaService implements IJustificativaService,
 
     @Override
     public JustificativaPontoDTO nova(UsuarioLogado usuarioLogado) {
-        User user = mapper.map(usuarioLogado, User.class);
-        JustificativaPonto novaJustificativa = new JustificativaPonto(user);
-        JustificativaPontoDTO retorno = mapper.map(novaJustificativa, JustificativaPontoDTO.class);
-        return retorno;
+        return new JustificativaPontoDTO(usuarioLogado);
     }
 
     @Override

@@ -262,7 +262,7 @@
 			<p:separator style="margin-top: 20px;" />
 
 			<p:panel header="#{msgs['form.justificativa.legenda.historico']}"
-				style="margin-top: 20px;">
+				style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.tramite}">
 
 				<p:dataTable var="historico"
 					value="#{justificativaBean.justificativa.tramite}"

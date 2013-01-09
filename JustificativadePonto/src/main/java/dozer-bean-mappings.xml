@@ -14,9 +14,9 @@
         </field>
     </mapping>
     <mapping>
-        <class-a>com.domain.dto.JustificativaPontoDTO</class-a>
-        <class-b>com.model.JustificativaPonto</class-b>
-        <field remove-orphans="true">
+        <class-a>com.model.JustificativaPonto</class-a>
+        <class-b>com.domain.dto.JustificativaPontoDTO</class-b>
+        <field type="one-way">
             <a>historico</a>
             <b>historico</b>
         </field>

@@ -32,6 +32,15 @@ public class JustificativaPontoDTO implements Serializable {
     private List<HistoricoJustificativaPontoDTO> aprovacoes;
     private List<HistoricoJustificativaPontoDTO> tramite;
 
+    public JustificativaPontoDTO() {
+    }
+
+    public JustificativaPontoDTO(UsuarioLogado solicitante) {
+        this.solicitante = solicitante;
+        this.data = new Date();
+        this.status = StatusEnum.ELABORACAO;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -152,10 +161,6 @@ public class JustificativaPontoDTO implements Serializable {
             }
         }
         this.historico = historico;
-    }
-
-    public List<HistoricoJustificativaPontoDTO> getHistoricoOrdenado(){
-        return historico;
     }
 
     public String getObsRh() {

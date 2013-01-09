@@ -42,7 +42,13 @@ public class Workflow implements IWorkflow {
 
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        JustificativaPonto justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
+        JustificativaPonto justificativa = null;
+
+        if(justificativaTela.getId()==null || justificativaTela.getId()==0){
+            justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
+        }else{
+            justificativa = justificativaService.recuperar(justificativaTela);
+        }
 
         if (justificativa.getStatus().equals(StatusEnum.ELABORACAO)
                 && justificativa.getSolicitante().equals(mapper.map(permissoes.getUsuarioLogado(), User.class))) {
@@ -53,7 +59,6 @@ public class Workflow implements IWorkflow {
 
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativa);
 
-        // como o coordenador já foi selecionado, não faço validação
         if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
                 && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel().equals(usuarioLogado)) {
 
