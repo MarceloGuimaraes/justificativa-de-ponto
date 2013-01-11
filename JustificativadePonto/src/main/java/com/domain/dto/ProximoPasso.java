@@ -1,16 +1,20 @@
 package com.domain.dto;
 
-import com.domain.service.IWorkflow;
+import com.domain.service.IProximoPasso;
+import com.managed.bean.IPermissoesBean;
+import com.model.*;
+import com.service.IJustificativaService;
+import com.service.IUserService;
+import com.service.mail.IMailService;
 import com.spring.util.ApplicationContextProvider;
+import org.dozer.Mapper;
 
 import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public abstract class ProximoPasso implements Serializable {
+public abstract class ProximoPasso implements IProximoPasso {
 
     private Integer id;
 
@@ -24,13 +28,30 @@ public abstract class ProximoPasso implements Serializable {
 
     private transient List<SelectItem> escolhas;
 
-    protected transient IWorkflow workflow;
+    protected transient IJustificativaService justificativaService;
+
+    protected transient IUserService userService;
+
+    protected transient IMailService mailService;
+
+    protected transient IPermissoesBean permissoes;
+
+    protected transient Mapper mapper;
+
 
     protected ProximoPasso() {
     }
 
-    public ProximoPasso(IWorkflow workflow) {
-        this.workflow = workflow;
+    public ProximoPasso(IJustificativaService justificativaService,
+                        IUserService userService,
+                        IMailService mailService,
+                        IPermissoesBean permissoes,
+                        Mapper mapper) {
+        this.justificativaService = justificativaService;
+        this.userService = userService;
+        this.mailService = mailService;
+        this.permissoes = permissoes;
+        this.mapper = mapper;
         this.escolhas = populaEscolhas();
     }
 
@@ -84,11 +105,36 @@ public abstract class ProximoPasso implements Serializable {
 
     protected abstract List<SelectItem> populaEscolhas();
 
-    public abstract void proximo(JustificativaPontoDTO justificativa);
+    protected Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> retornaHistoricosMapeados(JustificativaPonto justificativa) {
+        EnumSet<TipoEventoJustificativaPontoEnum> tiposEventosEncaminhamento = EnumSet.of(
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH
+        );
+
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = new LinkedHashMap<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto>();
+        for(HistoricoJustificativaPonto h : justificativa.getHistorico()){
+            if(tiposEventosEncaminhamento.contains(h.getTipoEvento())){
+                historicos.put(h.getTipoEvento(), (EncaminhamentoJustificativaPonto)h);
+            }
+        }
+        return historicos;
+    }
+
+    protected User getUser(){
+        return userService.recuperar(getId());
+    }
 
     private void readObject(ObjectInputStream o) throws ClassNotFoundException, IOException {
+
         o.defaultReadObject();
-        workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+
+        justificativaService = (IJustificativaService) ApplicationContextProvider.getBean("JustificativaService");
+        userService = (IUserService) ApplicationContextProvider.getBean("UserService");
+        mailService = (IMailService) ApplicationContextProvider.getBean("mailService");
+        permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
+        mapper = (Mapper) ApplicationContextProvider.getBean("mapper");
+
         escolhas = populaEscolhas();
     }
 

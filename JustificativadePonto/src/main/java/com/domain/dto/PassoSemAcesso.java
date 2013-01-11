@@ -1,6 +1,6 @@
 package com.domain.dto;
 
-import com.domain.service.IWorkflow;
+import com.model.JustificativaPonto;
 
 import javax.faces.model.SelectItem;
 import java.util.List;
@@ -15,11 +15,16 @@ public class PassoSemAcesso extends ProximoPasso {
 
     @Override
     protected List<SelectItem> populaEscolhas() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
+    }
+
+    @Override
+    public boolean isIntercepted(JustificativaPonto justificativa) {
+        return true;
     }
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //Objeto nulo
     }
 }

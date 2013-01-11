@@ -8,7 +8,7 @@
 		<h:form id="justificativaForm">
 			<h:inputHidden
 				value="#{justificativaBean.justificativa.id}" />
-			<p:growl id="growl" life="2500"></p:growl>
+			<p:growl id="growl" life="2500"/>
 			<p:panel id="panel" header="#{justificativaBean.labelCadastro}">
 				<p:panelGrid style="margin-top:10px;width:99%">
 					<p:row>
@@ -252,10 +252,7 @@
                 <p:commandButton id="btnCancelar"
                                  rendered="#{justificativaBean.proximoPasso.permiteCancelar}"
                                  value="#{msgs['form.justificativa.botao.cancelar']}"
-                                 oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e">
-                    <f:param name="id"
-                             value="#{justificativaBean.justificativa.id}" />
-                </p:commandButton>
+                                 oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e"/>
 
 			</p:panel>
 
@@ -321,13 +318,9 @@
 						<p:commandButton id="btsalvar"
 							value="#{msgs['dialog.cancelar.botao.salvar']}" update="display"
 							actionListener="#{justificativaBean.cancelado}"
-							oncomplete="handleCancelRequest(xhr, status, args)">
-							<f:param name="id"
-								value="#{justificativaBean.justificativa.id}" />
-						</p:commandButton>
+							oncomplete="handleCancelRequest(xhr, status, args)"/>
 						<p:commandButton value="Voltar" update="display" process="@this"
-							oncomplete="cadDialog.hide()">
-						</p:commandButton>
+							oncomplete="cadDialog.hide()"/>
 					</p:column>
 				</h:panelGrid>
 			</h:form>

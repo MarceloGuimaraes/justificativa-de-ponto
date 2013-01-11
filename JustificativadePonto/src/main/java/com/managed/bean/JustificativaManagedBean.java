@@ -1,8 +1,8 @@
 package com.managed.bean;
 
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.ProximoPasso;
 import com.domain.dto.exception.BusinessException;
+import com.domain.service.IProximoPasso;
 import com.domain.service.IWorkflow;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
@@ -23,6 +23,7 @@ import java.util.List;
 public class JustificativaManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private static final String SUCCESS = "welcome";
 
 	private transient IWorkflow workflow;
@@ -31,12 +32,13 @@ public class JustificativaManagedBean implements Serializable {
 
 	private HandlerMotivosManagedBean handler;
 
-	private List<SelectItem> tipoBancoHorasList;
-	private List<SelectItem> tipoDecisaoList;
+	private transient List<SelectItem> tipoBancoHorasList;
+
+	private transient List<SelectItem> tipoDecisaoList;
 
 	private JustificativaPontoDTO justificativa;
 
-    private ProximoPasso proximoPasso;
+    private IProximoPasso proximoPasso;
 
 	public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IPermissoesBean permissoes,
@@ -46,22 +48,18 @@ public class JustificativaManagedBean implements Serializable {
 
         this.permissoes = permissoes;
 
-		tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
-
-		tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+        inicializaTela();
 
 		JustificativaPontoDTO justificativaRecebida = null;
 
 		String id = JsfUtil.getParameter("id");
 
 		if (id != null) {
-
 			justificativaRecebida = justificativaService.recuperar(Integer.parseInt(id));
-
 		}
 
 		if (justificativaRecebida == null) {
-			justificativaRecebida = justificativaService.nova(
+			justificativaRecebida = new JustificativaPontoDTO(
                     permissoes.getUsuarioLogado()
             );
 		}
@@ -70,7 +68,13 @@ public class JustificativaManagedBean implements Serializable {
 
 	}
 
-	public HandlerMotivosManagedBean getHandler() {
+    private void inicializaTela() {
+        tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
+
+        tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+    }
+
+    public HandlerMotivosManagedBean getHandler() {
 		return handler;
 	}
 
@@ -103,7 +107,7 @@ public class JustificativaManagedBean implements Serializable {
 		this.justificativa = justificativa;
 	}
 
-    public ProximoPasso getProximoPasso() {
+    public IProximoPasso getProximoPasso() {
         return proximoPasso;
     }
 
@@ -152,6 +156,8 @@ public class JustificativaManagedBean implements Serializable {
 		workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
 
         permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
+
+        inicializaTela();
 
 	}
 }
