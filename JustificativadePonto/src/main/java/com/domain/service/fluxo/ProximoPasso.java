@@ -1,5 +1,6 @@
-package com.domain.dto;
+package com.domain.service.fluxo;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.service.IProximoPasso;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;

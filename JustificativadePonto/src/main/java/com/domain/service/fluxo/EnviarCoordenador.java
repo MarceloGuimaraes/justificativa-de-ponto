@@ -1,5 +1,7 @@
-package com.domain.dto;
+package com.domain.service.fluxo;
 
+import com.domain.dto.JustificativaPontoDTO;
+import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;

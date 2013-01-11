@@ -1,5 +1,7 @@
-package com.domain.dto;
+package com.domain.service.fluxo;
 
+import com.domain.dto.JustificativaPontoDTO;
+import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -11,9 +13,9 @@ import javax.faces.model.SelectItem;
 import java.util.List;
 import java.util.Map;
 
-public class Concluir extends ProximoPasso {
+public class EnviarRH extends ProximoPasso {
 
-    public Concluir(IJustificativaService justificativaService,
+    public EnviarRH(IJustificativaService justificativaService,
                     IUserService userService,
                     IMailService mailService,
                     IPermissoesBean permissoes,
@@ -25,15 +27,15 @@ public class Concluir extends ProximoPasso {
                 permissoes,
                 mapper
         );
-        temProximoPasso = false;
-        permiteCancelar = true;
+        temProximoPasso = true;
         permiteEditar = false;
-        concluir = true;
+        permiteCancelar = true;
+        concluir = false;
     }
 
     @Override
     protected List<SelectItem> populaEscolhas() {
-        return null;
+        return retornaItemAPartirDeUser(userService.recuperaRH());
     }
 
     @Override
@@ -42,40 +44,44 @@ public class Concluir extends ProximoPasso {
 
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
-                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(usuarioLogado)) {
+        if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(usuarioLogado)) {
 
             return true;
 
         }
-
         return false;
     }
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
-        JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
-
-        justificativaService.atua(
-                permissoes.getUsuarioLogado(),
-                justificativaAtualizada,
-                StatusEnum.CONCLUIDO,
-                TipoEventoJustificativaPontoEnum.APROVADO_RH);
-
-        User solicitante = mapper.map(justificativaAtualizada.getSolicitante(), User.class);
+        // Inserindo o Rh escolhidos
+        User rh = getUser();
+        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
         JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
-
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
 
         User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
-        User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
 
-        mailService.concluiRh(
+        justificativaService.atua(
+                permissoes.getUsuarioLogado(),
+                justificativa,
+                StatusEnum.EXECUCAORH,
+                TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
+
+        justificativaService.mudaSituacao(
+                permissoes.getUsuarioLogado(),
+                mapper.map(rh, UsuarioLogado.class),
+                justificativa,
+                StatusEnum.EXECUCAORH,
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
+
+        mailService.enviarRh(
                 permissoes.getUsuarioLogado(),
                 solicitante,
                 coordenador,
-                superintendente,
+                rh,
                 justificativa.getId());
     }
 

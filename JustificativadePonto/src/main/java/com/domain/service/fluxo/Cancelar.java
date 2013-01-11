@@ -1,7 +1,6 @@
 package com.domain.service.fluxo;
 
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.ProximoPasso;
 import com.domain.dto.exception.BusinessException;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;

@@ -1,5 +1,6 @@
-package com.domain.dto;
+package com.domain.service.fluxo;
 
+import com.domain.dto.JustificativaPontoDTO;
 import com.model.JustificativaPonto;
 
 import javax.faces.model.SelectItem;

@@ -1,7 +1,7 @@
 package com.domain.service.impl;
 
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.PassoSemAcesso;
+import com.domain.service.fluxo.PassoSemAcesso;
 import com.domain.service.IProximoPasso;
 import com.domain.service.IWorkflow;
 import com.model.JustificativaPonto;
