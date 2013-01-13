@@ -2,7 +2,9 @@ package com.managed.bean;
 
 import com.domain.dto.UsuarioLogado;
 
-public interface IPermissoesBean {
+import java.io.Serializable;
+
+public interface IPermissoesBean extends Serializable {
     UsuarioLogado getUsuarioLogado();
     void setUsuarioLogado(UsuarioLogado usuarioLogado);
     void logOut();

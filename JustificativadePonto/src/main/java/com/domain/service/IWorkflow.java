@@ -1,8 +1,10 @@
 package com.domain.service;
 
 import com.domain.dto.JustificativaPontoDTO;
+import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 
 public interface IWorkflow {
-    void cancelar(JustificativaPontoDTO justificativa);
-    IProximoPasso retornaProximoPasso(JustificativaPontoDTO justificativa);
+    HandlerProximoPassoManagedBean retornaProximoPasso(JustificativaPontoDTO justificativa);
+
+    HandlerProximoPassoManagedBean retornaCancelamento();
 }

@@ -4,7 +4,6 @@ import com.dao.IUserDAO;
 import com.model.PerfilEnum;
 import com.model.User;
 import org.hibernate.Criteria;
-import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Property;
@@ -60,7 +59,7 @@ public class UserDAO extends CrudDaoImpl<User> implements IUserDAO, Serializable
 
     @Override
     public List<User> listar(EnumSet<PerfilEnum> perfis) {
-        String hql = "from User u join u.perfil p where p in :perfil";
+        String hql = "from User u join u.perfil p where p in (:perfil)";
         Query query = getSession().createQuery(hql);
         query.setParameterList("perfil", perfis);
         return query.list();

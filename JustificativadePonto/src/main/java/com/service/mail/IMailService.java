@@ -6,7 +6,7 @@ import com.model.User;
 import java.io.Serializable;
 import java.util.List;
 
-public interface IMailService extends Serializable {
+public interface IMailService {
 
     void enviarCoordenador(UsuarioLogado usuarioLogado, User coordenador, Integer idDoc);
     void enviarSuperintendente(UsuarioLogado usuarioLogado, User solicitante, User superIntendente, Integer idDoc);

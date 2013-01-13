@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+    <!-- Data Source Declaration -->
+    <jee:jndi-lookup id="dataSource"
+                     jndi-name="jdbc/sescoopDB"
+                     cache="true"
+                     resource-ref="true"
+                     lookup-on-startup="false"
+                     proxy-interface="javax.sql.DataSource"
+            />
+
+    <!-- Session Factory Declaration -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>com.model.User</value>
+                <value>com.model.JustificativaPonto</value>
+                <value>com.model.HistoricoJustificativaPonto</value>
+                <value>com.model.EncaminhamentoJustificativaPonto</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager" />
+
+    <!-- Transaction Manager is defined -->
+    <bean id="txManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- DAO Declaration -->
+    <bean id="dao" class="com.dao.Dao" abstract="true" >
+        <constructor-arg ref="sessionFactory" />
+    </bean>
+
+    <bean id="UserDAO" class="com.dao.impl.UserDAO" parent="dao" />
+
+    <bean id="JustificativaDAO" class="com.dao.impl.JustificativaDAO" parent="dao" />
+
+    <bean id="consultaJustificativaPontoPorUserPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="data" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorDataDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="data" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorSolicitanteDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="solicitante.nome" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorUserPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoPorUsuarioDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
+
+    <bean id="consultaJustificativaPontoPorMotivoDao" class="com.dao.impl.ConsultaJustificativaPontoDao" parent="dao">
+        <constructor-arg value="motivo" />
+    </bean>
+
+</beans>

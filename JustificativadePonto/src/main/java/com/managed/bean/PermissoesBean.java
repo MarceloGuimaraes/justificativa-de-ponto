@@ -3,9 +3,7 @@ package com.managed.bean;
 import com.domain.dto.UsuarioLogado;
 import com.model.PerfilEnum;
 
-import java.io.Serializable;
-
-public class PermissoesBean implements IPermissoesBean, Serializable {
+public class PermissoesBean implements IPermissoesBean {
 
 	private static final long serialVersionUID = 1L;
 

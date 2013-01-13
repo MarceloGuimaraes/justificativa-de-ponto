@@ -1,14 +1,15 @@
 package com.domain.service.fluxo;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.managed.bean.IPermissoesBean;
+import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
 import org.dozer.Mapper;
 
-import javax.faces.model.SelectItem;
 import java.util.List;
 import java.util.Map;
 
@@ -26,15 +27,6 @@ public class Concluir extends ProximoPasso {
                 permissoes,
                 mapper
         );
-        temProximoPasso = false;
-        permiteCancelar = true;
-        permiteEditar = false;
-        concluir = true;
-    }
-
-    @Override
-    protected List<SelectItem> populaEscolhas() {
-        return null;
     }
 
     @Override
@@ -54,7 +46,17 @@ public class Concluir extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa) {
+    public List<CadastroUsuario> listaCandidatos() {
+        return userService.recuperaRH();
+    }
+
+    @Override
+    public HandlerProximoPassoManagedBean retornaHandler() {
+        return new HandlerProximoPassoManagedBean(false,false,true,true,"concluir");
+    }
+
+    @Override
+    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
         JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
 
         justificativaService.atua(

@@ -2,6 +2,7 @@ package com.model;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -33,12 +34,18 @@ public class User implements Serializable {
 	@Column(name = "senha", length = 200)
 	private String senha;
 
-	@ElementCollection(targetClass = PerfilEnum.class, fetch = FetchType.EAGER)
-	@CollectionTable(name = "Perfis", joinColumns = { @JoinColumn(name = "id_user") })
-	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
-			@org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.PerfilEnum"),
-			@org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
-			@org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") })
+    @CollectionOfElements(targetElement = PerfilEnum.class)
+	@JoinTable(
+            name = "Perfis",
+            joinColumns = { @JoinColumn(name = "id_user") })
+	@Type(
+            type = "com.util.hibernate.GenericEnumUserType",
+            parameters = {
+                @org.hibernate.annotations.Parameter(name = "enumClass", value = "com.model.PerfilEnum"),
+                @org.hibernate.annotations.Parameter(name = "identifierMethod", value = "getCodigo"),
+                @org.hibernate.annotations.Parameter(name = "valueOfMethod", value = "fromSigla") }
+    )
+    @Column(name = "perfil")
 	private List<PerfilEnum> perfil;
 
 	@Column(name = "ativo")

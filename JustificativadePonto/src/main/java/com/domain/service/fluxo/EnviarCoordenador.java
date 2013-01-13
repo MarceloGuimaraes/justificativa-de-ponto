@@ -1,8 +1,10 @@
 package com.domain.service.fluxo;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
+import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
@@ -12,7 +14,6 @@ import com.service.IUserService;
 import com.service.mail.IMailService;
 import org.dozer.Mapper;
 
-import javax.faces.model.SelectItem;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,15 +32,6 @@ public class EnviarCoordenador extends ProximoPasso {
                 mapper
         );
 
-        temProximoPasso = true;
-        permiteCancelar = false;
-        permiteEditar = true;
-        concluir = false;
-    }
-
-    @Override
-    protected List<SelectItem> populaEscolhas() {
-        return retornaItemAPartirDeUser(userService.recuperaCoordenadores());
     }
 
     @Override
@@ -54,9 +46,9 @@ public class EnviarCoordenador extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa) {
+    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
         // Inserindo o coordenador escolhido
-        User coordenador = userService.recuperar(getId());
+        User coordenador = userService.recuperar(id);
 
         justificativa = justificativaService.adicionar(justificativa);
 
@@ -75,6 +67,22 @@ public class EnviarCoordenador extends ProximoPasso {
                 permissoes.getUsuarioLogado(),
                 coordenador,
                 justificativa.getId()
+        );
+    }
+
+    @Override
+    public List<CadastroUsuario> listaCandidatos() {
+        return userService.recuperaCoordenadores();
+    }
+
+    @Override
+    public HandlerProximoPassoManagedBean retornaHandler() {
+        return new HandlerProximoPassoManagedBean(
+                true,
+                true,
+                false,
+                false,
+                "enviarCoordenador"
         );
     }
 

@@ -1,6 +1,5 @@
 package com.domain.service.fluxo;
 
-import com.domain.dto.CadastroUsuario;
 import com.domain.service.IProximoPasso;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
@@ -10,24 +9,13 @@ import com.service.mail.IMailService;
 import com.spring.util.ApplicationContextProvider;
 import org.dozer.Mapper;
 
-import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class ProximoPasso implements IProximoPasso {
-
-    private Integer id;
-
-    protected boolean temProximoPasso;
-
-    protected boolean permiteEditar;
-
-    protected boolean permiteCancelar;
-
-    protected boolean concluir;
-
-    private transient List<SelectItem> escolhas;
 
     protected transient IJustificativaService justificativaService;
 
@@ -53,58 +41,7 @@ public abstract class ProximoPasso implements IProximoPasso {
         this.mailService = mailService;
         this.permissoes = permissoes;
         this.mapper = mapper;
-        this.escolhas = populaEscolhas();
     }
-
-    public List<SelectItem> getEscolhas() {
-        return escolhas;
-    }
-
-    public void setEscolhas(List<SelectItem> escolhas) {
-        this.escolhas = escolhas;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public boolean isTemProximoPasso() {
-        return temProximoPasso;
-    }
-
-    public boolean isPermiteEditar() {
-        return permiteEditar;
-    }
-
-    public boolean isPermiteCancelar() {
-        return permiteCancelar;
-    }
-
-    public boolean isConcluir() {
-        return concluir;
-    }
-
-    protected List<SelectItem> retornaItemAPartirDeUser(List<CadastroUsuario> users) {
-
-        if (users == null) {
-            return null;
-        }
-
-        List<SelectItem> resultado = new LinkedList<SelectItem>();
-
-        for (CadastroUsuario u : users) {
-            resultado.add(new SelectItem(u.getId(), u.getNome()));
-        }
-
-        return resultado;
-
-    }
-
-    protected abstract List<SelectItem> populaEscolhas();
 
     protected Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> retornaHistoricosMapeados(JustificativaPonto justificativa) {
         EnumSet<TipoEventoJustificativaPontoEnum> tiposEventosEncaminhamento = EnumSet.of(
@@ -122,10 +59,6 @@ public abstract class ProximoPasso implements IProximoPasso {
         return historicos;
     }
 
-    protected User getUser(){
-        return userService.recuperar(getId());
-    }
-
     private void readObject(ObjectInputStream o) throws ClassNotFoundException, IOException {
 
         o.defaultReadObject();
@@ -136,7 +69,6 @@ public abstract class ProximoPasso implements IProximoPasso {
         permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
         mapper = (Mapper) ApplicationContextProvider.getBean("mapper");
 
-        escolhas = populaEscolhas();
     }
 
 }

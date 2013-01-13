@@ -19,7 +19,7 @@ import com.model.User;
 import com.util.Criptografia;
 
 @Transactional(readOnly = true)
-public class UserService implements IUserService,Serializable {
+public class UserService implements IUserService {
 
 
     private static final long serialVersionUID = 1L;

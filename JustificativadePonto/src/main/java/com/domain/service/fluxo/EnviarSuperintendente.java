@@ -1,15 +1,16 @@
 package com.domain.service.fluxo;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
+import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
 import org.dozer.Mapper;
 
-import javax.faces.model.SelectItem;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +28,6 @@ public class EnviarSuperintendente extends ProximoPasso {
                 permissoes,
                 mapper
         );
-        temProximoPasso = true;
-        permiteEditar = false;
-        permiteCancelar = true;
-        concluir = false;
-    }
-
-    @Override
-    protected List<SelectItem> populaEscolhas() {
-        return retornaItemAPartirDeUser(userService.recuperaSuperintendentes());
     }
 
     @Override
@@ -57,9 +49,9 @@ public class EnviarSuperintendente extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa) {
+    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
         // Inserindo o superintendente escolhido
-        User superintendente=userService.recuperar(getId());
+        User superintendente=userService.recuperar(id);
         User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
         justificativaService.atua(
@@ -81,5 +73,15 @@ public class EnviarSuperintendente extends ProximoPasso {
                 superintendente,
                 justificativa.getId()
         );
+    }
+
+    @Override
+    public List<CadastroUsuario> listaCandidatos() {
+        return userService.recuperaSuperintendentes();
+    }
+
+    @Override
+    public HandlerProximoPassoManagedBean retornaHandler() {
+        return new HandlerProximoPassoManagedBean(true,false,true,false,"enviarSuperintendente");
     }
 }

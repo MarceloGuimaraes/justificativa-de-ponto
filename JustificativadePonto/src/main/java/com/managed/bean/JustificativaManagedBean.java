@@ -7,6 +7,7 @@ import com.domain.service.IWorkflow;
 import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
+import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.service.IJustificativaService;
 import com.spring.util.ApplicationContextProvider;
 import com.util.JsfUtil;
@@ -20,7 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 
-public class JustificativaManagedBean implements Serializable {
+public class JustificativaManagedBean implements IJustificativaManagedBean {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,13 +33,15 @@ public class JustificativaManagedBean implements Serializable {
 
 	private HandlerMotivosManagedBean handler;
 
+    private HandlerProximoPassoManagedBean handlerWorkflow;
+
+    private HandlerProximoPassoManagedBean handlerCancel;
+
 	private transient List<SelectItem> tipoBancoHorasList;
 
 	private transient List<SelectItem> tipoDecisaoList;
 
 	private JustificativaPontoDTO justificativa;
-
-    private IProximoPasso proximoPasso;
 
 	public JustificativaManagedBean(IJustificativaService justificativaService,
                                     IPermissoesBean permissoes,
@@ -78,6 +81,10 @@ public class JustificativaManagedBean implements Serializable {
 		return handler;
 	}
 
+    public HandlerProximoPassoManagedBean getProximoPasso(){
+        return handlerWorkflow;
+    }
+
 	public List<SelectItem> getTipoBancoHorasList() {
 		return tipoBancoHorasList;
 	}
@@ -100,19 +107,17 @@ public class JustificativaManagedBean implements Serializable {
 
 	public void setJustificativa(JustificativaPontoDTO justificativa) {
 
-        proximoPasso = workflow.retornaProximoPasso(justificativa);
+        handlerWorkflow = workflow.retornaProximoPasso(justificativa);
+
+        handlerCancel = workflow.retornaCancelamento();
 
         handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
 
 		this.justificativa = justificativa;
 	}
 
-    public IProximoPasso getProximoPasso() {
-        return proximoPasso;
-    }
-
-    public String proximo(){
-        proximoPasso.proximo(justificativa);
+    public String proximo() {
+        handlerWorkflow.proximo(justificativa);
         return SUCCESS;
     }
 
@@ -124,7 +129,7 @@ public class JustificativaManagedBean implements Serializable {
 
         try {
 
-            workflow.cancelar(justificativa);
+            handlerCancel.proximo(justificativa);
 
 		} catch (BusinessException be) {
 			Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
