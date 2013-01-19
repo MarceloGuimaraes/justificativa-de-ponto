@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="business.xml" />
+
+    <bean id="loginController" class="com.managed.bean.LoginBean" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="UserService" />
+    </bean>
+
+    <bean id="userMB" class="com.managed.bean.UserManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
+    </bean>
+
+    <bean id="alteraSenhaManagedBean" class="com.managed.bean.AlteraSenhaManagedBean" scope="request">
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="PermissoesBean" />
+    </bean>
+
+    <bean id="motivoManagedBean" class="com.managed.bean.handler.HandlerMotivosManagedBean" scope="view"/>
+
+    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="workflow" />
+        <constructor-arg ref="motivoManagedBean"/>
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorDataPaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorSolicitante" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorSolicitantePaginadaPorUserService" />
+    </bean>
+
+    <bean id="todasJustificativasPaginadasPorMotivo" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaService" />
+        <constructor-arg ref="consultaJustificativasPorMotivoPaginadaPorUserService" />
+    </bean>
+
+    <!-- Criando o scopo de View -->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="view">
+                    <bean class="com.spring.scope.ViewScope"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

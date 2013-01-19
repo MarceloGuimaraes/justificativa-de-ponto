@@ -12,7 +12,7 @@ import org.unitils.spring.annotation.SpringApplicationContext;
  * Classe base para usar nos testes
  */
 @SpringApplicationContext("application.xml")
-public class BaseTest extends UnitilsJUnit4 {
+public abstract class TesteBase extends UnitilsJUnit4 {
 
     @SpringApplicationContext
     private ApplicationContext applicationContext;

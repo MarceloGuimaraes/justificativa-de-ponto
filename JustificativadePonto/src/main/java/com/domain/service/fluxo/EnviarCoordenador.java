@@ -4,7 +4,6 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
@@ -16,6 +15,7 @@ import org.dozer.Mapper;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class EnviarCoordenador extends ProximoPasso {
 
@@ -31,7 +31,6 @@ public class EnviarCoordenador extends ProximoPasso {
                 permissoes,
                 mapper
         );
-
     }
 
     @Override
@@ -46,9 +45,9 @@ public class EnviarCoordenador extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
+    public void proximo(JustificativaPontoDTO justificativa) {
         // Inserindo o coordenador escolhido
-        User coordenador = userService.recuperar(id);
+        User coordenador = userService.recuperar(justificativa.getIdProximoResponsavel());
 
         justificativa = justificativaService.adicionar(justificativa);
 
@@ -76,14 +75,7 @@ public class EnviarCoordenador extends ProximoPasso {
     }
 
     @Override
-    public HandlerProximoPassoManagedBean retornaHandler() {
-        return new HandlerProximoPassoManagedBean(
-                true,
-                true,
-                false,
-                false,
-                "enviarCoordenador"
-        );
+    public Map<String, Boolean> retornaHandler() {
+        return criaViewHandler(true, false, true, false, false);
     }
-
 }

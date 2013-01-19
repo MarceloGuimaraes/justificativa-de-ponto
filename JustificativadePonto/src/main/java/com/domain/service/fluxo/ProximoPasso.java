@@ -2,15 +2,15 @@ package com.domain.service.fluxo;
 
 import com.domain.service.IProximoPasso;
 import com.managed.bean.IPermissoesBean;
-import com.model.*;
+import com.model.EncaminhamentoJustificativaPonto;
+import com.model.HistoricoJustificativaPonto;
+import com.model.JustificativaPonto;
+import com.model.TipoEventoJustificativaPontoEnum;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
-import com.spring.util.ApplicationContextProvider;
 import org.dozer.Mapper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -59,16 +59,27 @@ public abstract class ProximoPasso implements IProximoPasso {
         return historicos;
     }
 
-    private void readObject(ObjectInputStream o) throws ClassNotFoundException, IOException {
-
-        o.defaultReadObject();
-
-        justificativaService = (IJustificativaService) ApplicationContextProvider.getBean("JustificativaService");
-        userService = (IUserService) ApplicationContextProvider.getBean("UserService");
-        mailService = (IMailService) ApplicationContextProvider.getBean("mailService");
-        permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
-        mapper = (Mapper) ApplicationContextProvider.getBean("mapper");
-
+    @Override
+    public Map<String, Boolean> retornaHandler() {
+        return criaViewHandler(false, false, false, false, false);
     }
 
+    private static final String TEM_INFORMAR_DECISAO = "temInformarDecisao";
+    private static final String TEM_PROXIMO_PASSO = "temProximoPasso";
+    private static final String TEM_CONCLUIR = "temConcluir";
+    private static final String TEM_CANCELAR = "temCancelar";
+    private static final String PERMITE_EDITAR= "permiteEditar";
+    protected Map<String,Boolean> criaViewHandler(boolean permiteEditar,
+                                                  boolean informaDecisao,
+                                                  boolean temProximoPasso,
+                                                  boolean conclui,
+                                                  boolean cancela){
+        Map<String,Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(PERMITE_EDITAR, permiteEditar);
+        resultado.put(TEM_INFORMAR_DECISAO, informaDecisao);
+        resultado.put(TEM_PROXIMO_PASSO, temProximoPasso);
+        resultado.put(TEM_CONCLUIR, conclui);
+        resultado.put(TEM_CANCELAR, cancela);
+        return resultado;
+    }
 }

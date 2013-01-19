@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="services.xml" />
+
+    <bean id="workflow" class="com.domain.service.impl.Workflow">
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="mapper" />
+        <constructor-arg>
+            <map>
+                <entry key="1" value-ref="enviarCoordenador"/>
+                <entry key="2" value-ref="enviarSuperintendente"/>
+                <entry key="3" value-ref="enviarRH"/>
+                <entry key="4" value-ref="concluir"/>
+                <entry key="5" value-ref="cancelar"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="proximoPasso" class="com.domain.service.fluxo.ProximoPasso" abstract="true">
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="UserService" />
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="mailService" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="enviarCoordenador" class="com.domain.service.fluxo.EnviarCoordenador" parent="proximoPasso"/>
+
+    <bean id="enviarSuperintendente" class="com.domain.service.fluxo.EnviarSuperintendente" parent="proximoPasso"/>
+
+    <bean id="enviarRH" class="com.domain.service.fluxo.EnviarRH" parent="proximoPasso"/>
+
+    <bean id="concluir" class="com.domain.service.fluxo.Concluir" parent="proximoPasso"/>
+
+    <bean id="cancelar" class="com.domain.service.fluxo.Cancelar" parent="proximoPasso"/>
+
+    <bean id="nulo" class="com.domain.service.fluxo.PassoSemAcesso" />
+
+</beans>

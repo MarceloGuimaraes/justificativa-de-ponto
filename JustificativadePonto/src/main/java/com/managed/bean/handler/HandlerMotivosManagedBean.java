@@ -1,6 +1,8 @@
 package com.managed.bean.handler;
 
+import com.domain.dto.JustificativaPontoDTO;
 import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
 import com.model.MotivoEnum;
 
@@ -19,61 +21,79 @@ public class HandlerMotivosManagedBean implements Serializable {
 
     private List<SelectItem> tipoMotivosList;
     private List<SelectItem> tipoFaltaList;
+    private List<SelectItem> tipoBancoHorasList;
+//    Map<MotivoEnum, Map<String,Boolean>>escolhas;
     private Map<String,Boolean> configuracao;
 
     public HandlerMotivosManagedBean() {
         this.tipoMotivosList = new ComboMotivoDatasourceImpl().findObjects();
         this.tipoFaltaList = new ComboTipoFaltaDatasourceImpl().findObjects();
-        configuracao = new LinkedHashMap<String, Boolean>();
-    }
+        tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+//        escolhas = new LinkedHashMap<MotivoEnum, Map<String, Boolean>>();
+//        escolhas.put(MotivoEnum.FALTAS, getConfiguracaoFaltas());
+//        escolhas.put(MotivoEnum.BANCODEHORAS, getConfiguracaoBancoHoras());
+//        escolhas.put(MotivoEnum.FALTADEMARCACAO, getConfiguracaoFaltaMarcacao());
+//        escolhas.put(MotivoEnum.ATIVIDADEFORA, getConfiguracaoOutros());
+//        escolhas.put(MotivoEnum.ATRASOS, getConfiguracaoOutros());
+//        escolhas.put(MotivoEnum.SAIDAANTECIPADA, getConfiguracaoOutros());
 
-    public HandlerMotivosManagedBean(MotivoEnum motivo){
-        this();
-        setConfiguracao(motivo);
     }
 
     public Map<String, Boolean> getConfiguracao() {
         return configuracao;
     }
 
+    public void setJustificativa(JustificativaPontoDTO justificativa){
+        setConfiguracao(justificativa.getMotivo());
+    }
+
     private void setConfiguracao(MotivoEnum motivo){
+//        configuracao = escolhas.get(motivo);
         if(MotivoEnum.FALTAS.equals(motivo)){
-            setConfiguracaoFaltas();
+            configuracao = getConfiguracaoFaltas();
         }else if(MotivoEnum.FALTADEMARCACAO.equals(motivo)){
-            setConfiguracaoFaltaMarcacao();
+            configuracao = getConfiguracaoFaltaMarcacao();
         } else if(MotivoEnum.BANCODEHORAS.equals(motivo)){
-            setConfiguracaoBancoHoras();
+            configuracao = getConfiguracaoBancoHoras();
         } else {
-            setConfiguracaoOutros();
+            configuracao = getConfiguracaoOutros();
         }
     }
 
-    private void setConfiguracaoFaltas(){
-        configuracao.put(CAUSA_FALTA, true);
-        configuracao.put(HORA_INI, false);
-        configuracao.put(HORA_FIM, false);
-        configuracao.put(TIPO_BANCO_HORAS, false);
+    private Map<String, Boolean> getConfiguracaoFaltas(){
+        Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(CAUSA_FALTA, true);
+        resultado.put(HORA_INI, false);
+        resultado.put(HORA_FIM, false);
+        resultado.put(TIPO_BANCO_HORAS, false);
+        return resultado;
     }
 
-    private void setConfiguracaoFaltaMarcacao(){
-        configuracao.put(CAUSA_FALTA, false);
-        configuracao.put(HORA_INI, true);
-        configuracao.put(HORA_FIM, false);
-        configuracao.put(TIPO_BANCO_HORAS, false);
+    private Map<String, Boolean> getConfiguracaoFaltaMarcacao(){
+        Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(CAUSA_FALTA, false);
+        resultado.put(HORA_INI, true);
+        resultado.put(HORA_FIM, false);
+        resultado.put(TIPO_BANCO_HORAS, false);
+        return resultado;
     }
 
-    private void setConfiguracaoBancoHoras(){
-        configuracao.put(CAUSA_FALTA, false);
-        configuracao.put(HORA_INI, true);
-        configuracao.put(HORA_FIM, true);
-        configuracao.put(TIPO_BANCO_HORAS, true);
+    private Map<String, Boolean> getConfiguracaoBancoHoras(){
+        Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(CAUSA_FALTA, false);
+        resultado.put(HORA_INI, true);
+        resultado.put(HORA_FIM, true);
+        resultado.put(TIPO_BANCO_HORAS, true);
+        return resultado;
     }
 
-    private void setConfiguracaoOutros(){
-        configuracao.put(CAUSA_FALTA, false);
-        configuracao.put(HORA_INI, true);
-        configuracao.put(HORA_FIM, true);
-        configuracao.put(TIPO_BANCO_HORAS, false);
+    private Map<String, Boolean> getConfiguracaoOutros(){
+        Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(CAUSA_FALTA, false);
+        resultado.put(HORA_INI, true);
+        resultado.put(HORA_FIM, true);
+        resultado.put(TIPO_BANCO_HORAS, false);
+        return resultado;
     }
 
     public List<SelectItem> getTipoMotivosList() {
@@ -103,4 +123,11 @@ public class HandlerMotivosManagedBean implements Serializable {
         }
     }
 
+    public List<SelectItem> getTipoBancoHorasList() {
+        return tipoBancoHorasList;
+    }
+
+    public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
+        this.tipoBancoHorasList = tipoBancoHorasList;
+    }
 }

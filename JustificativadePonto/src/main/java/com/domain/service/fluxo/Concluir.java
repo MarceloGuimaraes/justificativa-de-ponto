@@ -3,7 +3,6 @@ package com.domain.service.fluxo;
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
@@ -51,21 +50,19 @@ public class Concluir extends ProximoPasso {
     }
 
     @Override
-    public HandlerProximoPassoManagedBean retornaHandler() {
-        return new HandlerProximoPassoManagedBean(false,false,true,true,"concluir");
+    public Map<String, Boolean> retornaHandler() {
+        return criaViewHandler(false, false, false, true, true);
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
-        JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
-
+    public void proximo(JustificativaPontoDTO justificativa) {
         justificativaService.atua(
                 permissoes.getUsuarioLogado(),
-                justificativaAtualizada,
+                justificativa,
                 StatusEnum.CONCLUIDO,
                 TipoEventoJustificativaPontoEnum.APROVADO_RH);
 
-        User solicitante = mapper.map(justificativaAtualizada.getSolicitante(), User.class);
+        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
         JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
 

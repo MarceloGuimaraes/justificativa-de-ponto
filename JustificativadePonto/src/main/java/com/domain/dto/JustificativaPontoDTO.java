@@ -27,6 +27,8 @@ public class JustificativaPontoDTO implements Serializable {
 
     private String cancelamento;
 
+    private Integer idProximoResponsavel;
+
     private List<HistoricoJustificativaPontoDTO> historico;
 
     private List<HistoricoJustificativaPontoDTO> aprovacoes;
@@ -187,4 +189,11 @@ public class JustificativaPontoDTO implements Serializable {
         return tramite;
     }
 
+    public Integer getIdProximoResponsavel() {
+        return idProximoResponsavel;
+    }
+
+    public void setIdProximoResponsavel(Integer idProximoResponsavel) {
+        this.idProximoResponsavel = idProximoResponsavel;
+    }
 }

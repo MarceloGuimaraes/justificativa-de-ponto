@@ -4,7 +4,6 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
@@ -23,18 +22,7 @@ public class Cancelar extends ProximoPasso {
     }
 
     @Override
-    public List<CadastroUsuario> listaCandidatos() {
-        return null;
-    }
-
-    @Override
-    public HandlerProximoPassoManagedBean retornaHandler() {
-        return new HandlerProximoPassoManagedBean(false,false,false,false,"cancelar");
-    }
-
-    @Override
-    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
-
+    public void proximo(JustificativaPontoDTO justificativa) {
         Identificacao userCorrente = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
         List<User> destinos = new LinkedList<User>();
@@ -87,7 +75,11 @@ public class Cancelar extends ProximoPasso {
                 destinos,
                 justificativaPersistida.getId()
         );
+    }
 
+    @Override
+    public List<CadastroUsuario> listaCandidatos() {
+        return null;
     }
 
     public Cancelar(IJustificativaService justificativaService,
@@ -97,4 +89,5 @@ public class Cancelar extends ProximoPasso {
                     Mapper mapper) {
         super(justificativaService, userService, mailService, permissoes, mapper);
     }
+
 }

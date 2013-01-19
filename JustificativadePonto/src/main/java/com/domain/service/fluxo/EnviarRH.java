@@ -4,7 +4,6 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
@@ -46,12 +45,13 @@ public class EnviarRH extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
+    public void proximo(JustificativaPontoDTO justificativa) {
         // Inserindo o Rh escolhidos
-        User rh = userService.recuperar(id);
+        User rh = userService.recuperar(justificativa.getIdProximoResponsavel());
         User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
-        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
+        JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
+        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativaAtualizada);
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
 
         User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
@@ -83,8 +83,8 @@ public class EnviarRH extends ProximoPasso {
     }
 
     @Override
-    public HandlerProximoPassoManagedBean retornaHandler() {
-        return new HandlerProximoPassoManagedBean(true,false,true,false,"enviarRH");
+    public Map<String, Boolean> retornaHandler() {
+        return criaViewHandler(false,true, true, false, true);
     }
 
 }

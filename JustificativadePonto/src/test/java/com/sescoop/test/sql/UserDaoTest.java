@@ -3,7 +3,7 @@ package com.sescoop.test.sql;
 import com.dao.impl.UserDAO;
 import com.model.PerfilEnum;
 import com.model.User;
-import com.sescoop.test.BaseTest;
+import com.sescoop.test.TesteBase;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.unitils.spring.annotation.SpringBeanByName;
@@ -18,32 +18,12 @@ import java.util.List;
  * User: rxonda
  * Date: 1/7/13
  * Time: 1:02 AM
- * To change this template use File | Settings | File Templates.
+ * Testes do Dao de Usuarios
  */
-public class TestaCharEncodingTest extends BaseTest {
+public class UserDaoTest extends TesteBase {
 
     @SpringBeanByName
     private UserDAO UserDAO;
-
-    @Test
-    public void verificandoEncoding(){
-
-        User user = new User();
-        user.setNome("Róger Çaricô");
-        user.setAtivo(true);
-        user.setCpf("120.120.201-09");
-        user.setEmail("rcar@mail.com");
-        user.setSenha("senha");
-
-        Serializable id = UserDAO.adicionar(user);
-
-        User userPersistido = UserDAO.recuperar(id);
-
-        Assert.assertNotNull("Deveria ter recuperado o usuario", userPersistido);
-
-        Assert.assertEquals("O nome deve ser ", "Róger Çaricô", userPersistido.getNome());
-
-    }
 
     @Test
     public void recuperaApenasCoordenadores(){
@@ -78,6 +58,7 @@ public class TestaCharEncodingTest extends BaseTest {
         List<User> coords = UserDAO.listar(EnumSet.of(PerfilEnum.COORDENADOR));
 
         Assert.assertEquals("A quantidade na listagem deve ser ",1 , coords.size());
+        Assert.assertEquals("O nome do usuario coordendor deve ser ", "Raphael R", coords.get(0).getNome());
 
     }
 
@@ -85,11 +66,11 @@ public class TestaCharEncodingTest extends BaseTest {
     public void deveSalvarPerfilDoUsuario() {
 
         User user = new User();
-        user.setNome("Raphael R");
+        user.setNome("Róger Çaricô");
         user.setAtivo(true);
-        user.setEmail("teste@teste.com");
-        user.setSenha("senha123");
-        user.setCpf("120.120.120.10");
+        user.setCpf("120.120.201-09");
+        user.setEmail("rcar@mail.com");
+        user.setSenha("senha");
         List<PerfilEnum> perfis = new LinkedList<PerfilEnum>();
         perfis.add(PerfilEnum.COORDENADOR);
         perfis.add(PerfilEnum.USUARIO);
@@ -101,11 +82,14 @@ public class TestaCharEncodingTest extends BaseTest {
 
         Assert.assertNotNull("Deve ter salvo o usuario", salvo);
 
+        Assert.assertEquals("O nome deve ser ", "Róger Çaricô", salvo.getNome());
+
         Assert.assertEquals("A qtd de perfis do usuario deve ser ", 2, user.getPerfil().size());
 
         List<PerfilEnum> perfisParaComparar = new LinkedList<PerfilEnum>();
         perfisParaComparar.add(PerfilEnum.COORDENADOR);
         perfisParaComparar.add(PerfilEnum.USUARIO);
+
         Assert.assertEquals("Os perfis devem ser ", perfisParaComparar, user.getPerfil());
 
     }

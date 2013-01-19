@@ -81,7 +81,7 @@ public class LoginBean implements Serializable {
                     return REDIRECT_TROCA_SENHA;
                 }
             }
-            if(id==null){
+            if(id==null || "".equals(id)){
                 return SUCCESS;
             } else {
                 return "/pages/justificativa.jsf?faces-redirect=true&id="+id;

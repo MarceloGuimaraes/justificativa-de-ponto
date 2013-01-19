@@ -4,7 +4,6 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.model.*;
 import com.service.IJustificativaService;
 import com.service.IUserService;
@@ -49,9 +48,9 @@ public class EnviarSuperintendente extends ProximoPasso {
     }
 
     @Override
-    public void proximo(JustificativaPontoDTO justificativa, Integer id) {
+    public void proximo(JustificativaPontoDTO justificativa) {
         // Inserindo o superintendente escolhido
-        User superintendente=userService.recuperar(id);
+        User superintendente=userService.recuperar(justificativa.getIdProximoResponsavel());
         User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
 
         justificativaService.atua(
@@ -81,7 +80,7 @@ public class EnviarSuperintendente extends ProximoPasso {
     }
 
     @Override
-    public HandlerProximoPassoManagedBean retornaHandler() {
-        return new HandlerProximoPassoManagedBean(true,false,true,false,"enviarSuperintendente");
+    public Map<String, Boolean> retornaHandler() {
+        return criaViewHandler(false,false,true,false,true);
     }
 }

@@ -1,13 +1,12 @@
 package com.managed.bean;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.domain.service.IProximoPasso;
 import com.domain.service.IWorkflow;
-import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
-import com.managed.bean.handler.HandlerProximoPassoManagedBean;
 import com.service.IJustificativaService;
 import com.spring.util.ApplicationContextProvider;
 import com.util.JsfUtil;
@@ -19,79 +18,46 @@ import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class JustificativaManagedBean implements IJustificativaManagedBean {
+public class JustificativaManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String SUCCESS = "welcome";
-
-	private transient IWorkflow workflow;
-
     private transient IPermissoesBean permissoes;
 
-	private HandlerMotivosManagedBean handler;
+    private transient List<SelectItem> tipoDecisaoList;
 
-    private HandlerProximoPassoManagedBean handlerWorkflow;
+    private transient List<SelectItem> escolhas;
 
-    private HandlerProximoPassoManagedBean handlerCancel;
+    private JustificativaPontoDTO justificativa;
 
-	private transient List<SelectItem> tipoBancoHorasList;
+    private Map<String, Boolean> handleViewFluxo;
 
-	private transient List<SelectItem> tipoDecisaoList;
-
-	private JustificativaPontoDTO justificativa;
-
-	public JustificativaManagedBean(IJustificativaService justificativaService,
-                                    IPermissoesBean permissoes,
-                                    IWorkflow workflow) {
-
-		this.workflow = workflow;
-
+	public JustificativaManagedBean(final IJustificativaService justificativaService,
+                                    final IPermissoesBean permissoes,
+                                    final IWorkflow workflow,
+                                    final HandlerMotivosManagedBean motivosManagedBean) {
         this.permissoes = permissoes;
-
-        inicializaTela();
-
-		JustificativaPontoDTO justificativaRecebida = null;
-
 		String id = JsfUtil.getParameter("id");
-
 		if (id != null) {
-			justificativaRecebida = justificativaService.recuperar(Integer.parseInt(id));
+			justificativa = justificativaService.recuperar(Integer.parseInt(id));
 		}
-
-		if (justificativaRecebida == null) {
-			justificativaRecebida = new JustificativaPontoDTO(
-                    permissoes.getUsuarioLogado()
-            );
-		}
-
-		setJustificativa(justificativaRecebida);
-
-	}
-
-    private void inicializaTela() {
+		if (justificativa == null) {
+            justificativa = new JustificativaPontoDTO(permissoes.getUsuarioLogado());
+        }
         tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
-
-        tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+        IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
+        escolhas = retornaItemAPartirDeUser(proximoPasso.listaCandidatos());
+        handleViewFluxo = proximoPasso.retornaHandler();
+        motivosManagedBean.setJustificativa(justificativa);
     }
 
-    public HandlerMotivosManagedBean getHandler() {
-		return handler;
-	}
-
-    public HandlerProximoPassoManagedBean getProximoPasso(){
-        return handlerWorkflow;
+    public Map<String,Boolean> getView(){
+        return handleViewFluxo;
     }
-
-	public List<SelectItem> getTipoBancoHorasList() {
-		return tipoBancoHorasList;
-	}
-
-	public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
-		this.tipoBancoHorasList = tipoBancoHorasList;
-	}
 
 	public List<SelectItem> getTipoDecisaoList() {
 		return tipoDecisaoList;
@@ -101,36 +67,52 @@ public class JustificativaManagedBean implements IJustificativaManagedBean {
 		this.tipoDecisaoList = tipoDecisaoList;
 	}
 
+    public List<SelectItem> getEscolhas() {
+        return escolhas;
+    }
+
+    public void setEscolhas(List<SelectItem> escolhas) {
+        this.escolhas = escolhas;
+    }
+
 	public JustificativaPontoDTO getJustificativa() {
 		return justificativa;
 	}
 
 	public void setJustificativa(JustificativaPontoDTO justificativa) {
-
-        handlerWorkflow = workflow.retornaProximoPasso(justificativa);
-
-        handlerCancel = workflow.retornaCancelamento();
-
-        handler = new HandlerMotivosManagedBean(justificativa.getMotivo());
-
 		this.justificativa = justificativa;
 	}
 
-    public String proximo() {
-        handlerWorkflow.proximo(justificativa);
-        return SUCCESS;
+    public void proximo(ActionEvent event) {
+        final RequestContext context = RequestContext.getCurrentInstance();
+
+        boolean sucesso = true;
+
+        try {
+            final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+            final IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
+            proximoPasso.proximo(justificativa);
+        } catch (BusinessException be) {
+            Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
+            sucesso = false;
+        } catch (Exception e){
+            Message.addMessage("dialog.cancelar.erro.inesperado", permissoes.getUsuarioLogado().getNome());
+            sucesso = false;
+        }
+
+        context.addCallbackParam("sucesso", sucesso);
     }
 
 	public void cancelado(ActionEvent event) {
 
-		RequestContext context = RequestContext.getCurrentInstance();
+		final RequestContext context = RequestContext.getCurrentInstance();
 
         boolean cancelado = true;
 
         try {
-
-            handlerCancel.proximo(justificativa);
-
+            final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+            final IProximoPasso cancelar = workflow.recupera(IWorkflow.PASSO_CANCELAR);
+            cancelar.proximo(justificativa);
 		} catch (BusinessException be) {
 			Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
             cancelado = false;
@@ -144,25 +126,27 @@ public class JustificativaManagedBean implements IJustificativaManagedBean {
 	}
 
 	public String getLabelCadastro() {
-		if (justificativa.getId() == null
-				|| justificativa.getId() == 0) {
-			return Message
-					.getBundleMessage("cadastroJustificativa.label.titulo");
-		} else {
-			return Message
-					.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
-		}
+        return Message.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
 	}
 
-	private void readObject(ObjectInputStream s) throws ClassNotFoundException,
-			IOException {
+    private List<SelectItem> retornaItemAPartirDeUser(final List<CadastroUsuario> users) {
+        if (users == null) {
+            return null;
+        }
+        final List<SelectItem> resultado = new LinkedList<SelectItem>();
+        for (CadastroUsuario u : users) {
+            resultado.add(new SelectItem(u.getId(), u.getNome()));
+        }
+        return resultado;
+
+    }
+
+	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
 		s.defaultReadObject();
-
-		workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
-
+		final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+        final IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
+        escolhas = retornaItemAPartirDeUser(proximoPasso.listaCandidatos());
+        tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
         permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
-
-        inicializaTela();
-
 	}
 }

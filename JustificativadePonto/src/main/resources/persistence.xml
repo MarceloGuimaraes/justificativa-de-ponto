@@ -20,14 +20,7 @@
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="annotatedClasses">
-            <list>
-                <value>com.model.User</value>
-                <value>com.model.JustificativaPonto</value>
-                <value>com.model.HistoricoJustificativaPonto</value>
-                <value>com.model.EncaminhamentoJustificativaPonto</value>
-            </list>
-        </property>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>

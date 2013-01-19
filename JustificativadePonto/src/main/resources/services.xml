@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+    <import resource="persistence.xml" />
+    <import resource="userContext.xml" />
+
+    <!-- Bean de envio de email -->
+    <jee:jndi-lookup id="mailSession"
+                     jndi-name="mail/session"
+                     resource-ref="true"
+            />
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="session" ref="mailSession"/>
+    </bean>
+
+    <bean id="mailService" class="com.service.mail.JavaMailService">
+        <constructor-arg ref="mailSender" />
+        <constructor-arg value="${app.environment.desenv}" />
+    </bean>
+
+    <!-- Service Declaration -->
+    <bean id="UserService" class="com.service.UserService">
+        <constructor-arg ref="UserDAO" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="JustificativaService" class="com.service.JustificativaService">
+        <constructor-arg ref="JustificativaDAO" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorDataDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorDataPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorDataDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorSolicitanteDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorSolicitantePaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorSolicitanteDao" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPontoPorUserPorMotivoDao" />
+        <constructor-arg ref="PermissoesBean" />
+        <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorMotivoPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
+        <constructor-arg ref="consultaJustificativaPontoPorMotivoDao" />
+    </bean>
+
+    <!-- Dozzer BeanMapper -->
+    <bean id="mapper" class="org.dozer.DozerBeanMapper">
+        <property name="mappingFiles">
+            <list>
+                <value>dozer-bean-mappings.xml</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

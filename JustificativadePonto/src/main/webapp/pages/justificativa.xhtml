@@ -1,341 +1,366 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/pages/template.xhtml">
-	<ui:define name="corpo">
-		<h:form id="justificativaForm">
-			<h:inputHidden
-				value="#{justificativaBean.justificativa.id}" />
-			<p:growl id="growl" life="2500"/>
-			<p:panel id="panel" header="#{justificativaBean.labelCadastro}">
-				<p:panelGrid style="margin-top:10px;width:99%">
-					<p:row>
-						<p:column colspan="2" style="text-align:left">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.solicitante']}#{msgs['form.label.doispontos']} " />
-							<h:outputText id="solicitante"
-								value="#{justificativaBean.justificativa.solicitante.nome}"
-								style="text-align:left" />
-						</p:column>
-						<p:column colspan="2" style="text-align:right">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.datacriacao']}#{msgs['form.label.doispontos']} " />
-							<h:outputText
-								value="#{justificativaBean.justificativa.data}">
-								<f:convertDateTime pattern="d/M/yyyy" />
-							</h:outputText>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="3" styleClass="ui-widget-header">
-							<p:spacer height="0" />
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column colspan="3" style="text-align:right">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.situacao']}#{msgs['form.label.doispontos']} " />
-							<h:outputText value="#{justificativaBean.justificativa.status}">
-								<f:converter converterId="StatusConverter" />
-							</h:outputText>
-						</p:column>
-					</p:row>
-				</p:panelGrid>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="corpo">
+            <p:growl id="growl" life="2500"/>
+            <p:panel id="panel" header="#{justificativaBean.labelCadastro}">
+                <p:panelGrid id="pnCabecalho" style="margin-top:10px;width:99%">
+                    <p:row>
+                        <p:column colspan="2" style="text-align:left">
+                            <h:outputLabel value="#{msgs['form.justificativa.label.solicitante']}#{msgs['form.label.doispontos']} "/>
+                            <h:outputText id="solicitante"
+                                          value="#{justificativaBean.justificativa.solicitante.nome}"
+                                          style="text-align:left" />
+                        </p:column>
+                        <p:column colspan="2" style="text-align:right">
+                            <h:outputLabel value="#{msgs['form.justificativa.label.datacriacao']}#{msgs['form.label.doispontos']} " />
+                            <h:outputText value="#{justificativaBean.justificativa.data}">
+                                <f:convertDateTime pattern="d/M/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" styleClass="ui-widget-header">
+                            <p:spacer height="0" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="text-align:right">
+                            <h:outputLabel
+                                    value="#{msgs['form.justificativa.label.situacao']}#{msgs['form.label.doispontos']} " />
+                            <h:outputText value="#{justificativaBean.justificativa.status}">
+                                <f:converter converterId="StatusConverter" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
 
-				<p:separator styleClass="tabela" />
+                <p:separator styleClass="tabela" />
 
-				<p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
-					<p:row>
-						<p:column style="text-align:left; width:110px;">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
-						</p:column>
-						<p:column colspan="3">
-							<p:selectOneMenu id="motivo"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								value="#{justificativaBean.justificativa.motivo}"
-								valueChangeListener="#{justificativaBean.handler.mudouMotivo}"
-								required="true"
-								requiredMessage="#{msgs['form.justificativa.motivo.required']}">
-								<p:ajax event="change" update="pgrdDetalhamento" />
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems
-									value="#{justificativaBean.handler.tipoMotivosList}" />
-							</p:selectOneMenu>
-							<p:message id="motivoMsg" for="motivo" />
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column style="text-align:left; width:110px;">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
-								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
-						</p:column>
-						<p:column>
-							<p:calendar styleClass="calendar"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								value="#{justificativaBean.justificativa.hrIni}" id="hrini"
-								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
-								requiredMessage="#{msgs['form.justificativa.hrini.required']}"
-								rendered="#{justificativaBean.handler.configuracao['HORA_INI']}" />
-							<p:message id="hriniMsg" for="hrini" />
-						</p:column>
-						<p:column style="text-align:right">
-							<h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
-								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
-						</p:column>
-						<p:column>
-							<p:calendar styleClass="calendar"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
-								showOn="button" pattern="HH:mm" timeOnly="true" required="true"
-								requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
-								rendered="#{justificativaBean.handler.configuracao['HORA_FIM']}" />
-							<p:message id="hrfimMsg" for="hrfim" />
-						</p:column>
-					</p:row>
-					<p:row
-						rendered="#{justificativaBean.handler.configuracao['CAUSA_FALTA']}">
-						<p:column style="text-align:left; width:110px;">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "
-								id="lbCausaFalta" />
-						</p:column>
-						<p:column colspan="3">
-							<p:selectOneMenu id="causafalta" required="true"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
-								value="#{justificativaBean.justificativa.tipofalta}">
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems
-									value="#{justificativaBean.handler.tipoFaltaList}" />
-							</p:selectOneMenu>
-							<p:message id="causafaltaMsg" for="causafalta" />
-						</p:column>
-					</p:row>
-					<p:row
-						rendered="#{justificativaBean.handler.configuracao['TIPO_BANCO_HORAS']}">
-						<p:column style="text-align:left; width:110px;">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
-						</p:column>
-						<p:column colspan="3">
-							<p:selectOneMenu id="tipobancohoras"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								value="#{justificativaBean.justificativa.tipobancohoras}"
-								required="true"
-								requiredMessage="#{msgs['form.justificativa.tipobancohoras.required']}">
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems value="#{justificativaBean.tipoBancoHorasList}" />
-							</p:selectOneMenu>
-							<p:message id="tipobancohorasMsg" for="tipobancohoras" />
-						</p:column>
-					</p:row>
-				</p:panelGrid>
+                <h:form id="justificativaForm">
 
-				<p:fieldset
-					legend="#{msgs['form.justificativa.legenda.justificativa']}"
-					id="justificativaGrid">
-					<p:row>
-						<p:column style="text-align:left">
-							<p:inputTextarea id="descricao" rows="5" cols="30"
-								disabled="#{not justificativaBean.proximoPasso.permiteEditar}"
-								maxlength="300" autoResize="true" required="true"
-								requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
-								value="#{justificativaBean.justificativa.descricao}" />
-							<p:message id="descricaoMsg" for="descricao" />
-						</p:column>
-					</p:row>
-				</p:fieldset>
-
-                <p:fieldset
-                        legend="#{msgs['form.justificativa.legenda.instrucoesrh']}"
-                        id="rhGrid">
-                    <p:panelGrid styleClass="semBorda">
+                    <p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
                         <p:row>
-                            <p:column>
-                                <h:outputLabel
-                                        value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
-                                <p:selectOneMenu id="decisaoRh"
-                                                 disabled="#{not justificativaBean.proximoPasso.concluir}"
-                                                 value="#{justificativaBean.justificativa.tipoDecisao}"
+                            <p:column style="text-align:left; width:110px;">
+                                <h:outputLabel value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu id="motivo"
+                                                 value="#{justificativaBean.justificativa.motivo}"
+                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 valueChangeListener="#{motivoManagedBean.mudouMotivo}"
                                                  required="true"
-                                                 requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
+                                                 requiredMessage="#{msgs['form.justificativa.motivo.required']}">
+                                    <p:ajax event="change" update="pgrdDetalhamento" />
                                     <f:selectItem itemValue="" itemLabel="" />
-                                    <f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
+                                    <f:selectItems value="#{motivoManagedBean.tipoMotivosList}" />
                                 </p:selectOneMenu>
-                                <p:message id="decisaoRhMsg" for="decisaoRh" />
+                                <p:message id="motivoMsg" for="motivo" />
+                                <h:outputText id="txtMotivo" value="#{justificativaBean.justificativa.motivo}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="text-align:left">
+                            <p:column style="text-align:left; width:110px;">
                                 <h:outputLabel
-                                        value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
-                                <p:inputTextarea id="obsRh" rows="5" cols="30"
-                                                 disabled="#{not justificativaBean.proximoPasso.concluir}"
-                                                 maxlength="300" autoResize="true" required="true"
-                                                 requiredMessage="#{msgs['form.justificativa.observacao.required']}"
-                                                 value="#{justificativaBean.justificativa.obsRh}" />
-                                <p:message id="obsRhMsg" for="obsRh" />
+                                        value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
+                                        rendered="#{motivoManagedBean.configuracao['HORA_INI']}" />
+                            </p:column>
+                            <p:column style="width:220px;">
+                                <p:calendar styleClass="calendar"
+                                            value="#{justificativaBean.justificativa.hrIni}" id="hrini"
+                                            showOn="button" pattern="HH:mm" timeOnly="true" required="true"
+                                            requiredMessage="#{msgs['form.justificativa.hrini.required']}"
+                                            rendered="#{motivoManagedBean.configuracao['HORA_INI'] and justificativaBean.view.permiteEditar}" />
+                                <p:message id="hriniMsg" for="hrini"/>
+                                <h:outputText id="dtHoraInicio" value="#{justificativaBean.justificativa.hrIni}" rendered="#{motivoManagedBean.configuracao['HORA_INI'] and not justificativaBean.view.permiteEditar}">
+                                    <f:convertDateTime type="time" pattern="HH:mm"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="text-align:center;width:25px;padding:0;">
+                                <h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
+                                               rendered="#{motivoManagedBean.configuracao['HORA_FIM']}" />
+                            </p:column>
+                            <p:column>
+                                <p:calendar styleClass="calendar"
+                                            value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
+                                            showOn="button" pattern="HH:mm" timeOnly="true" required="true"
+                                            requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
+                                            rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and justificativaBean.view.permiteEditar}" />
+                                <p:message id="hrfimMsg" for="hrfim" />
+                                <h:outputText id="dtHoraFim" value="#{justificativaBean.justificativa.hrFim}" rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and not justificativaBean.view.permiteEditar}">
+                                    <f:convertDateTime type="time" pattern="HH:mm"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{motivoManagedBean.configuracao['CAUSA_FALTA']}">
+                            <p:column style="text-align:left; width:110px;">
+                                <h:outputLabel id="lbCausaFalta" value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu id="causafalta"
+                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 required="true"
+                                                 requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
+                                                 value="#{justificativaBean.justificativa.tipofalta}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems
+                                            value="#{motivoManagedBean.tipoFaltaList}" />
+                                </p:selectOneMenu>
+                                <p:message id="causafaltaMsg" for="causafalta" />
+                                <h:outputText value="#{justificativaBean.justificativa.tipofalta}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{motivoManagedBean.configuracao['TIPO_BANCO_HORAS']}">
+                            <p:column style="text-align:left; width:110px;">
+                                <h:outputLabel value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu id="tipobancohoras"
+                                                 value="#{justificativaBean.justificativa.tipobancohoras}"
+                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 required="true"
+                                                 requiredMessage="#{msgs['form.justificativa.tipobancohoras.required']}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{motivoManagedBean.tipoBancoHorasList}" />
+                                </p:selectOneMenu>
+                                <p:message id="tipobancohorasMsg" for="tipobancohoras" />
+                                <h:outputText value="#{justificativaBean.justificativa.tipobancohoras}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
-                </p:fieldset>
 
-                <p:panel header="#{msgs['form.justificativa.legenda.aprovacoes']}"
-                         style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.aprovacoes}">
+                    <p:fieldset id="justificativaGrid" legend="#{msgs['form.justificativa.legenda.justificativa']}">
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <ui:insert name="campoDescricaoJustificativa">
+                                    <p:inputTextarea id="descricao" rows="5" cols="30"
+                                                     maxlength="300" autoResize="true" required="true"
+                                                     requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
+                                                     rendered="#{justificativaBean.view.permiteEditar}"
+                                                     value="#{justificativaBean.justificativa.descricao}" />
+                                    <p:message id="descricaoMsg" for="descricao" />
+                                    <h:outputText value="#{justificativaBean.justificativa.descricao}" rendered="#{not justificativaBean.view.permiteEditar}"/>
+                                </ui:insert>
+                            </p:column>
+                        </p:row>
+                    </p:fieldset>
 
-                    <p:dataTable var="historico"
-                                 value="#{justificativaBean.justificativa.aprovacoes}"
-                                 id="tblAprovacoesJustificativa">
-                        <p:column id="colDataAprovacoes">
-                            <f:facet name="header">
-                                <h:outputText
-                                        value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
-                            </f:facet>
-                            <h:outputText value="#{historico.data}">
-                                <f:convertDateTime pattern="d/MM/yyyy" />
-                            </h:outputText>
-                        </p:column>
-                        <p:column id="colUsuarioHistorico">
-                            <f:facet name="header">
-                                <h:outputText
-                                        value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
-                            </f:facet>
-                            <h:outputText value="#{historico.usuario.nome}" />
-                        </p:column>
-                        <p:column id="colEventoHistorico">
-                            <f:facet name="header">
-                                <h:outputText
-                                        value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
-                            </f:facet>
-                            <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
+                    <p:fieldset id="rhGrid" legend="#{msgs['form.justificativa.legenda.instrucoesrh']}">
+                        <p:panelGrid styleClass="semBorda">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel
+                                            value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
+                                    <h:outputText id="txtDecisaoRh"
+                                                  value="#{justificativaBean.justificativa.tipoDecisao}"
+                                                  converter="EnumComCodigoDescricao"
+                                                  rendered="#{not justificativaBean.view.temInformarDecisao}"/>
+                                    <p:selectOneMenu id="decisaoRh"
+                                                     rendered="#{justificativaBean.view.temInformarDecisao}"
+                                                     value="#{justificativaBean.justificativa.tipoDecisao}"
+                                                     required="true"
+                                                     requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
+                                    </p:selectOneMenu>
+                                    <p:message id="decisaoRhMsg" for="decisaoRh" rendered="#{justificativaBean.view.temInformarDecisao}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:left">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
+                                    <h:outputText id="txtObsRh" value="#{justificativaBean.justificativa.obsRh}"
+                                                  rendered="#{not justificativaBean.view.temInformarDecisao}"/>
+                                    <p:inputTextarea id="obsRh" rows="5" cols="30"
+                                                     rendered="#{justificativaBean.view.temInformarDecisao}"
+                                                     maxlength="300" autoResize="true" required="true"
+                                                     requiredMessage="#{msgs['form.justificativa.observacao.required']}"
+                                                     value="#{justificativaBean.justificativa.obsRh}" />
+                                    <p:message id="obsRhMsg" for="obsRh" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:fieldset>
 
-				<p:panelGrid id="idGrdProxResponsavel" styleClass="tabela" rendered="#{justificativaBean.proximoPasso.temProximoPasso}">
-					<p:row>
-						<p:column style="table-layout:fixed;width:130px">
-							<h:outputLabel
-								value="#{msgs['form.justificativa.workflow.label.aprovador']}#{msgs['form.label.doispontos']} " />
-						</p:column>
-						<p:column>
-							<p:selectOneMenu id="idSlctProxResponsavel"
-								value="#{justificativaBean.proximoPasso.id}" required="true"
-								disabled="#{not justificativaBean.proximoPasso.temProximoPasso}"
-								requiredMessage="#{msgs['form.justificativa.workflow.aprovador.required']}">
-								<f:selectItem itemValue="" itemLabel="" />
-								<f:selectItems value="#{justificativaBean.proximoPasso.escolhas}" />
-							</p:selectOneMenu>
-							<p:message id="idMsgProximoResponsavel" for="idSlctProxResponsavel" />
-						</p:column>
-					</p:row>
-				</p:panelGrid>
+                    <p:panel header="#{msgs['form.justificativa.legenda.aprovacoes']}"
+                             style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.aprovacoes}">
 
-                <p:commandButton id="idNextStep"
-                                 rendered="#{justificativaBean.proximoPasso.temProximoPasso}"
-                                 value="#{msgs['form.justificativa.botao.enviar']}"
-                                 update="growl panel"
-                                 action="#{justificativaBean.proximo}"
-                                 icon="ui-icon-circle-arrow-e" ajax="false" />
+                        <p:dataTable var="historico"
+                                     value="#{justificativaBean.justificativa.aprovacoes}"
+                                     id="tblAprovacoesJustificativa">
+                            <p:column id="colDataAprovacoes">
+                                <f:facet name="header">
+                                    <h:outputText
+                                            value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+                                </f:facet>
+                                <h:outputText value="#{historico.data}">
+                                    <f:convertDateTime pattern="d/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column id="colUsuarioHistorico">
+                                <f:facet name="header">
+                                    <h:outputText
+                                            value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+                                </f:facet>
+                                <h:outputText value="#{historico.usuario.nome}" />
+                            </p:column>
+                            <p:column id="colEventoHistorico">
+                                <f:facet name="header">
+                                    <h:outputText
+                                            value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+                                </f:facet>
+                                <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
 
-                <p:commandButton id="idConcluir"
-                                 rendered="#{justificativaBean.proximoPasso.concluir}"
-                                 value="#{msgs['form.justificativa.botao.concluidorh']}"
-                                 update="growl panel"
-                                 action="#{justificativaBean.proximo}"
-                                 icon="ui-icon-circle-arrow-e" ajax="false" />
+                    <p:panelGrid id="idGrdProxResponsavel" styleClass="tabela" rendered="#{justificativaBean.view.temProximoPasso}">
+                        <p:row>
+                            <p:column style="table-layout:fixed;width:130px">
+                                <h:outputLabel value="#{msgs['form.justificativa.workflow.label.aprovador']}#{msgs['form.label.doispontos']} " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="idSlctProxResponsavel"
+                                                 required="true"
+                                                 requiredMessage="#{msgs['form.justificativa.workflow.aprovador.required']}"
+                                                 value="#{justificativaBean.justificativa.idProximoResponsavel}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{justificativaBean.escolhas}" />
+                                </p:selectOneMenu>
+                                <p:message id="idMsgProximoResponsavel" for="idSlctProxResponsavel" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
 
-                <p:commandButton id="btnCancelar"
-                                 rendered="#{justificativaBean.proximoPasso.permiteCancelar}"
-                                 value="#{msgs['form.justificativa.botao.cancelar']}"
-                                 oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e"/>
+                    <p:commandButton id="idNextStep"
+                                     rendered="#{justificativaBean.view.temProximoPasso}"
+                                     value="#{msgs['form.justificativa.botao.enviar']}"
+                                     update="rhGrid idGrdProxResponsavel"
+                                     actionListener="#{justificativaBean.proximo}"
+                                     oncomplete="handleProximo(xhr, status, args)"
+                                     icon="ui-icon-circle-arrow-e"/>
 
-			</p:panel>
+                    <p:commandButton id="idConcluir"
+                                     rendered="#{justificativaBean.view.temConcluir}"
+                                     value="#{msgs['form.justificativa.botao.concluidorh']}"
+                                     actionListener="#{justificativaBean.proximo}"
+                                     oncomplete="handleConcluir(xhr, status, args)"
+                                     icon="ui-icon-circle-arrow-e"/>
 
-			<p:separator style="margin-top: 20px;" />
+                    <p:commandButton id="btnCancelar"
+                                     rendered="#{justificativaBean.view.temCancelar}"
+                                     value="#{msgs['form.justificativa.botao.cancelar']}"
+                                     oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e"/>
+                </h:form>
 
-			<p:panel header="#{msgs['form.justificativa.legenda.historico']}"
-				style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.tramite}">
+            </p:panel>
+            <p:separator style="margin-top: 20px;" />
 
-				<p:dataTable var="historico"
-					value="#{justificativaBean.justificativa.tramite}"
-					id="tblHistoricoJustificativa">
-					<p:column id="colDataHistorico">
-						<f:facet name="header">
-							<h:outputText
-								value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
-						</f:facet>
-						<h:outputText value="#{historico.data}">
-							<f:convertDateTime pattern="d/MM/yyyy" />
-						</h:outputText>
-					</p:column>
-					<p:column id="colUsuarioHistorico">
-						<f:facet name="header">
-							<h:outputText
-								value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
-						</f:facet>
-						<h:outputText value="#{historico.usuario.nome}" />
-					</p:column>
-					<p:column id="colEventoHistorico">
-						<f:facet name="header">
-							<h:outputText
-								value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
-						</f:facet>
-						<h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
-					</p:column>
-				</p:dataTable>
-			</p:panel>
-		</h:form>
+            <p:panel header="#{msgs['form.justificativa.legenda.historico']}"
+                     style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.tramite}">
 
-		<p:ajaxStatus onstart="statusDialog.show();"
-			onsuccess="statusDialog.hide()" />
+                <p:dataTable var="historico"
+                             value="#{justificativaBean.justificativa.tramite}"
+                             id="tblHistoricoJustificativa">
+                    <p:column id="colDataHistorico">
+                        <f:facet name="header">
+                            <h:outputText
+                                    value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+                        </f:facet>
+                        <h:outputText value="#{historico.data}">
+                            <f:convertDateTime pattern="d/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column id="colUsuarioHistorico">
+                        <f:facet name="header">
+                            <h:outputText
+                                    value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+                        </f:facet>
+                        <h:outputText value="#{historico.usuario.nome}" />
+                    </p:column>
+                    <p:column id="colEventoHistorico">
+                        <f:facet name="header">
+                            <h:outputText
+                                    value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+                        </f:facet>
+                        <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
 
-		<p:dialog modal="true" widgetVar="statusDialog" header="Status"
-			draggable="false" closable="false" resizable="false">
-			<p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
-		</p:dialog>
+            <p:ajaxStatus onstart="statusDialog.show();"
+                          onsuccess="statusDialog.hide()" />
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="Status"
+                      draggable="false" closable="false" resizable="false">
+                <p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
+            </p:dialog>
 
 
-		<p:dialog id="idDialogCancel" widgetVar="cadDialog"
-			header="#{msgs['dialog.cancelar.titulo']}" closable="true"
-			resizable="false" modal="true" hideEffect="slide" showEffect="slide"
-			draggable="false">
+            <p:dialog id="idDialogCancel" widgetVar="cadDialog"
+                      header="#{msgs['dialog.cancelar.titulo']}" closable="true"
+                      resizable="false" modal="true" hideEffect="slide" showEffect="slide"
+                      draggable="false">
 
-			<h:form id="formCancelaId">
-				<h:panelGrid id="display" cellpadding="4" style="margin:0 auto;">
-					<p:messages />
-					<p:separator />
-					<p:inputTextarea id="motivoCancela" rows="5" cols="30"
-						maxlength="300" autoResize="true"
-						requiredMessage="#{msgs['dialog.cancelar.valida.justificativa']}"
-						required="true"
-						value="#{justificativaBean.justificativa.cancelamento}" />
-					<p:column colspan="2">
-						<p:commandButton id="btsalvar"
-							value="#{msgs['dialog.cancelar.botao.salvar']}" update="display"
-							actionListener="#{justificativaBean.cancelado}"
-							oncomplete="handleCancelRequest(xhr, status, args)"/>
-						<p:commandButton value="Voltar" update="display" process="@this"
-							oncomplete="cadDialog.hide()"/>
-					</p:column>
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
-		<script type="text/javascript">
-			function handleCancelRequest(xhr, status, args) {
-				if (args.validationFailed || !args.cancelado) {
-					jQuery('#idDialogCancel').effect("shake", {
-						times : 3
-					}, 100);
-				} else {
-					cadDialog.hide();
-					location.href = 'welcome.jsf';
-				}
-			}
-		</script>
-	</ui:define>
-</ui:composition>
+                <h:form id="formCancelaId">
+                    <h:panelGrid id="display" cellpadding="4" style="margin:0 auto;">
+                        <p:row>
+                            <p:column>
+                                <p:messages />
+                            </p:column>
+                        </p:row>
+                        <p:separator />
+                        <p:row>
+                            <p:column>
+                                <p:inputTextarea id="motivoCancela" rows="5" cols="30"
+                                                 maxlength="300" autoResize="true"
+                                                 requiredMessage="#{msgs['dialog.cancelar.valida.justificativa']}"
+                                                 required="true"
+                                                 value="#{justificativaBean.justificativa.cancelamento}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="btsalvar"
+                                                 value="#{msgs['dialog.cancelar.botao.salvar']}"
+                                                 update="display"
+                                                 actionListener="#{justificativaBean.cancelado}"
+                                                 oncomplete="handleCancelRequest(xhr, status, args)"/>
+                                <p:commandButton value="Voltar" update="display" process="@this"
+                                                 oncomplete="cadDialog.hide()"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            <script type="text/javascript">
+                function handleCancelRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.cancelado) {
+                        jQuery('#idDialogCancel').effect("shake", {
+                            times : 3
+                        }, 100);
+                    } else {
+                        cadDialog.hide();
+                        location.href = 'welcome.jsf';
+                    }
+                }
+                function handleProximo(xhr, status, args) {
+                    if (!args.validationFailed &amp;&amp; args.sucesso) {
+                        alert("#{msgs['form.justificativa.mensagem.envioProximo']}");
+                        location.href = 'welcome.jsf';
+                    }
+                }
+                function handleConcluir(xhr, status, args) {
+                    if (!args.validationFailed &amp;&amp; args.sucesso) {
+                        alert("#{msgs['form.justificativa.mensagem.concluido']}");
+                        location.href = 'welcome.jsf';
+                    }
+                }
+            </script>
+
+        </ui:define>
+    </ui:composition>
+</html>
