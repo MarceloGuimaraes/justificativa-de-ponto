@@ -75,7 +75,7 @@ public class JustificativaPonto implements Serializable {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User solicitante;
 
-	@OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = HistoricoJustificativaPonto.class, mappedBy = "justificativaPonto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HistoricoJustificativaPonto> historico;
 
 	public JustificativaPonto() {

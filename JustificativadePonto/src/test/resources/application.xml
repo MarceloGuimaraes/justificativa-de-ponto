@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="services.xml" />
+    <import resource="persistence.xml"/>
 
     <!-- Session Factory Declaration -->
     <bean id="sessionFactory"
@@ -19,7 +19,19 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="org.unitils.database.UnitilsDataSourceFactoryBean" />
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost/justificativa_integration" />
+        <property name="user" value="justeste" />
+        <property name="password" value="senha123" />
+        <property name="maxPoolSize" value="10" />
+        <property name="maxStatements" value="0" />
+        <property name="minPoolSize" value="5" />
+    </bean>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
     <bean id="mailSession" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.service.mail.JavaMailService" />

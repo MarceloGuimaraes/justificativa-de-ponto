@@ -13,8 +13,7 @@
                      cache="true"
                      resource-ref="true"
                      lookup-on-startup="false"
-                     proxy-interface="javax.sql.DataSource"
-            />
+                     proxy-interface="javax.sql.DataSource"/>
 
     <!-- Session Factory Declaration -->
     <bean id="sessionFactory"

@@ -4,10 +4,10 @@ import com.domain.dto.CadastroUsuario;
 import com.model.PerfilEnum;
 import com.model.User;
 import com.service.IUserService;
-import junitx.framework.Assert;
 import org.dozer.Mapper;
+import org.junit.Assert;
 import org.junit.Test;
-import org.unitils.spring.annotation.SpringBeanByName;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,10 +21,10 @@ import java.util.List;
  */
 public class UserServiceTest extends TesteBase {
 
-    @SpringBeanByName
+    @Autowired
     private Mapper mapper;
 
-    @SpringBeanByName
+    @Autowired
     private IUserService UserService;
 
     @Test

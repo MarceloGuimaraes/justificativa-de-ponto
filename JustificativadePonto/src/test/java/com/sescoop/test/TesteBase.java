@@ -1,8 +1,8 @@
 package com.sescoop.test;
 
-import org.springframework.context.ApplicationContext;
-import org.unitils.UnitilsJUnit4;
-import org.unitils.spring.annotation.SpringApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +11,8 @@ import org.unitils.spring.annotation.SpringApplicationContext;
  * Time: 7:50 PM
  * Classe base para usar nos testes
  */
-@SpringApplicationContext("application.xml")
-public abstract class TesteBase extends UnitilsJUnit4 {
-
-    @SpringApplicationContext
-    private ApplicationContext applicationContext;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:application.xml")
+public abstract class TesteBase {
 
 }

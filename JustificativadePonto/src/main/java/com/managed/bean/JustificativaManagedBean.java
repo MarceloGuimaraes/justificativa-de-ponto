@@ -11,6 +11,7 @@ import com.service.IJustificativaService;
 import com.spring.util.ApplicationContextProvider;
 import com.util.JsfUtil;
 import com.util.Message;
+import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 
 import javax.faces.event.ActionEvent;
@@ -32,6 +33,8 @@ public class JustificativaManagedBean implements Serializable {
 
     private transient List<SelectItem> escolhas;
 
+    private String titulo;
+
     private JustificativaPontoDTO justificativa;
 
     private Map<String, Boolean> handleViewFluxo;
@@ -44,9 +47,11 @@ public class JustificativaManagedBean implements Serializable {
 		String id = JsfUtil.getParameter("id");
 		if (id != null) {
 			justificativa = justificativaService.recuperar(Integer.parseInt(id));
+            titulo = Message.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
 		}
-		if (justificativa == null) {
+        if (justificativa == null) {
             justificativa = new JustificativaPontoDTO(permissoes.getUsuarioLogado());
+            titulo = Message.getBundleMessage("cadastroJustificativa.label.titulo");
         }
         tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
         IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
@@ -89,8 +94,15 @@ public class JustificativaManagedBean implements Serializable {
         boolean sucesso = true;
 
         try {
+            CommandButton o  = (CommandButton) event.getSource();
+            String tipo = (String) o.getAttributes().get("fluxo");
             final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
-            final IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
+            IProximoPasso proximoPasso = null;
+            if("cancelar".equalsIgnoreCase(tipo)){
+                proximoPasso = workflow.recupera(IWorkflow.PASSO_CANCELAR);
+            }else if("proximo".equalsIgnoreCase(tipo)){
+                proximoPasso = workflow.retornaProximoPasso(justificativa);
+            }
             proximoPasso.proximo(justificativa);
         } catch (BusinessException be) {
             Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
@@ -103,30 +115,8 @@ public class JustificativaManagedBean implements Serializable {
         context.addCallbackParam("sucesso", sucesso);
     }
 
-	public void cancelado(ActionEvent event) {
-
-		final RequestContext context = RequestContext.getCurrentInstance();
-
-        boolean cancelado = true;
-
-        try {
-            final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
-            final IProximoPasso cancelar = workflow.recupera(IWorkflow.PASSO_CANCELAR);
-            cancelar.proximo(justificativa);
-		} catch (BusinessException be) {
-			Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
-            cancelado = false;
-		} catch (Exception e){
-            Message.addMessage("dialog.cancelar.erro.inesperado", permissoes.getUsuarioLogado().getNome());
-            cancelado = false;
-        }
-
-		context.addCallbackParam("cancelado", cancelado);
-
-	}
-
 	public String getLabelCadastro() {
-        return Message.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
+        return titulo;
 	}
 
     private List<SelectItem> retornaItemAPartirDeUser(final List<CadastroUsuario> users) {

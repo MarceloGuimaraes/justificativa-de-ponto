@@ -7,6 +7,7 @@
         <ui:define name="corpo">
             <p:growl id="growl" life="2500"/>
             <p:panel id="panel" header="#{justificativaBean.labelCadastro}">
+                <p:messages />
                 <p:panelGrid id="pnCabecalho" style="margin-top:10px;width:99%">
                     <p:row>
                         <p:column colspan="2" style="text-align:left">
@@ -238,17 +239,22 @@
                     <p:commandButton id="idNextStep"
                                      rendered="#{justificativaBean.view.temProximoPasso}"
                                      value="#{msgs['form.justificativa.botao.enviar']}"
-                                     update="rhGrid idGrdProxResponsavel"
+                                     update=":panel"
                                      actionListener="#{justificativaBean.proximo}"
                                      oncomplete="handleProximo(xhr, status, args)"
-                                     icon="ui-icon-circle-arrow-e"/>
+                                     icon="ui-icon-circle-arrow-e">
+                        <f:attribute name="fluxo" value="proximo"/>
+                    </p:commandButton>
 
                     <p:commandButton id="idConcluir"
                                      rendered="#{justificativaBean.view.temConcluir}"
                                      value="#{msgs['form.justificativa.botao.concluidorh']}"
                                      actionListener="#{justificativaBean.proximo}"
+                                     update="panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
-                                     icon="ui-icon-circle-arrow-e"/>
+                                     icon="ui-icon-circle-arrow-e">
+                        <f:attribute name="fluxo" value="proximo"/>
+                    </p:commandButton>
 
                     <p:commandButton id="btnCancelar"
                                      rendered="#{justificativaBean.view.temCancelar}"
@@ -327,8 +333,10 @@
                                 <p:commandButton id="btsalvar"
                                                  value="#{msgs['dialog.cancelar.botao.salvar']}"
                                                  update="display"
-                                                 actionListener="#{justificativaBean.cancelado}"
-                                                 oncomplete="handleCancelRequest(xhr, status, args)"/>
+                                                 actionListener="#{justificativaBean.proximo}"
+                                                 oncomplete="handleCancelRequest(xhr, status, args)">
+                                    <f:attribute name="fluxo" value="cancelar"/>
+                                </p:commandButton>
                                 <p:commandButton value="Voltar" update="display" process="@this"
                                                  oncomplete="cadDialog.hide()"/>
                             </p:column>
@@ -338,12 +346,13 @@
             </p:dialog>
             <script type="text/javascript">
                 function handleCancelRequest(xhr, status, args) {
-                    if (args.validationFailed || !args.cancelado) {
+                    if (args.validationFailed || !args.sucesso) {
                         jQuery('#idDialogCancel').effect("shake", {
                             times : 3
                         }, 100);
                     } else {
                         cadDialog.hide();
+                        alert("#{msgs['form.justificativa.mensagem.cancelar']}");
                         location.href = 'welcome.jsf';
                     }
                 }

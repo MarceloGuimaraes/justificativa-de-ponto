@@ -1,12 +1,12 @@
 package com.sescoop.test.sql;
 
-import com.dao.impl.UserDAO;
+import com.dao.IUserDAO;
 import com.model.PerfilEnum;
 import com.model.User;
 import com.sescoop.test.TesteBase;
 import junit.framework.Assert;
 import org.junit.Test;
-import org.unitils.spring.annotation.SpringBeanByName;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class UserDaoTest extends TesteBase {
 
-    @SpringBeanByName
-    private UserDAO UserDAO;
+    @Autowired
+    private IUserDAO UserDAO;
 
     @Test
     public void recuperaApenasCoordenadores(){
