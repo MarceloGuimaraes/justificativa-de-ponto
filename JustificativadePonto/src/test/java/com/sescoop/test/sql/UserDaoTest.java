@@ -6,8 +6,10 @@ import com.model.User;
 import com.sescoop.test.TesteBase;
 import junit.framework.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -20,10 +22,12 @@ import java.util.List;
  * Time: 1:02 AM
  * Testes do Dao de Usuarios
  */
+@TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
+@Transactional
 public class UserDaoTest extends TesteBase {
 
-    @Autowired
-    private IUserDAO UserDAO;
+    @Resource(name = "UserDAO")
+    private IUserDAO userDAO;
 
     @Test
     public void recuperaApenasCoordenadores(){
@@ -39,7 +43,7 @@ public class UserDaoTest extends TesteBase {
         perfis.add(PerfilEnum.USUARIO);
         user.setPerfil(perfis);
 
-        UserDAO.adicionar(user);
+        userDAO.adicionar(user);
 
         user = new User();
         user.setNome("Maria Vasconcelos");
@@ -53,9 +57,9 @@ public class UserDaoTest extends TesteBase {
         perfis.add(PerfilEnum.USUARIO);
         user.setPerfil(perfis);
 
-        UserDAO.adicionar(user);
+        userDAO.adicionar(user);
 
-        List<User> coords = UserDAO.listar(EnumSet.of(PerfilEnum.COORDENADOR));
+        List<User> coords = userDAO.listar(EnumSet.of(PerfilEnum.COORDENADOR));
 
         Assert.assertEquals("A quantidade na listagem deve ser ",1 , coords.size());
         Assert.assertEquals("O nome do usuario coordendor deve ser ", "Raphael R", coords.get(0).getNome());
@@ -76,9 +80,9 @@ public class UserDaoTest extends TesteBase {
         perfis.add(PerfilEnum.USUARIO);
         user.setPerfil(perfis);
 
-        Serializable id = UserDAO.adicionar(user);
+        Serializable id = userDAO.adicionar(user);
 
-        User salvo = UserDAO.recuperar(id);
+        User salvo = userDAO.recuperar(id);
 
         Assert.assertNotNull("Deve ter salvo o usuario", salvo);
 

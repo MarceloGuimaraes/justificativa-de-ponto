@@ -250,7 +250,7 @@
                                      rendered="#{justificativaBean.view.temConcluir}"
                                      value="#{msgs['form.justificativa.botao.concluidorh']}"
                                      actionListener="#{justificativaBean.proximo}"
-                                     update="panel"
+                                     update=":panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
                         <f:attribute name="fluxo" value="proximo"/>

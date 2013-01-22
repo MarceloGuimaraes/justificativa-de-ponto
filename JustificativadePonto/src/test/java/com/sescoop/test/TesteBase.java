@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Classe base para usar nos testes
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:application.xml")
+@ContextConfiguration("classpath:/application.xml")
 public abstract class TesteBase {
 
 }
