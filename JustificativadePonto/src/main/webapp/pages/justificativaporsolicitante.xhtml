@@ -37,7 +37,7 @@
 							value="#{msgs['relatorio.justificativa.dtsolicitacao']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.data}">
-						<f:convertDateTime pattern="dd/mm/yyyy" />
+						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
 					</h:outputText>
 				</p:column>
 				<p:column>

@@ -19,7 +19,7 @@
                         <p:column colspan="2" style="text-align:right">
                             <h:outputLabel value="#{msgs['form.justificativa.label.datacriacao']}#{msgs['form.label.doispontos']} " />
                             <h:outputText value="#{justificativaBean.justificativa.data}">
-                                <f:convertDateTime pattern="d/M/yyyy" />
+                                <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
                             </h:outputText>
                         </p:column>
                     </p:row>
@@ -72,12 +72,12 @@
                             <p:column style="width:220px;">
                                 <p:calendar styleClass="calendar"
                                             value="#{justificativaBean.justificativa.hrIni}" id="hrini"
-                                            showOn="button" pattern="HH:mm" timeOnly="true" required="true"
+                                            showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrini.required']}"
                                             rendered="#{motivoManagedBean.configuracao['HORA_INI'] and justificativaBean.view.permiteEditar}" />
                                 <p:message id="hriniMsg" for="hrini"/>
                                 <h:outputText id="dtHoraInicio" value="#{justificativaBean.justificativa.hrIni}" rendered="#{motivoManagedBean.configuracao['HORA_INI'] and not justificativaBean.view.permiteEditar}">
-                                    <f:convertDateTime type="time" pattern="HH:mm"/>
+                                    <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
                                 </h:outputText>
                             </p:column>
                             <p:column style="text-align:center;width:25px;padding:0;">
@@ -87,12 +87,12 @@
                             <p:column>
                                 <p:calendar styleClass="calendar"
                                             value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
-                                            showOn="button" pattern="HH:mm" timeOnly="true" required="true"
+                                            showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
                                             rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and justificativaBean.view.permiteEditar}" />
                                 <p:message id="hrfimMsg" for="hrfim" />
                                 <h:outputText id="dtHoraFim" value="#{justificativaBean.justificativa.hrFim}" rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and not justificativaBean.view.permiteEditar}">
-                                    <f:convertDateTime type="time" pattern="HH:mm"/>
+                                    <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
                                 </h:outputText>
                             </p:column>
                         </p:row>
