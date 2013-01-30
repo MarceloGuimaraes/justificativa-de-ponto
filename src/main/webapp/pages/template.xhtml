@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:loadBundle basename="mensagens" var="msgs" />
+
+<h:head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1;" />
+    <title>
+        <ui:insert name="titulo">
+            <h:outputText value="#{msgs['justificativa.label.titulo']}" />
+        </ui:insert>
+    </title>
+    <h:outputStylesheet library="css" name="style.css" />
+    <h:outputScript name="jsf.js" library="javax.faces" target="head" />
+    <ui:insert name="cabecalho" />
+</h:head>
+<h:body>
+    <div id="cabecalho">
+        <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
+    </div>
+    <div id="conteudo">
+        <h:form>
+            <p:menubar styleClass="menunav">
+                <p:submenu label="#{msgs['template.menu.label']}">
+                    <p:menuitem value="#{msgs['template.menu.novajustificativa']}" url="/pages/justificativa.jsf" icon="ui-icon-document" />
+                </p:submenu>
+
+				<p:submenu label="#{msgs['template.menu.consulta']}">
+					<p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
+					<p:separator />
+					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" />
+					<p:separator />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" icon="ui-icon-search"/>
+					<p:separator />
+					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" icon="ui-icon-search" />
+				</p:submenu>
+
+                <p:submenu label="#{msgs['template.menu.adm.label']}" rendered="#{PermissoesBean.admin or PermissoesBean.support}" >
+<!--                     <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" icon="ui-icon-info" />
+                    <p:separator /> -->
+                    <p:menuitem value="#{msgs['template.menu.adm.novousuario']}" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
+                    <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf" icon="ui-icon-search"/>
+                </p:submenu>
+
+                <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" action="#{alteraSenhaManagedBean.preparaAlteracaoSenha}"
+                            ajax="false"  icon="ui-icon-wrench"/>
+                <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
+                            ajax="false"  icon="ui-icon-close"/>
+            </p:menubar>
+                <div id="usuarioLogado">Logado como: #{PermissoesBean.usuarioLogado.nome}</div>
+        </h:form>
+        <ui:insert name="corpo" />
+    </div>
+    <div id="rodape">------------  Justificativa de Ponto  -----------</div>
+</h:body>
+</html>
