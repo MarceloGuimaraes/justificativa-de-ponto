@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
+	<ui:define name="titulo">
+		<h:outputText value="#{msgs['justificativa.label.titulo']}" />
+	</ui:define>
+	<ui:define name="corpo">
+		<h:form id="cadUsuario">
+			<p:panel id="panel" header="#{userMB.labelCadastro}">
+				<h:inputHidden value="#{userMB.usuario.id}" />
+
+				<h:panelGrid columns="2">
+					<h:outputLabel for="name"
+						value="#{msgs['cadastroUsuario.label.nome']}" />
+					<p:column colspan="2">
+						<p:inputText id="name" value="#{userMB.usuario.nome}"
+							required="true"
+							requiredMessage="#{msgs['cadastroUsuario.nome.required']}"
+							style="width:300px">
+							<f:validateLength minimum="4" />
+							<p:ajax event="blur" update="nameMsg" />
+						</p:inputText>
+						<p:message id="nameMsg" for="name" />
+					</p:column>
+
+
+
+					<h:outputLabel for="cpf"
+						value="#{msgs['cadastroUsuario.label.cpf']}" />
+					<p:column colspan="2">
+						<p:inputMask id="cpf" mask="999.999.999-99"
+							value="#{userMB.usuario.cpf}" maxlength="14" required="true"
+							requiredMessage="#{msgs['cadastroUsuario.cpf.required']}"
+							style="width:300px">
+							<p:ajax event="blur" update="cpfMsg" />
+						</p:inputMask>
+						<p:message id="cpfMsg" for="cpf" />
+					</p:column>
+
+
+
+					<h:outputLabel for="email"
+						value="#{msgs['cadastroUsuario.label.email']}" />
+					<p:column colspan="2">
+						<p:inputText id="email" value="#{userMB.usuario.email}"
+							required="true"
+							requiredMessage="#{msgs['cadastroUsuario.email.required']}"
+							validatorMessage="#{msgs['cadastroUsuario.email.requiredValidator']}"
+							style="width:300px">
+							<f:validateRegex
+								pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							<f:validateLength minimum="5" />
+							<p:ajax event="blur" update="emailMsg" />
+						</p:inputText>
+						<p:message id="emailMsg" for="email" />
+					</p:column>
+
+					<h:outputLabel for="chkPerfis"
+						value="#{msgs['cadastroUsuario.label.perfil']}#{msgs['form.label.doispontos']}" />
+					<p:column colspan="2">
+						<p:selectManyCheckbox id="chkPerfis"
+							value="#{userMB.usuario.perfil}" required="true"
+							requiredMessage="#{msgs['cadastroUsuario.perfil.required']}">
+							<f:selectItems value="#{userMB.perfilList}" />
+							<f:converter converterId="CheckBoxPerfilConverter" />
+						</p:selectManyCheckbox>
+						<p:message for="chkPerfis" />
+					</p:column>
+				</h:panelGrid>
+
+
+				<h:panelGrid styleClass="tabela">
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton id="addUser"
+								value="#{msgs['cadastroUsuario.label.add']}" update="panel"
+								action="#{userMB.salvar}" ajax="false" />
+
+							<p:commandButton id="reset"
+								value="#{msgs['cadastroUsuario.label.reset']}"
+								action="#{userMB.limpar}" type="reset" ajax="false" />
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
