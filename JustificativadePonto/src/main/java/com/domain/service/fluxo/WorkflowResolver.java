@@ -1,24 +1,25 @@
-package com.domain.service.impl;
+package com.domain.service.fluxo;
 
+import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.service.IProximoPasso;
-import com.domain.service.IWorkflow;
-import com.domain.service.fluxo.PassoSemAcesso;
+import com.domain.service.IWorkflowResolver;
 import com.model.JustificativaPonto;
 import com.service.IJustificativaService;
 import org.dozer.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
-public class Workflow implements IWorkflow {
+public class WorkflowResolver implements IWorkflowResolver, IProximoPasso {
 
     private IJustificativaService justificativaService;
     private Mapper mapper;
     private Map<String,IProximoPasso> passos;
 
-    public Workflow(IJustificativaService justificativaService,
-                    Mapper mapper,
-                    Map<String,IProximoPasso> passos) {
+    public WorkflowResolver(IJustificativaService justificativaService,
+                            Mapper mapper,
+                            Map<String, IProximoPasso> passos) {
         this.justificativaService = justificativaService;
         this.mapper = mapper;
         this.passos = passos;
@@ -46,8 +47,22 @@ public class Workflow implements IWorkflow {
     }
 
     @Override
-    public IProximoPasso recupera(String identifier) {
-        return passos.get(identifier);
+    public boolean isIntercepted(JustificativaPonto justificativa) {
+        return false;
     }
 
+    @Override
+    public void proximo(JustificativaPontoDTO justificativa) {
+        retornaProximoPasso(justificativa).proximo(justificativa);
+    }
+
+    @Override
+    public List<CadastroUsuario> listaCandidatos() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Boolean> retornaHandler() {
+        return null;
+    }
 }

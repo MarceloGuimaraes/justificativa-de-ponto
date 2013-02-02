@@ -4,7 +4,7 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.domain.service.IProximoPasso;
-import com.domain.service.IWorkflow;
+import com.domain.service.IWorkflowResolver;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
 import com.service.IJustificativaService;
@@ -41,7 +41,7 @@ public class JustificativaManagedBean implements Serializable {
 
 	public JustificativaManagedBean(final IJustificativaService justificativaService,
                                     final IPermissoesBean permissoes,
-                                    final IWorkflow workflow,
+                                    final IWorkflowResolver workflow,
                                     final HandlerMotivosManagedBean motivosManagedBean) {
         this.permissoes = permissoes;
 		String id = JsfUtil.getParameter("id");
@@ -95,14 +95,7 @@ public class JustificativaManagedBean implements Serializable {
 
         try {
             CommandButton o  = (CommandButton) event.getSource();
-            String tipo = (String) o.getAttributes().get("fluxo");
-            final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
-            IProximoPasso proximoPasso = null;
-            if("cancelar".equalsIgnoreCase(tipo)){
-                proximoPasso = workflow.recupera(IWorkflow.PASSO_CANCELAR);
-            }else if("proximo".equalsIgnoreCase(tipo)){
-                proximoPasso = workflow.retornaProximoPasso(justificativa);
-            }
+            IProximoPasso proximoPasso = (IProximoPasso) o.getAttributes().get("fluxo");
             proximoPasso.proximo(justificativa);
         } catch (BusinessException be) {
             Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
@@ -133,7 +126,7 @@ public class JustificativaManagedBean implements Serializable {
 
 	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
 		s.defaultReadObject();
-		final IWorkflow workflow = (IWorkflow) ApplicationContextProvider.getBean("workflow");
+		final IWorkflowResolver workflow = (IWorkflowResolver) ApplicationContextProvider.getBean("workflow");
         final IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
         escolhas = retornaItemAPartirDeUser(proximoPasso.listaCandidatos());
         tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();

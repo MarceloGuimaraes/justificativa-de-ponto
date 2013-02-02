@@ -243,7 +243,7 @@
                                      actionListener="#{justificativaBean.proximo}"
                                      oncomplete="handleProximo(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
-                        <f:attribute name="fluxo" value="proximo"/>
+                        <f:attribute name="fluxo" value="#{workflow}"/>
                     </p:commandButton>
 
                     <p:commandButton id="idConcluir"
@@ -253,7 +253,7 @@
                                      update=":panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
-                        <f:attribute name="fluxo" value="proximo"/>
+                        <f:attribute name="fluxo" value="#{concluir}"/>
                     </p:commandButton>
 
                     <p:commandButton id="btnCancelar"
@@ -335,7 +335,7 @@
                                                  update="display"
                                                  actionListener="#{justificativaBean.proximo}"
                                                  oncomplete="handleCancelRequest(xhr, status, args)">
-                                    <f:attribute name="fluxo" value="cancelar"/>
+                                    <f:attribute name="fluxo" value="#{cancelar}"/>
                                 </p:commandButton>
                                 <p:commandButton value="Voltar" update="display" process="@this"
                                                  oncomplete="cadDialog.hide()"/>

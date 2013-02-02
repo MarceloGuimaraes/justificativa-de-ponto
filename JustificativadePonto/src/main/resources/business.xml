@@ -5,7 +5,7 @@
 
     <import resource="services.xml" />
 
-    <bean id="workflow" class="com.domain.service.impl.Workflow">
+    <bean id="workflow" class="com.domain.service.fluxo.WorkflowResolver">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="mapper" />
         <constructor-arg>
