@@ -72,4 +72,6 @@
         <constructor-arg value="motivo" />
     </bean>
 
+    <bean id="consultaJustificativasSolicitanteDao" class="com.dao.impl.ConsultaJustificativasSolicitanteDao" parent="dao"/>
+
 </beans>

@@ -5,7 +5,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "JustificativaPonto")
@@ -19,6 +21,10 @@ public class JustificativaPonto implements Serializable {
 	@Column(name = "dtCriacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
+
+    @Column(name = "dtSolicitacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataSolicitacao;
 
 	@Column(name = "hrIni")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -226,4 +232,11 @@ public class JustificativaPonto implements Serializable {
 		this.cancelamento = cancelamento;
 	}
 
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
+    public void setDataSolicitacao(Date dataSolicitacao) {
+        this.dataSolicitacao = dataSolicitacao;
+    }
 }

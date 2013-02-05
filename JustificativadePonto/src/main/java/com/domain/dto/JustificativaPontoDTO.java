@@ -12,6 +12,7 @@ public class JustificativaPontoDTO implements Serializable {
 
     private Integer id;
     private Date data;
+    private Date dataSolicitacao;
     private UsuarioLogado solicitante;
 
     private Date hrIni;
@@ -40,6 +41,7 @@ public class JustificativaPontoDTO implements Serializable {
     public JustificativaPontoDTO(UsuarioLogado solicitante) {
         this.solicitante = solicitante;
         this.data = new Date();
+        this.dataSolicitacao = new Date();
         this.status = StatusEnum.ELABORACAO;
     }
 
@@ -195,5 +197,13 @@ public class JustificativaPontoDTO implements Serializable {
 
     public void setIdProximoResponsavel(Integer idProximoResponsavel) {
         this.idProximoResponsavel = idProximoResponsavel;
+    }
+
+    public Date getDataSolicitacao() {
+        return dataSolicitacao;
+    }
+
+    public void setDataSolicitacao(Date dataSolicitacao) {
+        this.dataSolicitacao = dataSolicitacao;
     }
 }

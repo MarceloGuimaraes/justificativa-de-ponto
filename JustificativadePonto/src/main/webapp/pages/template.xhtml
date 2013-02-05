@@ -32,8 +32,10 @@
                 </p:submenu>
 
 				<p:submenu label="#{msgs['template.menu.consulta']}">
-					<p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
-					<p:separator />
+					<p:menuitem value="#{msgs['template.menu.consulta.minhasjustificativas']}" url="/pages/minhasjustificativas.jsf"/>
+                    <p:separator />
+                    <p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
+                    <p:separator />
 					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" />
 					<p:separator />
 					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" icon="ui-icon-search"/>

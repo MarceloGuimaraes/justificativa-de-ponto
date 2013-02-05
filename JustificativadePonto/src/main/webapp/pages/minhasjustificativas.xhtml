@@ -10,7 +10,7 @@
 	<ui:define name="corpo">
 		<h:form id="justificativaPorAno">
 			<p:dataTable var="justificativa"
-				value="#{todasJustificativasPaginadasPorSolicitante.justificativas}" paginator="true"
+				value="#{minhasJustificativasPaginadas.justificativas}" paginator="true"
 				rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
 
 				<f:facet name="header">
@@ -27,19 +27,21 @@
 				<p:column>
 					<f:facet name="header">
 						<h:outputText
-							value="#{msgs['relatorio.justificativa.solicitante']}" />
-					</f:facet>
-					<h:outputText value="#{justificativa.solicitante.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText
 							value="#{msgs['relatorio.justificativa.dtcriacao']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.data}">
 						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
 					</h:outputText>
 				</p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText
+                                value="#{msgs['relatorio.justificativa.dtsolicitacao']}" />
+                    </f:facet>
+                    <h:outputText value="#{justificativa.dataSolicitacao}">
+                        <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
+                    </h:outputText>
+                </p:column>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="#{msgs['relatorio.justificativa.status']}" />

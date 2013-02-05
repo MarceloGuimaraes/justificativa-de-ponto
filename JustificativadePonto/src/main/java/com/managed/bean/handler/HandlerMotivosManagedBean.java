@@ -9,6 +9,7 @@ import com.model.MotivoEnum;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class HandlerMotivosManagedBean implements Serializable {
 //        escolhas = new LinkedHashMap<MotivoEnum, Map<String, Boolean>>();
 //        escolhas.put(MotivoEnum.FALTAS, getConfiguracaoFaltas());
 //        escolhas.put(MotivoEnum.BANCODEHORAS, getConfiguracaoBancoHoras());
-//        escolhas.put(MotivoEnum.FALTADEMARCACAO, getConfiguracaoFaltaMarcacao());
+//        escolhas.put(MotivoEnum.FALTADEMARCACAO, getConfiguracaoHorario());
 //        escolhas.put(MotivoEnum.ATIVIDADEFORA, getConfiguracaoOutros());
 //        escolhas.put(MotivoEnum.ATRASOS, getConfiguracaoOutros());
 //        escolhas.put(MotivoEnum.SAIDAANTECIPADA, getConfiguracaoOutros());
@@ -51,8 +52,8 @@ public class HandlerMotivosManagedBean implements Serializable {
 //        configuracao = escolhas.get(motivo);
         if(MotivoEnum.FALTAS.equals(motivo)){
             configuracao = getConfiguracaoFaltas();
-        }else if(MotivoEnum.FALTADEMARCACAO.equals(motivo)){
-            configuracao = getConfiguracaoFaltaMarcacao();
+        }else if(EnumSet.of(MotivoEnum.FALTADEMARCACAO, MotivoEnum.ATRASOS, MotivoEnum.SAIDAANTECIPADA).contains(motivo)){
+            configuracao = getConfiguracaoHorario();
         } else if(MotivoEnum.BANCODEHORAS.equals(motivo)){
             configuracao = getConfiguracaoBancoHoras();
         } else {
@@ -69,7 +70,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         return resultado;
     }
 
-    private Map<String, Boolean> getConfiguracaoFaltaMarcacao(){
+    private Map<String, Boolean> getConfiguracaoHorario(){
         Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
         resultado.put(CAUSA_FALTA, false);
         resultado.put(HORA_INI, true);
@@ -82,7 +83,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
         resultado.put(CAUSA_FALTA, false);
         resultado.put(HORA_INI, true);
-        resultado.put(HORA_FIM, true);
+        resultado.put(HORA_FIM, false);
         resultado.put(TIPO_BANCO_HORAS, true);
         return resultado;
     }

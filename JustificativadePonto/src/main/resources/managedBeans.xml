@@ -46,6 +46,10 @@
         <constructor-arg ref="consultaJustificativasPorMotivoPaginadaPorUserService" />
     </bean>
 
+    <bean id="minhasJustificativasPaginadas" class="com.managed.bean.MinhasJustificativasPaginadasDatasource">
+        <constructor-arg ref="consultaJustificativasSolicitante"/>
+    </bean>
+
     <!-- Criando o scopo de View -->
     <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
         <property name="scopes">
