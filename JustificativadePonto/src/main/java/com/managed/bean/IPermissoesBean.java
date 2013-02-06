@@ -12,4 +12,8 @@ public interface IPermissoesBean extends Serializable {
     boolean isSupport();
     boolean isAdmin();
     boolean isRh();
+    boolean isCadastrador();
+    boolean isUsuario();
+    boolean isCoordenador();
+    boolean isSuperintendente();
 }
