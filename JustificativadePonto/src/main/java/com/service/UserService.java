@@ -42,8 +42,13 @@ public class UserService implements IUserService {
     public boolean isExisteUser(CadastroUsuario usuario) {
         User userAmostra = new User();
         userAmostra.setCpf(usuario.getCpf());
-        userAmostra.setEmail(usuario.getEmail());
-        return (dao.encontraPorAmostra(userAmostra)!=null);
+        final boolean resultado = dao.encontraPorAmostra(userAmostra)!=null;
+        if(!resultado){
+            userAmostra.setCpf(null);
+            userAmostra.setEmail(usuario.getEmail());
+            return dao.encontraPorAmostra(userAmostra)!=null;
+        }
+        return true;
     }
 
     @Override

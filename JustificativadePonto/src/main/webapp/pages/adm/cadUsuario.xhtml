@@ -11,6 +11,7 @@
 		<h:form id="cadUsuario">
 			<p:panel id="panel" header="#{userMB.labelCadastro}">
 				<h:inputHidden value="#{userMB.usuario.id}" />
+                <p:messages />
 
 				<h:panelGrid columns="2">
 					<h:outputLabel for="name"
@@ -76,8 +77,7 @@
 								action="#{userMB.salvar}" ajax="false" />
 
 							<p:commandButton id="reset"
-								value="#{msgs['cadastroUsuario.label.reset']}"
-								action="#{userMB.limpar}" type="reset" ajax="false" />
+								value="#{msgs['cadastroUsuario.label.reset']}" type="reset" ajax="false" />
 						</p:column>
 					</p:row>
 				</h:panelGrid>
