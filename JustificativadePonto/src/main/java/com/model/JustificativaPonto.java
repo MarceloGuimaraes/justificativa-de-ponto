@@ -1,5 +1,8 @@
 package com.model;
 
+import com.domain.SescoopConstants;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
@@ -12,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "JustificativaPonto")
 public class JustificativaPonto implements Serializable {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "justificativaId")
@@ -238,5 +240,26 @@ public class JustificativaPonto implements Serializable {
 
     public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(SescoopConstants.HASH1, SescoopConstants.HASH2)
+                .append(id)
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        if (!(object instanceof JustificativaPonto)) {
+            return false;
+        }
+
+        JustificativaPonto justificativa = (JustificativaPonto) object;
+
+        return new EqualsBuilder()
+                .append(id, justificativa.id)
+                .isEquals();
     }
 }

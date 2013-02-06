@@ -18,33 +18,6 @@ public class JustificativaPontoGrid implements Serializable {
     public JustificativaPontoGrid() {
     }
 
-    public JustificativaPontoGrid(JustificativaPonto justificativa){
-        id = justificativa.getId();
-        data = justificativa.getData();
-        dataSolicitacao = justificativa.getDataSolicitacao();
-        solicitante = new CadastroUsuario();
-        solicitante.setNome(justificativa.getSolicitante().getNome());
-        solicitante.setCpf(justificativa.getSolicitante().getCpf());
-        solicitante.setEmail(justificativa.getSolicitante().getEmail());
-        status = justificativa.getStatus();
-        motivo = justificativa.getMotivo();
-        Date maiorData = justificativa.getHistorico().get(0).getData();
-        for (HistoricoJustificativaPonto h : justificativa.getHistorico()){
-            if(h.getData().after(maiorData)){
-                ultimoHistorico = new HistoricoJustificativaPontoDTO();
-                ultimoHistorico.setData(h.getData());
-                ultimoHistorico.setTipoEvento(h.getTipoEvento());
-            }
-            if(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR.equals(h.getTipoEvento())){
-                Identificacao coordUser = ((EncaminhamentoJustificativaPonto)h).getResponsavel();
-                coordenador = new CadastroUsuario();
-                coordenador.setNome(coordUser.getNome());
-                coordenador.setCpf(coordUser.getCpf());
-                coordenador.setEmail(coordUser.getEmail());
-            }
-        }
-    }
-
     public void setJustificativa(JustificativaPonto justificativa){
         id = justificativa.getId();
         data = justificativa.getData();

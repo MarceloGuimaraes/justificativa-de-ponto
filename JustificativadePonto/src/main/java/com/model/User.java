@@ -1,8 +1,8 @@
 package com.model;
 
+import com.domain.SescoopConstants;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -12,10 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
-
 	private static final long serialVersionUID = -8772516708049621911L;
-    private static final int hash1 = 1156070685;
-    private static final int hash2 = 119119943;
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,7 +103,7 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(hash1,hash2 )
+		return new HashCodeBuilder(SescoopConstants.HASH1, SescoopConstants.HASH2)
                 .append(this.nome)
 				.append(this.cpf)
                 .append(this.email)
