@@ -13,11 +13,13 @@ public class LoginBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String SUCCESS = "welcome";
-
     private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
 
     private static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
+    
+    private static final String PAGE_WELCOME = "/pages/welcome.jsf?faces-redirect=true";
+    
+    private static final String REDIRECT_JUSTIFICATIVA = "/pages/justificativa.jsf?faces-redirect=true&id=";
 
     private IUserService userService;
 
@@ -82,9 +84,9 @@ public class LoginBean implements Serializable {
                 }
             }
             if(id==null || "".equals(id)){
-                return SUCCESS;
+            	return PAGE_WELCOME;
             } else {
-                return "/pages/justificativa.jsf?faces-redirect=true&id="+id;
+                return REDIRECT_JUSTIFICATIVA +id;
             }
 
         } else {

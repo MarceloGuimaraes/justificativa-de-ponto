@@ -12,9 +12,7 @@
     	</el-resolver>
   	</application>
 		
-	<!-- configuration of navigation rules -->
-	
-		<!-- configuration of navigation rules -->	
+	<!-- configuration of navigation rules -->	
 	<navigation-rule>
 	    <from-view-id>/pages/adm/cadUsuario.xhtml</from-view-id> 
 	    <navigation-case>
@@ -38,6 +36,7 @@
             <to-view-id>/pages/welcome.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
 
     <navigation-rule>
         <navigation-case>
