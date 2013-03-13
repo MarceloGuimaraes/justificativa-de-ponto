@@ -11,10 +11,11 @@
         <constructor-arg>
             <map>
                 <entry key="1" value-ref="enviarCoordenador"/>
-                <entry key="2" value-ref="enviarSuperintendente"/>
-                <entry key="3" value-ref="enviarRH"/>
-                <entry key="4" value-ref="concluir"/>
-                <entry key="5" value-ref="cancelar"/>
+                <entry key="2" value-ref="enviarDiretoSuperintendente"/>
+                <entry key="3" value-ref="enviarSuperintendente"/>
+                <entry key="4" value-ref="enviarRH"/>
+                <entry key="5" value-ref="concluir"/>
+                <entry key="6" value-ref="cancelar"/>
             </map>
         </constructor-arg>
     </bean>
@@ -28,6 +29,8 @@
     </bean>
 
     <bean id="enviarCoordenador" class="com.domain.service.fluxo.EnviarCoordenador" parent="proximoPasso"/>
+
+    <bean id="enviarDiretoSuperintendente" class="com.domain.service.fluxo.EnviarDiretoSuperintendente" parent="proximoPasso"/>
 
     <bean id="enviarSuperintendente" class="com.domain.service.fluxo.EnviarSuperintendente" parent="proximoPasso"/>
 
