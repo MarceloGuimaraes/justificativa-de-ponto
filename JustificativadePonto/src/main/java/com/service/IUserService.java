@@ -20,9 +20,9 @@ public interface IUserService {
 	void addUser(User user);
 	void updateUser(User user);
     User recuperar(Integer id);
-	boolean isExisteUser(CadastroUsuario usuario);
-	UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin);
-	boolean isEmailValido(UsuarioLogin usuarioLogin);
+    String resetaSenha(UsuarioLogin usuarioLogin);
+    boolean isExisteUser(CadastroUsuario usuario);
+    UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin);
     List<CadastroUsuario> recuperaCoordenadores();
     List<CadastroUsuario> recuperaSuperintendentes();
     List<CadastroUsuario> recuperaRH();

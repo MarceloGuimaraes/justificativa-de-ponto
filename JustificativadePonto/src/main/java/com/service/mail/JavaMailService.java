@@ -1,6 +1,7 @@
 package com.service.mail;
 
 import com.domain.dto.UsuarioLogado;
+import com.domain.dto.UsuarioLogin;
 import com.model.User;
 import com.util.JsfUtil;
 import com.util.Message;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class JavaMailService implements IMailService {
 	private static final String URL_ID = "/pages/justificativa.faces?id=";
+    private static final String REMETENTE_SISTEMA="Sistema de Ponto<sistemadeponto@sescoop.com.br>";
 	private MailSender mailSender;
 	private boolean desenv;
 
@@ -75,17 +77,12 @@ public class JavaMailService implements IMailService {
 	}
 
 	@Override
-	public void resetaSenha(String userMail,String passwd) {
-
-		String assunto;
-		String corpo;
-
-		assunto = Message.getBundleMessage("mail.subject.resetaSenha");
-		corpo = Message.getBundleMessage("mail.corpo.resetaSenha", passwd);
-
-		final List<String> destinatarios = null;
-
-		sendMail(userMail,destinatarios , assunto, corpo);
+	public void resetaSenha(final UsuarioLogin userMail, final String passwd) {
+		final String assunto = Message.getBundleMessage("mail.subject.resetaSenha");
+        final String corpo = Message.getBundleMessage("mail.corpo.resetaSenha", passwd);
+		final List<String> destinatarios = new LinkedList<String>();
+        destinatarios.add(userMail.getEmail());
+		sendMail(REMETENTE_SISTEMA, destinatarios, assunto, corpo);
 	}
 
 
@@ -130,9 +127,9 @@ public class JavaMailService implements IMailService {
 	}
 
 	private void sendMail(final String remetente,
-			final List<String> destinatarios,
-			final String subject,
-			final String body) {
+                          final List<String> destinatarios,
+                          final String subject,
+                          final String body) {
 
 		Runnable mailThread = new Runnable() {
 			@Override

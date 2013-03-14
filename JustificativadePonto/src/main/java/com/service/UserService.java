@@ -68,18 +68,17 @@ public class UserService implements IUserService {
 
 
 	@Override
-	public boolean isEmailValido(UsuarioLogin usuarioLogin) {
-		User userAmostra = new User();
+    @Transactional(readOnly = false)
+	public String resetaSenha(UsuarioLogin usuarioLogin) {
+		final User userAmostra = new User();
 		userAmostra.setEmail(usuarioLogin.getEmail());
-		final boolean resultado = dao.encontraPorAmostra(userAmostra)!=null;
-		if(resultado){
-			User usuarioPersistido = dao.recuperar(userAmostra.getId());
-			usuarioPersistido.setSenha(PassPhrase.getNext());
-			dao.atualizar(usuarioPersistido);
-			mailService.resetaSenha(usuarioPersistido.getEmail(), usuarioPersistido.getSenha());
-			return true;
-		}
-		return false;
+		final User encontrado = dao.encontraPorAmostra(userAmostra);
+        if(encontrado!=null){
+            final String novaSenha = PassPhrase.getNext();
+            encontrado.setSenha(Criptografia.encodePassword(novaSenha));
+            return novaSenha;
+        }
+		return null;
 	}
 
 

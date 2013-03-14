@@ -8,6 +8,7 @@
     <bean id="loginController" class="com.managed.bean.LoginBean" scope="request">
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="UserService" />
+        <constructor-arg ref="mailService"/>
     </bean>
 
     <bean id="userMB" class="com.managed.bean.UserManagedBean" scope="request">

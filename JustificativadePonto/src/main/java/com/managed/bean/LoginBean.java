@@ -3,6 +3,8 @@ package com.managed.bean;
 import com.domain.dto.UsuarioLogado;
 import com.domain.dto.UsuarioLogin;
 import com.service.IUserService;
+import com.service.mail.IMailService;
+import com.service.mail.JavaMailService;
 import com.util.Message;
 
 import javax.faces.context.ExternalContext;
@@ -25,24 +27,21 @@ public class LoginBean implements Serializable {
 	private static final String REDIRECT_JUSTIFICATIVA = "/pages/justificativa.jsf?faces-redirect=true&id=";
 
 	private IUserService userService;
+    private IMailService mailService;
 
-	private IPermissoesBean permissoesBean;
+    private IPermissoesBean permissoesBean;
 	
 	private UsuarioLogin usuarioLogin;
 
 	private String id;
 
 	public LoginBean(IPermissoesBean permissoes,
-			IUserService userService) {
-
+                     IUserService userService,
+                     IMailService mailService) {
 		this.permissoesBean = permissoes;
-
 		this.userService = userService;
-		
-	//	this.rendered = false;
-
+        this.mailService = mailService;
 		usuarioLogin = new UsuarioLogin();
-
 		id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 	}
 
@@ -111,56 +110,18 @@ public class LoginBean implements Serializable {
 
 	}
 
-	public String resetaSenha(){
-		
-		if (usuarioLogin.getEmail() == null || usuarioLogin.getSenha() == null) {
-			Message.addMessage("login.loginEpassw.required");
+	public String resetaSenha() {
+		if (usuarioLogin.getEmail() == null || usuarioLogin.getEmail().equals("")) {
+			Message.addMessage("login.email.require");
 			return null;
 		}
-		
-/*		if (usuarioLogin.getEmail() == null ) {
-			//Message.addMessage("login.required");
-			Message.addMessage("login.loginEpassw.required");
-			return null;
-		}*/
-		
+        final String novaSenha = userService.resetaSenha(usuarioLogin);
+        if(novaSenha==null){
+            Message.addMessage("login.resetasenha.usuarionaoencontrado");
+            return null;
+        }
+        mailService.resetaSenha(usuarioLogin, novaSenha);
 		Message.addMessage("login.resetaSenha.enviado");
 		return null;
-		
-	/*	if (userService.isEmailValido(usuarioLogin)){
-			Message.addMessageConfig("login.resetaSenha.enviado");
-			return null;
-		} else {
-			Message.addMessage("login.mail.invalido");
-			return null;
-		}*/
 	}
-
-/*	private boolean disable;
-	private boolean rendered;
-
-
-	public boolean isDisable() {
-		return disable;
-	}
-
-	public void setDisable(boolean disable) {
-		this.disable = disable;
-	}
-
-	public boolean isRendered() {
-		return rendered;
-	}
-
-	public void setRendered(boolean rendered) {
-		this.rendered = rendered;
-	}
-
-	public void changeMark(ValueChangeEvent vcEvent){
-		rendered = Boolean.valueOf(vcEvent.getNewValue().toString()).booleanValue();
-		System.out.println();
-	}*/
-
-
-
 }

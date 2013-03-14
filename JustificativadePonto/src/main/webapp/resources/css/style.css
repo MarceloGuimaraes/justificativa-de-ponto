@@ -381,3 +381,14 @@ table.dados tr td {
 a.doclink{
     background-image: url("../resources/imagens/doclink.gif");
 }
+
+a.linksenha {
+    position: relative;
+    padding: 10px;
+    text-align: right;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 0.8em;
+    color: #8B47DE
+}
