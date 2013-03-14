@@ -31,19 +31,28 @@
 
 				<h:outputText value="#{msgs['login.label']}" />
 				<h:inputText value="#{loginController.usuarioLogin.email}"
-					required="true" requiredMessage="#{msgs['login.required']}"
 					style="width:300px" />
 
 				<h:outputText value="#{msgs['login.label.passw']}" />
 				<h:inputSecret id="password"
-					value="#{loginController.usuarioLogin.senha}" required="true"
-					requiredMessage="#{msgs['login.passw.required']}"
-					style="width:300px" />
+					value="#{loginController.usuarioLogin.senha}" style="width:300px" />
 				<h:inputHidden id="idRedirect" value="#{loginController.id}" />
 			</h:panelGrid>
 
-			<p:commandButton action="#{loginController.efetuaLogin}" update="growl"
-				value="#{msgs['login.acao']}"  />
+			<p:commandButton action="#{loginController.efetuaLogin}"
+				update="growl" value="#{msgs['login.acao']}" />
+			
+			<p:commandLink action="#{loginController.resetaSenha}"
+				style="position: relative;
+	padding: 10px;text-align: right;text-decoration: none;font-weight: bold;
+	font-family: Verdana, Arial, sans-serif;font-size: 0.8em;color: #8B47DE"
+				ajax="false">
+				<h:outputText value="#{msgs['login.resetaSenha.label']}" />
+			</p:commandLink>
+
+			
+
+
 		</p:panel>
 	</h:form>
 </h:body>

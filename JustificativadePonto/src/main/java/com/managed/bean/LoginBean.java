@@ -7,104 +7,160 @@ import com.util.Message;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+
+
 import java.io.Serializable;
 
 public class LoginBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
+	private static final String REDIRECT_TROCA_SENHA = "/pages/adm/senha.jsf?faces-redirect=true";
 
-    private static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
-    
-    private static final String PAGE_WELCOME = "/pages/welcome.jsf?faces-redirect=true";
-    
-    private static final String REDIRECT_JUSTIFICATIVA = "/pages/justificativa.jsf?faces-redirect=true&id=";
+	private static final String REDIREC_LOGOUT = "/pages/login?faces-redirect=true";
 
-    private IUserService userService;
+	private static final String PAGE_WELCOME = "/pages/welcome.jsf?faces-redirect=true";
 
-    private IPermissoesBean permissoesBean;
+	private static final String REDIRECT_JUSTIFICATIVA = "/pages/justificativa.jsf?faces-redirect=true&id=";
 
-    private UsuarioLogin usuarioLogin;
+	private IUserService userService;
 
-    private String id;
+	private IPermissoesBean permissoesBean;
+	
+	private UsuarioLogin usuarioLogin;
 
-    public LoginBean(IPermissoesBean permissoes,
-                     IUserService userService) {
+	private String id;
 
-        this.permissoesBean = permissoes;
+	public LoginBean(IPermissoesBean permissoes,
+			IUserService userService) {
 
-        this.userService = userService;
+		this.permissoesBean = permissoes;
 
-        usuarioLogin = new UsuarioLogin();
+		this.userService = userService;
+		
+	//	this.rendered = false;
 
-        id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+		usuarioLogin = new UsuarioLogin();
 
-    }
+		id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+	}
 
-    public UsuarioLogin getUsuarioLogin() {
-        return usuarioLogin;
-    }
+	public UsuarioLogin getUsuarioLogin() {
+		return usuarioLogin;
+	}
 
-    public void setUsuarioLogin(UsuarioLogin usuarioLogin) {
-        this.usuarioLogin = usuarioLogin;
-    }
+	public void setUsuarioLogin(UsuarioLogin usuarioLogin) {
+		this.usuarioLogin = usuarioLogin;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String efetuaLogin() {
-        if (usuarioLogin.getEmail() == null || usuarioLogin.getSenha() == null) {
-            Message.addMessage("login.userEpassw.required");
-            return null;
-        }
+	public String efetuaLogin() {
+		if (usuarioLogin.getEmail() == null || usuarioLogin.getSenha() == null) {
+			Message.addMessage("login.loginEpassw.required");
+			return null;
+		}
 
-        UsuarioLogado usuarioLogado = userService.buscaPorLogin(usuarioLogin);
+		UsuarioLogado usuarioLogado = userService.buscaPorLogin(usuarioLogin);
 
-        if (usuarioLogado != null) {
+		if (usuarioLogado != null) {
 
-            permissoesBean.setUsuarioLogado(usuarioLogado);
+			permissoesBean.setUsuarioLogado(usuarioLogado);
 
-            // verifica se contem 5 caracteres conforme a senha default
-            if(usuarioLogin.getSenha()==null){
-                Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
-                return REDIRECT_TROCA_SENHA;
-            }
-            if (usuarioLogin.getSenha().length() == 5) {
-                if (usuarioLogin.getSenha().equals(
-                        usuarioLogin.getSenha().replace(".", "").replace("-", "")
-                                .substring(0, 5))) {
-                    Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
-                    return REDIRECT_TROCA_SENHA;
-                }
-            }
-            if(id==null || "".equals(id)){
-            	return PAGE_WELCOME;
-            } else {
-                return REDIRECT_JUSTIFICATIVA +id;
-            }
+			// verifica se contem 5 caracteres conforme a senha default
+			if(usuarioLogin.getSenha()==null){
+				Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
+				return REDIRECT_TROCA_SENHA;
+			}
+			if (usuarioLogin.getSenha().length() == 5) {
+				if (usuarioLogin.getSenha().equals(
+						usuarioLogin.getSenha().replace(".", "").replace("-", "")
+						.substring(0, 5))) {
+					Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
+					return REDIRECT_TROCA_SENHA;
+				}
+			}
+			if(id==null || "".equals(id)){
+				return PAGE_WELCOME;
+			} else {
+				return REDIRECT_JUSTIFICATIVA +id;
+			}
 
-        } else {
-            Message.addMessage("login.invalido");
-            return null;
-        }
-    }
+		} else {
+			Message.addMessage("login.invalido");
+			return null;
+		}
+	}
 
-    public String logOut() {
+	public String logOut() {
 
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
-        context.invalidateSession();
+		context.invalidateSession();
 
-        permissoesBean.logOut();
+		permissoesBean.logOut();
 
-        return REDIREC_LOGOUT;
+		return REDIREC_LOGOUT;
 
-    }
+	}
+
+	public String resetaSenha(){
+		
+		if (usuarioLogin.getEmail() == null || usuarioLogin.getSenha() == null) {
+			Message.addMessage("login.loginEpassw.required");
+			return null;
+		}
+		
+/*		if (usuarioLogin.getEmail() == null ) {
+			//Message.addMessage("login.required");
+			Message.addMessage("login.loginEpassw.required");
+			return null;
+		}*/
+		
+		Message.addMessage("login.resetaSenha.enviado");
+		return null;
+		
+	/*	if (userService.isEmailValido(usuarioLogin)){
+			Message.addMessageConfig("login.resetaSenha.enviado");
+			return null;
+		} else {
+			Message.addMessage("login.mail.invalido");
+			return null;
+		}*/
+	}
+
+/*	private boolean disable;
+	private boolean rendered;
+
+
+	public boolean isDisable() {
+		return disable;
+	}
+
+	public void setDisable(boolean disable) {
+		this.disable = disable;
+	}
+
+	public boolean isRendered() {
+		return rendered;
+	}
+
+	public void setRendered(boolean rendered) {
+		this.rendered = rendered;
+	}
+
+	public void changeMark(ValueChangeEvent vcEvent){
+		rendered = Boolean.valueOf(vcEvent.getNewValue().toString()).booleanValue();
+		System.out.println();
+	}*/
+
+
 
 }

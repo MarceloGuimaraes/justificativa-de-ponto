@@ -25,6 +25,7 @@
     <bean id="UserService" class="com.service.UserService">
         <constructor-arg ref="UserDAO" />
         <constructor-arg ref="mapper" />
+        <constructor-arg ref="mailService" />
     </bean>
 
     <bean id="JustificativaService" class="com.service.JustificativaService">

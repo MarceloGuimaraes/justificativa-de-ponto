@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.util.PassPhrase;
 import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,156 +18,176 @@ import com.domain.dto.exception.BusinessException;
 import com.model.PerfilEnum;
 import com.model.User;
 import com.util.Criptografia;
+import com.service.mail.IMailService;
 
 @Transactional(readOnly = true)
 public class UserService implements IUserService {
 
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private IUserDAO dao;
+	private IUserDAO dao;
+	private Mapper mapper;
+	protected transient IMailService mailService;
 
-    private Mapper mapper;
+	public UserService(IUserDAO dao, Mapper mapper, IMailService mailService) {
+		this.dao = dao;
+		this.mapper = mapper;
+		this.mailService = mailService;
+	}
 
-    public UserService(IUserDAO dao, Mapper mapper) {
-        this.dao = dao;
-        this.mapper = mapper;
-    }
+	@Transactional(readOnly = false)
+	public void addUser(User user) {
+		dao.adicionar(user); 		// verifica se existe o ID cadastrado
+	}
 
-    @Transactional(readOnly = false)
-    public void addUser(User user) {
-        dao.adicionar(user); 		// verifica se existe o ID cadastrado
-    }
+	@Override
+	public boolean isExisteUser(CadastroUsuario usuario) {
+		User userAmostra = new User();
+		userAmostra.setCpf(usuario.getCpf());
+		final boolean resultado = dao.encontraPorAmostra(userAmostra)!=null;
+		if(!resultado){
+			userAmostra.setCpf(null);
+			userAmostra.setEmail(usuario.getEmail());
+			return dao.encontraPorAmostra(userAmostra)!=null;
+		}
+		return true;
+	}
 
-    @Override
-    public boolean isExisteUser(CadastroUsuario usuario) {
-        User userAmostra = new User();
-        userAmostra.setCpf(usuario.getCpf());
-        final boolean resultado = dao.encontraPorAmostra(userAmostra)!=null;
-        if(!resultado){
-            userAmostra.setCpf(null);
-            userAmostra.setEmail(usuario.getEmail());
-            return dao.encontraPorAmostra(userAmostra)!=null;
-        }
-        return true;
-    }
+	@Override
+	public UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin) {
+		User user = new User();
+		user.setEmail(usuarioLogin.getEmail());
+		user.setSenha(Criptografia.encodePassword(usuarioLogin.getSenha()));
+		user = dao.encontraPorAmostra(user);
+		if(user==null){
+			return null;
+		}
+		return mapper.map(user, UsuarioLogado.class);
+	}
 
-    @Override
-    public UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin) {
-        User user = new User();
-        user.setEmail(usuarioLogin.getEmail());
-        user.setSenha(Criptografia.encodePassword(usuarioLogin.getSenha()));
-        user = dao.encontraPorAmostra(user);
-        if(user==null){
-            return null;
-        }
-        return mapper.map(user, UsuarioLogado.class);
-    }
 
-    @Override
-    public List<CadastroUsuario> recuperaCoordenadores() {
-        return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.COORDENADOR));
-    }
+	@Override
+	public boolean isEmailValido(UsuarioLogin usuarioLogin) {
+		User userAmostra = new User();
+		userAmostra.setEmail(usuarioLogin.getEmail());
+		final boolean resultado = dao.encontraPorAmostra(userAmostra)!=null;
+		if(resultado){
+			User usuarioPersistido = dao.recuperar(userAmostra.getId());
+			usuarioPersistido.setSenha(PassPhrase.getNext());
+			dao.atualizar(usuarioPersistido);
+			mailService.resetaSenha(usuarioPersistido.getEmail(), usuarioPersistido.getSenha());
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public List<CadastroUsuario> recuperaSuperintendentes() {
-        return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.SUPERINTENDENTE));
-    }
 
-    @Override
-    public List<CadastroUsuario> recuperaRH() {
-        return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.RH));
-    }
+	@Override
+	public List<CadastroUsuario> recuperaCoordenadores() {
+		return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.COORDENADOR));
+	}
 
-    private List<CadastroUsuario> retornaUsuariosPorPerfil(EnumSet<PerfilEnum> perfis){
-        List<User> source = dao.listar(perfis);
-        List<CadastroUsuario> resultado = new ArrayList<CadastroUsuario>(3);
-        for(User u : source){
-            resultado.add(mapper.map(u, CadastroUsuario.class));
-        }
-        return resultado;
-    }
+	@Override
+	public List<CadastroUsuario> recuperaSuperintendentes() {
+		return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.SUPERINTENDENTE));
+	}
 
-    @Override
-    @Transactional(readOnly = false)
-    public void alteraSenha(CadastroSenha cadastroSenha) {
+	@Override
+	public List<CadastroUsuario> recuperaRH() {
+		return retornaUsuariosPorPerfil(EnumSet.of(PerfilEnum.RH));
+	}
 
-        User user = dao.recuperar(cadastroSenha.getId());
+	private List<CadastroUsuario> retornaUsuariosPorPerfil(EnumSet<PerfilEnum> perfis){
+		List<User> source = dao.listar(perfis);
+		List<CadastroUsuario> resultado = new ArrayList<CadastroUsuario>(3);
+		for(User u : source){
+			resultado.add(mapper.map(u, CadastroUsuario.class));
+		}
+		return resultado;
+	}
 
-        if(user==null){
-            throw new IllegalArgumentException("Usuário não existe no sistema!");
-        }
+	@Override
+	@Transactional(readOnly = false)
+	public void alteraSenha(CadastroSenha cadastroSenha) {
 
-        if (!user.getSenha().equals(
-                Criptografia.encodePassword(cadastroSenha.getSenha()))) {
-            throw new BusinessException("login.passw.confirm");
-        }
+		User user = dao.recuperar(cadastroSenha.getId());
 
-        user.setSenha(Criptografia.encodePassword(cadastroSenha.getNovaSenha()));
+		if(user==null){
+			throw new IllegalArgumentException("Usuário não existe no sistema!");
+		}
 
-    }
+		if (!user.getSenha().equals(
+				Criptografia.encodePassword(cadastroSenha.getSenha()))) {
+			throw new BusinessException("login.passw.confirm");
+		}
 
-    @Override
-    public User recuperar(Integer id) {
-        return dao.recuperar(id);
-    }
+		user.setSenha(Criptografia.encodePassword(cadastroSenha.getNovaSenha()));
 
-    @Transactional(readOnly = false)
-    public void updateUser(User user) {
-        dao.atualizar(user);
-    }
+	}
 
-    @Override
-    @Transactional(readOnly = false)
-    public void atualizar(CadastroUsuario usuario) {
-        User usuarioPersistido = dao.recuperar(usuario.getId());
-        mapper.map(usuario, usuarioPersistido);
-        dao.atualizar(usuarioPersistido);
-    }
+	@Override
+	public User recuperar(Integer id) {
+		return dao.recuperar(id);
+	}
 
-    @Override
-    @Transactional(readOnly = false)
-    public CadastroUsuario adicionar(CadastroUsuario usuario) {
-        User user = mapper.map(usuario, User.class);
-        Serializable id = dao.adicionar(user);
+	@Transactional(readOnly = false)
+	public void updateUser(User user) {
+		dao.atualizar(user);
+	}
 
-        user.setSenha(Criptografia.encodePassword(getDefaultPassword(user
-                .getCpf())));
+	@Override
+	@Transactional(readOnly = false)
+	public void atualizar(CadastroUsuario usuario) {
+		User usuarioPersistido = dao.recuperar(usuario.getId());
+		mapper.map(usuario, usuarioPersistido);
+		dao.atualizar(usuarioPersistido);
+	}
 
-        usuario.setId((Integer) id);
+	@Override
+	@Transactional(readOnly = false)
+	public CadastroUsuario adicionar(CadastroUsuario usuario) {
+		User user = mapper.map(usuario, User.class);
+		Serializable id = dao.adicionar(user);
 
-        return usuario;
-    }
+		user.setSenha(Criptografia.encodePassword(getDefaultPassword(user
+				.getCpf())));
 
-    @Override
-    public CadastroUsuario recuperar(Serializable id) {
-        User user = dao.recuperar(id);
-        CadastroUsuario usuario = mapper.map(user, CadastroUsuario.class);
-        return usuario;
-    }
+		usuario.setId((Integer) id);
 
-    @Override
-    @Transactional(readOnly = false)
-    public void apagar(CadastroUsuario usuario) {
-        User user = dao.recuperar(usuario.getId());
-        dao.deletar(user);
-    }
+		return usuario;
+	}
 
-    @Override
-    public List<CadastroUsuario> todos() {
-        List<CadastroUsuario> resultado = new ArrayList<CadastroUsuario>(5);
-        List<User> usuarios = dao.todos();
-        for(User u : usuarios){
-            resultado.add(mapper.map(u, CadastroUsuario.class));
-        }
-        return resultado;
-    }
+	@Override
+	public CadastroUsuario recuperar(Serializable id) {
+		User user = dao.recuperar(id);
+		CadastroUsuario usuario = mapper.map(user, CadastroUsuario.class);
+		return usuario;
+	}
 
-    /**Senha default
-     * composto pelos 5 primeiros numeros do CPF
-     * */
-    private String getDefaultPassword(String strCpf){
-        return strCpf.replace(".","").replace("-", "").substring(0, 5);
-    }
+	@Override
+	@Transactional(readOnly = false)
+	public void apagar(CadastroUsuario usuario) {
+		User user = dao.recuperar(usuario.getId());
+		dao.deletar(user);
+	}
+
+	@Override
+	public List<CadastroUsuario> todos() {
+		List<CadastroUsuario> resultado = new ArrayList<CadastroUsuario>(5);
+		List<User> usuarios = dao.todos();
+		for(User u : usuarios){
+			resultado.add(mapper.map(u, CadastroUsuario.class));
+		}
+		return resultado;
+	}
+
+	/**Senha default
+	 * composto pelos 5 primeiros numeros do CPF
+	 * */
+	 private String getDefaultPassword(String strCpf){
+		 return strCpf.replace(".","").replace("-", "").substring(0, 5);
+	 }
+
 
 }

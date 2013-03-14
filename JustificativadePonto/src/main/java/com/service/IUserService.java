@@ -22,6 +22,7 @@ public interface IUserService {
     User recuperar(Integer id);
 	boolean isExisteUser(CadastroUsuario usuario);
 	UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin);
+	boolean isEmailValido(UsuarioLogin usuarioLogin);
     List<CadastroUsuario> recuperaCoordenadores();
     List<CadastroUsuario> recuperaSuperintendentes();
     List<CadastroUsuario> recuperaRH();

@@ -13,5 +13,6 @@ public interface IMailService {
     void enviarRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User rh, Integer idDoc);
     void concluiRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User superintendente, Integer idDoc);
     void cancelado(UsuarioLogado usuarioLogado, User solicitante,  List<User> copyTo, Integer idDoc);
+    void resetaSenha(String userMail,String passwd);
 
 }
