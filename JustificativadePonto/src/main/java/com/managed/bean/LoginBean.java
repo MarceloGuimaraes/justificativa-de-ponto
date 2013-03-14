@@ -6,9 +6,11 @@ import com.service.IUserService;
 import com.service.mail.IMailService;
 import com.service.mail.JavaMailService;
 import com.util.Message;
+import org.primefaces.context.RequestContext;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 
@@ -110,18 +112,25 @@ public class LoginBean implements Serializable {
 
 	}
 
-	public String resetaSenha() {
-		if (usuarioLogin.getEmail() == null || usuarioLogin.getEmail().equals("")) {
-			Message.addMessage("login.email.require");
-			return null;
-		}
-        final String novaSenha = userService.resetaSenha(usuarioLogin);
-        if(novaSenha==null){
-            Message.addMessage("login.resetasenha.usuarionaoencontrado");
-            return null;
+	public void resetaSenha(ActionEvent event) {
+        final RequestContext context = RequestContext.getCurrentInstance();
+        try{
+            if (usuarioLogin.getEmail() == null || usuarioLogin.getEmail().equals("")) {
+                Message.addMessage("login.email.require");
+                context.addCallbackParam("sucesso", false);
+                return;
+            }
+            final String novaSenha = userService.resetaSenha(usuarioLogin);
+            if(novaSenha==null){
+                Message.addMessage("login.resetasenha.usuarionaoencontrado");
+                context.addCallbackParam("sucesso", false);
+                return;
+            }
+            mailService.resetaSenha(usuarioLogin, novaSenha);
+            context.addCallbackParam("sucesso", true);
+        } catch (Exception e){
+            Message.addMessage("dialog.cancelar.erro.inesperado.semusuario");
+            context.addCallbackParam("sucesso", false);
         }
-        mailService.resetaSenha(usuarioLogin, novaSenha);
-		Message.addMessage("login.resetaSenha.enviado");
-		return null;
 	}
 }

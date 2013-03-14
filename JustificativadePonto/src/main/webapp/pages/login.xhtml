@@ -2,10 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
 
 <f:loadBundle basename="mensagens" var="msgs" />
 
@@ -36,8 +35,21 @@
 
 			<p:commandButton action="#{loginController.efetuaLogin}" update="growl" value="#{msgs['login.acao']}" />
 			
-			<p:commandLink value="#{msgs['login.resetaSenha.label']}" action="#{loginController.resetaSenha}" ajax="false" styleClass="linksenha"/>
+			<p:commandLink value="#{msgs['login.resetaSenha.label']}"
+                           actionListener="#{loginController.resetaSenha}"
+                           ajax="true"
+                           styleClass="linksenha"
+                           update="growl"
+                           oncomplete="handleResetaSenha(xhr, status, args)"
+                    />
 		</p:panel>
 	</h:form>
+    <script type="text/javascript">
+        function handleResetaSenha(xhr, status, args) {
+            if (!args.validationFailed &amp;&amp; args.sucesso) {
+                alert("#{msgs['login.resetaSenha.enviado']}");
+            }
+        }
+    </script>
 </h:body>
 </html>
