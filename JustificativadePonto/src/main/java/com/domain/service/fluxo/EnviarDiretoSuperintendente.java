@@ -3,7 +3,6 @@ package com.domain.service.fluxo;
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
-import com.domain.service.IProximoPasso;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Wrapper do EnviarCoordenador q manda direto para o Superintendente
+ * EnviarCoordenador q manda direto para o Superintendente
  */
 public class EnviarDiretoSuperintendente extends ProximoPasso {
 
