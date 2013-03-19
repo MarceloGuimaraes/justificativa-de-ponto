@@ -37,6 +37,7 @@ public class EnviarSuperintendente extends ProximoPasso {
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
         if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
+                && historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)
                 && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)
                 .getResponsavel().equals(usuarioLogado)) {
 

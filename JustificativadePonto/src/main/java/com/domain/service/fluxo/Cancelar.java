@@ -39,8 +39,10 @@ public class Cancelar extends ProximoPasso {
                 (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(userCorrente)
                         || permissoes.isAdmin())) {
             // AUTOR SUPERINTENDENTE
-            User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
-            destinos.add(coordenador);
+            if(historicos.containsKey(TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR)){
+                final User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+                destinos.add(coordenador);
+            }
 
         } else if (StatusEnum.EXECUCAORH.equals(justificativaPersistida.getStatus()) &&
                 (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(userCorrente)

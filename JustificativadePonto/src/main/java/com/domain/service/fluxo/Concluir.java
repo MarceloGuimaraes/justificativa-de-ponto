@@ -35,6 +35,7 @@ public class Concluir extends ProximoPasso {
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
         if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
+                && historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH)
                 && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(usuarioLogado)) {
 
             return true;

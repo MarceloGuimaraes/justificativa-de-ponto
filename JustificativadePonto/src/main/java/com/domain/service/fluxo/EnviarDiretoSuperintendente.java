@@ -43,7 +43,7 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
                 permissoes.getUsuarioLogado(),
                 mapper.map(superintendente, UsuarioLogado.class),
                 justificativa,
-                StatusEnum.APROVCOORD,
+                StatusEnum.APROVSUPERINTENDENTE,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE
         );
 
