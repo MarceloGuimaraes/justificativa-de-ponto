@@ -27,9 +27,7 @@
     <div id="conteudo">
         <h:form>
             <p:menubar styleClass="menunav">
-                <p:submenu label="#{msgs['template.menu.label']}" rendered="#{PermissoesBean.usuario}">
-                    <p:menuitem value="#{msgs['template.menu.novajustificativa']}" url="/pages/justificativa.jsf" icon="ui-icon-document" />
-                </p:submenu>
+                    <p:menuitem value="#{msgs['template.menu.novajustificativa']}" url="/pages/justificativa.jsf" rendered="#{PermissoesBean.usuario}" />
 
 				<p:submenu label="#{msgs['template.menu.consulta']}">
 					<p:menuitem value="#{msgs['template.menu.consulta.minhasjustificativas']}" url="/pages/minhasjustificativas.jsf" rendered="#{PermissoesBean.usuario}"/>

@@ -52,7 +52,7 @@ public class HandlerMotivosManagedBean implements Serializable {
 //        configuracao = escolhas.get(motivo);
         if(MotivoEnum.FALTAS.equals(motivo)){
             configuracao = getConfiguracaoFaltas();
-        }else if(EnumSet.of(MotivoEnum.FALTADEMARCACAO, MotivoEnum.ATRASOS, MotivoEnum.SAIDAANTECIPADA).contains(motivo)){
+        }else if(EnumSet.of(MotivoEnum.FALTADEMARCACAO).contains(motivo)){
             configuracao = getConfiguracaoHorario();
         } else if(MotivoEnum.BANCODEHORAS.equals(motivo)){
             configuracao = getConfiguracaoBancoHoras();
@@ -83,7 +83,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
         resultado.put(CAUSA_FALTA, false);
         resultado.put(HORA_INI, true);
-        resultado.put(HORA_FIM, false);
+        resultado.put(HORA_FIM, true);
         resultado.put(TIPO_BANCO_HORAS, true);
         return resultado;
     }
