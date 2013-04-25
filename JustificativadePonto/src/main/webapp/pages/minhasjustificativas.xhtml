@@ -10,38 +10,39 @@
 	<ui:define name="corpo">
 		<h:form id="justificativaPorAno">
 			<p:dataTable var="justificativa"
-				value="#{minhasJustificativasPaginadas.justificativas}" paginator="true"
-				rows="10" emptyMessage="#{msgs['consulta.semregistro']}">
+				value="#{minhasJustificativasPaginadas.justificativas}"
+				paginator="true" rows="10"
+				emptyMessage="#{msgs['consulta.semregistro']}">
 
 				<f:facet name="header">
 					<h:outputText
 						value="#{msgs['relatorio.justificativa.porsolicitante.titulo']}" />
 				</f:facet>
-                <p:column>
-                    <f:facet name="header">
-                    </f:facet>
-                    <a href="justificativa.jsf?id=#{justificativa.id}">
-                        <img src="../resources/imagens/actn103.gif" border="0" alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
-                    </a>
-                </p:column>
+				<p:column>
+					<f:facet name="header">
+					</f:facet>
+					<a href="justificativa.jsf?id=#{justificativa.id}"> <img
+						src="../resources/imagens/actn103.gif" border="0"
+						alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
+					</a>
+				</p:column>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText
-							value="#{msgs['relatorio.justificativa.dtcriacao']}" />
+							value="#{msgs['relatorio.justificativa.dtsolicitacao']}" />
+					</f:facet>
+					<h:outputText value="#{justificativa.dataSolicitacao}">
+						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['relatorio.justificativa.dtcriacao']}" />
 					</f:facet>
 					<h:outputText value="#{justificativa.data}">
 						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
 					</h:outputText>
 				</p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText
-                                value="#{msgs['relatorio.justificativa.dtsolicitacao']}" />
-                    </f:facet>
-                    <h:outputText value="#{justificativa.dataSolicitacao}">
-                        <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
-                    </h:outputText>
-                </p:column>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="#{msgs['relatorio.justificativa.status']}" />
