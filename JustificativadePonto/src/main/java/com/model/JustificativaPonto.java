@@ -80,6 +80,13 @@ public class JustificativaPonto implements Serializable {
 			@Parameter(name = "valueOfMethod", value = "fromSigla") })
 	private TipoDecisaoEnum tipoDecisao;
 
+	@Column(name = "tipofaltamarcacao")
+	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
+			@Parameter(name = "enumClass", value = "com.model.TipoFaltaMarcacaoEnum"),
+			@Parameter(name = "identifierMethod", value = "getCodigo"),
+			@Parameter(name = "valueOfMethod", value = "fromSigla") })
+	private TipoFaltaMarcacaoEnum tipofaltamarcacao;
+	
     @ManyToOne(targetEntity = User.class, optional = false)
     private User solicitante;
 
@@ -126,6 +133,14 @@ public class JustificativaPonto implements Serializable {
 
 	public void setTipoDecisao(TipoDecisaoEnum tipoDecisao) {
 		this.tipoDecisao = tipoDecisao;
+	}
+
+	public TipoFaltaMarcacaoEnum getTipofaltamarcacao() {
+		return tipofaltamarcacao;
+	}
+
+	public void setTipofaltamarcacao(TipoFaltaMarcacaoEnum tipofaltamarcacao) {
+		this.tipofaltamarcacao = tipofaltamarcacao;
 	}
 
 	public StatusEnum getStatus() {

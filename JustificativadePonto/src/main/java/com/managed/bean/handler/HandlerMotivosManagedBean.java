@@ -1,28 +1,32 @@
 package com.managed.bean.handler;
 
-import com.domain.dto.JustificativaPontoDTO;
-import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
-import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
-import com.model.MotivoEnum;
-
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+
+import com.domain.dto.JustificativaPontoDTO;
+import com.jsf.ds.impl.ComboMotivoDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoBancoHorasDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoFaltaDatasourceImpl;
+import com.jsf.ds.impl.ComboTipoFaltaMarcacaoDatasourceImpl;
+import com.model.MotivoEnum;
+
 public class HandlerMotivosManagedBean implements Serializable {
     private static final String CAUSA_FALTA = "CAUSA_FALTA";
     private static final String HORA_INI = "HORA_INI";
     private static final String HORA_FIM = "HORA_FIM";
     private static final String TIPO_BANCO_HORAS = "TIPO_BANCO_HORAS";
+    private static final String TIPO_FALTA_MARCACAO = "TIPO_FALTA_MARCACAO";
 
     private List<SelectItem> tipoMotivosList;
     private List<SelectItem> tipoFaltaList;
     private List<SelectItem> tipoBancoHorasList;
+    private List<SelectItem> tipoFaltaMarcacaoList;
 //    Map<MotivoEnum, Map<String,Boolean>>escolhas;
     private Map<String,Boolean> configuracao;
 
@@ -30,6 +34,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         this.tipoMotivosList = new ComboMotivoDatasourceImpl().findObjects();
         this.tipoFaltaList = new ComboTipoFaltaDatasourceImpl().findObjects();
         tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
+        tipoFaltaMarcacaoList = new ComboTipoFaltaMarcacaoDatasourceImpl().findObjects();
 //        escolhas = new LinkedHashMap<MotivoEnum, Map<String, Boolean>>();
 //        escolhas.put(MotivoEnum.FALTAS, getConfiguracaoFaltas());
 //        escolhas.put(MotivoEnum.BANCODEHORAS, getConfiguracaoBancoHoras());
@@ -67,6 +72,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         resultado.put(HORA_INI, false);
         resultado.put(HORA_FIM, false);
         resultado.put(TIPO_BANCO_HORAS, false);
+        resultado.put(TIPO_FALTA_MARCACAO, false);
         return resultado;
     }
 
@@ -76,6 +82,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         resultado.put(HORA_INI, true);
         resultado.put(HORA_FIM, false);
         resultado.put(TIPO_BANCO_HORAS, false);
+        resultado.put(TIPO_FALTA_MARCACAO, true);
         return resultado;
     }
 
@@ -85,6 +92,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         resultado.put(HORA_INI, true);
         resultado.put(HORA_FIM, true);
         resultado.put(TIPO_BANCO_HORAS, true);
+        resultado.put(TIPO_FALTA_MARCACAO, false);
         return resultado;
     }
 
@@ -94,6 +102,7 @@ public class HandlerMotivosManagedBean implements Serializable {
         resultado.put(HORA_INI, true);
         resultado.put(HORA_FIM, true);
         resultado.put(TIPO_BANCO_HORAS, false);
+        resultado.put(TIPO_FALTA_MARCACAO, false);
         return resultado;
     }
 
@@ -131,4 +140,12 @@ public class HandlerMotivosManagedBean implements Serializable {
     public void setTipoBancoHorasList(List<SelectItem> tipoBancoHorasList) {
         this.tipoBancoHorasList = tipoBancoHorasList;
     }
+
+	public List<SelectItem> getTipoFaltaMarcacaoList() {
+		return tipoFaltaMarcacaoList;
+	}
+
+	public void setTipoFaltaMarcacaoList(List<SelectItem> tipoFaltaMarcacaoList) {
+		this.tipoFaltaMarcacaoList = tipoFaltaMarcacaoList;
+	}
 }

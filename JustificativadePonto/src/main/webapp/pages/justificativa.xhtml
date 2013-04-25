@@ -149,6 +149,25 @@
                                 <h:outputText value="#{justificativaBean.justificativa.tipobancohoras}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
+                        
+                        <p:row rendered="#{motivoManagedBean.configuracao['TIPO_FALTA_MARCACAO']}">
+                            <p:column style="text-align:left; width:135px;">
+                                <h:outputLabel value="#{msgs['form.justificativa.label.faltamarcacao']}#{msgs['form.label.doispontos']} " />
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:selectOneMenu id="tipofaltamarcacao"
+                                                 value="#{justificativaBean.justificativa.tipofaltamarcacao}"
+                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 required="true"
+                                                 requiredMessage="#{msgs['form.justificativa.tipofaltamarcacao.required']}">
+                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItems value="#{motivoManagedBean.tipoFaltaMarcacaoList}" />
+                                </p:selectOneMenu>
+                                <p:message id="tipofaltamarcacaoMsg" for="tipofaltamarcacao" />
+                                <h:outputText value="#{justificativaBean.justificativa.tipofaltamarcacao}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                            </p:column>
+                        </p:row>
+                        
                     </p:panelGrid>
 
                     <p:fieldset id="justificativaGrid" legend="#{msgs['form.justificativa.legenda.justificativa']}">

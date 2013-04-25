@@ -22,6 +22,7 @@ public class JustificativaPontoDTO implements Serializable {
     private MotivoEnum motivo;
     private TipoFaltaEnum tipofalta;
     private TipoBancoHorasEnum tipobancohoras;
+    private TipoFaltaMarcacaoEnum tipofaltamarcacao;
 
     private TipoDecisaoEnum tipoDecisao;
     private String obsRh;
@@ -125,7 +126,15 @@ public class JustificativaPontoDTO implements Serializable {
         this.tipoDecisao = tipoDecisao;
     }
 
-    public UsuarioLogado getSolicitante() {
+    public TipoFaltaMarcacaoEnum getTipofaltamarcacao() {
+		return tipofaltamarcacao;
+	}
+
+	public void setTipofaltamarcacao(TipoFaltaMarcacaoEnum tipofaltamarcacao) {
+		this.tipofaltamarcacao = tipofaltamarcacao;
+	}
+
+	public UsuarioLogado getSolicitante() {
         return solicitante;
     }
 
