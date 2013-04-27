@@ -1,0 +1,141 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/pages/template.xhtml">
+	<ui:define name="corpo">
+		<p:growl id="growl" life="2500" />
+		<p:panel id="panel" header="#{msgs['form.relatorio.label.titulo']}">
+			<p:messages />
+			<h:form id="relatorioForm">
+
+				<p:panelGrid id="panelFuncionario" styleClass="tabela">
+					<p:row>
+						<p:column style="text-align:left; width:135px;">
+							<h:outputLabel
+								value="#{msgs['form.relatorio.label.selecaoFuncionario']}#{msgs['form.label.doispontos']} " />
+						</p:column>
+						<p:column colspan="3">
+							<p:selectOneMenu id="comboFuncionario"
+								value="#{justificativaBean.justificativa.tipofaltamarcacao}"
+								rendered="#{justificativaBean.view.permiteEditar}"
+								required="true"
+								requiredMessage="#{msgs['form.relatorio.selecaoFuncionario.required']}">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItems
+									value="#{motivoManagedBean.tipoFaltaMarcacaoList}" />
+							</p:selectOneMenu>
+							<p:message id="tipofaltamarcacaoMsg" for="panelFuncionario" />
+							<h:outputText
+								value="#{justificativaBean.justificativa.tipofaltamarcacao}"
+								rendered="#{not justificativaBean.view.permiteEditar}"
+								converter="EnumComCodigoDescricao" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:panelGrid id="filtroRel" styleClass="tabela">
+					<p:row>
+						<p:column style="text-align: left; width: 135px;">
+							<h:outputLabel
+								value="#{msgs['form.relatorio.label.dtinicial']}#{msgs['form.label.doispontos']}" />
+						</p:column>
+						<p:column colspan="3">
+							<p:calendar styleClass="calendar"
+								value="#{justificativaBean.justificativa.dataSolicitacao}"
+								id="dtInicial" showOn="button"
+								pattern="#{msgs['sistema.formato.data']}" timeOnly="false"
+								required="true"
+								requiredMessage="#{msgs['form.justificativa.dtsolicitacao.required']}"
+								rendered="#{justificativaBean.view.permiteEditar}" />
+							<p:message id="msgDtInicial" for="dtInicial" />
+							<h:outputText id="txtDtInicial"
+								value="#{justificativaBean.justificativa.dataSolicitacao}"
+								rendered="#{not justificativaBean.view.permiteEditar}">
+								<f:convertDateTime type="date"
+									pattern="#{msgs['sistema.formato.data']}" />
+							</h:outputText>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column style="text-align: left; width: 135px;">
+							<h:outputLabel
+								value="#{msgs['form.relatorio.label.dtfinal']}#{msgs['form.label.doispontos']}" />
+						</p:column>
+						<p:column colspan="3">
+							<p:calendar styleClass="calendar"
+								value="#{justificativaBean.justificativa.dataSolicitacao}"
+								id="dtFinal" showOn="button"
+								pattern="#{msgs['sistema.formato.data']}" timeOnly="false"
+								required="true"
+								requiredMessage="#{msgs['form.justificativa.dtsolicitacao.required']}"
+								rendered="#{justificativaBean.view.permiteEditar}" />
+							<p:message id="msgDtFinal" for="dtFinal" />
+							<h:outputText id="txtDtFinal"
+								value="#{justificativaBean.justificativa.dataSolicitacao}"
+								rendered="#{not justificativaBean.view.permiteEditar}">
+								<f:convertDateTime type="date"
+									pattern="#{msgs['sistema.formato.data']}" />
+							</h:outputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align:left; width:135px;">
+							<h:outputLabel
+								value="#{msgs['form.relatorio.label.selecaoStatus']}#{msgs['form.label.doispontos']} " />
+						</p:column>
+						<p:column colspan="3">
+							<p:selectOneMenu id="selecaoStatus"
+								value="#{justificativaBean.justificativa.tipofaltamarcacao}"
+								rendered="#{justificativaBean.view.permiteEditar}"
+								required="true"
+								requiredMessage="#{msgs['form.relatorio.selecaoFuncionario.required']}">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItems
+									value="#{motivoManagedBean.tipoFaltaMarcacaoList}" />
+							</p:selectOneMenu>
+							<p:message id="MsgSelecaoStatus" for="selecaoStatus" />
+							<h:outputText
+								value="#{justificativaBean.justificativa.tipofaltamarcacao}"
+								rendered="#{not justificativaBean.view.permiteEditar}"
+								converter="EnumComCodigoDescricao" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+				<p:commandButton id="btGerarRelatorio"
+					value="#{msgs['form.relatorio.botao.gerarRel']}"
+					actionListener="#{justificativaBean.proximo}" update=":panel"
+					oncomplete="handleConcluir(xhr, status, args)"
+					icon="ui-icon-circle-arrow-e">
+				</p:commandButton>
+
+			</h:form>
+
+		</p:panel>
+
+		<p:separator style="margin-top: 20px;" />
+
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide()" />
+
+		<p:dialog modal="true" widgetVar="statusDialog" header="Status"
+			draggable="false" closable="false" resizable="false">
+			<p:graphicImage value="/resources/imagens/ajax-loader-bar.gif" />
+		</p:dialog>
+
+
+		<script type="text/javascript">
+
+                function handleProximo(xhr, status, args) {
+                    if (!args.validationFailed &amp;&amp; args.sucesso) {
+                        alert("#{msgs['form.justificativa.mensagem.envioProximo']}");
+                        location.href = 'welcome.jsf';
+                    }
+                }
+            </script>
+
+	</ui:define>
+</ui:composition>
+</html>

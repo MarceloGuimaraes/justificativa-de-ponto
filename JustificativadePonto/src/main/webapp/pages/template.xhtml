@@ -41,6 +41,8 @@
 					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" icon="ui-icon-search" />
 				</p:submenu>
 
+				 <p:menuitem value="#{msgs['template.menu.relatorio']}" url="/pages/relatorio.jsf" icon="ui-icon-document-b" rendered="#{PermissoesBean.usuario}" />
+				 
                 <p:submenu label="#{msgs['template.menu.adm.label']}" rendered="#{PermissoesBean.admin or PermissoesBean.support or PermissoesBean.cadastrador}" >
 <!--                     <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" icon="ui-icon-info" />
                     <p:separator /> -->
