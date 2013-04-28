@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
 			return null;
 		}
 
-		UsuarioLogado usuarioLogado = userService.buscaPorLogin(usuarioLogin);
+		final UsuarioLogado usuarioLogado = userService.buscaPorLogin(usuarioLogin);
 
 		if (usuarioLogado != null) {
 
@@ -80,14 +80,10 @@ public class LoginBean implements Serializable {
 				Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
 				return REDIRECT_TROCA_SENHA;
 			}
-			if (usuarioLogin.getSenha().length() == 5) {
-				if (usuarioLogin.getSenha().equals(
-						usuarioLogin.getSenha().replace(".", "").replace("-", "")
-						.substring(0, 5))) {
-					Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
-					return REDIRECT_TROCA_SENHA;
-				}
-			}
+			if (usuarioLogin.getSenha().equals(userService.getDefaultPassword(usuarioLogado.getCpf()))) {
+                Message.addMessageConfig("cadastroUsuario.senha.senhaDefault");
+                return REDIRECT_TROCA_SENHA;
+            }
 			if(id==null || "".equals(id)){
 				return PAGE_WELCOME;
 			} else {

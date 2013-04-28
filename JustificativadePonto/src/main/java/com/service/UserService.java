@@ -54,7 +54,7 @@ public class UserService implements IUserService {
 		return true;
 	}
 
-	@Override
+    @Override
 	public UsuarioLogado buscaPorLogin(UsuarioLogin usuarioLogin) {
 		User user = new User();
 		user.setEmail(usuarioLogin.getEmail());
@@ -184,8 +184,8 @@ public class UserService implements IUserService {
 	/**Senha default
 	 * composto pelos 5 primeiros numeros do CPF
 	 * */
-	 private String getDefaultPassword(String strCpf){
-		 return strCpf.replace(".","").replace("-", "").substring(0, 5);
+	 public String getDefaultPassword(final String cpf){
+		 return cpf.replace(".","").replace("-", "").substring(0, 5);
 	 }
 
 

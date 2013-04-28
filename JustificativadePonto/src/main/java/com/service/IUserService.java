@@ -28,4 +28,5 @@ public interface IUserService {
     List<CadastroUsuario> recuperaRH();
 
     void alteraSenha(CadastroSenha cadastroSenha);
+    String getDefaultPassword(String cpf);
 }
