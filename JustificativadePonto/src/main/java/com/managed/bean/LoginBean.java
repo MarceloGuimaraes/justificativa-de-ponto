@@ -4,16 +4,12 @@ import com.domain.dto.UsuarioLogado;
 import com.domain.dto.UsuarioLogin;
 import com.service.IUserService;
 import com.service.mail.IMailService;
-import com.service.mail.JavaMailService;
 import com.util.Message;
 import org.primefaces.context.RequestContext;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-
-
 import java.io.Serializable;
 
 public class LoginBean implements Serializable {

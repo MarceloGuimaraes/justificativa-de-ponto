@@ -10,7 +10,7 @@
 			<p:messages />
 			<h:form id="relatorioForm">
 
-				<p:panelGrid id="panelFuncionario" styleClass="tabela">
+				<!--<p:panelGrid id="panelFuncionario" styleClass="tabela">
 					<p:row>
 						<p:column style="text-align:left; width:135px;">
 							<h:outputLabel
@@ -102,12 +102,12 @@
 								converter="EnumComCodigoDescricao" />
 						</p:column>
 					</p:row>
-				</p:panelGrid>
+				</p:panelGrid>-->
 
 				<p:commandButton id="btGerarRelatorio"
 					value="#{msgs['form.relatorio.botao.gerarRel']}"
-					actionListener="#{justificativaBean.proximo}" update=":panel"
-					oncomplete="handleConcluir(xhr, status, args)"
+					action="#{relatorioManagedBean.geraRelatorio}"
+                    ajax="false"
 					icon="ui-icon-circle-arrow-e">
 				</p:commandButton>
 

@@ -6,7 +6,10 @@ import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Map;
 
 public interface IJustificativaService {
 
@@ -20,5 +23,4 @@ public interface IJustificativaService {
     JustificativaPontoDTO atualizar(JustificativaPontoDTO justificativa);
     JustificativaPontoDTO mudaSituacao(UsuarioLogado usuarioLogado, UsuarioLogado proximoResponsavel, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico);
     JustificativaPontoDTO atua(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento);
-
 }
