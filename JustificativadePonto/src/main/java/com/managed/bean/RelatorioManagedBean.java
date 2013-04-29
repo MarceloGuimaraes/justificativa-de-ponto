@@ -5,6 +5,7 @@ import com.service.IJustificativaService;
 import com.service.JustificativaService;
 import com.spring.util.ApplicationContextProvider;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
 import org.hibernate.SessionFactory;
@@ -21,6 +22,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -42,16 +44,23 @@ public class RelatorioManagedBean implements Serializable {
         parametros.put("INICIO", new Date());
         parametros.put("TERMINO", new Date());
         parametros.put("STATUS", "Concluído");
+        parametros.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
+
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
         final HttpServletResponse response = (HttpServletResponse) context.getResponse();
-        final InputStream in = context.getResourceAsStream("/WEB-INF/relatorios/relatorio2.jasper");
+        final InputStream in = RelatorioManagedBean.class.getResourceAsStream("/reports/com/relatorios/relatorio1.jasper");
         final OutputStream out;
         try {
             out = response.getOutputStream();
             FacesContext.getCurrentInstance().responseComplete();
+
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=\"relatorio.pdf\"");
+            response.setHeader("Cache-Control", "no-cache");
+
             JasperRunManager.runReportToPdfStream(in, out, parametros, JRCustomDatasource.getInstance());
-            response.setContentType("application.pdf");
+
             out.flush();
             out.close();
         } catch (IOException e) {
