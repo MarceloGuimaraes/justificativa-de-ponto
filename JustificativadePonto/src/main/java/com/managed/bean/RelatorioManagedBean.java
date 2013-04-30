@@ -70,21 +70,22 @@ public class RelatorioManagedBean implements Serializable {
         final HttpServletResponse response = (HttpServletResponse) context.getResponse();
         final InputStream in = RelatorioManagedBean.class.getResourceAsStream("/reports/com/relatorios/relatorio1.jasper");
         try {
+            filtro.isValid();
             final OutputStream out = response.getOutputStream();
-            FacesContext.getCurrentInstance().responseComplete();
 
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "attachment; filename=\"relatorio.pdf\"");
             response.setHeader("Cache-Control", "no-cache");
-
             JasperRunManager.runReportToPdfStream(in, out, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
 
             out.flush();
             out.close();
+
+            FacesContext.getCurrentInstance().responseComplete();
         } catch (IOException e) {
-            throw new FacesException("Erro ao gerar o relatorio, arquivo nao encontrado", e);
+            Message.addMessage("relatorio.erro.mensagem.arquivonaoencontrado");
         } catch (JRException e) {
-            throw new FacesException("Erro inesperado ao gerar o relatorio", e);
+            Message.addMessage("relatorio.erro.mensagem.erroinesperado");
         } catch (FacesException e){
             Message.addMessage(e.getMessage());
         }
