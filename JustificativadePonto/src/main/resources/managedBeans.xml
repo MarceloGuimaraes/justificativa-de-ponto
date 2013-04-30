@@ -53,7 +53,8 @@
 
     <!-- Controller do relatorio -->
     <bean id="relatorioManagedBean" class="com.managed.bean.RelatorioManagedBean" scope="request">
-        <constructor-arg ref="JustificativaService"/>
+        <constructor-arg ref="UserService"/>
+        <constructor-arg ref="consultaOcorrenciasService"/>
     </bean>
 
     <!-- Criando o scopo de View -->

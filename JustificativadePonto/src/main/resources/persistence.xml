@@ -74,4 +74,6 @@
 
     <bean id="consultaJustificativasSolicitanteDao" class="com.dao.impl.ConsultaJustificativasSolicitanteDao" parent="dao"/>
 
+    <bean id="consultaOcorrenciasDao" class="com.dao.impl.ConsultaOcorrenciasDao" parent="dao"/>
+
 </beans>

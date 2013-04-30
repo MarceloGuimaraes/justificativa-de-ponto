@@ -69,6 +69,10 @@
         <constructor-arg ref="consultaJustificativaPontoPorMotivoDao" />
     </bean>
 
+    <bean class="com.service.impl.ConsultaOcorrenciasService" id="consultaOcorrenciasService">
+        <constructor-arg ref="consultaOcorrenciasDao"/>
+    </bean>
+
     <!-- Dozzer BeanMapper -->
     <bean id="mapper" class="org.dozer.DozerBeanMapper">
         <property name="mappingFiles">

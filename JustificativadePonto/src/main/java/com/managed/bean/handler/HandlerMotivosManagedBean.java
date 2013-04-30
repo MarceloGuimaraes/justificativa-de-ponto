@@ -27,7 +27,6 @@ public class HandlerMotivosManagedBean implements Serializable {
     private List<SelectItem> tipoFaltaList;
     private List<SelectItem> tipoBancoHorasList;
     private List<SelectItem> tipoFaltaMarcacaoList;
-//    Map<MotivoEnum, Map<String,Boolean>>escolhas;
     private Map<String,Boolean> configuracao;
 
     public HandlerMotivosManagedBean() {
@@ -35,14 +34,6 @@ public class HandlerMotivosManagedBean implements Serializable {
         this.tipoFaltaList = new ComboTipoFaltaDatasourceImpl().findObjects();
         tipoBancoHorasList = new ComboTipoBancoHorasDatasourceImpl().findObjects();
         tipoFaltaMarcacaoList = new ComboTipoFaltaMarcacaoDatasourceImpl().findObjects();
-//        escolhas = new LinkedHashMap<MotivoEnum, Map<String, Boolean>>();
-//        escolhas.put(MotivoEnum.FALTAS, getConfiguracaoFaltas());
-//        escolhas.put(MotivoEnum.BANCODEHORAS, getConfiguracaoBancoHoras());
-//        escolhas.put(MotivoEnum.FALTADEMARCACAO, getConfiguracaoHorario());
-//        escolhas.put(MotivoEnum.ATIVIDADEFORA, getConfiguracaoOutros());
-//        escolhas.put(MotivoEnum.ATRASOS, getConfiguracaoOutros());
-//        escolhas.put(MotivoEnum.SAIDAANTECIPADA, getConfiguracaoOutros());
-
     }
 
     public Map<String, Boolean> getConfiguracao() {
