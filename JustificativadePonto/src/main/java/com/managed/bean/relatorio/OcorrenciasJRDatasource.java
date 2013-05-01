@@ -55,7 +55,9 @@ public class OcorrenciasJRDatasource implements JRDataSource {
         if(jrField.getName().equals("status")){
             return corrente.getStatus();
         }
-
+        if(jrField.getName().equals("periodo")){
+            return corrente.getPeriodo();
+        }
         throw new JRException("campo nao existe: "+jrField.getName());
     }
 

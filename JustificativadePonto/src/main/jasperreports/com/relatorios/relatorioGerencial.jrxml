@@ -3,10 +3,31 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
 	<parameter name="FUNCIONARIO" class="java.lang.String"/>
 	<parameter name="INICIO" class="java.util.Date"/>
 	<parameter name="TERMINO" class="java.util.Date"/>
 	<parameter name="STATUS" class="java.lang.String"/>
+	<parameter name="PERIODO" class="java.lang.String"/>
 	<field name="data" class="java.util.Date"/>
 	<field name="horaInicio" class="java.util.Date"/>
 	<field name="horaTermino" class="java.util.Date"/>
@@ -14,6 +35,7 @@
 	<field name="complemento" class="java.lang.String"/>
 	<field name="status" class="java.lang.String"/>
 	<field name="solicitante" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -23,7 +45,7 @@
 	<pageHeader>
 		<band height="60" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="3c5bdcfb-6339-4278-a932-b22ba8e4d94a" x="0" y="0" width="120" height="20">
+				<reportElement uuid="3c5bdcfb-6339-4278-a932-b22ba8e4d94a" x="0" y="0" width="171" height="20">
 					<printWhenExpression><![CDATA[$P{FUNCIONARIO}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -32,7 +54,7 @@
 				<text><![CDATA[Funcionário:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="92bf753e-6e10-4162-b207-b00b6742c11d" x="0" y="20" width="120" height="20">
+				<reportElement uuid="92bf753e-6e10-4162-b207-b00b6742c11d" x="0" y="20" width="171" height="20">
 					<printWhenExpression><![CDATA[$P{INICIO}!=null || $P{TERMINO}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -41,7 +63,7 @@
 				<text><![CDATA[Período selecionado:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f519be8e-95e3-409c-bc0b-020bdf9cdf86" x="0" y="40" width="120" height="20">
+				<reportElement uuid="f519be8e-95e3-409c-bc0b-020bdf9cdf86" x="0" y="40" width="171" height="20">
 					<printWhenExpression><![CDATA[$P{STATUS}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -50,32 +72,20 @@
 				<text><![CDATA[Status:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="ca417157-cc0d-4475-8380-ad60b9cd5bdc" x="120" y="0" width="237" height="20"/>
+				<reportElement uuid="ca417157-cc0d-4475-8380-ad60b9cd5bdc" x="171" y="0" width="107" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{FUNCIONARIO}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="2e8430cb-d9d1-4c5a-9c7f-a0437f80fc0e" x="120" y="20" width="66" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$P{INICIO}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="864c881a-c2ce-4934-b7e5-40780ccaa072" x="197" y="20" width="66" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$P{TERMINO}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="aa6a5b3b-c2c5-48a0-909e-78b33d1209e4" x="120" y="40" width="237" height="20"/>
+				<reportElement uuid="aa6a5b3b-c2c5-48a0-909e-78b33d1209e4" x="171" y="40" width="107" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{STATUS}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="ef66b2f4-8312-45ee-9f54-90921beccf29" x="186" y="20" width="11" height="20">
-					<printWhenExpression><![CDATA[$P{INICIO}!=null || $P{TERMINO}!=null]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[-]]></text>
-			</staticText>
+			<textField>
+				<reportElement uuid="d6a0decb-3650-45dc-89c8-4a257b1996fb" x="171" y="20" width="107" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PERIODO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -132,14 +142,9 @@
 				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
 			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement uuid="edaf21c1-771c-4826-841c-60cbb855240b" x="278" y="0" width="34" height="20"/>
+				<reportElement uuid="edaf21c1-771c-4826-841c-60cbb855240b" x="278" y="0" width="79" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{horaInicio}]]></textFieldExpression>
-			</textField>
-			<textField pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement uuid="c5695e63-bc98-4b53-857c-c82ab894e2f0" x="323" y="0" width="34" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{horaTermino}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="c6def174-ed23-4999-8313-17cbe12f397a" x="357" y="0" width="117" height="20"/>
@@ -156,11 +161,6 @@
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="ef66b2f4-8312-45ee-9f54-90921beccf29" x="312" y="0" width="11" height="20"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[-]]></text>
-			</staticText>
 			<textField>
 				<reportElement uuid="04b890ff-d4de-40e9-94bf-06d892076bc4" x="0" y="0" width="171" height="20"/>
 				<textElement/>

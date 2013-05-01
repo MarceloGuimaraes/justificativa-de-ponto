@@ -10,6 +10,7 @@ import com.service.IUserService;
 import com.util.Message;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -17,6 +18,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -60,6 +63,16 @@ public class RelatorioManagedBean implements Serializable {
         parametros.put("FUNCIONARIO", filtro.isIdFuncionarioInformado()?user.getNome():null);
         parametros.put("INICIO", filtro.getInicio());
         parametros.put("TERMINO", filtro.getTermino());
+        final StringBuilder periodoTxt = new StringBuilder();
+        final DateFormat fmt = new SimpleDateFormat("HH:mm");
+        if(filtro.isInicioInformado()){
+            periodoTxt.append(fmt.format(filtro.getInicio()));
+        }
+        if(filtro.isTerminoInformado()){
+            periodoTxt.append(" - ");
+            periodoTxt.append(fmt.format(filtro.getTermino()));
+        }
+        parametros.put("PERIODO", periodoTxt.toString());
         parametros.put("STATUS", filtro.isStatusInformado()?Message.getBundleMessage(filtro.getStatus().getDescricao()):null);
         parametros.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
 
@@ -79,6 +92,12 @@ public class RelatorioManagedBean implements Serializable {
             JRExporter exporter = new JRXlsExporter();
             exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, oo);
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+
+            exporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, false);
+            exporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
+            exporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
+            exporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, true);
+            exporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, true);
             exporter.exportReport();
 
             oo.flush();

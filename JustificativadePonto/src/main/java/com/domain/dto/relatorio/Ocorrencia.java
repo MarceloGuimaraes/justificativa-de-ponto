@@ -3,6 +3,8 @@ package com.domain.dto.relatorio;
 import com.model.*;
 import com.util.Message;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -73,6 +75,19 @@ public class Ocorrencia {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPeriodo(){
+        DateFormat fmt = new SimpleDateFormat("HH:mm");
+        final StringBuilder periodo = new StringBuilder();
+        if(horaInicio!=null){
+            periodo.append(fmt.format(horaInicio));
+        }
+        if(horaTermino!=null){
+            periodo.append(" - ");
+            periodo.append(fmt.format(horaTermino));
+        }
+        return periodo.toString();
     }
 
     public void setTipoMotivo(final MotivoEnum motivo){
