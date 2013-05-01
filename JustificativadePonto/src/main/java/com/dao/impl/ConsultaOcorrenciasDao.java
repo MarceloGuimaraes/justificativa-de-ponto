@@ -24,10 +24,11 @@ public class ConsultaOcorrenciasDao extends Dao {
     }
 
     public List<Ocorrencia> pesquisar(final FiltroJustificativa filtro){
-        final Criteria criteria = getSession().createCriteria(JustificativaPonto.class, "j");
         filtro.isValid();
+        final Criteria criteria = getSession().createCriteria(JustificativaPonto.class, "j");
+        criteria.createAlias("j.solicitante", "s");
         if(filtro.isIdFuncionarioInformado()){
-            criteria.add(Restrictions.eq("j.solicitante.id", filtro.getIdFuncionario()));
+            criteria.add(Restrictions.eq("s.id", filtro.getIdFuncionario()));
         }
         if(filtro.isInicioInformado()){
             criteria.add(Restrictions.ge("j.dataSolicitacao", filtro.getInicio()));
@@ -40,17 +41,18 @@ public class ConsultaOcorrenciasDao extends Dao {
         }
         criteria.setProjection(
                 Projections.projectionList()
+                        .add(Projections.property("s.nome"), "solicitante")
                         .add(Projections.property("j.dataSolicitacao"), "data")
-                        .add(Projections.alias(Projections.property("j.hrIni"), "horaInicio"))
-                        .add(Projections.alias(Projections.property("j.hrFim"), "horaTermino"))
-                        .add(Projections.alias(Projections.property("j.motivo"), "tipoMotivo"))
-                        .add(Projections.alias(Projections.property("j.tipofalta"), "tipoFalta"))
-                        .add(Projections.alias(Projections.property("j.tipobancohoras"), "tipoBancoHoras"))
-                        .add(Projections.alias(Projections.property("j.tipofaltamarcacao"), "tipoFaltaMarcacao"))
-                        .add(Projections.alias(Projections.property("j.status"), "tipoStatus"))
+                        .add(Projections.property("j.hrIni"), "horaInicio")
+                        .add(Projections.property("j.hrFim"), "horaTermino")
+                        .add(Projections.property("j.motivo"), "tipoMotivo")
+                        .add(Projections.property("j.tipofalta"), "tipoFalta")
+                        .add(Projections.property("j.tipobancohoras"), "tipoBancoHoras")
+                        .add(Projections.property("j.tipofaltamarcacao"), "tipoFaltaMarcacao")
+                        .add(Projections.property("j.status"), "tipoStatus")
         );
         criteria.setResultTransformer(new AliasToBeanResultTransformer(Ocorrencia.class));
-        List<Ocorrencia> resultado = criteria.list();
+        final List<Ocorrencia> resultado = criteria.list();
         return resultado;
     }
 }

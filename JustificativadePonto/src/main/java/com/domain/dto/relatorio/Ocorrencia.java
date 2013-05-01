@@ -11,6 +11,7 @@ import java.util.Date;
  * Time: 11:40 PM
  */
 public class Ocorrencia {
+    private String solicitante;
     private Date data;
     private Date horaInicio;
     private Date horaTermino;
@@ -102,5 +103,13 @@ public class Ocorrencia {
         if(tipoFaltaMarcacao!=null){
             complemento = Message.getBundleMessage(tipoFaltaMarcacao.getDescricao());
         }
+    }
+
+    public String getSolicitante() {
+        return solicitante;
+    }
+
+    public void setSolicitante(String solicitante) {
+        this.solicitante = solicitante;
     }
 }

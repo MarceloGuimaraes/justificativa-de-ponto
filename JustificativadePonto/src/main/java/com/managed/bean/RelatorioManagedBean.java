@@ -3,25 +3,20 @@ package com.managed.bean;
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.filtro.FiltroJustificativa;
 import com.jsf.ds.impl.ComboStatusDatasourceImpl;
-import com.managed.bean.relatorio.JRCustomDatasource;
 import com.managed.bean.relatorio.OcorrenciasJRDatasource;
 import com.model.User;
 import com.service.IConsultaOcorrenciasService;
 import com.service.IUserService;
 import com.util.Message;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -31,6 +26,9 @@ import java.util.*;
  * MB para gerar relatorio
  */
 public class RelatorioManagedBean implements Serializable {
+
+    private static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
+    private static final String CONTENT_TYPE_PDF = "application/pdf";
 
     private IUserService userService;
     private IConsultaOcorrenciasService consultaOcorrenciasService;
@@ -59,24 +57,47 @@ public class RelatorioManagedBean implements Serializable {
     public String geraRelatorio(){
         final Map<String, Object> parametros = new LinkedHashMap<String, Object>();
         final User user = userService.recuperar(filtro.getIdFuncionario());
-        parametros.put("FUNCIONARIO", user==null?"":user.getNome());
+        parametros.put("FUNCIONARIO", filtro.isIdFuncionarioInformado()?user.getNome():null);
         parametros.put("INICIO", filtro.getInicio());
         parametros.put("TERMINO", filtro.getTermino());
-        parametros.put("STATUS", filtro.isStatusInformado()?Message.getBundleMessage(filtro.getStatus().getDescricao()):"");
+        parametros.put("STATUS", filtro.isStatusInformado()?Message.getBundleMessage(filtro.getStatus().getDescricao()):null);
         parametros.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
 
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
         final HttpServletResponse response = (HttpServletResponse) context.getResponse();
-        final InputStream in = RelatorioManagedBean.class.getResourceAsStream("/reports/com/relatorios/relatorio1.jasper");
+        final InputStream in = RelatorioManagedBean.class.getResourceAsStream("/reports/com/relatorios/relatorioGerencial.jasper");
         try {
-            filtro.isValid();
-            final OutputStream out = response.getOutputStream();
+            final File tempFile = File.createTempFile("~jp",".xls");
+//            final File tempFile = File.createTempFile("~jp",".pdf");
+            tempFile.deleteOnExit();
+            final OutputStream oo = new FileOutputStream(tempFile);
 
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=\"relatorio.pdf\"");
+            //JasperRunManager.runReportToPdfStream(in, oo, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(in, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
+            JRExporter exporter = new JRXlsExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, oo);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            exporter.exportReport();
+
+            oo.flush();
+            oo.close();
+
+            final OutputStream out = response.getOutputStream();
+            final InputStream ii = new FileInputStream(tempFile);
+
+            response.setContentType(CONTENT_TYPE_EXCEL);
+//            response.setContentType(CONTENT_TYPE_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename=\"relatorio.xls\"");
+//            response.setHeader("Content-Disposition", "attachment; filename=\"relatorio.pdf\"");
             response.setHeader("Cache-Control", "no-cache");
-            JasperRunManager.runReportToPdfStream(in, out, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
+
+            byte[] b = new byte[255];
+            int i;
+            while ((i=ii.read(b))>0){
+                out.write(b, 0, i);
+            }
 
             out.flush();
             out.close();

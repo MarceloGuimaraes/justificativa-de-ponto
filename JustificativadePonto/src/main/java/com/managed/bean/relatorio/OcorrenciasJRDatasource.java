@@ -34,6 +34,9 @@ public class OcorrenciasJRDatasource implements JRDataSource {
 
     @Override
     public Object getFieldValue(JRField jrField) throws JRException {
+        if(jrField.getName().equals("solicitante")){
+            return corrente.getSolicitante();
+        }
         if(jrField.getName().equals("data")){
             return corrente.getData();
         }
