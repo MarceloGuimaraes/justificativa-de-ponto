@@ -54,8 +54,13 @@
     <!-- Controller do relatorio -->
     <bean id="relatorioManagedBean" class="com.managed.bean.RelatorioManagedBean" scope="request">
         <constructor-arg ref="UserService"/>
+        <constructor-arg ref="PermissoesBean"/>
+        <constructor-arg ref="filtroRelatorio"/>
         <constructor-arg ref="consultaOcorrenciasService"/>
     </bean>
+
+    <!-- filtros de pesquisa -->
+    <bean id="filtroRelatorio" class="com.domain.dto.filtro.FiltroJustificativa" scope="request"/>
 
     <!-- Criando o scopo de View -->
     <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">

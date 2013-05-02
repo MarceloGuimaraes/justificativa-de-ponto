@@ -18,15 +18,15 @@ public class OcorrenciasJRDatasource implements JRDataSource {
     private Iterator<Ocorrencia> ocorrencias;
     private Ocorrencia corrente;
 
-    private OcorrenciasJRDatasource(final IConsultaOcorrenciasService consultaOcorrenciasService,
-                                    final FiltroJustificativa filtro) {
+    public OcorrenciasJRDatasource(final IConsultaOcorrenciasService consultaOcorrenciasService,
+                                   final FiltroJustificativa filtro) {
         ocorrencias = consultaOcorrenciasService.pesquisar(filtro).iterator();
     }
 
     @Override
     public boolean next() throws JRException {
-        if(ocorrencias.hasNext()){
-            corrente=ocorrencias.next();
+        if (ocorrencias.hasNext()) {
+            corrente = ocorrencias.next();
             return true;
         }
         return false;
@@ -34,35 +34,30 @@ public class OcorrenciasJRDatasource implements JRDataSource {
 
     @Override
     public Object getFieldValue(JRField jrField) throws JRException {
-        if(jrField.getName().equals("solicitante")){
+        if (jrField.getName().equals("solicitante")) {
             return corrente.getSolicitante();
         }
-        if(jrField.getName().equals("data")){
+        if (jrField.getName().equals("data")) {
             return corrente.getData();
         }
-        if(jrField.getName().equals("horaInicio")){
+        if (jrField.getName().equals("horaInicio")) {
             return corrente.getHoraInicio();
         }
-        if(jrField.getName().equals("horaTermino")){
+        if (jrField.getName().equals("horaTermino")) {
             return corrente.getHoraTermino();
         }
-        if(jrField.getName().equals("motivo")){
+        if (jrField.getName().equals("motivo")) {
             return corrente.getMotivo();
         }
-        if(jrField.getName().equals("complemento")){
+        if (jrField.getName().equals("complemento")) {
             return corrente.getComplemento();
         }
-        if(jrField.getName().equals("status")){
+        if (jrField.getName().equals("status")) {
             return corrente.getStatus();
         }
-        if(jrField.getName().equals("periodo")){
+        if (jrField.getName().equals("periodo")) {
             return corrente.getPeriodo();
         }
-        throw new JRException("campo nao existe: "+jrField.getName());
-    }
-
-    public static JRDataSource getInstance(final IConsultaOcorrenciasService consultaOcorrenciasService,
-                                           final FiltroJustificativa filtro) {
-        return new OcorrenciasJRDatasource(consultaOcorrenciasService, filtro);
+        throw new JRException("campo nao existe: " + jrField.getName());
     }
 }

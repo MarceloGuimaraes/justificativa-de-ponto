@@ -16,7 +16,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:selectOneMenu id="comboFuncionario"
-								value="#{relatorioManagedBean.filtro.idFuncionario}">
+								value="#{filtroRelatorio.idFuncionario}">
                                 <f:selectItem itemLabel="selecione"/>
 								<f:selectItems value="#{relatorioManagedBean.escolhasFuncionarios}" />
 							</p:selectOneMenu>
@@ -30,7 +30,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:calendar styleClass="calendar"
-								value="#{relatorioManagedBean.filtro.inicio}"
+								value="#{filtroRelatorio.inicio}"
 								id="dtInicial" showOn="button"
 								pattern="#{msgs['sistema.formato.data']}" timeOnly="false"/>
 						</p:column>
@@ -42,7 +42,7 @@
 						</p:column>
 						<p:column colspan="3">
 							<p:calendar styleClass="calendar"
-								value="#{relatorioManagedBean.filtro.termino}"
+								value="#{filtroRelatorio.termino}"
 								id="dtFinal" showOn="button"
 								pattern="#{msgs['sistema.formato.data']}" timeOnly="false"/>
 						</p:column>
@@ -52,8 +52,7 @@
 							<h:outputLabel value="#{msgs['form.relatorio.label.selecaoStatus']}#{msgs['form.label.doispontos']} " />
 						</p:column>
 						<p:column colspan="3">
-							<p:selectOneMenu id="selecaoStatus"
-								value="#{relatorioManagedBean.filtro.status}">
+							<p:selectOneMenu id="selecaoStatus" value="#{filtroRelatorio.status}">
                                 <f:selectItem itemLabel="selecione"/>
 								<f:selectItems value="#{relatorioManagedBean.escolhasStatus}" />
 							</p:selectOneMenu>

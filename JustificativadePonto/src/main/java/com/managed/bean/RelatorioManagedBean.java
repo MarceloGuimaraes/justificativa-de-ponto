@@ -7,6 +7,8 @@ import com.managed.bean.relatorio.OcorrenciasJRDatasource;
 import com.model.User;
 import com.service.IConsultaOcorrenciasService;
 import com.service.IUserService;
+import com.service.UserService;
+import com.service.impl.ConsultaOcorrenciasService;
 import com.util.Message;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
@@ -32,18 +34,26 @@ public class RelatorioManagedBean implements Serializable {
 
     private static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     private static final String CONTENT_TYPE_PDF = "application/pdf";
+    private static final String JASPER_BASE_DIR = "/reports/com/relatorios/";
+    private static final String JASPER_REPORT_GERENCIAL = "relatorioGerencial.jasper";
+    private static final String JASPER_REPORT_DEFAULT = "relatorio1.jasper";
 
-    private IUserService userService;
-    private IConsultaOcorrenciasService consultaOcorrenciasService;
-    private FiltroJustificativa filtro;
+    private final IUserService userService;
+    private final IPermissoesBean permissoesBean;
+    private final FiltroJustificativa filtro;
+    private final IConsultaOcorrenciasService consultaOcorrenciasService;
     private List<SelectItem> escolhasStatus;
     private List<SelectItem> escolhasFuncionarios;
+    private String relatorio;
 
     public RelatorioManagedBean(final IUserService userService,
+                                final IPermissoesBean permissoesBean,
+                                final FiltroJustificativa filtro,
                                 final IConsultaOcorrenciasService consultaOcorrenciasService) {
         this.userService = userService;
+        this.permissoesBean = permissoesBean;
+        this.filtro = filtro;
         this.consultaOcorrenciasService = consultaOcorrenciasService;
-        filtro = new FiltroJustificativa();
         escolhasStatus = new ComboStatusDatasourceImpl().findObjects();
         escolhasFuncionarios = retornaTodosFuncionarios();
     }
@@ -59,12 +69,18 @@ public class RelatorioManagedBean implements Serializable {
 
     public String geraRelatorio(){
         final Map<String, Object> parametros = new LinkedHashMap<String, Object>();
-        final User user = userService.recuperar(filtro.getIdFuncionario());
-        parametros.put("FUNCIONARIO", filtro.isIdFuncionarioInformado()?user.getNome():null);
+        if(permissoesBean.isRh()){
+            relatorio = JASPER_REPORT_GERENCIAL;
+            final User user = userService.recuperar(filtro.getIdFuncionario());
+            parametros.put("FUNCIONARIO", filtro.isIdFuncionarioInformado()?user.getNome():null);
+        } else {
+            relatorio = JASPER_REPORT_DEFAULT;
+            parametros.put("FUNCIONARIO", permissoesBean.getUsuarioLogado().getNome());
+        }
         parametros.put("INICIO", filtro.getInicio());
         parametros.put("TERMINO", filtro.getTermino());
         final StringBuilder periodoTxt = new StringBuilder();
-        final DateFormat fmt = new SimpleDateFormat("HH:mm");
+        final DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         if(filtro.isInicioInformado()){
             periodoTxt.append(fmt.format(filtro.getInicio()));
         }
@@ -79,16 +95,16 @@ public class RelatorioManagedBean implements Serializable {
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
         final HttpServletResponse response = (HttpServletResponse) context.getResponse();
-        final InputStream in = RelatorioManagedBean.class.getResourceAsStream("/reports/com/relatorios/relatorioGerencial.jasper");
+        final InputStream in = RelatorioManagedBean.class.getResourceAsStream(JASPER_BASE_DIR+relatorio);
         try {
             final File tempFile = File.createTempFile("~jp",".xls");
 //            final File tempFile = File.createTempFile("~jp",".pdf");
             tempFile.deleteOnExit();
             final OutputStream oo = new FileOutputStream(tempFile);
 
-            //JasperRunManager.runReportToPdfStream(in, oo, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
+            //JasperRunManager.runReportToPdfStream(in, oo, parametros, new OcorrenciasJRDatasource(consultaOcorrenciasService, filtro));
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(in, parametros, OcorrenciasJRDatasource.getInstance(consultaOcorrenciasService, filtro));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(in, parametros, new OcorrenciasJRDatasource(consultaOcorrenciasService, filtro));
             JRExporter exporter = new JRXlsExporter();
             exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, oo);
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -96,8 +112,9 @@ public class RelatorioManagedBean implements Serializable {
             exporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, false);
             exporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
             exporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
-            exporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, true);
+            exporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, false);
             exporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, true);
+            exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, true);
             exporter.exportReport();
 
             oo.flush();
@@ -131,14 +148,6 @@ public class RelatorioManagedBean implements Serializable {
         }
 
         return null;
-    }
-
-    public FiltroJustificativa getFiltro() {
-        return filtro;
-    }
-
-    public void setFiltro(FiltroJustificativa filtro) {
-        this.filtro = filtro;
     }
 
     public List<SelectItem> getEscolhasStatus() {
