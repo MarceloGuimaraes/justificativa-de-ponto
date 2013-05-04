@@ -8,7 +8,7 @@
 		<h:outputText value="#{msgs['justificativa.label.titulo']}" />
 	</ui:define>
 	<ui:define name="corpo">
-		<h:form id="cadUsuario">
+		<h:form id="cadUsuario" enctype="application/x-www-form-urlencoded" acceptcharset="UTF-8">
 			<p:panel id="panel" header="#{userMB.labelCadastro}">
 				<h:inputHidden value="#{userMB.usuario.id}" />
                 <p:messages />
