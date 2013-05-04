@@ -5,7 +5,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: rxonda
  * Date: 1/11/13
  * Time: 7:50 PM

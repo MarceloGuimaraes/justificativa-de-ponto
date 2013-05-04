@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: rxonda
  * Date: 1/7/13
  * Time: 1:02 AM

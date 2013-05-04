@@ -8,7 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: rxonda
  * Date: 1/14/13
  * Time: 10:33 PM
