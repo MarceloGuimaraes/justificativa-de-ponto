@@ -76,6 +76,7 @@ public class RelatorioManagedBean implements Serializable {
         } else {
             relatorio = JASPER_REPORT_DEFAULT;
             parametros.put("FUNCIONARIO", permissoesBean.getUsuarioLogado().getNome());
+            filtro.setIdFuncionario(permissoesBean.getUsuarioLogado().getId());
         }
         parametros.put("INICIO", filtro.getInicio());
         parametros.put("TERMINO", filtro.getTermino());
