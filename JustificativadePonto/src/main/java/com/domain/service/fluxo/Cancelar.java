@@ -32,11 +32,13 @@ public class Cancelar extends ProximoPasso {
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
 
         if (StatusEnum.APROVCOORD.equals(justificativaPersistida.getStatus()) &&
-                historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel().equals(userCorrente)) {
+                (historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR) &&
+                historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel().equals(userCorrente))) {
             // AUTOR COORDENADOR
 
         } else if (StatusEnum.APROVSUPERINTENDENTE.equals(justificativaPersistida.getStatus()) &&
-                (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(userCorrente)
+                ((historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE) &&
+                        historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(userCorrente))
                         || permissoes.isAdmin())) {
             // AUTOR SUPERINTENDENTE
             if(historicos.containsKey(TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR)){
@@ -45,13 +47,19 @@ public class Cancelar extends ProximoPasso {
             }
 
         } else if (StatusEnum.EXECUCAORH.equals(justificativaPersistida.getStatus()) &&
-                (historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(userCorrente)
+                ((historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH) &&
+                        historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(userCorrente))
                         || permissoes.isAdmin())) {
             // AUTOR RH
-            User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
-            User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
-            destinos.add(coordenador);
-            destinos.add(superintendente);
+            if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
+                User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+                destinos.add(coordenador);
+            }
+
+            if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE)){
+                User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
+                destinos.add(superintendente);
+            }
 
         } else if (permissoes.isAdmin()) {
             //Administrador
