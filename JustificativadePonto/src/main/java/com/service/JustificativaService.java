@@ -1,11 +1,5 @@
 package com.service;
 
-import java.io.Serializable;
-
-import org.dozer.Mapper;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.dao.IJustificativaDAO;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
@@ -13,6 +7,11 @@ import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
+import org.dozer.Mapper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
 
 @Transactional(readOnly = true)
 public class JustificativaService implements IJustificativaService {

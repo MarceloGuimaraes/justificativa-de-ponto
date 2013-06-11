@@ -1,17 +1,16 @@
 package com.dao.impl;
 
-import java.util.List;
-
+import com.dao.Dao;
+import com.domain.dto.filtro.FiltroJustificativa;
+import com.domain.dto.relatorio.Ocorrencia;
+import com.model.JustificativaPonto;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
-import com.dao.Dao;
-import com.domain.dto.filtro.FiltroJustificativa;
-import com.domain.dto.relatorio.Ocorrencia;
-import com.model.JustificativaPonto;
+import java.util.List;
 
 /**
  * User: xonda
@@ -50,7 +49,7 @@ public class ConsultaOcorrenciasDao extends Dao {
                         .add(Projections.property("j.tipobancohoras"), "tipoBancoHoras")
                         .add(Projections.property("j.tipofaltamarcacao"), "tipoFaltaMarcacao")
                         .add(Projections.property("j.status"), "tipoStatus")
-                         .add(Projections.property("j.tipoDecisao"), "decisaoEnum")
+                        .add(Projections.property("j.tipoDecisao"), "tipoDecisaoEnum")
         );
         criteria.setResultTransformer(new AliasToBeanResultTransformer(Ocorrencia.class));
         final List<Ocorrencia> resultado = criteria.list();
