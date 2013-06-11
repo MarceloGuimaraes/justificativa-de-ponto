@@ -1,31 +1,18 @@
 package com.service;
 
+import java.io.Serializable;
+
+import org.dozer.Mapper;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.dao.IJustificativaDAO;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.UsuarioLogado;
-import com.managed.bean.relatorio.JRCustomDatasource;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
-import com.spring.util.ApplicationContextProvider;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
-import org.dozer.Mapper;
-import org.hibernate.SessionFactory;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Transactional(readOnly = true)
 public class JustificativaService implements IJustificativaService {

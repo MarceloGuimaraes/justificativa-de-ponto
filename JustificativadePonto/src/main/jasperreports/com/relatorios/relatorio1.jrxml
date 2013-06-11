@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="153"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<parameter name="FUNCIONARIO" class="java.lang.String"/>
@@ -105,6 +105,13 @@
 				</textElement>
 				<text><![CDATA[Situacao]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="1fe03d84-bed0-41aa-b41d-a97c78439011" x="752" y="0" width="149" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Decisão]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -133,6 +140,11 @@
 				<reportElement uuid="f94b66be-5c10-4cec-97b1-7dbb7fee22ea" x="524" y="0" width="228" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2d3cb565-d0a2-4aec-b29b-15467ca0d7df" x="752" y="0" width="147" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tipoDecisao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -1,11 +1,16 @@
 package com.domain.dto.relatorio;
 
-import com.model.*;
-import com.util.Message;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.model.MotivoEnum;
+import com.model.StatusEnum;
+import com.model.TipoBancoHorasEnum;
+import com.model.TipoDecisaoEnum;
+import com.model.TipoFaltaEnum;
+import com.model.TipoFaltaMarcacaoEnum;
+import com.util.Message;
 
 /**
  * User: xonda
@@ -20,6 +25,8 @@ public class Ocorrencia {
     private String motivo;
     private String complemento;
     private String status;
+    private String tipoDecisao;
+    
 
     public Ocorrencia() {
     }
@@ -57,7 +64,7 @@ public class Ocorrencia {
         return status;
     }
 
-    public void setData(Date data) {
+   	public void setData(Date data) {
         this.data = data;
     }
 
@@ -77,7 +84,15 @@ public class Ocorrencia {
         this.status = status;
     }
 
-    public String getPeriodo(){
+    public String getTipoDecisao() {
+		return tipoDecisao;
+	}
+
+	public void setTipoDecisao(String tipoDecisao) {
+		this.tipoDecisao = tipoDecisao;
+	}
+
+	public String getPeriodo(){
         DateFormat fmt = new SimpleDateFormat("HH:mm");
         final StringBuilder periodo = new StringBuilder();
         if(horaInicio!=null){
@@ -118,6 +133,12 @@ public class Ocorrencia {
         if(tipoFaltaMarcacao!=null){
             complemento = Message.getBundleMessage(tipoFaltaMarcacao.getDescricao());
         }
+    }
+    
+    public void setDecisaoEnum(TipoDecisaoEnum tipoDecisao){
+    	if(tipoDecisao!=null){
+    		this.tipoDecisao = Message.getBundleMessage(tipoDecisao.getDescricao());
+    	}
     }
 
     public String getSolicitante() {

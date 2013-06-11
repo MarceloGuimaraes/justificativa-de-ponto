@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="120"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<style name="table">
@@ -133,6 +133,13 @@
 				</textElement>
 				<text><![CDATA[Situacao]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="57054dad-7e75-466b-ab65-1b9a95e93f99" x="750" y="0" width="149" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Decisão]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -166,6 +173,16 @@
 				<reportElement uuid="04b890ff-d4de-40e9-94bf-06d892076bc4" x="0" y="0" width="121" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{solicitante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5be97489-5798-45ef-a417-ce7fb055685d" x="752" y="0" width="147" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tipodecisao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5be97489-5798-45ef-a417-ce7fb055685d" x="752" y="0" width="147" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tipoDecisao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

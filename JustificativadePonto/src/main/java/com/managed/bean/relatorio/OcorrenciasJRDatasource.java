@@ -1,13 +1,14 @@
 package com.managed.bean.relatorio;
 
-import com.domain.dto.filtro.FiltroJustificativa;
-import com.domain.dto.relatorio.Ocorrencia;
-import com.service.IConsultaOcorrenciasService;
+import java.util.Iterator;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
-import java.util.Iterator;
+import com.domain.dto.filtro.FiltroJustificativa;
+import com.domain.dto.relatorio.Ocorrencia;
+import com.service.IConsultaOcorrenciasService;
 
 /**
  * User: xonda
@@ -58,6 +59,9 @@ public class OcorrenciasJRDatasource implements JRDataSource {
         if (jrField.getName().equals("periodo")) {
             return corrente.getPeriodo();
         }
+        if (jrField.getName().equals("tipoDecisao")) {
+            return corrente.getTipoDecisao();
+        }        
         throw new JRException("campo nao existe: " + jrField.getName());
     }
 }
