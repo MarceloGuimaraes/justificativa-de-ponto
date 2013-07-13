@@ -28,6 +28,10 @@ public class JustificativaPonto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataSolicitacao;
 
+    @Column(name = "dtSolicitacaoFim")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataSolicitacaoFim;
+
 	@Column(name = "hrIni")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date hrIni;
@@ -255,6 +259,14 @@ public class JustificativaPonto implements Serializable {
 
     public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public Date getDataSolicitacaoFim() {
+        return dataSolicitacaoFim;
+    }
+
+    public void setDataSolicitacaoFim(Date dataSolicitacaoFim) {
+        this.dataSolicitacaoFim = dataSolicitacaoFim;
     }
 
     @Override

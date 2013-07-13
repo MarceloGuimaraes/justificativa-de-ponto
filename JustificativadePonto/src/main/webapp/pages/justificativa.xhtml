@@ -42,25 +42,6 @@
                 <p:separator styleClass="tabela" />
 
                 <h:form id="justificativaForm">
-
-                    <p:panelGrid id="secaoDataSolicitacao" styleClass="tabela">
-                        <p:row>
-                            <p:column style="text-align: left; width: 135px;">
-                                <h:outputLabel value="#{msgs['form.justificativa.label.dataSolicitacao']}#{msgs['form.label.doispontos']}" />
-                            </p:column>
-                            <p:column colspan="3">
-                                <p:calendar styleClass="calendar"
-                                            value="#{justificativaBean.justificativa.dataSolicitacao}" id="calDataSolicitacao"
-                                            showOn="button" pattern="#{msgs['sistema.formato.data']}" timeOnly="false" required="true"
-                                            requiredMessage="#{msgs['form.justificativa.dtsolicitacao.required']}"
-                                            rendered="#{justificativaBean.view.permiteEditar}" />
-                                <p:message id="msgCalDataSolicitacao" for="calDataSolicitacao"/>
-                                <h:outputText id="txtDataSolicitacao" value="#{justificativaBean.justificativa.dataSolicitacao}" rendered="#{not justificativaBean.view.permiteEditar}">
-                                    <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
-                                </h:outputText>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
                     <p:panelGrid id="pgrdDetalhamento" styleClass="tabela">
                         <p:row>
                             <p:column style="text-align:left; width:135px;">
@@ -79,6 +60,37 @@
                                 </p:selectOneMenu>
                                 <p:message id="motivoMsg" for="motivo" />
                                 <h:outputText id="txtMotivo" value="#{justificativaBean.justificativa.motivo}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align: left; width: 135px;">
+                                <h:outputLabel value="#{msgs['form.justificativa.label.dataSolicitacao']}#{msgs['form.label.doispontos']}" />
+                            </p:column>
+                            <p:column style="width: 220px;">
+                                <p:calendar styleClass="calendar"
+                                            value="#{justificativaBean.justificativa.dataSolicitacao}" id="calDataSolicitacao"
+                                            showOn="button" pattern="#{msgs['sistema.formato.data']}" timeOnly="false" required="true"
+                                            requiredMessage="#{msgs['form.justificativa.dtsolicitacao.required']}"
+                                            rendered="#{motivoManagedBean.configuracao['DATA_INI'] and justificativaBean.view.permiteEditar}" />
+                                <p:message id="msgCalDataSolicitacao" for="calDataSolicitacao"/>
+                                <h:outputText id="txtDataSolicitacao" value="#{justificativaBean.justificativa.dataSolicitacao}" rendered="#{motivoManagedBean.configuracao['DATA_INI'] and not justificativaBean.view.permiteEditar}">
+                                    <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="text-align:center;width:25px;padding:0;">
+                                <h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
+                                               rendered="#{motivoManagedBean.configuracao['DATA_FIM']}" />
+                            </p:column>
+                            <p:column>
+                                <p:calendar styleClass="calendar"
+                                            value="#{justificativaBean.justificativa.dataSolicitacaoFim}" id="calDataSolicitacaoFim"
+                                            showOn="button" pattern="#{msgs['sistema.formato.data']}" timeOnly="false" required="true"
+                                            requiredMessage="#{msgs['form.justificativa.dtsolicitacaofim.required']}"
+                                            rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and justificativaBean.view.permiteEditar}" />
+                                <p:message id="msgCalDataSolicitacaoFim" for="calDataSolicitacaoFim"/>
+                                <h:outputText id="txtDataSolicitacaoFim" value="#{justificativaBean.justificativa.dataSolicitacaoFim}" rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and not justificativaBean.view.permiteEditar}">
+                                    <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
+                                </h:outputText>
                             </p:column>
                         </p:row>
                         <p:row>

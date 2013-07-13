@@ -13,6 +13,7 @@ public class JustificativaPontoDTO implements Serializable {
     private Integer id;
     private Date data;
     private Date dataSolicitacao;
+    private Date dataSolicitacaoFim;
     private UsuarioLogado solicitante;
 
     private Date hrIni;
@@ -214,5 +215,13 @@ public class JustificativaPontoDTO implements Serializable {
 
     public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public Date getDataSolicitacaoFim() {
+        return dataSolicitacaoFim;
+    }
+
+    public void setDataSolicitacaoFim(Date dataSolicitacaoFim) {
+        this.dataSolicitacaoFim = dataSolicitacaoFim;
     }
 }
