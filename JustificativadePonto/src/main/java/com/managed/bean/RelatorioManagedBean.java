@@ -78,8 +78,6 @@ public class RelatorioManagedBean implements Serializable {
             parametros.put("FUNCIONARIO", permissoesBean.getUsuarioLogado().getNome());
             filtro.setIdFuncionario(permissoesBean.getUsuarioLogado().getId());
         }
-        parametros.put("INICIO", filtro.getInicio());
-        parametros.put("TERMINO", filtro.getTermino());
         final StringBuilder periodoTxt = new StringBuilder();
         final DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
         if(filtro.isInicioInformado()){

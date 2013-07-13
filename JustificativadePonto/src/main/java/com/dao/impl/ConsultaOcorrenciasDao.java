@@ -42,6 +42,7 @@ public class ConsultaOcorrenciasDao extends Dao {
                 Projections.projectionList()
                         .add(Projections.property("s.nome"), "solicitante")
                         .add(Projections.property("j.dataSolicitacao"), "data")
+                        .add(Projections.property("j.dataSolicitacaoFim"), "dataFim")
                         .add(Projections.property("j.hrIni"), "horaInicio")
                         .add(Projections.property("j.hrFim"), "horaTermino")
                         .add(Projections.property("j.motivo"), "tipoMotivo")

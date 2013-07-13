@@ -15,6 +15,7 @@ import java.util.Date;
 public class Ocorrencia {
     private String solicitante;
     private Date data;
+    private Date dataFim;
     private Date horaInicio;
     private Date horaTermino;
     private String motivo;
@@ -76,6 +77,19 @@ public class Ocorrencia {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPeriodoDatas(){
+        DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+        final StringBuilder periodo = new StringBuilder();
+        if(data!=null){
+            periodo.append(fmt.format(data));
+        }
+        if(dataFim!=null){
+            periodo.append(" - ");
+            periodo.append(fmt.format(dataFim));
+        }
+        return periodo.toString();
     }
 
     public String getPeriodo(){
@@ -141,5 +155,13 @@ public class Ocorrencia {
 
     public void setTipoDecisao(String tipoDecisao) {
         this.tipoDecisao = tipoDecisao;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
     }
 }

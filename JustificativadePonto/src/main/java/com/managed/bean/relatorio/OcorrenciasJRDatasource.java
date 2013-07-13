@@ -37,8 +37,8 @@ public class OcorrenciasJRDatasource implements JRDataSource {
         if (jrField.getName().equals("solicitante")) {
             return corrente.getSolicitante();
         }
-        if (jrField.getName().equals("data")) {
-            return corrente.getData();
+        if (jrField.getName().equals("periodoDatas")) {
+            return corrente.getPeriodoDatas();
         }
         if (jrField.getName().equals("horaInicio")) {
             return corrente.getHoraInicio();

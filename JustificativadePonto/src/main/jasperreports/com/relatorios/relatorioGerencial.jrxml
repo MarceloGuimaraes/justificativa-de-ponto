@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="1000" pageHeight="612" orientation="Landscape" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="mensagens" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTeste_1" pageWidth="1400" pageHeight="612" orientation="Landscape" columnWidth="1360" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="mensagens" whenResourceMissingType="Key" isIgnorePagination="true" uuid="92a4d5fe-3abc-4b70-b680-f8d1508e4635">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="132"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<style name="table">
@@ -29,7 +29,6 @@
 	<parameter name="TERMINO" class="java.util.Date"/>
 	<parameter name="STATUS" class="java.lang.String"/>
 	<parameter name="PERIODO" class="java.lang.String"/>
-	<field name="data" class="java.util.Date"/>
 	<field name="horaInicio" class="java.util.Date"/>
 	<field name="horaTermino" class="java.util.Date"/>
 	<field name="motivo" class="java.lang.String"/>
@@ -38,16 +37,11 @@
 	<field name="solicitante" class="java.lang.String"/>
 	<field name="periodo" class="java.lang.String"/>
 	<field name="tipoDecisao" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="42" splitType="Stretch"/>
-	</title>
+	<field name="periodoDatas" class="java.lang.String"/>
 	<pageHeader>
-		<band height="60" splitType="Stretch">
+		<band height="84" splitType="Stretch">
 			<textField>
-				<reportElement uuid="09f6837f-6607-4598-9bd0-79cfeba5746d" x="0" y="0" width="121" height="20">
+				<reportElement uuid="09f6837f-6607-4598-9bd0-79cfeba5746d" x="0" y="24" width="243" height="20">
 					<printWhenExpression><![CDATA[$P{FUNCIONARIO}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
@@ -56,8 +50,8 @@
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.filtro.label.funcionario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="60865fd7-1e70-4cb5-bc14-37857804ea21" x="0" y="20" width="121" height="20">
-					<printWhenExpression><![CDATA[$P{INICIO}!=null || $P{TERMINO}!=null]]></printWhenExpression>
+				<reportElement uuid="60865fd7-1e70-4cb5-bc14-37857804ea21" x="0" y="44" width="243" height="20">
+					<printWhenExpression><![CDATA[!$P{PERIODO}.equals("")]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
 					<font isBold="true"/>
@@ -65,7 +59,7 @@
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.filtro.label.periodo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="610332f6-a0d6-4551-8e29-b4eb0deace34" x="0" y="40" width="121" height="20">
+				<reportElement uuid="610332f6-a0d6-4551-8e29-b4eb0deace34" x="0" y="64" width="243" height="20">
 					<printWhenExpression><![CDATA[$P{STATUS}!=null]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
@@ -74,68 +68,81 @@
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.filtro.label.status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ca417157-cc0d-4475-8380-ad60b9cd5bdc" x="121" y="0" width="111" height="20"/>
+				<reportElement uuid="ca417157-cc0d-4475-8380-ad60b9cd5bdc" x="243" y="24" width="402" height="20">
+					<printWhenExpression><![CDATA[$P{FUNCIONARIO}!=null]]></printWhenExpression>
+				</reportElement>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{FUNCIONARIO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="aa6a5b3b-c2c5-48a0-909e-78b33d1209e4" x="121" y="40" width="111" height="20"/>
+				<reportElement uuid="aa6a5b3b-c2c5-48a0-909e-78b33d1209e4" x="243" y="64" width="402" height="20">
+					<printWhenExpression><![CDATA[$P{STATUS}!=null]]></printWhenExpression>
+				</reportElement>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{STATUS}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="d6a0decb-3650-45dc-89c8-4a257b1996fb" x="121" y="20" width="111" height="20"/>
+				<reportElement uuid="d6a0decb-3650-45dc-89c8-4a257b1996fb" x="243" y="44" width="402" height="20">
+					<printWhenExpression><![CDATA[!$P{PERIODO}.equals("")]]></printWhenExpression>
+				</reportElement>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{PERIODO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="95595e90-3476-4f11-b6d1-0282020be647" x="0" y="4" width="645" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{relatorio.justificativa.rh.titulo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement uuid="7055af1f-7842-489e-ae98-4c6f12f081c4" x="121" y="0" width="111" height="20"/>
+				<reportElement uuid="7055af1f-7842-489e-ae98-4c6f12f081c4" x="243" y="0" width="138" height="20"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.dataocorrencia}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8adb5ebf-9bc7-40e8-9827-52af3bcc933f" x="232" y="0" width="79" height="20"/>
+				<reportElement uuid="8adb5ebf-9bc7-40e8-9827-52af3bcc933f" x="381" y="0" width="103" height="20"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.horario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="3a45b0df-bdbf-4c36-9e83-6947641570ce" x="311" y="0" width="117" height="20"/>
+				<reportElement uuid="3a45b0df-bdbf-4c36-9e83-6947641570ce" x="484" y="0" width="161" height="20"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.motivo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="bdfba3c1-1107-4fef-8f51-05127f81ae6a" x="428" y="0" width="106" height="20"/>
+				<reportElement uuid="bdfba3c1-1107-4fef-8f51-05127f81ae6a" x="645" y="0" width="125" height="20"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.complemento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="56cd888d-21f7-4a72-95d5-5406da397ab2" x="0" y="0" width="121" height="20"/>
+				<reportElement uuid="56cd888d-21f7-4a72-95d5-5406da397ab2" x="0" y="0" width="243" height="20"/>
 				<textElement markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.solicitante}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="99992436-e96e-41f6-a3bf-92538f773be0" x="534" y="0" width="218" height="20"/>
+				<reportElement uuid="99992436-e96e-41f6-a3bf-92538f773be0" x="770" y="0" width="330" height="20"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.gerencial.tabela.header.label.situacao}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="7a2aa038-fd92-479f-9327-227cf47e8698" x="752" y="0" width="208" height="20"/>
+				<reportElement uuid="7a2aa038-fd92-479f-9327-227cf47e8698" x="1100" y="0" width="260" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -145,50 +152,41 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
-				<reportElement uuid="921e5b1f-0757-4141-8cd2-1768dfcbb59e" x="121" y="0" width="111" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="921e5b1f-0757-4141-8cd2-1768dfcbb59e" x="243" y="0" width="138" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{periodoDatas}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="HH:mm" isBlankWhenNull="true">
-				<reportElement uuid="edaf21c1-771c-4826-841c-60cbb855240b" x="232" y="0" width="79" height="20"/>
+				<reportElement uuid="edaf21c1-771c-4826-841c-60cbb855240b" x="381" y="0" width="103" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="c6def174-ed23-4999-8313-17cbe12f397a" x="311" y="0" width="117" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c6def174-ed23-4999-8313-17cbe12f397a" x="484" y="0" width="161" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{motivo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="3cdd05bc-5f7f-4d7a-8c57-08ee0f6cfaaa" x="428" y="0" width="106" height="20"/>
+				<reportElement uuid="3cdd05bc-5f7f-4d7a-8c57-08ee0f6cfaaa" x="645" y="0" width="125" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{complemento}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="f94b66be-5c10-4cec-97b1-7dbb7fee22ea" x="534" y="0" width="218" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f94b66be-5c10-4cec-97b1-7dbb7fee22ea" x="770" y="0" width="330" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement uuid="04b890ff-d4de-40e9-94bf-06d892076bc4" x="0" y="0" width="121" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="04b890ff-d4de-40e9-94bf-06d892076bc4" x="0" y="0" width="243" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{solicitante}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b4f203bd-a398-46eb-b065-9c874590aa23" x="752" y="0" width="208" height="20"/>
+				<reportElement uuid="b4f203bd-a398-46eb-b065-9c874590aa23" x="1100" y="0" width="260" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{tipoDecisao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
