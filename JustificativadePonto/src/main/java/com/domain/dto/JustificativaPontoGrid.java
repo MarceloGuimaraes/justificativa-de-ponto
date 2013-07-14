@@ -9,6 +9,8 @@ public class JustificativaPontoGrid implements Serializable {
     private Integer id;
     private Date data;
     private Date dataSolicitacao;
+    private Date dataSolicitacaoFim;
+    private boolean periodo;
     private CadastroUsuario solicitante;
     private CadastroUsuario coordenador;
     private MotivoEnum motivo;
@@ -22,6 +24,8 @@ public class JustificativaPontoGrid implements Serializable {
         id = justificativa.getId();
         data = justificativa.getData();
         dataSolicitacao = justificativa.getDataSolicitacao();
+        dataSolicitacaoFim = justificativa.getDataSolicitacaoFim();
+        periodo = justificativa.getDataSolicitacaoFim()!=null;
         solicitante = new CadastroUsuario();
         solicitante.setNome(justificativa.getSolicitante().getNome());
         solicitante.setCpf(justificativa.getSolicitante().getCpf());
@@ -87,5 +91,21 @@ public class JustificativaPontoGrid implements Serializable {
 
     public void setDataSolicitacao(Date dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
+    }
+
+    public Date getDataSolicitacaoFim() {
+        return dataSolicitacaoFim;
+    }
+
+    public void setDataSolicitacaoFim(Date dataSolicitacaoFim) {
+        this.dataSolicitacaoFim = dataSolicitacaoFim;
+    }
+
+    public boolean isPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(boolean periodo) {
+        this.periodo = periodo;
     }
 }
