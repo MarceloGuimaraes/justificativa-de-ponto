@@ -30,7 +30,19 @@ public class ConsultaOcorrenciasDao extends Dao {
             criteria.add(Restrictions.eq("s.id", filtro.getIdFuncionario()));
         }
         if(filtro.isInicioInformado()){
-            criteria.add(Restrictions.ge("j.dataSolicitacao", filtro.getInicio()));
+            criteria.add(
+                    Restrictions.disjunction()
+                    .add(
+                            Restrictions.conjunction()
+                            .add(Restrictions.isNull("j.dataSolicitacaoFim"))
+                            .add(Restrictions.ge("j.dataSolicitacao", filtro.getInicio()))
+                    )
+                    .add(
+                            Restrictions.conjunction()
+                            .add(Restrictions.isNotNull("j.dataSolicitacaoFim"))
+                            .add(Restrictions.ge("j.dataSolicitacaoFim", filtro.getInicio()))
+                    )
+            );
         }
         if(filtro.isTerminoInformado()){
             criteria.add(Restrictions.le("j.dataSolicitacao", filtro.getTermino()));
