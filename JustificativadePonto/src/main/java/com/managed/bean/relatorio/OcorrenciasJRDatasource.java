@@ -2,7 +2,7 @@ package com.managed.bean.relatorio;
 
 import com.domain.dto.filtro.FiltroJustificativa;
 import com.domain.dto.relatorio.Ocorrencia;
-import com.service.IConsultaOcorrenciasService;
+import com.service.IConsultaFiltradaPaginadaService;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -15,21 +15,34 @@ import java.util.Iterator;
  * Time: 11:14 PM
  */
 public class OcorrenciasJRDatasource implements JRDataSource {
-    private Iterator<Ocorrencia> ocorrencias;
+    private static final int PAGE_SIZE = 50;
     private Ocorrencia corrente;
+    private IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService;
+    private FiltroJustificativa filtro;
+    private Iterator<Ocorrencia> ocorrencias;
+    private long total;
+    private int proximaPagina;
 
-    public OcorrenciasJRDatasource(final IConsultaOcorrenciasService consultaOcorrenciasService,
+    public OcorrenciasJRDatasource(final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService,
                                    final FiltroJustificativa filtro) {
-        ocorrencias = consultaOcorrenciasService.pesquisar(filtro).iterator();
+        this.consultaOcorrenciasService = consultaOcorrenciasService;
+        this.filtro = filtro;
+        total = consultaOcorrenciasService.count(filtro);
+        proximaPagina = 0;
+        fetch();
     }
 
     @Override
     public boolean next() throws JRException {
-        if (ocorrencias.hasNext()) {
-            corrente = ocorrencias.next();
-            return true;
+        if (!ocorrencias.hasNext()) {
+            if(temProximaPagina()){
+                fetch();
+            } else {
+                return false;
+            }
         }
-        return false;
+        corrente = ocorrencias.next();
+        return true;
     }
 
     @Override
@@ -62,5 +75,14 @@ public class OcorrenciasJRDatasource implements JRDataSource {
             return corrente.getTipoDecisao();
         }
         throw new JRException("campo nao existe: " + jrField.getName());
+    }
+
+    private void fetch(){
+        ocorrencias = consultaOcorrenciasService.todas(filtro, proximaPagina, PAGE_SIZE).iterator();
+        proximaPagina+=PAGE_SIZE;
+    }
+
+    private boolean temProximaPagina(){
+        return proximaPagina < total;
     }
 }

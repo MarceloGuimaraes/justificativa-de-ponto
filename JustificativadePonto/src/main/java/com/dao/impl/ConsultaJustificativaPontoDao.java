@@ -1,17 +1,15 @@
 package com.dao.impl;
 
 import com.dao.Dao;
-import com.dao.IConsultaJustificativaPontoDao;
+import com.dao.IConsultaPaginadaDao;
 import com.domain.dto.JustificativaPontoGrid;
-import com.model.JustificativaPonto;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import java.util.List;
 
-public class ConsultaJustificativaPontoDao extends Dao implements IConsultaJustificativaPontoDao {
+public class ConsultaJustificativaPontoDao extends Dao implements IConsultaPaginadaDao<JustificativaPontoGrid> {
 
     private String ordenacao;
 

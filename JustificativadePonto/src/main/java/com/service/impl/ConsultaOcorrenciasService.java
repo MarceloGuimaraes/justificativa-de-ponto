@@ -3,7 +3,7 @@ package com.service.impl;
 import com.dao.impl.ConsultaOcorrenciasDao;
 import com.domain.dto.filtro.FiltroJustificativa;
 import com.domain.dto.relatorio.Ocorrencia;
-import com.service.IConsultaOcorrenciasService;
+import com.service.IConsultaFiltradaPaginadaService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 11:06 PM
  */
 @Transactional(readOnly = true)
-public class ConsultaOcorrenciasService implements IConsultaOcorrenciasService {
+public class ConsultaOcorrenciasService implements IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> {
     private final ConsultaOcorrenciasDao consultaOcorrenciasDao;
 
     public ConsultaOcorrenciasService(ConsultaOcorrenciasDao consultaOcorrenciasDao) {
@@ -22,7 +22,12 @@ public class ConsultaOcorrenciasService implements IConsultaOcorrenciasService {
     }
 
     @Override
-    public List<Ocorrencia> pesquisar(final FiltroJustificativa filtro) {
-        return consultaOcorrenciasDao.pesquisar(filtro);
+    public List<Ocorrencia> todas(FiltroJustificativa filtro, int startIndex, int pageSize) {
+        return consultaOcorrenciasDao.todos(filtro, startIndex, pageSize);
+    }
+
+    @Override
+    public long count(FiltroJustificativa filtro) {
+        return consultaOcorrenciasDao.count(filtro);
     }
 }

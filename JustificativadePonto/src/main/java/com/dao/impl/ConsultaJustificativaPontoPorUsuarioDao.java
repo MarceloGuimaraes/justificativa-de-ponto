@@ -1,7 +1,7 @@
 package com.dao.impl;
 
 import com.dao.Dao;
-import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
+import com.dao.IConsultaFiltradaPaginadaDao;
 import com.domain.dto.JustificativaPontoGrid;
 import com.model.Identificacao;
 import com.model.User;
@@ -11,7 +11,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import java.util.List;
 
-public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements IConsultaJustificativaPontoPorUsuarioDao {
+public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements IConsultaFiltradaPaginadaDao<JustificativaPontoGrid, User> {
 
     private String ordenador;
 
@@ -20,7 +20,8 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
         this.ordenador = ordenador;
     }
 
-    public List<JustificativaPontoGrid> todos(int startIndex, int pageSize, User user){
+    @Override
+    public List<JustificativaPontoGrid> todos(User filtro, int startIndex, int pageSize) {
         String hql = "select distinct j as justificativa from EncaminhamentoJustificativaPonto hist " +
                 "join hist.justificativaPonto j " +
                 "join fetch j.solicitante solic " +
@@ -28,13 +29,13 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
                 "order by j." + ordenador + " asc";
 
         Identificacao identificacao = new Identificacao();
-        identificacao.setNome(user.getNome());
-        identificacao.setCpf(user.getCpf());
-        identificacao.setEmail(user.getEmail());
+        identificacao.setNome(filtro.getNome());
+        identificacao.setCpf(filtro.getCpf());
+        identificacao.setEmail(filtro.getEmail());
         Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
-                .setParameter("user", user)
+                .setParameter("user", filtro)
                 .setParameter("resp", identificacao)
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoGrid.class));
 
@@ -42,8 +43,8 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
     }
 
     @Override
-    public int count(User user) {
-        String hql = "select count(j) from EncaminhamentoJustificativaPonto hist " +
+    public long count(User user) {
+        String hql = "select count(j.id) from EncaminhamentoJustificativaPonto hist " +
                 "join hist.justificativaPonto j " +
                 "where j.solicitante = :user or hist.responsavel = :resp";
 

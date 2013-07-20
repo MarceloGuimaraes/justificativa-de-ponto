@@ -1,7 +1,7 @@
 package com.dao.impl;
 
 import com.dao.Dao;
-import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
+import com.dao.IConsultaFiltradaPaginadaDao;
 import com.domain.dto.JustificativaPontoGrid;
 import com.model.User;
 import org.hibernate.Query;
@@ -10,28 +10,28 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import java.util.List;
 
-public class ConsultaJustificativasSolicitanteDao extends Dao implements IConsultaJustificativaPontoPorUsuarioDao {
+public class ConsultaJustificativasSolicitanteDao extends Dao implements IConsultaFiltradaPaginadaDao<JustificativaPontoGrid, User> {
 
     protected ConsultaJustificativasSolicitanteDao(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
     @Override
-    public List<JustificativaPontoGrid> todos(int startIndex, int pageSize, User user) {
+    public List<JustificativaPontoGrid> todos(User filtro, int startIndex, int pageSize) {
         String hql = "select j as justificativa from JustificativaPonto j " +
                 "where j.solicitante = :user order by j.solicitante.nome";
 
         Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
-                .setParameter("user", user)
+                .setParameter("user", filtro)
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoGrid.class));
 
         return query.list();
     }
 
     @Override
-    public int count(User user) {
+    public long count(User user) {
         String hql = "select count(j) from JustificativaPonto j " +
                 "where j.solicitante = :user";
 

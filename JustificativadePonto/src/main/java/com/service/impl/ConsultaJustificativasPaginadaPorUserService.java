@@ -1,6 +1,6 @@
 package com.service.impl;
 
-import com.dao.IConsultaJustificativaPontoPorUsuarioDao;
+import com.dao.IConsultaFiltradaPaginadaDao;
 import com.domain.dto.JustificativaPontoGrid;
 import com.managed.bean.IPermissoesBean;
 import com.model.User;
@@ -13,13 +13,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPaginadaService<JustificativaPontoGrid> {
 
-    private IConsultaJustificativaPontoPorUsuarioDao dao;
+    private IConsultaFiltradaPaginadaDao<JustificativaPontoGrid, User> dao;
 
     private IPermissoesBean permissoes;
 
     private Mapper mapper;
 
-    public ConsultaJustificativasPaginadaPorUserService(IConsultaJustificativaPontoPorUsuarioDao dao,
+    public ConsultaJustificativasPaginadaPorUserService(IConsultaFiltradaPaginadaDao<JustificativaPontoGrid, User> dao,
                                                         IPermissoesBean permissoes,
                                                         Mapper mapper) {
         this.dao = dao;
@@ -35,11 +35,11 @@ public class ConsultaJustificativasPaginadaPorUserService implements IConsultaPa
 
         User user = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        return dao.todos(startIndex, pageSize, user);
+        return dao.todos(user, startIndex, pageSize);
     }
 
     @Override
-    public int count() {
+    public long count() {
         if(permissoes.getUsuarioLogado()==null){
             throw new IllegalStateException("O usuario logado nao foi informado");
         }

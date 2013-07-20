@@ -2,13 +2,12 @@ package com.managed.bean;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.filtro.FiltroJustificativa;
+import com.domain.dto.relatorio.Ocorrencia;
 import com.jsf.ds.impl.ComboStatusDatasourceImpl;
 import com.managed.bean.relatorio.OcorrenciasJRDatasource;
 import com.model.User;
-import com.service.IConsultaOcorrenciasService;
+import com.service.IConsultaFiltradaPaginadaService;
 import com.service.IUserService;
-import com.service.UserService;
-import com.service.impl.ConsultaOcorrenciasService;
 import com.util.Message;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -44,7 +43,7 @@ public class RelatorioManagedBean implements Serializable {
     private final IUserService userService;
     private final IPermissoesBean permissoesBean;
     private final FiltroJustificativa filtro;
-    private final IConsultaOcorrenciasService consultaOcorrenciasService;
+    private final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService;
     private List<SelectItem> escolhasStatus;
     private List<SelectItem> escolhasFuncionarios;
     private String relatorio;
@@ -52,7 +51,7 @@ public class RelatorioManagedBean implements Serializable {
     public RelatorioManagedBean(final IUserService userService,
                                 final IPermissoesBean permissoesBean,
                                 final FiltroJustificativa filtro,
-                                final IConsultaOcorrenciasService consultaOcorrenciasService) {
+                                final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService) {
         this.userService = userService;
         this.permissoesBean = permissoesBean;
         this.filtro = filtro;

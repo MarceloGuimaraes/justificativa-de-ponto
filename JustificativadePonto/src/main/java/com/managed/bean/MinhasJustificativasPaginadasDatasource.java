@@ -22,7 +22,7 @@ public class MinhasJustificativasPaginadasDatasource implements Serializable {
     public LazyDataModel<JustificativaPontoGrid> getJustificativas() {
         if(justificativas == null){
             justificativas = new LazyDataModel<JustificativaPontoGrid>() {
-                private int totalLinhas = 0;
+                private long totalLinhas = 0;
                 @Override
                 public List<JustificativaPontoGrid> load(int i, int i1, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
                     List<JustificativaPontoGrid> resultado = service.todas(i, i1);
@@ -32,7 +32,7 @@ public class MinhasJustificativasPaginadasDatasource implements Serializable {
 
                 @Override
                 public int getRowCount() {
-                    return totalLinhas;
+                    return (int) totalLinhas;
                 }
             };
 
