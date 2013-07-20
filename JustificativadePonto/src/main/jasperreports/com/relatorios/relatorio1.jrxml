@@ -111,7 +111,7 @@
 			</textField>
 			<textField>
 				<reportElement uuid="3779951a-e84f-47ab-8a14-51e876e85c6b" x="752" y="0" width="208" height="20"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{relatorio.usuario.tabela.header.label.decisao}]]></textFieldExpression>
@@ -122,32 +122,32 @@
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement uuid="921e5b1f-0757-4141-8cd2-1768dfcbb59e" x="0" y="0" width="133" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{periodoDatas}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement uuid="edaf21c1-771c-4826-841c-60cbb855240b" x="133" y="0" width="79" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="c6def174-ed23-4999-8313-17cbe12f397a" x="212" y="0" width="171" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{motivo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="3cdd05bc-5f7f-4d7a-8c57-08ee0f6cfaaa" x="383" y="0" width="141" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{complemento}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="f94b66be-5c10-4cec-97b1-7dbb7fee22ea" x="524" y="0" width="228" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="2d8f689f-d0fc-4e4e-93ab-3eddc01216cb" x="752" y="0" width="208" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{tipoDecisao}]]></textFieldExpression>
 			</textField>
 		</band>
