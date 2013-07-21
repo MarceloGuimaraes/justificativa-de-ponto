@@ -66,6 +66,66 @@
                     ajax="false"
 					icon="ui-icon-circle-arrow-e">
 				</p:commandButton>
+
+                <p:commandButton id="brAtualizaConsulta"
+                                 value="#{msgs['form.relatorio.botao.consultar']}"
+                                 ajax="false"
+                                 icon="ui-icon-circle-arrow-e"
+                                 action="#{relatorioManagedBean.consultar}"
+                        />
+
+             </h:form>
+            <h:form id="tabelaResultados">
+                <p:dataTable var="ocorrencia"
+                             value="#{relatorioManagedBean.resultado}"
+                             paginator="true"
+                             rows="3"
+                             emptyMessage="#{msgs['consulta.semregistro']}" lazy="true">
+                    <p:column>
+                        <f:facet name="header">
+                        </f:facet>
+                        <a href="justificativa.jsf?id=#{ocorrencia.id}">
+                            <img src="../resources/imagens/actn103.gif" border="0" alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
+                        </a>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.dataocorrencia']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.periodoDatas}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.horario']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.periodo}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.motivo']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.motivo}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.complemento']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.complemento}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.situacao']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.status}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText
+                                    value="#{msgs['relatorio.usuario.tabela.header.label.decisao']}" />
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.tipoDecisao}" />
+                    </p:column>
+                </p:dataTable>
 			</h:form>
 		</p:panel>
 		<p:separator style="margin-top: 20px;" />

@@ -13,10 +13,12 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import org.primefaces.model.LazyDataModel;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -46,18 +48,21 @@ public class RelatorioManagedBean implements Serializable {
     private final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService;
     private List<SelectItem> escolhasStatus;
     private List<SelectItem> escolhasFuncionarios;
-    private String relatorio;
+
+    private LazyDataModel<Ocorrencia> resultado;
 
     public RelatorioManagedBean(final IUserService userService,
                                 final IPermissoesBean permissoesBean,
                                 final FiltroJustificativa filtro,
-                                final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService) {
+                                final IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> consultaOcorrenciasService,
+                                LazyDataModel<Ocorrencia> ocorrenciasFiltradaPaginadaDataModel) {
         this.userService = userService;
         this.permissoesBean = permissoesBean;
         this.filtro = filtro;
         this.consultaOcorrenciasService = consultaOcorrenciasService;
         escolhasStatus = new ComboStatusDatasourceImpl().findObjects();
         escolhasFuncionarios = retornaTodosFuncionarios();
+        resultado = ocorrenciasFiltradaPaginadaDataModel;
     }
 
     private List<SelectItem> retornaTodosFuncionarios() {
@@ -73,6 +78,7 @@ public class RelatorioManagedBean implements Serializable {
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         final HttpServletResponse response = (HttpServletResponse) context.getResponse();
         final Map<String, Object> parametros = new LinkedHashMap<String, Object>();
+        String relatorio;
         JRExporter exporter;
         String sufixo;
         if(permissoesBean.isRh()){
@@ -167,5 +173,13 @@ public class RelatorioManagedBean implements Serializable {
 
     public void setEscolhasFuncionarios(List<SelectItem> escolhasFuncionarios) {
         this.escolhasFuncionarios = escolhasFuncionarios;
+    }
+
+    public DataModel getResultado() {
+        return resultado;
+    }
+
+    public String consultar(){
+        return null;
     }
 }

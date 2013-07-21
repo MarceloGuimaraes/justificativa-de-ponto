@@ -57,10 +57,17 @@
         <constructor-arg ref="PermissoesBean"/>
         <constructor-arg ref="filtroRelatorio"/>
         <constructor-arg ref="consultaOcorrenciasService"/>
+        <constructor-arg ref="ocorrenciasFiltradaPaginadaDataModel"/>
     </bean>
 
     <!-- filtros de pesquisa -->
-    <bean id="filtroRelatorio" class="com.domain.dto.filtro.FiltroJustificativa" scope="request"/>
+    <bean id="filtroRelatorio" class="com.domain.dto.filtro.FiltroJustificativa" scope="session"/>
+
+    <!-- DataModel de sessao -->
+    <bean id="ocorrenciasFiltradaPaginadaDataModel" class="com.managed.bean.OcorrenciasFiltradaPaginadaDataModel" scope="session">
+        <constructor-arg ref="consultaOcorrenciasService" />
+        <constructor-arg ref="filtroRelatorio" />
+    </bean>
 
     <!-- Criando o scopo de View -->
     <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">

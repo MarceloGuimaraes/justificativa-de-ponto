@@ -13,6 +13,7 @@ import java.util.Date;
  * Time: 11:40 PM
  */
 public class Ocorrencia {
+    private Integer id;
     private String solicitante;
     private Date data;
     private Date dataFim;
@@ -163,5 +164,13 @@ public class Ocorrencia {
 
     public void setDataFim(Date dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -30,6 +30,7 @@ public class ConsultaOcorrenciasDao extends Dao implements IConsultaFiltradaPagi
         aplicaFiltro(criteria, filtro);
         criteria.setProjection(
                 Projections.projectionList()
+                        .add(Projections.property("j.id"), "id")
                         .add(Projections.property("s.nome"), "solicitante")
                         .add(Projections.property("j.dataSolicitacao"), "data")
                         .add(Projections.property("j.dataSolicitacaoFim"), "dataFim")

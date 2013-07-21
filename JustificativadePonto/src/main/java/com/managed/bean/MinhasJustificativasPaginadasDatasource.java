@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class MinhasJustificativasPaginadasDatasource implements Serializable {
 
-    IConsultaPaginadaService<JustificativaPontoGrid> service;
+    protected IConsultaPaginadaService<JustificativaPontoGrid> service;
 
     private LazyDataModel<JustificativaPontoGrid> justificativas;
 
