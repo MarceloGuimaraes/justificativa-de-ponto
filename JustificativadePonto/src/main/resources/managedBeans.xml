@@ -48,7 +48,7 @@
     </bean>
 
     <bean id="minhasJustificativasPaginadas" class="com.managed.bean.MinhasJustificativasPaginadasDatasource" scope="request">
-        <constructor-arg ref="consultaJustificativasSolicitante"/>
+        <constructor-arg ref="consultaJustificativasSolicitanteService"/>
     </bean>
 
     <!-- Controller do relatorio -->

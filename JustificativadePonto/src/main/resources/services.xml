@@ -59,10 +59,16 @@
         <constructor-arg ref="mapper" />
     </bean>
 
-    <bean id="consultaJustificativasSolicitante" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+    <bean id="consultaJustificativasSolicitanteService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
         <constructor-arg ref="consultaJustificativasSolicitanteDao" />
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="mapper" />
+    </bean>
+
+    <bean id="consultaJustificativasPorAprovadorService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">
+        <constructor-arg ref="consultaJustificativaPorAprovadorDao"/>
+        <constructor-arg ref="PermissoesBean"/>
+        <constructor-arg ref="mapper"/>
     </bean>
 
     <bean id="consultaJustificativasPorMotivoPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
