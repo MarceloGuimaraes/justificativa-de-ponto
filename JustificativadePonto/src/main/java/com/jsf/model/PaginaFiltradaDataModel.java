@@ -24,8 +24,8 @@ public class PaginaFiltradaDataModel<T,F> extends LazyDataModel<T> {
 
     @Override
     public List<T> load(int startIndex, int pageSize, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
-        List<T> resultado = service.todas(filtro, startIndex, pageSize);
         totalLinhas = service.count(filtro);
+        List<T> resultado = service.todas(filtro, startIndex, pageSize);
         return resultado;
     }
 

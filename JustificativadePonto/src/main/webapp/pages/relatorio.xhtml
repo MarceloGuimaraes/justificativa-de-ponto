@@ -80,7 +80,10 @@
                              value="#{relatorioManagedBean.resultado}"
                              paginator="true"
                              rows="3"
-                             emptyMessage="#{msgs['consulta.semregistro']}" lazy="true">
+                             emptyMessage="#{msgs['consulta.semregistro']}"
+                             lazy="true"
+                             binding="#{relatorioManagedBean.dataTable}"
+                        >
                     <p:column>
                         <f:facet name="header">
                         </f:facet>

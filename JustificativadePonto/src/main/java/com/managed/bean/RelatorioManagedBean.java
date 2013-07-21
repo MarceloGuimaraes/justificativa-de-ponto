@@ -13,9 +13,11 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.LazyDataModel;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
@@ -180,6 +182,18 @@ public class RelatorioManagedBean implements Serializable {
     }
 
     public String consultar(){
+        dataTable.setFirst(0);
         return null;
+    }
+
+    private DataTable dataTable;
+
+
+    public DataTable getDataTable() {
+        return dataTable;
+    }
+
+    public void setDataTable(DataTable dataTable) {
+        this.dataTable = dataTable;
     }
 }
