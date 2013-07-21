@@ -51,6 +51,10 @@
         <constructor-arg ref="consultaJustificativasSolicitanteService"/>
     </bean>
 
+    <bean id="justificativasPendentesAprovacaoPaginadas" class="com.managed.bean.MinhasJustificativasPaginadasDatasource" scope="request">
+        <constructor-arg ref="consultaJustificativasPorAprovadorService"/>
+    </bean>
+
     <!-- Controller do relatorio -->
     <bean id="relatorioManagedBean" class="com.managed.bean.RelatorioManagedBean" scope="request">
         <constructor-arg ref="UserService"/>

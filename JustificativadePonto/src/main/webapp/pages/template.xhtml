@@ -32,6 +32,8 @@
 				<p:submenu label="#{msgs['template.menu.consulta']}">
 					<p:menuitem value="#{msgs['template.menu.consulta.minhasjustificativas']}" url="/pages/minhasjustificativas.jsf" rendered="#{PermissoesBean.usuario}"/>
                     <p:separator />
+					<p:menuitem value="#{msgs['template.menu.consulta.pendentesaprovacao']}" url="/pages/pendenteaprovacao.jsf" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}"/>
+                    <p:separator />
                     <p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
                     <p:separator />
 					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}" />
