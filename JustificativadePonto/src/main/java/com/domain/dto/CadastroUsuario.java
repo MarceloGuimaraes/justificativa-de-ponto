@@ -1,15 +1,18 @@
 package com.domain.dto;
 
-import com.model.PerfilEnum;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+
+import com.model.PerfilEnum;
 
 public class CadastroUsuario implements Serializable {
     private Integer id;
     private String nome;
     private String email;
     private String cpf;
+	private Date hrInicial;
+	private Date hrFinal;
     private List<PerfilEnum> perfil;
 
     public CadastroUsuario() {
@@ -47,7 +50,23 @@ public class CadastroUsuario implements Serializable {
         this.cpf = cpf;
     }
 
-    public List<PerfilEnum> getPerfil() {
+    public Date getHrInicial() {
+		return hrInicial;
+	}
+
+	public void setHrInicial(Date hrInicial) {
+		this.hrInicial = hrInicial;
+	}
+
+	public Date getHrFinal() {
+		return hrFinal;
+	}
+
+	public void setHrFinal(Date hrFinal) {
+		this.hrFinal = hrFinal;
+	}
+
+	public List<PerfilEnum> getPerfil() {
         return perfil;
     }
 

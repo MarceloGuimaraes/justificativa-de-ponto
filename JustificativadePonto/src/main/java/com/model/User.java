@@ -6,7 +6,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,6 +33,14 @@ public class User implements Serializable {
 	@Column(name = "senha", length = 200)
 	private String senha;
 
+	@Column(name = "hrInicial")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date hrInicial;
+
+	@Column(name = "hrFinal")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date hrFinal;
+	
     /*@CollectionOfElements(targetElement = PerfilEnum.class)
 	@JoinTable(name = "Perfis", joinColumns = { @JoinColumn(name = "id_user") })*/
     @ElementCollection(targetClass = PerfilEnum.class, fetch = FetchType.EAGER)
@@ -99,6 +109,22 @@ public class User implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Date getHrInicial() {
+		return hrInicial;
+	}
+
+	public void setHrInicial(Date hrInicial) {
+		this.hrInicial = hrInicial;
+	}
+
+	public Date getHrFinal() {
+		return hrFinal;
+	}
+
+	public void setHrFinal(Date hrFinal) {
+		this.hrFinal = hrFinal;
 	}
 
 	@Override
