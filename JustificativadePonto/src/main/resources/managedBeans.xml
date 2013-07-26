@@ -30,6 +30,10 @@
         <constructor-arg ref="mapper"/>
     </bean>
 
+    <bean id="fluxoJustificativaManagedBean" class="com.managed.bean.FluxoJustificativaManagedBean" scope="request">
+        <constructor-arg ref="PermissoesBean"/>
+    </bean>
+
     <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="consultaJustificativasPorDataPaginadaService" />

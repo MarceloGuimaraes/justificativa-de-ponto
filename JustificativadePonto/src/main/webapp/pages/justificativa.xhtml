@@ -64,7 +64,8 @@
                         </p:row>
                         <p:row>
                             <p:column style="text-align: left; width: 135px;">
-                                <h:outputLabel value="#{msgs['form.justificativa.label.dataSolicitacao']}#{msgs['form.label.doispontos']}" />
+                                <h:outputLabel value="#{msgs['form.justificativa.label.dataSolicitacao']}#{msgs['form.label.doispontos']}"
+                                               rendered="#{motivoManagedBean.configuracao['DATA_INI']}"/>
                             </p:column>
                             <p:column style="width: 220px;">
                                 <p:calendar styleClass="calendar"
@@ -95,14 +96,18 @@
                         </p:row>
                         <p:row>
                             <p:column style="text-align:left; width:135px;">
-                                <h:outputLabel
-                                        value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
-                                        rendered="#{motivoManagedBean.configuracao['HORA_INI']}" />
+                                <h:outputLabel value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']} "
+                                               rendered="#{motivoManagedBean.configuracao['HORA_INI']}" />
                             </p:column>
                             <p:column style="width:220px;">
-                                <p:calendar styleClass="calendar"
-                                            value="#{novaJustificativaManagedBean.justificativa.hrIni}" id="hrini"
-                                            showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
+                                <p:calendar id="hrini"
+                                            styleClass="calendar"
+                                            value="#{novaJustificativaManagedBean.justificativa.hrIni}"
+                                            showOn="button"
+                                            stepMinute="5"
+                                            pattern="#{msgs['sistema.formato.hora']}"
+                                            timeOnly="true"
+                                            required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrini.required']}"
                                             rendered="#{motivoManagedBean.configuracao['HORA_INI'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="hriniMsg" for="hrini"/>
@@ -115,9 +120,14 @@
                                                rendered="#{motivoManagedBean.configuracao['HORA_FIM']}" />
                             </p:column>
                             <p:column>
-                                <p:calendar styleClass="calendar"
-                                            value="#{novaJustificativaManagedBean.justificativa.hrFim}" id="hrfim"
-                                            showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
+                                <p:calendar id="hrfim"
+                                            styleClass="calendar"
+                                            value="#{novaJustificativaManagedBean.justificativa.hrFim}"
+                                            showOn="button"
+                                            stepMinute="5"
+                                            pattern="#{msgs['sistema.formato.hora']}"
+                                            timeOnly="true"
+                                            required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
                                             rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="hrfimMsg" for="hrfim" />
@@ -243,24 +253,21 @@
                                      id="tblAprovacoesJustificativa">
                             <p:column id="colDataAprovacoes">
                                 <f:facet name="header">
-                                    <h:outputText
-                                            value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
+                                    <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
                                 </f:facet>
                                 <h:outputText value="#{historico.data}">
-                                    <f:convertDateTime pattern="d/MM/yyyy" />
+                                    <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
                                 </h:outputText>
                             </p:column>
                             <p:column id="colUsuarioHistorico">
                                 <f:facet name="header">
-                                    <h:outputText
-                                            value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
+                                    <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.usuario']}" />
                                 </f:facet>
                                 <h:outputText value="#{historico.usuario.nome}" />
                             </p:column>
                             <p:column id="colEventoHistorico">
                                 <f:facet name="header">
-                                    <h:outputText
-                                            value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
+                                    <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.evento']}" />
                                 </f:facet>
                                 <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
                             </p:column>
@@ -289,19 +296,21 @@
                                      rendered="#{novaJustificativaManagedBean.view.temProximoPasso}"
                                      value="#{msgs['form.justificativa.botao.enviar']}"
                                      update=":panel"
-                                     actionListener="#{novaJustificativaManagedBean.proximo}"
+                                     actionListener="#{fluxoJustificativaManagedBean.proximo}"
                                      oncomplete="handleProximo(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
+                        <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
                         <f:attribute name="fluxo" value="#{workflow}"/>
                     </p:commandButton>
 
                     <p:commandButton id="idConcluir"
                                      rendered="#{novaJustificativaManagedBean.view.temConcluir}"
                                      value="#{msgs['form.justificativa.botao.concluidorh']}"
-                                     actionListener="#{novaJustificativaManagedBean.proximo}"
+                                     actionListener="#{fluxoJustificativaManagedBean.proximo}"
                                      update=":panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
+                        <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
                         <f:attribute name="fluxo" value="#{concluir}"/>
                     </p:commandButton>
 
@@ -326,7 +335,7 @@
                                     value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
                         </f:facet>
                         <h:outputText value="#{historico.data}">
-                            <f:convertDateTime pattern="d/MM/yyyy" />
+                            <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
                         </h:outputText>
                     </p:column>
                     <p:column id="colUsuarioHistorico">
@@ -382,12 +391,12 @@
                                 <p:commandButton id="btsalvar"
                                                  value="#{msgs['dialog.cancelar.botao.salvar']}"
                                                  update="display"
-                                                 actionListener="#{novaJustificativaManagedBean.proximo}"
+                                                 actionListener="#{fluxoJustificativaManagedBean.proximo}"
                                                  oncomplete="handleCancelRequest(xhr, status, args)">
+                                    <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
                                     <f:attribute name="fluxo" value="#{cancelar}"/>
                                 </p:commandButton>
-                                <p:commandButton value="Voltar" update="display" process="@this"
-                                                 oncomplete="cadDialog.hide()"/>
+                                <p:commandButton value="Voltar" update="display" process="@this" oncomplete="cadDialog.hide()"/>
                             </p:column>
                         </p:row>
                     </h:panelGrid>

@@ -2,7 +2,6 @@ package com.managed.bean;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.exception.BusinessException;
 import com.domain.service.IProximoPasso;
 import com.domain.service.IWorkflowResolver;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
@@ -12,9 +11,7 @@ import com.service.IJustificativaService;
 import com.util.JsfUtil;
 import com.util.Message;
 import org.dozer.Mapper;
-import org.primefaces.context.RequestContext;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -24,8 +21,6 @@ import java.util.Map;
 public class JustificativaManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-    private IPermissoesBean permissoes;
 
     private List<SelectItem> tipoDecisaoList;
 
@@ -42,7 +37,6 @@ public class JustificativaManagedBean implements Serializable {
                                     final IWorkflowResolver workflow,
                                     final HandlerMotivosManagedBean motivosManagedBean,
                                     final Mapper mapper) {
-        this.permissoes = permissoes;
 		String id = JsfUtil.getParameter("id");
 		if (id != null) {
 			JustificativaPonto j = justificativaService.recuperar(Integer.parseInt(id), "historico");
@@ -88,27 +82,7 @@ public class JustificativaManagedBean implements Serializable {
 		this.justificativa = justificativa;
 	}
 
-    public void proximo(ActionEvent event) {
-        final RequestContext context = RequestContext.getCurrentInstance();
-
-        boolean sucesso = true;
-
-        try {
-            IProximoPasso proximoPasso = (IProximoPasso) event.getComponent().getAttributes().get("fluxo");
-            proximoPasso.proximo(justificativa);
-        } catch (BusinessException be) {
-            Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
-            sucesso = false;
-        } catch (Exception e){
-            Message.addMessage("dialog.cancelar.erro.inesperado", permissoes.getUsuarioLogado().getNome());
-            e.printStackTrace();
-            sucesso = false;
-        }
-
-        context.addCallbackParam("sucesso", sucesso);
-    }
-
-	public String getLabelCadastro() {
+    public String getLabelCadastro() {
         return titulo;
 	}
 

@@ -48,16 +48,22 @@ public class HandlerMotivosManagedBean implements Serializable {
 
     private void setConfiguracao(MotivoEnum motivo){
 //        configuracao = escolhas.get(motivo);
-        if(MotivoEnum.FALTAS.equals(motivo)){
+        if(motivo == null){
+            configuracao = getConfiguracaoNenhuma();
+        } else if(MotivoEnum.FALTAS.equals(motivo)){
             configuracao = getConfiguracaoFaltas();
-        }else if(EnumSet.of(MotivoEnum.FALTADEMARCACAO).contains(motivo)){
+        }else if(MotivoEnum.FALTADEMARCACAO == motivo){
             configuracao = getConfiguracaoFaltaMarcacao();
-        } else if(MotivoEnum.BANCODEHORAS.equals(motivo)){
+        } else if(MotivoEnum.BANCODEHORAS == motivo){
             configuracao = getConfiguracaoBancoHoras();
-        } else if(MotivoEnum.ATIVIDADEFORA.equals(motivo)){
+        } else if(MotivoEnum.ATIVIDADEFORA == motivo){
             configuracao = getConfiguracaoAtividadeFora();
-        } else {
+        } else if(MotivoEnum.ATRASOS == motivo) {
             configuracao = getConfiguracaoOutros();
+        } else if(MotivoEnum.ATIVIDADEFORA == motivo) {
+            configuracao = getConfiguracaoOutros();
+        } else {
+            throw new IllegalArgumentException("Motivo nao existe");
         }
     }
 
@@ -116,6 +122,18 @@ public class HandlerMotivosManagedBean implements Serializable {
         resultado.put(DATA_FIM, false);
         resultado.put(HORA_INI, true);
         resultado.put(HORA_FIM, true);
+        resultado.put(TIPO_BANCO_HORAS, false);
+        resultado.put(TIPO_FALTA_MARCACAO, false);
+        return resultado;
+    }
+
+    private Map<String, Boolean> getConfiguracaoNenhuma() {
+        Map<String, Boolean> resultado = new LinkedHashMap<String, Boolean>();
+        resultado.put(CAUSA_FALTA, false);
+        resultado.put(DATA_INI, false);
+        resultado.put(DATA_FIM, false);
+        resultado.put(HORA_INI, false);
+        resultado.put(HORA_FIM, false);
         resultado.put(TIPO_BANCO_HORAS, false);
         resultado.put(TIPO_FALTA_MARCACAO, false);
         return resultado;
