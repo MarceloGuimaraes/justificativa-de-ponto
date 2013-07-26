@@ -7,17 +7,15 @@ import com.domain.service.IProximoPasso;
 import com.domain.service.IWorkflowResolver;
 import com.jsf.ds.impl.ComboTipoDecisaoDatasourceImpl;
 import com.managed.bean.handler.HandlerMotivosManagedBean;
+import com.model.JustificativaPonto;
 import com.service.IJustificativaService;
-import com.spring.util.ApplicationContextProvider;
 import com.util.JsfUtil;
 import com.util.Message;
-import org.primefaces.component.commandbutton.CommandButton;
+import org.dozer.Mapper;
 import org.primefaces.context.RequestContext;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,11 +25,11 @@ public class JustificativaManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    private transient IPermissoesBean permissoes;
+    private IPermissoesBean permissoes;
 
-    private transient List<SelectItem> tipoDecisaoList;
+    private List<SelectItem> tipoDecisaoList;
 
-    private transient List<SelectItem> escolhas;
+    private List<SelectItem> escolhas;
 
     private String titulo;
 
@@ -42,11 +40,13 @@ public class JustificativaManagedBean implements Serializable {
 	public JustificativaManagedBean(final IJustificativaService justificativaService,
                                     final IPermissoesBean permissoes,
                                     final IWorkflowResolver workflow,
-                                    final HandlerMotivosManagedBean motivosManagedBean) {
+                                    final HandlerMotivosManagedBean motivosManagedBean,
+                                    final Mapper mapper) {
         this.permissoes = permissoes;
 		String id = JsfUtil.getParameter("id");
 		if (id != null) {
-			justificativa = justificativaService.recuperar(Integer.parseInt(id));
+			JustificativaPonto j = justificativaService.recuperar(Integer.parseInt(id), "historico");
+            justificativa = mapper.map(j, JustificativaPontoDTO.class);
             titulo = Message.getBundleMessage("cadastroJustificativa.label.alteraUsuario");
 		}
         if (justificativa == null) {
@@ -94,14 +94,14 @@ public class JustificativaManagedBean implements Serializable {
         boolean sucesso = true;
 
         try {
-            CommandButton o  = (CommandButton) event.getSource();
-            IProximoPasso proximoPasso = (IProximoPasso) o.getAttributes().get("fluxo");
+            IProximoPasso proximoPasso = (IProximoPasso) event.getComponent().getAttributes().get("fluxo");
             proximoPasso.proximo(justificativa);
         } catch (BusinessException be) {
             Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
             sucesso = false;
         } catch (Exception e){
             Message.addMessage("dialog.cancelar.erro.inesperado", permissoes.getUsuarioLogado().getNome());
+            e.printStackTrace();
             sucesso = false;
         }
 
@@ -123,13 +123,4 @@ public class JustificativaManagedBean implements Serializable {
         return resultado;
 
     }
-
-	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
-		s.defaultReadObject();
-		final IWorkflowResolver workflow = (IWorkflowResolver) ApplicationContextProvider.getBean("workflow");
-        final IProximoPasso proximoPasso = workflow.retornaProximoPasso(justificativa);
-        escolhas = retornaItemAPartirDeUser(proximoPasso.listaCandidatos());
-        tipoDecisaoList = new ComboTipoDecisaoDatasourceImpl().findObjects();
-        permissoes = (IPermissoesBean) ApplicationContextProvider.getBean("PermissoesBean");
-	}
 }

@@ -22,11 +22,12 @@
 
     <bean id="motivoManagedBean" class="com.managed.bean.handler.HandlerMotivosManagedBean" scope="view"/>
 
-    <bean id="justificativaBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
+    <bean id="novaJustificativaManagedBean" class="com.managed.bean.JustificativaManagedBean" scope="view">
         <constructor-arg ref="JustificativaService" />
         <constructor-arg ref="PermissoesBean" />
         <constructor-arg ref="workflow" />
         <constructor-arg ref="motivoManagedBean"/>
+        <constructor-arg ref="mapper"/>
     </bean>
 
     <bean id="todasJustificativasPaginadasPorData" class="com.managed.bean.JustificativaPaginadaDatasource" scope="request">

@@ -2,7 +2,6 @@ package com.domain.service.fluxo;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -36,16 +35,18 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
         final User superintendente = userService.recuperar(justificativa.getIdProximoResponsavel());
+        final User solicitante = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        justificativa = justificativaService.adicionar(justificativa);
+        JustificativaPonto justificativaNova = new JustificativaPonto(solicitante);
+        mapper.map(justificativa, justificativaNova);
 
-        justificativa = justificativaService.mudaSituacao(
-                permissoes.getUsuarioLogado(),
-                mapper.map(superintendente, UsuarioLogado.class),
-                justificativa,
+        justificativaNova = justificativaService.adicionar(justificativaNova);
+
+        justificativaService.encaminha(solicitante,
+                superintendente,
+                justificativaNova,
                 StatusEnum.APROVSUPERINTENDENTE,
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE
-        );
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
         final List<User> destinos = new LinkedList<User>();
         destinos.add(superintendente);
@@ -54,7 +55,7 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
                 permissoes.getUsuarioLogado(),
                 null,
                 superintendente,
-                justificativa.getId());
+                justificativaNova.getId());
     }
 
     @Override

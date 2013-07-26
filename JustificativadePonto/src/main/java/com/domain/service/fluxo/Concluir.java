@@ -34,15 +34,9 @@ public class Concluir extends ProximoPasso {
 
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        if (justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
+        return justificativa.getStatus().equals(StatusEnum.EXECUCAORH)
                 && historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH)
-                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(usuarioLogado)) {
-
-            return true;
-
-        }
-
-        return false;
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH).getResponsavel().equals(usuarioLogado);
     }
 
     @Override
@@ -57,30 +51,33 @@ public class Concluir extends ProximoPasso {
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
-        justificativaService.atua(
-                permissoes.getUsuarioLogado(),
-                justificativa,
+
+        User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
+        JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
+        justificativaService.atua(usuarioLogado,
+                justificativaPonto,
                 StatusEnum.CONCLUIDO,
                 TipoEventoJustificativaPontoEnum.APROVADO_RH);
 
-        User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
+        User solicitante = justificativaPonto.getSolicitante();
 
-        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
-
-        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
 
         User coordenador = null;
         if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
              coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
         }
-        User superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
+        User superintendente = null;
+        if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE)){
+            superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
+        }
 
         mailService.concluiRh(
                 permissoes.getUsuarioLogado(),
                 solicitante,
                 coordenador,
                 superintendente,
-                justificativa.getId());
+                justificativaPonto.getId());
     }
 
 }

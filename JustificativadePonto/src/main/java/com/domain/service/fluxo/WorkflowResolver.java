@@ -28,12 +28,12 @@ public class WorkflowResolver implements IWorkflowResolver, IProximoPasso {
     @Override
     public IProximoPasso retornaProximoPasso(JustificativaPontoDTO justificativaTela){
 
-        JustificativaPonto justificativa = null;
+        JustificativaPonto justificativa;
 
         if(justificativaTela.getId()==null || justificativaTela.getId()==0){
             justificativa = mapper.map(justificativaTela, JustificativaPonto.class);
         }else{
-            justificativa = justificativaService.recuperar(justificativaTela);
+            justificativa = justificativaService.recuperar(justificativaTela.getId(), "historico");
         }
 
         for(IProximoPasso passo : passos.values()){

@@ -27,7 +27,7 @@ public class Cancelar extends ProximoPasso {
 
         List<User> destinos = new LinkedList<User>();
 
-        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa);
+        JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativa.getId());
 
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
 
@@ -41,7 +41,7 @@ public class Cancelar extends ProximoPasso {
                         historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(userCorrente))
                         || permissoes.isAdmin())) {
             // AUTOR SUPERINTENDENTE
-            if(historicos.containsKey(TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR)){
+            if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
                 final User coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
                 destinos.add(coordenador);
             }
@@ -69,11 +69,11 @@ public class Cancelar extends ProximoPasso {
             throw new BusinessException("dialog.cancelar.valida.usuarioinvalido");
 
         }
-
-        JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
-
+        mapper.map(justificativa, justificativaPersistida, "cancelamento");
+        JustificativaPonto justificativaAtualizada = justificativaService.atualizar(justificativaPersistida);
+        User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
         justificativaService.atua(
-                permissoes.getUsuarioLogado(),
+                usuarioLogado,
                 justificativaAtualizada,
                 StatusEnum.CANCELADO,
                 TipoEventoJustificativaPontoEnum.CANCELADO
@@ -81,9 +81,9 @@ public class Cancelar extends ProximoPasso {
 
         mailService.cancelado(
                 permissoes.getUsuarioLogado(),
-                justificativaPersistida.getSolicitante(),
+                justificativaAtualizada.getSolicitante(),
                 destinos,
-                justificativaPersistida.getId()
+                justificativaAtualizada.getId()
         );
     }
 

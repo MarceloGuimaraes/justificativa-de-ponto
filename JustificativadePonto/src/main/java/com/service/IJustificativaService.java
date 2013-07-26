@@ -1,26 +1,19 @@
 package com.service;
 
-import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.UsuarioLogado;
 import com.model.JustificativaPonto;
 import com.model.StatusEnum;
 import com.model.TipoEventoJustificativaPontoEnum;
+import com.model.User;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Map;
 
 public interface IJustificativaService {
 
-    JustificativaPonto recuperar(JustificativaPontoDTO justificativa);
-    JustificativaPontoDTO recuperar(Serializable id);
     JustificativaPonto adicionar(JustificativaPonto justificativa);
     JustificativaPonto atualizar(JustificativaPonto justificativa);
-    void apagar(JustificativaPonto justificativa);
+    void encaminha(User usuarioLogado, User proximoResponsavel, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico);
+    void atua(User usuarioLogado, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento);
 
-    JustificativaPontoDTO adicionar(JustificativaPontoDTO justificativa);
-    JustificativaPontoDTO atualizar(JustificativaPontoDTO justificativa);
-    JustificativaPontoDTO mudaSituacao(UsuarioLogado usuarioLogado, UsuarioLogado proximoResponsavel, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico);
-    JustificativaPontoDTO atua(UsuarioLogado usuarioLogado, JustificativaPontoDTO justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento);
+    JustificativaPonto recuperar(Serializable id);
+    JustificativaPonto recuperar(Serializable id, String ... atributos);
 }

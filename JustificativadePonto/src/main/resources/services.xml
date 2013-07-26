@@ -30,7 +30,6 @@
 
     <bean id="JustificativaService" class="com.service.JustificativaService">
         <constructor-arg ref="JustificativaDAO" />
-        <constructor-arg ref="mapper" />
     </bean>
 
     <bean id="consultaJustificativasPorDataPaginadaPorUserService" class="com.service.impl.ConsultaJustificativasPaginadaPorUserService">

@@ -2,7 +2,6 @@ package com.domain.service.fluxo;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -35,14 +34,9 @@ public class EnviarRH extends ProximoPasso {
 
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        if (justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)
+        return justificativa.getStatus().equals(StatusEnum.APROVSUPERINTENDENTE)
                 && historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE)
-                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(usuarioLogado)) {
-
-            return true;
-
-        }
-        return false;
+                && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel().equals(usuarioLogado);
     }
 
     @Override
@@ -50,25 +44,24 @@ public class EnviarRH extends ProximoPasso {
         // Inserindo o Rh escolhidos
         final User rh = userService.recuperar(justificativa.getIdProximoResponsavel());
         final User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
+        final User usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        final JustificativaPontoDTO justificativaAtualizada = justificativaService.atualizar(justificativa);
-        final JustificativaPonto justificativaPersistida = justificativaService.recuperar(justificativaAtualizada);
-        final Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPersistida);
+        final JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
+        mapper.map(justificativa, justificativaPonto, "decisaoSuperIntendente");
+        justificativaService.atualizar(justificativaPonto);
 
-
-        justificativaService.atua(
-                permissoes.getUsuarioLogado(),
-                justificativa,
+        justificativaService.atua(usuarioLogado,
+                justificativaPonto,
                 StatusEnum.EXECUCAORH,
                 TipoEventoJustificativaPontoEnum.APROVADO_SUPERINTENDENTE);
 
-        justificativaService.mudaSituacao(
-                permissoes.getUsuarioLogado(),
-                mapper.map(rh, UsuarioLogado.class),
-                justificativa,
+        justificativaService.encaminha(usuarioLogado,
+                rh,
+                justificativaPonto,
                 StatusEnum.EXECUCAORH,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
 
+        final Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
         User coordenador=null;
         if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
             coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
@@ -79,7 +72,7 @@ public class EnviarRH extends ProximoPasso {
                 solicitante,
                 coordenador,
                 rh,
-                justificativa.getId());
+                justificativaPonto.getId());
     }
 
     @Override

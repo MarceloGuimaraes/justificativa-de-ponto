@@ -6,19 +6,19 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="corpo">
             <p:growl id="growl" life="2500"/>
-            <p:panel id="panel" header="#{justificativaBean.labelCadastro}">
+            <p:panel id="panel" header="#{novaJustificativaManagedBean.labelCadastro}">
                 <p:messages />
                 <p:panelGrid id="pnCabecalho" style="margin-top:10px;width:99%">
                     <p:row>
                         <p:column colspan="2" style="text-align:left">
                             <h:outputLabel value="#{msgs['form.justificativa.label.solicitante']}#{msgs['form.label.doispontos']} "/>
                             <h:outputText id="solicitante"
-                                          value="#{justificativaBean.justificativa.solicitante.nome}"
+                                          value="#{novaJustificativaManagedBean.justificativa.solicitante.nome}"
                                           style="text-align:left" />
                         </p:column>
                         <p:column colspan="2" style="text-align:right">
                             <h:outputLabel value="#{msgs['form.justificativa.label.datacriacao']}#{msgs['form.label.doispontos']} " />
-                            <h:outputText value="#{justificativaBean.justificativa.data}">
+                            <h:outputText value="#{novaJustificativaManagedBean.justificativa.data}">
                                 <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
                             </h:outputText>
                         </p:column>
@@ -32,7 +32,7 @@
                         <p:column colspan="3" style="text-align:right">
                             <h:outputLabel
                                     value="#{msgs['form.justificativa.label.situacao']}#{msgs['form.label.doispontos']} " />
-                            <h:outputText value="#{justificativaBean.justificativa.status}">
+                            <h:outputText value="#{novaJustificativaManagedBean.justificativa.status}">
                                 <f:converter converterId="StatusConverter" />
                             </h:outputText>
                         </p:column>
@@ -49,8 +49,8 @@
                             </p:column>
                             <p:column colspan="3">
                                 <p:selectOneMenu id="motivo"
-                                                 value="#{justificativaBean.justificativa.motivo}"
-                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 value="#{novaJustificativaManagedBean.justificativa.motivo}"
+                                                 rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
                                                  valueChangeListener="#{motivoManagedBean.mudouMotivo}"
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.motivo.required']}">
@@ -59,7 +59,7 @@
                                     <f:selectItems value="#{motivoManagedBean.tipoMotivosList}" />
                                 </p:selectOneMenu>
                                 <p:message id="motivoMsg" for="motivo" />
-                                <h:outputText id="txtMotivo" value="#{justificativaBean.justificativa.motivo}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                                <h:outputText id="txtMotivo" value="#{novaJustificativaManagedBean.justificativa.motivo}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -68,12 +68,12 @@
                             </p:column>
                             <p:column style="width: 220px;">
                                 <p:calendar styleClass="calendar"
-                                            value="#{justificativaBean.justificativa.dataSolicitacao}" id="calDataSolicitacao"
+                                            value="#{novaJustificativaManagedBean.justificativa.dataSolicitacao}" id="calDataSolicitacao"
                                             showOn="button" pattern="#{msgs['sistema.formato.data']}" timeOnly="false" required="true"
                                             requiredMessage="#{msgs['form.justificativa.dtsolicitacao.required']}"
-                                            rendered="#{motivoManagedBean.configuracao['DATA_INI'] and justificativaBean.view.permiteEditar}" />
+                                            rendered="#{motivoManagedBean.configuracao['DATA_INI'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="msgCalDataSolicitacao" for="calDataSolicitacao"/>
-                                <h:outputText id="txtDataSolicitacao" value="#{justificativaBean.justificativa.dataSolicitacao}" rendered="#{motivoManagedBean.configuracao['DATA_INI'] and not justificativaBean.view.permiteEditar}">
+                                <h:outputText id="txtDataSolicitacao" value="#{novaJustificativaManagedBean.justificativa.dataSolicitacao}" rendered="#{motivoManagedBean.configuracao['DATA_INI'] and not novaJustificativaManagedBean.view.permiteEditar}">
                                     <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
                                 </h:outputText>
                             </p:column>
@@ -83,12 +83,12 @@
                             </p:column>
                             <p:column>
                                 <p:calendar styleClass="calendar"
-                                            value="#{justificativaBean.justificativa.dataSolicitacaoFim}" id="calDataSolicitacaoFim"
+                                            value="#{novaJustificativaManagedBean.justificativa.dataSolicitacaoFim}" id="calDataSolicitacaoFim"
                                             showOn="button" pattern="#{msgs['sistema.formato.data']}" timeOnly="false" required="true"
                                             requiredMessage="#{msgs['form.justificativa.dtsolicitacaofim.required']}"
-                                            rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and justificativaBean.view.permiteEditar}" />
+                                            rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="msgCalDataSolicitacaoFim" for="calDataSolicitacaoFim"/>
-                                <h:outputText id="txtDataSolicitacaoFim" value="#{justificativaBean.justificativa.dataSolicitacaoFim}" rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and not justificativaBean.view.permiteEditar}">
+                                <h:outputText id="txtDataSolicitacaoFim" value="#{novaJustificativaManagedBean.justificativa.dataSolicitacaoFim}" rendered="#{motivoManagedBean.configuracao['DATA_FIM'] and not novaJustificativaManagedBean.view.permiteEditar}">
                                     <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
                                 </h:outputText>
                             </p:column>
@@ -101,12 +101,12 @@
                             </p:column>
                             <p:column style="width:220px;">
                                 <p:calendar styleClass="calendar"
-                                            value="#{justificativaBean.justificativa.hrIni}" id="hrini"
+                                            value="#{novaJustificativaManagedBean.justificativa.hrIni}" id="hrini"
                                             showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrini.required']}"
-                                            rendered="#{motivoManagedBean.configuracao['HORA_INI'] and justificativaBean.view.permiteEditar}" />
+                                            rendered="#{motivoManagedBean.configuracao['HORA_INI'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="hriniMsg" for="hrini"/>
-                                <h:outputText id="dtHoraInicio" value="#{justificativaBean.justificativa.hrIni}" rendered="#{motivoManagedBean.configuracao['HORA_INI'] and not justificativaBean.view.permiteEditar}">
+                                <h:outputText id="dtHoraInicio" value="#{novaJustificativaManagedBean.justificativa.hrIni}" rendered="#{motivoManagedBean.configuracao['HORA_INI'] and not novaJustificativaManagedBean.view.permiteEditar}">
                                     <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
                                 </h:outputText>
                             </p:column>
@@ -116,12 +116,12 @@
                             </p:column>
                             <p:column>
                                 <p:calendar styleClass="calendar"
-                                            value="#{justificativaBean.justificativa.hrFim}" id="hrfim"
+                                            value="#{novaJustificativaManagedBean.justificativa.hrFim}" id="hrfim"
                                             showOn="button" pattern="#{msgs['sistema.formato.hora']}" timeOnly="true" required="true"
                                             requiredMessage="#{msgs['form.justificativa.hrfim.required']}"
-                                            rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and justificativaBean.view.permiteEditar}" />
+                                            rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and novaJustificativaManagedBean.view.permiteEditar}" />
                                 <p:message id="hrfimMsg" for="hrfim" />
-                                <h:outputText id="dtHoraFim" value="#{justificativaBean.justificativa.hrFim}" rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and not justificativaBean.view.permiteEditar}">
+                                <h:outputText id="dtHoraFim" value="#{novaJustificativaManagedBean.justificativa.hrFim}" rendered="#{motivoManagedBean.configuracao['HORA_FIM'] and not novaJustificativaManagedBean.view.permiteEditar}">
                                     <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
                                 </h:outputText>
                             </p:column>
@@ -132,16 +132,16 @@
                             </p:column>
                             <p:column colspan="3">
                                 <p:selectOneMenu id="causafalta"
-                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.erro.causafalta']}"
-                                                 value="#{justificativaBean.justificativa.tipofalta}">
+                                                 value="#{novaJustificativaManagedBean.justificativa.tipofalta}">
                                     <f:selectItem itemValue="" itemLabel="" />
                                     <f:selectItems
                                             value="#{motivoManagedBean.tipoFaltaList}" />
                                 </p:selectOneMenu>
                                 <p:message id="causafaltaMsg" for="causafalta" />
-                                <h:outputText value="#{justificativaBean.justificativa.tipofalta}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                                <h:outputText value="#{novaJustificativaManagedBean.justificativa.tipofalta}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                         <p:row rendered="#{motivoManagedBean.configuracao['TIPO_BANCO_HORAS']}">
@@ -150,15 +150,15 @@
                             </p:column>
                             <p:column colspan="3">
                                 <p:selectOneMenu id="tipobancohoras"
-                                                 value="#{justificativaBean.justificativa.tipobancohoras}"
-                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 value="#{novaJustificativaManagedBean.justificativa.tipobancohoras}"
+                                                 rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.tipobancohoras.required']}">
                                     <f:selectItem itemValue="" itemLabel="" />
                                     <f:selectItems value="#{motivoManagedBean.tipoBancoHorasList}" />
                                 </p:selectOneMenu>
                                 <p:message id="tipobancohorasMsg" for="tipobancohoras" />
-                                <h:outputText value="#{justificativaBean.justificativa.tipobancohoras}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                                <h:outputText value="#{novaJustificativaManagedBean.justificativa.tipobancohoras}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                         
@@ -168,15 +168,15 @@
                             </p:column>
                             <p:column colspan="3">
                                 <p:selectOneMenu id="tipofaltamarcacao"
-                                                 value="#{justificativaBean.justificativa.tipofaltamarcacao}"
-                                                 rendered="#{justificativaBean.view.permiteEditar}"
+                                                 value="#{novaJustificativaManagedBean.justificativa.tipofaltamarcacao}"
+                                                 rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.tipofaltamarcacao.required']}">
                                     <f:selectItem itemValue="" itemLabel="" />
                                     <f:selectItems value="#{motivoManagedBean.tipoFaltaMarcacaoList}" />
                                 </p:selectOneMenu>
                                 <p:message id="tipofaltamarcacaoMsg" for="tipofaltamarcacao" />
-                                <h:outputText value="#{justificativaBean.justificativa.tipofaltamarcacao}" rendered="#{not justificativaBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
+                                <h:outputText value="#{novaJustificativaManagedBean.justificativa.tipofaltamarcacao}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}" converter="EnumComCodigoDescricao"/>
                             </p:column>
                         </p:row>
                         
@@ -189,10 +189,10 @@
                                     <p:inputTextarea id="descricao" rows="5" cols="30"
                                                      maxlength="300" autoResize="true" required="true"
                                                      requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
-                                                     rendered="#{justificativaBean.view.permiteEditar}"
-                                                     value="#{justificativaBean.justificativa.descricao}" />
+                                                     rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
+                                                     value="#{novaJustificativaManagedBean.justificativa.descricao}" />
                                     <p:message id="descricaoMsg" for="descricao" />
-                                    <h:outputText value="#{justificativaBean.justificativa.descricao}" rendered="#{not justificativaBean.view.permiteEditar}"/>
+                                    <h:outputText value="#{novaJustificativaManagedBean.justificativa.descricao}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}"/>
                                 </ui:insert>
                             </p:column>
                         </p:row>
@@ -205,30 +205,30 @@
                                     <h:outputLabel
                                             value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
                                     <h:outputText id="txtDecisaoRh"
-                                                  value="#{justificativaBean.justificativa.tipoDecisao}"
+                                                  value="#{novaJustificativaManagedBean.justificativa.tipoDecisao}"
                                                   converter="EnumComCodigoDescricao"
-                                                  rendered="#{not justificativaBean.view.temInformarDecisao}"/>
+                                                  rendered="#{not novaJustificativaManagedBean.view.temInformarDecisao}"/>
                                     <p:selectOneMenu id="decisaoRh"
-                                                     rendered="#{justificativaBean.view.temInformarDecisao}"
-                                                     value="#{justificativaBean.justificativa.tipoDecisao}"
+                                                     rendered="#{novaJustificativaManagedBean.view.temInformarDecisao}"
+                                                     value="#{novaJustificativaManagedBean.justificativa.tipoDecisao}"
                                                      required="true"
                                                      requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
                                         <f:selectItem itemValue="" itemLabel="" />
-                                        <f:selectItems value="#{justificativaBean.tipoDecisaoList}" />
+                                        <f:selectItems value="#{novaJustificativaManagedBean.tipoDecisaoList}" />
                                     </p:selectOneMenu>
-                                    <p:message id="decisaoRhMsg" for="decisaoRh" rendered="#{justificativaBean.view.temInformarDecisao}" />
+                                    <p:message id="decisaoRhMsg" for="decisaoRh" rendered="#{novaJustificativaManagedBean.view.temInformarDecisao}" />
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="text-align:left">
                                     <h:outputLabel value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
-                                    <h:outputText id="txtObsRh" value="#{justificativaBean.justificativa.obsRh}"
-                                                  rendered="#{not justificativaBean.view.temInformarDecisao}"/>
+                                    <h:outputText id="txtObsRh" value="#{novaJustificativaManagedBean.justificativa.obsRh}"
+                                                  rendered="#{not novaJustificativaManagedBean.view.temInformarDecisao}"/>
                                     <p:inputTextarea id="obsRh" rows="5" cols="30"
-                                                     rendered="#{justificativaBean.view.temInformarDecisao}"
+                                                     rendered="#{novaJustificativaManagedBean.view.temInformarDecisao}"
                                                      maxlength="300" autoResize="true" required="false"
                                                      requiredMessage="#{msgs['form.justificativa.observacao.required']}"
-                                                     value="#{justificativaBean.justificativa.obsRh}" />
+                                                     value="#{novaJustificativaManagedBean.justificativa.obsRh}" />
                                     <p:message id="obsRhMsg" for="obsRh" />
                                 </p:column>
                             </p:row>
@@ -236,10 +236,10 @@
                     </p:fieldset>
 
                     <p:panel header="#{msgs['form.justificativa.legenda.aprovacoes']}"
-                             style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.aprovacoes}">
+                             style="margin-top: 20px;" rendered="#{not empty novaJustificativaManagedBean.justificativa.aprovacoes}">
 
                         <p:dataTable var="historico"
-                                     value="#{justificativaBean.justificativa.aprovacoes}"
+                                     value="#{novaJustificativaManagedBean.justificativa.aprovacoes}"
                                      id="tblAprovacoesJustificativa">
                             <p:column id="colDataAprovacoes">
                                 <f:facet name="header">
@@ -267,7 +267,7 @@
                         </p:dataTable>
                     </p:panel>
 
-                    <p:panelGrid id="idGrdProxResponsavel" styleClass="tabela" rendered="#{justificativaBean.view.temProximoPasso}">
+                    <p:panelGrid id="idGrdProxResponsavel" styleClass="tabela" rendered="#{novaJustificativaManagedBean.view.temProximoPasso}">
                         <p:row>
                             <p:column style="table-layout:fixed;width:130px">
                                 <h:outputLabel value="#{msgs['form.justificativa.workflow.label.aprovador']}#{msgs['form.label.doispontos']} " />
@@ -276,9 +276,9 @@
                                 <p:selectOneMenu id="idSlctProxResponsavel"
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.workflow.aprovador.required']}"
-                                                 value="#{justificativaBean.justificativa.idProximoResponsavel}">
+                                                 value="#{novaJustificativaManagedBean.justificativa.idProximoResponsavel}">
                                     <f:selectItem itemValue="" itemLabel="" />
-                                    <f:selectItems value="#{justificativaBean.escolhas}" />
+                                    <f:selectItems value="#{novaJustificativaManagedBean.escolhas}" />
                                 </p:selectOneMenu>
                                 <p:message id="idMsgProximoResponsavel" for="idSlctProxResponsavel" />
                             </p:column>
@@ -286,19 +286,19 @@
                     </p:panelGrid>
 
                     <p:commandButton id="idNextStep"
-                                     rendered="#{justificativaBean.view.temProximoPasso}"
+                                     rendered="#{novaJustificativaManagedBean.view.temProximoPasso}"
                                      value="#{msgs['form.justificativa.botao.enviar']}"
                                      update=":panel"
-                                     actionListener="#{justificativaBean.proximo}"
+                                     actionListener="#{novaJustificativaManagedBean.proximo}"
                                      oncomplete="handleProximo(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
                         <f:attribute name="fluxo" value="#{workflow}"/>
                     </p:commandButton>
 
                     <p:commandButton id="idConcluir"
-                                     rendered="#{justificativaBean.view.temConcluir}"
+                                     rendered="#{novaJustificativaManagedBean.view.temConcluir}"
                                      value="#{msgs['form.justificativa.botao.concluidorh']}"
-                                     actionListener="#{justificativaBean.proximo}"
+                                     actionListener="#{novaJustificativaManagedBean.proximo}"
                                      update=":panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
@@ -306,7 +306,7 @@
                     </p:commandButton>
 
                     <p:commandButton id="btnCancelar"
-                                     rendered="#{justificativaBean.view.temCancelar}"
+                                     rendered="#{novaJustificativaManagedBean.view.temCancelar}"
                                      value="#{msgs['form.justificativa.botao.cancelar']}"
                                      oncomplete="cadDialog.show()" icon="ui-icon-circle-arrow-e"/>
                 </h:form>
@@ -315,10 +315,10 @@
             <p:separator style="margin-top: 20px;" />
 
             <p:panel header="#{msgs['form.justificativa.legenda.historico']}"
-                     style="margin-top: 20px;" rendered="#{not empty justificativaBean.justificativa.tramite}">
+                     style="margin-top: 20px;" rendered="#{not empty novaJustificativaManagedBean.justificativa.tramite}">
 
                 <p:dataTable var="historico"
-                             value="#{justificativaBean.justificativa.tramite}"
+                             value="#{novaJustificativaManagedBean.justificativa.tramite}"
                              id="tblHistoricoJustificativa">
                     <p:column id="colDataHistorico">
                         <f:facet name="header">
@@ -374,7 +374,7 @@
                                                  maxlength="300" autoResize="true"
                                                  requiredMessage="#{msgs['dialog.cancelar.valida.justificativa']}"
                                                  required="true"
-                                                 value="#{justificativaBean.justificativa.cancelamento}" />
+                                                 value="#{novaJustificativaManagedBean.justificativa.cancelamento}" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -382,7 +382,7 @@
                                 <p:commandButton id="btsalvar"
                                                  value="#{msgs['dialog.cancelar.botao.salvar']}"
                                                  update="display"
-                                                 actionListener="#{justificativaBean.proximo}"
+                                                 actionListener="#{novaJustificativaManagedBean.proximo}"
                                                  oncomplete="handleCancelRequest(xhr, status, args)">
                                     <f:attribute name="fluxo" value="#{cancelar}"/>
                                 </p:commandButton>

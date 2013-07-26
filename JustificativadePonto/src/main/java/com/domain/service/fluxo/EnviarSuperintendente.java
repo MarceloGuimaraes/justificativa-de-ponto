@@ -2,7 +2,6 @@ package com.domain.service.fluxo;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -36,16 +35,10 @@ public class EnviarSuperintendente extends ProximoPasso {
 
         Identificacao usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), Identificacao.class);
 
-        if (justificativa.getStatus().equals(StatusEnum.APROVCOORD)
+        return justificativa.getStatus().equals(StatusEnum.APROVCOORD)
                 && historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)
                 && historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)
-                .getResponsavel().equals(usuarioLogado)) {
-
-            return true;
-
-        }
-
-        return false;
+                .getResponsavel().equals(usuarioLogado);
     }
 
     @Override
@@ -53,17 +46,18 @@ public class EnviarSuperintendente extends ProximoPasso {
         // Inserindo o superintendente escolhido
         User superintendente=userService.recuperar(justificativa.getIdProximoResponsavel());
         User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
+        User usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        justificativaService.atua(
-                permissoes.getUsuarioLogado(),
-                justificativa,
+        JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
+
+        justificativaService.atua(usuarioLogado,
+                justificativaPonto,
                 StatusEnum.APROVSUPERINTENDENTE,
                 TipoEventoJustificativaPontoEnum.APROVADO_COORDENADOR);
 
-        justificativaService.mudaSituacao(
-                permissoes.getUsuarioLogado(),
-                mapper.map(superintendente, UsuarioLogado.class),
-                justificativa,
+        justificativaService.encaminha(usuarioLogado,
+                superintendente,
+                justificativaPonto,
                 StatusEnum.APROVSUPERINTENDENTE,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
@@ -71,7 +65,7 @@ public class EnviarSuperintendente extends ProximoPasso {
                 permissoes.getUsuarioLogado(),
                 solicitante,
                 superintendente,
-                justificativa.getId()
+                justificativaPonto.getId()
         );
     }
 

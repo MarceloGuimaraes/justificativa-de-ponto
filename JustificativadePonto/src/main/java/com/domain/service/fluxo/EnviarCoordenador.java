@@ -2,7 +2,6 @@ package com.domain.service.fluxo;
 
 import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.UsuarioLogado;
 import com.managed.bean.IPermissoesBean;
 import com.model.*;
 import com.service.IJustificativaService;
@@ -34,16 +33,18 @@ public class EnviarCoordenador extends ProximoPasso {
     public void proximo(JustificativaPontoDTO justificativa) {
         // Inserindo o coordenador escolhido
         final User coordenador = userService.recuperar(justificativa.getIdProximoResponsavel());
+        final User solicitante = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        justificativa = justificativaService.adicionar(justificativa);
+        JustificativaPonto justificativaNova = new JustificativaPonto(solicitante);
+        mapper.map(justificativa, justificativaNova);
 
-        justificativa = justificativaService.mudaSituacao(
-                permissoes.getUsuarioLogado(),
-                mapper.map(coordenador, UsuarioLogado.class),
-                justificativa,
+        justificativaNova = justificativaService.adicionar(justificativaNova);
+
+        justificativaService.encaminha(solicitante,
+                coordenador,
+                justificativaNova,
                 StatusEnum.APROVCOORD,
-                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR
-        );
+                TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR);
 
         final List<User> destinos = new LinkedList<User>();
         destinos.add(coordenador);
@@ -51,7 +52,7 @@ public class EnviarCoordenador extends ProximoPasso {
         mailService.enviarCoordenador(
                 permissoes.getUsuarioLogado(),
                 coordenador,
-                justificativa.getId()
+                justificativaNova.getId()
         );
     }
 
