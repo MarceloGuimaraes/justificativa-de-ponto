@@ -38,6 +38,11 @@ public class HandlerMotivosManagedBean implements Serializable {
         tipoFaltaMarcacaoList = new ComboTipoFaltaMarcacaoDatasourceImpl().findObjects();
     }
 
+    public HandlerMotivosManagedBean(MotivoEnum motivo){
+        this();
+        setConfiguracao(motivo);
+    }
+
     public Map<String, Boolean> getConfiguracao() {
         return configuracao;
     }
@@ -60,7 +65,7 @@ public class HandlerMotivosManagedBean implements Serializable {
             configuracao = getConfiguracaoAtividadeFora();
         } else if(MotivoEnum.ATRASOS == motivo) {
             configuracao = getConfiguracaoOutros();
-        } else if(MotivoEnum.ATIVIDADEFORA == motivo) {
+        } else if(MotivoEnum.SAIDAANTECIPADA == motivo){
             configuracao = getConfiguracaoOutros();
         } else {
             throw new IllegalArgumentException("Motivo nao existe");

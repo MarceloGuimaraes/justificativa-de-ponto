@@ -4,9 +4,10 @@ import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.domain.service.IProximoPasso;
 import com.util.Message;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
@@ -15,22 +16,36 @@ import java.io.Serializable;
  * Time: 13:49
  */
 public class FluxoJustificativaManagedBean implements Serializable {
-    public static final String ATRIBUTO_FLUXO = "fluxo";
-    public static final String ATRIBUTO_JUSTIFICATIVA = "justificativa";
     private final IPermissoesBean permissoes;
+    private JustificativaPontoDTO justificativa;
+    private IProximoPasso proximoPasso;
 
     public FluxoJustificativaManagedBean(IPermissoesBean permissoes) {
         this.permissoes = permissoes;
     }
 
-    public void proximo(ActionEvent event) {
+    public JustificativaPontoDTO getJustificativa() {
+        return justificativa;
+    }
+
+    public void setJustificativa(JustificativaPontoDTO justificativa) {
+        this.justificativa = justificativa;
+    }
+
+    public IProximoPasso getProximoPasso() {
+        return proximoPasso;
+    }
+
+    public void setProximoPasso(IProximoPasso proximoPasso) {
+        this.proximoPasso = proximoPasso;
+    }
+
+    public String proximo() {
         final RequestContext context = RequestContext.getCurrentInstance();
 
         boolean sucesso = true;
 
         try {
-            final JustificativaPontoDTO justificativa = (JustificativaPontoDTO) event.getComponent().getAttributes().get(ATRIBUTO_JUSTIFICATIVA);
-            final IProximoPasso proximoPasso = (IProximoPasso) event.getComponent().getAttributes().get(ATRIBUTO_FLUXO);
             proximoPasso.proximo(justificativa);
         } catch (BusinessException be) {
             Message.addMessage(be.getMessage(), permissoes.getUsuarioLogado().getNome());
@@ -42,5 +57,6 @@ public class FluxoJustificativaManagedBean implements Serializable {
         }
 
         context.addCallbackParam("sucesso", sucesso);
+        return null;
     }
 }

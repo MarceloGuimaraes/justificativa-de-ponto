@@ -143,6 +143,15 @@ public class JustificativaPontoDTO implements Serializable {
         this.solicitante = solicitante;
     }
 
+    public void setUserSolicitante(User solicitante){
+        this.solicitante = new UsuarioLogado();
+        this.solicitante.setId(solicitante.getId());
+        this.solicitante.setNome(solicitante.getNome());
+        this.solicitante.setCpf(solicitante.getCpf());
+        this.solicitante.setEmail(solicitante.getEmail());
+        this.solicitante.setPerfil(solicitante.getPerfil());
+    }
+
     public List<HistoricoJustificativaPontoDTO> getHistorico() {
         return historico;
     }

@@ -60,6 +60,14 @@
         <constructor-arg ref="consultaJustificativasPorAprovadorService"/>
     </bean>
 
+    <bean id="justificativasDTOPendentesAprovacaoPaginadas" class="com.managed.bean.AprovacaoJustificativaManagedBean" scope="request">
+        <constructor-arg ref="pendenteAprovacaoWrappedPaginadaDataModel"/>
+    </bean>
+
+    <bean id="pendenteAprovacaoWrappedPaginadaDataModel" class="com.managed.bean.PendenteAprovacaoWrappedPaginadaDataModel" scope="view">
+        <constructor-arg value="lazyDataModelAdapter" type="java.lang.String"/>
+    </bean>
+
     <!-- Controller do relatorio -->
     <bean id="relatorioManagedBean" class="com.managed.bean.RelatorioManagedBean" scope="request">
         <constructor-arg ref="UserService"/>

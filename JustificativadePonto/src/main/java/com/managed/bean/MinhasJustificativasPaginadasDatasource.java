@@ -4,6 +4,7 @@ import com.domain.dto.JustificativaPontoGrid;
 import com.service.IConsultaPaginadaService;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;

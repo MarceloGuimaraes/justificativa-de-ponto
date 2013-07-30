@@ -78,4 +78,6 @@
 
     <bean id="consultaOcorrenciasDao" class="com.dao.impl.ConsultaOcorrenciasDao" parent="dao"/>
 
+    <bean id="consultaJustificativaDTOPorAprovadorDao" class="com.dao.impl.ConsultaJustificativaDTOPorAprovadorDao" parent="dao"/>
+
 </beans>

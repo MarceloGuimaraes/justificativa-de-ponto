@@ -95,6 +95,5 @@ public class JustificativaManagedBean implements Serializable {
             resultado.add(new SelectItem(u.getId(), u.getNome()));
         }
         return resultado;
-
     }
 }

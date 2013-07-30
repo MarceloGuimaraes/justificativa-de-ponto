@@ -1,72 +1,234 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/pages/template.xhtml">
-	<ui:define name="titulo">
-		<h:outputText value="#{msgs['relatorio.justificativa.pagina.titulo.pendenteaprovacao']}" />
-	</ui:define>
-	<ui:define name="corpo">
-		<h:form id="justificativaPorAprovador">
-			<p:dataTable var="justificativa"
-				value="#{justificativasPendentesAprovacaoPaginadas.justificativas}"
-				paginator="true" rows="10"
-				emptyMessage="#{msgs['consulta.semregistro']}">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="pt_BR"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="cabecalho">
+            <style type="text/css">
+                .tabela1 {
+                    height: auto;
+                    margin-top:10px;
+                    width:99%;
+                }
 
-				<f:facet name="header">
-					<h:outputText
-						value="#{msgs['relatorio.justificativa.tabela.titulo.pendenteaprovacao']}" />
-				</f:facet>
-				<p:column>
-					<f:facet name="header">
-					</f:facet>
-					<a href="justificativa.jsf?id=#{justificativa.id}"> <img
-						src="../resources/imagens/actn103.gif" border="0"
-						alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
-					</a>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText
-							value="#{msgs['relatorio.justificativa.dtsolicitacao']}" />
-					</f:facet>
-					<h:outputText value="#{justificativa.dataSolicitacao}">
-						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
-					</h:outputText>
-                    <h:outputText value=" #{msgs['sistema.separador.hifen']} " rendered="#{justificativa.periodo}"/>
-                    <h:outputText value="#{justificativa.dataSolicitacaoFim}" rendered="#{justificativa.periodo}">
-                        <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
-                    </h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msgs['relatorio.justificativa.dtcriacao']}" />
-					</f:facet>
-					<h:outputText value="#{justificativa.data}">
-						<f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
-					</h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msgs['relatorio.justificativa.status']}" />
-					</f:facet>
-					<h:outputText value="#{msgs[justificativa.status.descricao]}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText
-							value="#{msgs['relatorio.justificativa.coordenador']}" />
-					</f:facet>
-					<h:outputText value="#{justificativa.coordenador.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="#{msgs['relatorio.justificativa.motivo']}" />
-					</f:facet>
-					<h:outputText value="#{msgs[justificativa.motivo.descricao]}" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-	</ui:define>
-</ui:composition>
+                .tabela1 tr th {
+                    background-color: #0B0F19;
+                    color: #FFF;
+                    padding: 10px;
+                }
+
+                div#listaJustificativas #listaJustificativas_data .tabela1 tbody tr td {
+                    padding: 5px 5px 5px 0;
+                }
+            </style>
+        </ui:define>
+        <ui:define name="titulo">
+            <h:outputText value="#{msgs['relatorio.justificativa.tabela.titulo.pendenteaprovacao']}" />
+        </ui:define>
+        <ui:define name="corpo">
+            <p:messages id="panelMensagens"/>
+            <p:panel id="pnListagemJustificativas">
+            <p:dataTable id="listaJustificativas"
+                         value="#{justificativasDTOPendentesAprovacaoPaginadas.justificativas}"
+                         var="wrapper"
+                         rows="2"
+                         paginator="true"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="2,5,10"
+                         lazy="true">
+                <p:column>
+                    <h:form id="formAprovacaoJustificativa">
+                        <p:panelGrid id="pnCabecalho" styleClass="tabela1">
+                            <p:row>
+                                <p:column style="text-align:left; width:135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.solicitante']}#{msgs['form.label.doispontos']} "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="solicitante"
+                                                  value="#{wrapper.justificativa.solicitante.nome}"
+                                                  style="text-align:left" />
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.situacao']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{wrapper.justificativa.status}">
+                                        <f:converter converterId="StatusConverter" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="width: 50px;" rowspan="7">
+                                    <p:commandButton title="#{msgs['form.justificativa.botao.enviar']}"
+                                                     rendered="#{wrapper.view.temProximoPasso}"
+                                                     update=":panelMensagens :pnListagemJustificativas"
+                                                     action="#{fluxoJustificativaManagedBean.proximo}"
+                                                     oncomplete="handleProximo(xhr, status, args)"
+                                                     icon="ui-icon-check" ajax="true">
+                                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{wrapper.justificativa}"/>
+                                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{workflow}"/>
+                                    </p:commandButton>
+                                    <p:commandButton title="#{msgs['form.justificativa.botao.concluidorh']}"
+                                                     rendered="#{wrapper.view.temConcluir}"
+                                                     update=":panelMensagens :pnListagemJustificativas"
+                                                     action="#{fluxoJustificativaManagedBean.proximo}"
+                                                     oncomplete="handleConcluir(xhr, status, args)"
+                                                     icon="ui-icon-check" ajax="true">
+                                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{wrapper.justificativa}"/>
+                                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{workflow}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:left; width:135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:outputText id="txtMotivo" value="#{wrapper.justificativa.motivo}" converter="EnumComCodigoDescricao"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:left; width: 135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.dataSolicitacao']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="txtDataSolicitacaoIni" value="#{wrapper.justificativa.dataSolicitacao}"
+                                                  rendered="#{wrapper.handler.configuracao['DATA_INI']}">
+                                        <f:convertDateTime pattern="#{msgs['sistema.formato.data']}" />
+                                    </h:outputText>
+                                    <h:outputLabel value=" #{msgs['form.justificativa.label.ate']} "
+                                                   rendered="#{wrapper.handler.configuracao['DATA_FIM']}" />
+                                    <h:outputText id="txtDataSolicitacaoFim" value="#{wrapper.justificativa.dataSolicitacaoFim}"
+                                                  rendered="#{wrapper.handler.configuracao['DATA_FIM']}">
+                                        <f:convertDateTime type="date" pattern="#{msgs['sistema.formato.data']}"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="text-align:left; width: 135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.horario']}#{msgs['form.label.doispontos']}" rendered="#{wrapper.handler.configuracao['HORA_INI']}" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="dtHoraInicio" value="#{wrapper.justificativa.hrIni}" rendered="#{wrapper.handler.configuracao['HORA_INI']}">
+                                        <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
+                                    </h:outputText>
+                                    <h:outputLabel value=" #{msgs['form.justificativa.label.ate']} " rendered="#{wrapper.handler.configuracao['HORA_FIM']}" />
+                                    <h:outputText id="dtHoraFim" value="#{wrapper.justificativa.hrFim}" rendered="#{wrapper.handler.configuracao['HORA_FIM']}">
+                                        <f:convertDateTime type="time" pattern="#{msgs['sistema.formato.hora']}" timeZone="#{msgs['sistema.formato.timezone']}"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{wrapper.handler.configuracao['CAUSA_FALTA']}">
+                                <p:column style="text-align:left; width:135px;">
+                                    <h:outputLabel id="lbCausaFalta" value="#{msgs['form.justificativa.label.causafalta']}#{msgs['form.label.doispontos']} "/>
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:outputText value="#{wrapper.justificativa.tipofalta}" converter="EnumComCodigoDescricao"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{wrapper.handler.configuracao['TIPO_BANCO_HORAS']}">
+                                <p:column style="text-align:left; width:135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.bancohoras']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:outputText value="#{wrapper.justificativa.tipobancohoras}" converter="EnumComCodigoDescricao"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{wrapper.handler.configuracao['TIPO_FALTA_MARCACAO']}">
+                                <p:column style="text-align:left; width:135px;">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.faltamarcacao']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:outputText value="#{wrapper.justificativa.tipofaltamarcacao}" converter="EnumComCodigoDescricao"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:left;">
+                                    <h:outputLabel id="lblJustificativa" value="#{msgs['form.justificativa.legenda.justificativa']}#{msgs['form.label.doispontos']}"/>
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:inputTextarea id="inTxtAreaJustificativa" value="#{wrapper.justificativa.descricao}" readonly="true" cols="80" rows="3" style="width: 600px;"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.tipoDecisao']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <p:selectOneMenu id="decisaoRh"
+                                                     rendered="#{wrapper.view.temInformarDecisao}"
+                                                     value="#{wrapper.justificativa.tipoDecisao}"
+                                                     required="true"
+                                                     requiredMessage="#{msgs['form.justificativa.decisaorh.required']}">
+                                        <f:selectItem itemValue="" itemLabel="" />
+                                        <f:selectItems value="#{wrapper.tipoDecisaoList}" />
+                                    </p:selectOneMenu>
+                                    <h:outputText id="txtDecisaoRh"
+                                                  value="#{wrapper.justificativa.tipoDecisao}"
+                                                  converter="EnumComCodigoDescricao"
+                                                  rendered="#{not wrapper.view.temInformarDecisao}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:left">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.observacao']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <h:outputText id="txtObsRh" value="#{wrapper.justificativa.obsRh}"
+                                                  rendered="#{not wrapper.view.temInformarDecisao}"/>
+                                    <p:inputTextarea id="obsRh" rows="5" cols="30" style="width: 600px;"
+                                                     rendered="#{wrapper.view.temInformarDecisao}"
+                                                     maxlength="300" autoResize="true" required="false"
+                                                     value="#{wrapper.justificativa.obsRh}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row rendered="#{wrapper.view.temProximoPasso}">
+                                <p:column style="table-layout:fixed;width:130px">
+                                    <h:outputLabel value="#{msgs['form.justificativa.workflow.label.aprovador']}#{msgs['form.label.doispontos']} " />
+                                </p:column>
+                                <p:column colspan="3">
+                                    <p:selectOneMenu id="idSlctProxResponsavel"
+                                                     required="true"
+                                                     requiredMessage="#{msgs['form.justificativa.workflow.aprovador.required']}"
+                                                     value="#{wrapper.justificativa.idProximoResponsavel}">
+                                        <f:selectItem itemValue="" itemLabel="#{msgs['form.combo.selecione']}" />
+                                        <f:selectItems value="#{wrapper.escolhas}" />
+                                    </p:selectOneMenu>
+                                    <p:message id="idMsgProximoResponsavel" for="idSlctProxResponsavel" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </h:form>
+                </p:column>
+            </p:dataTable>
+            </p:panel>
+            <script type="text/javascript">
+                function handleCancelRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.sucesso) {
+                        jQuery('#idDialogCancel').effect("shake", {
+                            times : 3
+                        }, 100);
+                    } else {
+                        cadDialog.hide();
+                        alert("#{msgs['form.justificativa.mensagem.cancelar']}");
+                        location.href = 'welcome.jsf';
+                    }
+                }
+                function handleProximo(xhr, status, args) {
+                    if (!args.validationFailed &amp;&amp; args.sucesso) {
+                        alert("#{msgs['form.justificativa.mensagem.envioProximo']}");
+
+                    }
+                }
+                function handleConcluir(xhr, status, args) {
+                    if (!args.validationFailed &amp;&amp; args.sucesso) {
+                        alert("#{msgs['form.justificativa.mensagem.concluido']}");
+                    }
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

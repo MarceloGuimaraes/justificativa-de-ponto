@@ -70,12 +70,29 @@
         <constructor-arg ref="mapper"/>
     </bean>
 
+    <bean id="consultaJustificativaDTOPorAprovadorService" class="com.service.impl.ConsultaJustificativaDTOPaginadaPorUserServiceImpl">
+        <constructor-arg ref="consultaJustificativaDTOPorAprovadorDao"/>
+        <constructor-arg ref="PermissoesBean"/>
+        <constructor-arg ref="mapper"/>
+    </bean>
+
     <bean id="consultaJustificativasPorMotivoPaginadaService" class="com.service.impl.ConsultaJustificativasPaginadaService">
         <constructor-arg ref="consultaJustificativaPontoPorMotivoDao" />
     </bean>
 
     <bean class="com.service.impl.ConsultaOcorrenciasService" id="consultaOcorrenciasService">
         <constructor-arg ref="consultaOcorrenciasDao"/>
+    </bean>
+
+    <!-- Bean Wrappers -->
+    <bean id="justificativaBeanWrapper" class="com.managed.bean.helper.impl.JustificativaBeanWrapper">
+        <constructor-arg ref="workflow"/>
+    </bean>
+
+    <!-- Adapter -->
+    <bean id="lazyDataModelAdapter" class="com.jsf.adapter.LazyDataModelAdapter">
+        <constructor-arg ref="consultaJustificativaDTOPorAprovadorService"/>
+        <constructor-arg ref="justificativaBeanWrapper"/>
     </bean>
 
     <!-- Dozzer BeanMapper -->

@@ -195,15 +195,14 @@
                     <p:fieldset id="justificativaGrid" legend="#{msgs['form.justificativa.legenda.justificativa']}">
                         <p:row>
                             <p:column style="text-align:left">
-                                <ui:insert name="campoDescricaoJustificativa">
-                                    <p:inputTextarea id="descricao" rows="5" cols="30"
-                                                     maxlength="300" autoResize="true" required="true"
-                                                     requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
-                                                     rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
-                                                     value="#{novaJustificativaManagedBean.justificativa.descricao}" />
-                                    <p:message id="descricaoMsg" for="descricao" />
-                                    <h:outputText value="#{novaJustificativaManagedBean.justificativa.descricao}" rendered="#{not novaJustificativaManagedBean.view.permiteEditar}"/>
-                                </ui:insert>
+                                <p:inputTextarea id="descricao" rows="5" cols="30"
+                                                 maxlength="300" autoResize="true" required="true"
+                                                 requiredMessage="#{msgs['form.justificativa.justificativa.required']}"
+                                                 rendered="#{novaJustificativaManagedBean.view.permiteEditar}"
+                                                 value="#{novaJustificativaManagedBean.justificativa.descricao}" />
+                                <p:message id="descricaoMsg" for="descricao" />
+                                <h:outputText value="#{novaJustificativaManagedBean.justificativa.descricao}"
+                                              rendered="#{not novaJustificativaManagedBean.view.permiteEditar}"/>
                             </p:column>
                         </p:row>
                     </p:fieldset>
@@ -284,7 +283,7 @@
                                                  required="true"
                                                  requiredMessage="#{msgs['form.justificativa.workflow.aprovador.required']}"
                                                  value="#{novaJustificativaManagedBean.justificativa.idProximoResponsavel}">
-                                    <f:selectItem itemValue="" itemLabel="" />
+                                    <f:selectItem itemValue="" itemLabel="#{msgs['form.combo.selecione']}" />
                                     <f:selectItems value="#{novaJustificativaManagedBean.escolhas}" />
                                 </p:selectOneMenu>
                                 <p:message id="idMsgProximoResponsavel" for="idSlctProxResponsavel" />
@@ -296,22 +295,22 @@
                                      rendered="#{novaJustificativaManagedBean.view.temProximoPasso}"
                                      value="#{msgs['form.justificativa.botao.enviar']}"
                                      update=":panel"
-                                     actionListener="#{fluxoJustificativaManagedBean.proximo}"
+                                     action="#{fluxoJustificativaManagedBean.proximo}"
                                      oncomplete="handleProximo(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
-                        <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
-                        <f:attribute name="fluxo" value="#{workflow}"/>
+                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{novaJustificativaManagedBean.justificativa}"/>
+                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{workflow}"/>
                     </p:commandButton>
 
                     <p:commandButton id="idConcluir"
                                      rendered="#{novaJustificativaManagedBean.view.temConcluir}"
                                      value="#{msgs['form.justificativa.botao.concluidorh']}"
-                                     actionListener="#{fluxoJustificativaManagedBean.proximo}"
+                                     action="#{fluxoJustificativaManagedBean.proximo}"
                                      update=":panel"
                                      oncomplete="handleConcluir(xhr, status, args)"
                                      icon="ui-icon-circle-arrow-e">
-                        <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
-                        <f:attribute name="fluxo" value="#{concluir}"/>
+                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{novaJustificativaManagedBean.justificativa}"/>
+                        <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{concluir}"/>
                     </p:commandButton>
 
                     <p:commandButton id="btnCancelar"
@@ -391,10 +390,10 @@
                                 <p:commandButton id="btsalvar"
                                                  value="#{msgs['dialog.cancelar.botao.salvar']}"
                                                  update="display"
-                                                 actionListener="#{fluxoJustificativaManagedBean.proximo}"
+                                                 action="#{fluxoJustificativaManagedBean.proximo}"
                                                  oncomplete="handleCancelRequest(xhr, status, args)">
-                                    <f:attribute name="justificativa" value="#{novaJustificativaManagedBean.justificativa}"/>
-                                    <f:attribute name="fluxo" value="#{cancelar}"/>
+                                    <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{novaJustificativaManagedBean.justificativa}"/>
+                                    <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{cancelar}"/>
                                 </p:commandButton>
                                 <p:commandButton value="Voltar" update="display" process="@this" oncomplete="cadDialog.hide()"/>
                             </p:column>
