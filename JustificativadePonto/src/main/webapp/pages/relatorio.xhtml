@@ -91,6 +91,12 @@
                             <img src="../resources/imagens/actn103.gif" border="0" alt="#{msgs['doclink.img.alt.cliqueaqui']}" />
                         </a>
                     </p:column>
+                    <p:column rendered="#{PermissoesBean.rh}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs['relatorio.gerencial.tabela.header.label.solicitante']}"/>
+                        </f:facet>
+                        <h:outputText value="#{ocorrencia.solicitante}"/>
+                    </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="#{msgs['relatorio.usuario.tabela.header.label.dataocorrencia']}" />
