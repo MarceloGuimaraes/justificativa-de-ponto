@@ -3,11 +3,9 @@ package com.service.impl;
 import com.dao.IConsultaPaginadaDao;
 import com.domain.dto.JustificativaPontoGrid;
 import com.service.IConsultaPaginadaService;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
 public class ConsultaJustificativasPaginadaService implements IConsultaPaginadaService<JustificativaPontoGrid> {
 
     private IConsultaPaginadaDao<JustificativaPontoGrid> dao;

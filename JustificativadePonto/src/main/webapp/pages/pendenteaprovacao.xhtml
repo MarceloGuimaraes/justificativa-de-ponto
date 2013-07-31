@@ -40,7 +40,8 @@
                              paginator="true"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              rowsPerPageTemplate="2,5,10"
-                             lazy="true">
+                             lazy="true"
+                             emptyMessage="#{msgs['consulta.semregistro']}">
                     <p:column>
                         <h:form id="formAprovacaoJustificativa">
                             <p:panelGrid id="pnCabecalho" styleClass="tabela1">
@@ -85,7 +86,7 @@
                                                          title="#{msgs['form.justificativa.botao.cancelar']}"
                                                          update=":idDialogCancel"
                                                          oncomplete="cadDialog.show()"
-                                                         icon="ui-icon-circle-close">
+                                                         icon="ui-icon-circle-close" immediate="true">
                                             <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.justificativa}" value="#{wrapper.justificativa}"/>
                                         </p:commandButton>
                                     </p:column>

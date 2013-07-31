@@ -13,7 +13,6 @@ import java.util.List;
  * Date: 4/29/13
  * Time: 11:06 PM
  */
-@Transactional(readOnly = true)
 public class ConsultaOcorrenciasService implements IConsultaFiltradaPaginadaService<Ocorrencia, FiltroJustificativa> {
     private final ConsultaOcorrenciasDao consultaOcorrenciasDao;
 

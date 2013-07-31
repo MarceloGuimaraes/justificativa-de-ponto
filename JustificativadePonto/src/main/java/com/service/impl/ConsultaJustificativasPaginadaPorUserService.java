@@ -7,7 +7,6 @@ import com.model.User;
 import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
 public class ConsultaJustificativasPaginadaPorUserService extends ConsultaPaginadaPorUserService<JustificativaPontoGrid> {
     public ConsultaJustificativasPaginadaPorUserService(IConsultaFiltradaPaginadaDao<JustificativaPontoGrid, User> dao,
                                                         IPermissoesBean permissoes,
