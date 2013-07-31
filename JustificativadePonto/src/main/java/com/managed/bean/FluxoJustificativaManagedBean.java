@@ -4,10 +4,8 @@ import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.domain.service.IProximoPasso;
 import com.util.Message;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
 
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
@@ -22,6 +20,7 @@ public class FluxoJustificativaManagedBean implements Serializable {
 
     public FluxoJustificativaManagedBean(IPermissoesBean permissoes) {
         this.permissoes = permissoes;
+        this.justificativa = new JustificativaPontoDTO(permissoes.getUsuarioLogado());
     }
 
     public JustificativaPontoDTO getJustificativa() {

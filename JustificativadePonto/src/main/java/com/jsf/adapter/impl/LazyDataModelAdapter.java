@@ -1,5 +1,6 @@
-package com.jsf.adapter;
+package com.jsf.adapter.impl;
 
+import com.jsf.adapter.ILazyDataModelAdapter;
 import com.jsf.model.WrappedBeanPaginadaDataModel;
 import com.managed.bean.helper.BeanWrapper;
 import com.service.IConsultaPaginadaService;

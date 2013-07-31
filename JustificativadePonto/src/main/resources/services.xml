@@ -90,7 +90,7 @@
     </bean>
 
     <!-- Adapter -->
-    <bean id="lazyDataModelAdapter" class="com.jsf.adapter.LazyDataModelAdapter">
+    <bean id="lazyDataModelAdapter" class="com.jsf.adapter.impl.LazyDataModelAdapter">
         <constructor-arg ref="consultaJustificativaDTOPorAprovadorService"/>
         <constructor-arg ref="justificativaBeanWrapper"/>
     </bean>
