@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 29/07/13
  * Time: 14:22
  */
-public class LazyDataModelAdapter<W,T> implements ILazyDataModelAdapter<W,T> {
+public class LazyDataModelAdapter<W,T> implements ILazyDataModelAdapter<W> {
     private IConsultaPaginadaService<T> service;
     private BeanWrapper<W,T> beanWrapper;
 
@@ -23,7 +23,7 @@ public class LazyDataModelAdapter<W,T> implements ILazyDataModelAdapter<W,T> {
         this.beanWrapper = beanWrapper;
     }
 
-    public List<W> atualizar(WrappedBeanPaginadaDataModel<W,T> dataModel, int startIndex, int pageSize){
+    public List<W> atualizar(WrappedBeanPaginadaDataModel<W> dataModel, int startIndex, int pageSize){
         dataModel.setRowCount((int) service.count());
         List<T> wrappeds = service.todas(startIndex, pageSize);
         List<W> resultado = new ArrayList<W>();

@@ -11,6 +11,6 @@ import java.util.List;
  * Time: 17:49
  */
 @Transactional(readOnly = true)
-public interface ILazyDataModelAdapter<W,T> {
-    List<W> atualizar(WrappedBeanPaginadaDataModel<W,T> dataModel, int startIndex, int pageSize);
+public interface ILazyDataModelAdapter<W> {
+    List<W> atualizar(WrappedBeanPaginadaDataModel<W> dataModel, int startIndex, int pageSize);
 }

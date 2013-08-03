@@ -7,60 +7,59 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<f:loadBundle basename="mensagens" var="msgs" />
+    <f:loadBundle basename="mensagens" var="msgs" />
 
-<h:head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8;" />
-    <title>
-        <ui:insert name="titulo">
-            <h:outputText value="#{msgs['justificativa.label.titulo']}" />
-        </ui:insert>
-    </title>
-    <h:outputStylesheet library="css" name="style.css" />
-    <h:outputScript name="jsf.js" library="javax.faces" target="head" />
-    <ui:insert name="cabecalho" />
-</h:head>
-<h:body>
-    <div id="cabecalho">
-        <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
-    </div>
-    <div id="conteudo">
-        <h:form>
-            <p:menubar styleClass="menunav">
+    <h:head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8;" />
+        <title>
+            <ui:insert name="titulo">
+                <h:outputText value="#{msgs['justificativa.label.titulo']}" />
+            </ui:insert>
+        </title>
+        <h:outputStylesheet library="css" name="style.css" />
+        <h:outputScript name="jsf.js" library="javax.faces" target="head" />
+        <ui:insert name="cabecalho" />
+    </h:head>
+    <h:body>
+        <div id="cabecalho">
+            <h:graphicImage library="imagens" name="logo.jpg"  id="logoCompany" />
+        </div>
+        <div id="conteudo">
+            <h:form id="menuBar">
+                <p:menubar styleClass="menunav">
                     <p:menuitem value="#{msgs['template.menu.novajustificativa']}" url="/pages/justificativa.jsf" rendered="#{PermissoesBean.usuario}" />
 
-				<p:submenu label="#{msgs['template.menu.consulta']}">
-					<p:menuitem value="#{msgs['template.menu.consulta.minhasjustificativas']}" url="/pages/minhasjustificativas.jsf" rendered="#{PermissoesBean.usuario}"/>
-                    <p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.pendentesaprovacao']}" url="/pages/pendenteaprovacao.jsf" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}"/>
-                    <p:separator />
-                    <p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
-                    <p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}" />
-					<p:separator rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}"/>
-					<p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" icon="ui-icon-search"/>
-					<p:separator />
-					<p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" icon="ui-icon-search" />
-				</p:submenu>
+                    <p:submenu label="#{msgs['template.menu.consulta']}">
+                        <p:menuitem value="#{msgs['template.menu.consulta.minhasjustificativas']}" url="/pages/minhasjustificativas.jsf" rendered="#{PermissoesBean.usuario}"/>
+                        <p:separator />
+                        <p:menuitem value="#{msgs['template.menu.consulta.pendentesaprovacao']}" url="/pages/pendenteaprovacao.jsf" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}"/>
+                        <p:separator />
+                        <p:menuitem value="#{msgs['template.menu.consulta.porano']}" url="/pages/justificativaporano.jsf" icon="ui-icon-search"/>
+                        <p:separator />
+                        <p:menuitem value="#{msgs['template.menu.consulta.porsolicitante']}" url="/pages/justificativaporsolicitante.jsf" icon="ui-icon-search" rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}" />
+                        <p:separator rendered="#{PermissoesBean.coordenador or PermissoesBean.superintendente or PermissoesBean.rh or PermissoesBean.admin or PermissoesBean.support}"/>
+                        <p:menuitem value="#{msgs['template.menu.consulta.pormes']}" url="/pages/justificativapormes.jsf" icon="ui-icon-search"/>
+                        <p:separator />
+                        <p:menuitem value="#{msgs['template.menu.consulta.pormotivo']}" url="/pages/justificativapormotivo.jsf" icon="ui-icon-search" />
+                    </p:submenu>
 
-				 <p:menuitem value="#{msgs['template.menu.relatorio']}" url="/pages/relatorio.jsf" icon="ui-icon-document-b" rendered="#{PermissoesBean.usuario}" />
-				 
-                <p:submenu label="#{msgs['template.menu.adm.label']}" rendered="#{PermissoesBean.admin or PermissoesBean.support or PermissoesBean.cadastrador}" >
-<!--                     <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" icon="ui-icon-info" />
-                    <p:separator /> -->
-                    <p:menuitem value="#{msgs['template.menu.adm.novousuario']}" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
-                    <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf" icon="ui-icon-search"/>
-                </p:submenu>
+                    <p:menuitem value="#{msgs['template.menu.relatorio']}" url="/pages/relatorio.jsf" icon="ui-icon-document-b" rendered="#{PermissoesBean.usuario}" />
 
-                <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" action="#{alteraSenhaManagedBean.preparaAlteracaoSenha}"
-                            ajax="false"  icon="ui-icon-wrench"/>
-                <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}"
-                            ajax="false"  icon="ui-icon-close"/>
-            </p:menubar>
-                <div id="usuarioLogado">#{msgs['header.label.logadocomo']} #{PermissoesBean.usuarioLogado.nome}</div>
-        </h:form>
-        <ui:insert name="corpo" />
-    </div>
-    <div id="rodape">#{msgs['footer.label.titulo']}</div>
-</h:body>
+                    <p:submenu label="#{msgs['template.menu.adm.label']}" rendered="#{PermissoesBean.admin or PermissoesBean.support or PermissoesBean.cadastrador}" >
+                        <!--                     <p:menuitem value="#{msgs['template.menu.adm.manual']}" url="#" icon="ui-icon-info" />
+                                            <p:separator /> -->
+                        <p:menuitem value="#{msgs['template.menu.adm.novousuario']}" url="/pages/adm/cadUsuario.jsf" icon="ui-icon-document" />
+                        <p:menuitem value="#{msgs['template.menu.adm.consultausuario']}" url="/pages/adm/listaUsuarios.jsf" icon="ui-icon-search"/>
+                    </p:submenu>
+
+                    <p:menuitem value="#{msgs['template.menu.adm.alterasenha']}" action="#{alteraSenhaManagedBean.preparaAlteracaoSenha}"
+                                ajax="false"  icon="ui-icon-wrench"/>
+                    <p:menuitem value="#{msgs['template.menu.adm.sair']}" action="#{loginController.logOut}" ajax="false"  icon="ui-icon-close"/>
+                    <p:menuitem value="#{msgs['header.label.logadocomo']} #{PermissoesBean.usuarioLogado.nome}" disabled="true" />
+                </p:menubar>
+            </h:form>
+            <ui:insert name="corpo" />
+        </div>
+        <div id="rodape">#{msgs['footer.label.titulo']}</div>
+    </h:body>
 </html>

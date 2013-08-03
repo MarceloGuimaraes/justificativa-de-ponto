@@ -360,3 +360,11 @@ a.linksenha {
     font-size: 0.8em;
     color: #8B47DE
 }
+
+div.menunav[role=menubar] ul li[role=menuitem]:last-child {
+    float: right;
+}
+
+div.menunav[role=menubar] ul li[role=menuitem]:last-child a.ui-state-disabled {
+    opacity: 1;
+}
