@@ -4,7 +4,12 @@ import com.domain.dto.CadastroUsuario;
 import com.domain.dto.JustificativaPontoDTO;
 import com.domain.dto.exception.BusinessException;
 import com.managed.bean.IPermissoesBean;
-import com.model.*;
+import com.model.EncaminhamentoJustificativaPonto;
+import com.model.Identificacao;
+import com.model.JustificativaPonto;
+import com.model.StatusEnum;
+import com.model.TipoEventoJustificativaPontoEnum;
+import com.model.User;
 import com.service.IJustificativaService;
 import com.service.IUserService;
 import com.service.mail.IMailService;
@@ -65,25 +70,22 @@ public class Cancelar extends ProximoPasso {
             //Administrador
 
         } else {
-
             throw new BusinessException("dialog.cancelar.valida.usuarioinvalido");
-
         }
-        mapper.map(justificativa, justificativaPersistida, "cancelamento");
-        JustificativaPonto justificativaAtualizada = justificativaService.atualizar(justificativaPersistida);
         User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
         justificativaService.atua(
                 usuarioLogado,
-                justificativaAtualizada,
+                justificativaPersistida,
                 StatusEnum.CANCELADO,
-                TipoEventoJustificativaPontoEnum.CANCELADO
+                TipoEventoJustificativaPontoEnum.CANCELADO,
+                justificativa.getCancelamento()
         );
 
         mailService.cancelado(
                 permissoes.getUsuarioLogado(),
-                justificativaAtualizada.getSolicitante(),
+                justificativaPersistida.getSolicitante(),
                 destinos,
-                justificativaAtualizada.getId()
+                justificativaPersistida.getId()
         );
     }
 

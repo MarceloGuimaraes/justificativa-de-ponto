@@ -6,7 +6,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
@@ -46,9 +56,6 @@ public class JustificativaPonto implements Serializable {
 	@Column(name = "obsRh", length = 300)
 	private String obsRh;
 
-	@Column(name = "cancelamento", length = 300)
-	private String cancelamento;
-	
 	@Column(name = "status", nullable = false)
 	@Type(type = "com.util.hibernate.GenericEnumUserType", parameters = {
 			@Parameter(name = "enumClass", value = "com.model.StatusEnum"),
@@ -220,17 +227,20 @@ public class JustificativaPonto implements Serializable {
     }
 
     public void adiciona(User user, TipoEventoJustificativaPontoEnum evento) {
-
 		if (historico == null) {
 			historico = new LinkedList<HistoricoJustificativaPonto>();
 		}
-
-
         Identificacao identificacao = new Identificacao(user.getNome(), user.getCpf(), user.getEmail());
-
 		historico.add(new HistoricoJustificativaPonto(identificacao, this, evento));
-
 	}
+
+    public void adiciona(User user, TipoEventoJustificativaPontoEnum evento, String observacao) {
+        if (historico == null) {
+            historico = new LinkedList<HistoricoJustificativaPonto>();
+        }
+        Identificacao identificacao = new Identificacao(user.getNome(), user.getCpf(), user.getEmail());
+        historico.add(new HistoricoJustificativaPonto(identificacao, this, evento, observacao));
+    }
 
     public void encaminha(User user, User delegado, TipoEventoJustificativaPontoEnum evento){
 
@@ -244,14 +254,6 @@ public class JustificativaPonto implements Serializable {
         historico.add(new EncaminhamentoJustificativaPonto(id1, this, evento, id2));
 
     }
-
-	public String getCancelamento() {
-		return cancelamento;
-	}
-
-	public void setCancelamento(String cancelamento) {
-		this.cancelamento = cancelamento;
-	}
 
     public Date getDataSolicitacao() {
         return dataSolicitacao;

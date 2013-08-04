@@ -2,7 +2,22 @@ package com.model;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -45,6 +60,9 @@ public class HistoricoJustificativaPonto implements Serializable {
     )
     private TipoEventoJustificativaPontoEnum tipoEvento;
 
+    @Column(name = "observacao", length = 1000)
+    private String observacao;
+
     public HistoricoJustificativaPonto() {}
 
     public HistoricoJustificativaPonto(Identificacao usuario,
@@ -56,6 +74,14 @@ public class HistoricoJustificativaPonto implements Serializable {
         this.tipoEvento = tipoEvento;
         data = new Date();
 
+    }
+
+    public HistoricoJustificativaPonto(Identificacao usuario,
+                                       JustificativaPonto justificativaPonto,
+                                       TipoEventoJustificativaPontoEnum tipoEvento,
+                                       String observacao) {
+        this(usuario, justificativaPonto, tipoEvento);
+        this.observacao = observacao;
     }
 
     public Long getId() {
@@ -96,5 +122,13 @@ public class HistoricoJustificativaPonto implements Serializable {
 
     public void setTipoEvento(TipoEventoJustificativaPontoEnum tipoEvento) {
         this.tipoEvento = tipoEvento;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 }

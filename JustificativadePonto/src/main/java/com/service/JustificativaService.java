@@ -82,6 +82,23 @@ public class JustificativaService implements IJustificativaService {
     }
 
     @Override
+    public void atua(User usuarioLogado, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento, String observacao) {
+        if(justificativaPonto.getId()==null || justificativaPonto.getId()==0){
+            throw new IllegalArgumentException("Justificativa nao esta cadastrada no sistema");
+        }
+
+        if(tipoEvento==null){
+            throw new IllegalArgumentException("Nao foi informado o evento de historico");
+        }
+
+        justificativaPonto.setStatus(novoStatus);
+
+        justificativaPonto.adiciona(usuarioLogado, tipoEvento, observacao);
+
+        atualizar(justificativaPonto);
+    }
+
+    @Override
     public JustificativaPonto recuperar(Serializable id) {
         return dao.recuperar(id);
     }

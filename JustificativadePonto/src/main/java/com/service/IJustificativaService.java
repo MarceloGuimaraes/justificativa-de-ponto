@@ -13,6 +13,7 @@ public interface IJustificativaService {
     JustificativaPonto atualizar(JustificativaPonto justificativa);
     void encaminha(User usuarioLogado, User proximoResponsavel, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum eventoHistorico);
     void atua(User usuarioLogado, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento);
+    void atua(User usuarioLogado, JustificativaPonto justificativaPonto, StatusEnum novoStatus, TipoEventoJustificativaPontoEnum tipoEvento, String observacao);
 
     JustificativaPonto recuperar(Serializable id);
     JustificativaPonto recuperar(Serializable id, String ... atributos);

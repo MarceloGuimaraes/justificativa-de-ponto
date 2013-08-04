@@ -33,14 +33,6 @@
             <b>obsRh</b>
         </field>
     </mapping>
-    <mapping map-id="cancelamento" wildcard="false">
-        <class-a>com.model.JustificativaPonto</class-a>
-        <class-b>com.domain.dto.JustificativaPontoDTO</class-b>
-        <field>
-            <a>cancelamento</a>
-            <b>cancelamento</b>
-        </field>
-    </mapping>
     <mapping>
         <class-a>com.domain.dto.HistoricoJustificativaPontoDTO</class-a>
         <class-b bean-factory="com.util.dozer.DozerBeanFactory">com.model.HistoricoJustificativaPonto</class-b>

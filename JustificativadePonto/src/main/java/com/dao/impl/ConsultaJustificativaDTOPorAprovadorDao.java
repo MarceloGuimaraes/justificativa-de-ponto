@@ -3,7 +3,6 @@ package com.dao.impl;
 import com.dao.Dao;
 import com.dao.IConsultaFiltradaPaginadaDao;
 import com.domain.dto.JustificativaPontoDTO;
-import com.domain.dto.JustificativaPontoGrid;
 import com.model.Identificacao;
 import com.model.User;
 import org.hibernate.Query;
@@ -39,8 +38,7 @@ public class ConsultaJustificativaDTOPorAprovadorDao extends Dao implements ICon
                 "j.tipobancohoras as tipobancohoras, " +
                 "j.tipofaltamarcacao as tipofaltamarcacao, " +
                 "j.tipoDecisao as tipoDecisao, " +
-                "j.obsRh as obsRh, " +
-                "j.cancelamento as cancelamento " +
+                "j.obsRh as obsRh " +
                 "from JustificativaPonto j " +
                 "join j.historico h " +
                 "where h.data = (select max(hh.data) from HistoricoJustificativaPonto hh where hh.justificativaPonto = j) " +
