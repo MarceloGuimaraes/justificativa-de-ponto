@@ -43,18 +43,13 @@ public class ConsultaJustificativaDTOPorAprovadorDao extends Dao implements ICon
                 "join j.historico h " +
                 "where h.data = (select max(hh.data) from HistoricoJustificativaPonto hh where hh.justificativaPonto = j) " +
                 "and h.class = EncaminhamentoJustificativaPonto " +
-                "and h.responsavel = :responsavel " +
+                "and h.responsavel.id = :responsavel " +
                 "order by j.solicitante.nome";
 
-        final Identificacao id = new Identificacao(
-                filtro.getNome(),
-                filtro.getCpf(),
-                filtro.getEmail()
-        );
         final Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
-                .setParameter("responsavel", id)
+                .setParameter("responsavel", filtro.getId())
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoDTO.class));
 
         return query.list();
@@ -66,14 +61,9 @@ public class ConsultaJustificativaDTOPorAprovadorDao extends Dao implements ICon
                 "join j.historico h " +
                 "where h.data = (select max(hh.data) from HistoricoJustificativaPonto hh where hh.justificativaPonto = j) " +
                 "and h.class = EncaminhamentoJustificativaPonto " +
-                "and h.responsavel = :responsavel";
-        final Identificacao id = new Identificacao(
-                filtro.getNome(),
-                filtro.getCpf(),
-                filtro.getEmail()
-        );
+                "and h.responsavel.id = :responsavel";
         final Query query = getSession().createQuery(hql)
-                .setParameter("responsavel", id);
+                .setParameter("responsavel", filtro.getId());
 
         return  (Long)query.uniqueResult();
     }

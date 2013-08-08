@@ -29,7 +29,7 @@ public class User implements Serializable {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "userId")
-	private int id;
+	private Integer id;
 
 	@Column(name = "cpf", unique = true, nullable = false, length = 14)
 	private String cpf;

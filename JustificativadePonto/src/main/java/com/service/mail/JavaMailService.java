@@ -89,6 +89,27 @@ public class JavaMailService implements IMailService {
         sendMail(REMETENTE_SISTEMA, destinatarios, assunto, corpo);
     }
 
+    @Override
+    public void reprovadoCoordenador(User remetente, User solicitante, Integer id, String cancelamento) {
+        final String assunto = Message.getBundleMessage("mail.subject.reprovadocoordenador");
+        final String urlAux = formataUrlAcessaJustificativa(id);
+        final String corpo = Message.getBundleMessage("mail.corpo.reprovado.coordenador",
+                solicitante.getNome(), id.toString(), cancelamento, urlAux);
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        sendMail(formata(remetente), destinatarios, assunto, corpo);
+    }
+
+    @Override
+    public void reprovadoSuperintendente(User remetente, User solicitante, User coordenador, Integer id, String cancelamento) {
+        final String assunto = Message.getBundleMessage("mail.subject.reprovadosuperintendente");
+        final String urlAux = formataUrlAcessaJustificativa(id);
+        final String corpo = Message.getBundleMessage("mail.corpo.reprovado.superintendente",
+                solicitante.getNome(), id.toString(), cancelamento, urlAux);
+        List<String> destinatarios = retornaListaFormatada(solicitante);
+        destinatarios.add(formata(coordenador));
+        sendMail(formata(remetente), destinatarios, assunto, corpo);
+    }
+
 
     private String formataUrlAcessaJustificativa(Integer idDoc) {
         return JsfUtil.getUrlToSendMail() + URL_ID + idDoc.toString();

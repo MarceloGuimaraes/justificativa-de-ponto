@@ -15,9 +15,10 @@ public class EncaminhamentoJustificativaPonto extends HistoricoJustificativaPont
     @Embedded
     @AttributeOverrides(
             {
-                    @AttributeOverride( name = "nome", column = @Column(name = "respNome")),
-                    @AttributeOverride( name = "cpf", column = @Column(name = "respCpf")),
-                    @AttributeOverride( name = "email", column = @Column(name = "respEmail"))
+                    @AttributeOverride( name = "id", column = @Column(name = "respId_user")),
+                    @AttributeOverride( name = "nome", column = @Column(name = "respNome", length = 50)),
+                    @AttributeOverride( name = "cpf", column = @Column(name = "respCpf", length = 14)),
+                    @AttributeOverride( name = "email", column = @Column(name = "respEmail", length = 50))
             }
     )
     private Identificacao responsavel;

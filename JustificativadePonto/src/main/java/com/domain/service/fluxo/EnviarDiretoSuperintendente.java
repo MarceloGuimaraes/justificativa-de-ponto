@@ -28,8 +28,10 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
 
     @Override
     public boolean isIntercepted(JustificativaPonto justificativa) {
+        User usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), User.class);
         return justificativa.getStatus().equals(StatusEnum.ELABORACAO)
-                && permissoes.getUsuarioLogado().getPerfil().contains(PerfilEnum.COORDENADOR);
+                && usuarioLogado.getPerfil().contains(PerfilEnum.COORDENADOR)
+                && justificativa.getSolicitante().equals(usuarioLogado);
     }
 
     @Override
@@ -37,10 +39,17 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
         final User superintendente = userService.recuperar(justificativa.getIdProximoResponsavel());
         final User solicitante = mapper.map(permissoes.getUsuarioLogado(), User.class);
 
-        JustificativaPonto justificativaNova = new JustificativaPonto(solicitante);
-        mapper.map(justificativa, justificativaNova);
+        JustificativaPonto justificativaNova;
 
-        justificativaNova = justificativaService.adicionar(justificativaNova);
+        if(justificativa.getId() == null || justificativa.getId() == 0){
+            justificativaNova = new JustificativaPonto(solicitante);
+            mapper.map(justificativa, justificativaNova);
+            justificativaNova = justificativaService.adicionar(justificativaNova);
+        } else {
+            justificativaNova = justificativaService.recuperar(justificativa.getId());
+            mapper.map(justificativa, justificativaNova);
+            justificativaNova = justificativaService.atualizar(justificativaNova);
+        }
 
         justificativaService.encaminha(solicitante,
                 superintendente,

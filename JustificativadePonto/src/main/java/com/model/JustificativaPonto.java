@@ -230,7 +230,7 @@ public class JustificativaPonto implements Serializable {
 		if (historico == null) {
 			historico = new LinkedList<HistoricoJustificativaPonto>();
 		}
-        Identificacao identificacao = new Identificacao(user.getNome(), user.getCpf(), user.getEmail());
+        Identificacao identificacao = new Identificacao(user.getId(), user.getNome(), user.getCpf(), user.getEmail());
 		historico.add(new HistoricoJustificativaPonto(identificacao, this, evento));
 	}
 
@@ -238,7 +238,7 @@ public class JustificativaPonto implements Serializable {
         if (historico == null) {
             historico = new LinkedList<HistoricoJustificativaPonto>();
         }
-        Identificacao identificacao = new Identificacao(user.getNome(), user.getCpf(), user.getEmail());
+        Identificacao identificacao = new Identificacao(user.getId(), user.getNome(), user.getCpf(), user.getEmail());
         historico.add(new HistoricoJustificativaPonto(identificacao, this, evento, observacao));
     }
 
@@ -248,8 +248,8 @@ public class JustificativaPonto implements Serializable {
             historico = new LinkedList<HistoricoJustificativaPonto>();
         }
 
-        Identificacao id1 = new Identificacao(user.getNome(), user.getCpf(), user.getEmail());
-        Identificacao id2 = new Identificacao(delegado.getNome(), delegado.getCpf(), delegado.getEmail());
+        Identificacao id1 = new Identificacao(user.getId(), user.getNome(), user.getCpf(), user.getEmail());
+        Identificacao id2 = new Identificacao(delegado.getId(), delegado.getNome(), delegado.getCpf(), delegado.getEmail());
 
         historico.add(new EncaminhamentoJustificativaPonto(id1, this, evento, id2));
 

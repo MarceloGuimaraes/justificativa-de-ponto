@@ -15,7 +15,18 @@
                 <entry key="3" value-ref="enviarSuperintendente"/>
                 <entry key="4" value-ref="enviarRH"/>
                 <entry key="5" value-ref="concluir"/>
-                <entry key="6" value-ref="cancelar"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="reprovacao" class="com.domain.service.fluxo.WorkflowResolver">
+        <constructor-arg ref="JustificativaService" />
+        <constructor-arg ref="mapper" />
+        <constructor-arg>
+            <map>
+                <entry key="1" value-ref="reprovarCoordenador"/>
+                <entry key="2" value-ref="reprovarSuperintendente"/>
+                <entry key="3" value-ref="cancelar"/>
             </map>
         </constructor-arg>
     </bean>
@@ -39,6 +50,10 @@
     <bean id="concluir" class="com.domain.service.fluxo.Concluir" parent="proximoPasso"/>
 
     <bean id="cancelar" class="com.domain.service.fluxo.Cancelar" parent="proximoPasso"/>
+
+    <bean id="reprovarCoordenador" class="com.domain.service.fluxo.ReprovarCoordenador" parent="proximoPasso"/>
+
+    <bean id="reprovarSuperintendente" class="com.domain.service.fluxo.ReprovarSuperintendente" parent="proximoPasso"/>
 
     <bean id="nulo" class="com.domain.service.fluxo.PassoSemAcesso" />
 

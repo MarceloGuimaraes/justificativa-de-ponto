@@ -21,6 +21,7 @@ public class DozerBeanFactory implements BeanFactory {
         if(tiposEventosEncaminhamento.contains(source.getTipoEvento())){
             EncaminhamentoJustificativaPonto resultado = new EncaminhamentoJustificativaPonto();
             Identificacao responsavel = new Identificacao(
+                    source.getResponsavel().getId(),
                     source.getResponsavel().getNome(),
                     source.getResponsavel().getCpf(),
                     source.getResponsavel().getEmail()

@@ -170,6 +170,7 @@ public class JustificativaPontoDTO implements Serializable {
             );
             EnumSet<TipoEventoJustificativaPontoEnum> tipoEncaminhamento = EnumSet.of(
                     TipoEventoJustificativaPontoEnum.REGISTRO_CRIADO,
+                    TipoEventoJustificativaPontoEnum.ENVIADO_SOLICITANTE,
                     TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR,
                     TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE,
                     TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH

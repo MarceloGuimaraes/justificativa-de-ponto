@@ -22,21 +22,17 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
 
     @Override
     public List<JustificativaPontoGrid> todos(User filtro, int startIndex, int pageSize) {
-        String hql = "select distinct j as justificativa from EncaminhamentoJustificativaPonto hist " +
-                "join hist.justificativaPonto j " +
+        String hql = "select distinct j as justificativa from JustificativaPonto j " +
                 "join fetch j.solicitante solic " +
-                "where solic = :user or hist.responsavel = :resp " +
+                "where solic = :user or " +
+                "j.id in (select justificativaPonto.id from EncaminhamentoJustificativaPonto where responsavel.id = :resp) " +
                 "order by j." + ordenador + " asc";
 
-        Identificacao identificacao = new Identificacao();
-        identificacao.setNome(filtro.getNome());
-        identificacao.setCpf(filtro.getCpf());
-        identificacao.setEmail(filtro.getEmail());
         Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
                 .setParameter("user", filtro)
-                .setParameter("resp", identificacao)
+                .setParameter("resp", filtro.getId())
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoGrid.class));
 
         return query.list();
@@ -44,19 +40,14 @@ public class ConsultaJustificativaPontoPorUsuarioDao extends Dao implements ICon
 
     @Override
     public long count(User user) {
-        String hql = "select count(j.id) from EncaminhamentoJustificativaPonto hist " +
-                "join hist.justificativaPonto j " +
-                "where j.solicitante = :user or hist.responsavel = :resp";
-
-        Identificacao identificacao = new Identificacao();
-        identificacao.setNome(user.getNome());
-        identificacao.setCpf(user.getCpf());
-        identificacao.setEmail(user.getEmail());
+        String hql = "select count(j) from JustificativaPonto j " +
+                "where j.solicitante = :user or " +
+                "j.id in (select justificativaPonto.id from EncaminhamentoJustificativaPonto where responsavel.id = :resp)";
 
         Query query = getSession().createQuery(hql)
                 .setParameter("user", user)
-                .setParameter("resp", identificacao);
+                .setParameter("resp", user.getId());
 
-        return ((Long)query.uniqueResult()).intValue();
+        return (Long)query.uniqueResult();
     }
 }

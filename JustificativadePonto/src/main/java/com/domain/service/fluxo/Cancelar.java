@@ -23,7 +23,7 @@ public class Cancelar extends ProximoPasso {
 
     @Override
     public boolean isIntercepted(JustificativaPonto justificativa) {
-        return false;
+        return true;
     }
 
     @Override
