@@ -253,7 +253,7 @@
                                                  update="display :pnListagemJustificativas"
                                                  action="#{fluxoJustificativaManagedBean.proximo}"
                                                  oncomplete="handleCancelRequest(xhr, status, args)">
-                                    <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{cancelar}"/>
+                                    <f:setPropertyActionListener target="#{fluxoJustificativaManagedBean.proximoPasso}" value="#{reprovacao}"/>
                                 </p:commandButton>
                                 <p:commandButton value="Voltar" update="display" process="@this" oncomplete="cadDialog.hide()"/>
                             </p:column>

@@ -39,11 +39,10 @@ public class ReprovarSuperintendente extends ProximoPasso {
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
-        // Inserindo o Rh escolhidos
-        final User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
-        final User usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), User.class);
-
         final JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
+        final User solicitante = justificativaPonto.getSolicitante();
+        final User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
+
         mapper.map(justificativa, justificativaPonto, "decisaoSuperIntendente");
         justificativaService.atualizar(justificativaPonto);
 

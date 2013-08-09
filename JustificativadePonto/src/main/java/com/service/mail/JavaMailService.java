@@ -106,7 +106,9 @@ public class JavaMailService implements IMailService {
         final String corpo = Message.getBundleMessage("mail.corpo.reprovado.superintendente",
                 solicitante.getNome(), id.toString(), cancelamento, urlAux);
         List<String> destinatarios = retornaListaFormatada(solicitante);
-        destinatarios.add(formata(coordenador));
+        if(coordenador != null){
+            destinatarios.add(formata(coordenador));
+        }
         sendMail(formata(remetente), destinatarios, assunto, corpo);
     }
 

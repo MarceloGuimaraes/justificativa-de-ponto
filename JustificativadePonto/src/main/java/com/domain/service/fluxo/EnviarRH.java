@@ -41,12 +41,12 @@ public class EnviarRH extends ProximoPasso {
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
+        final JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
         // Inserindo o Rh escolhidos
         final User rh = userService.recuperar(justificativa.getIdProximoResponsavel());
-        final User solicitante = mapper.map(justificativa.getSolicitante(), User.class);
-        final User usuarioLogado = mapper.map(permissoes.getUsuarioLogado(), User.class);
+        final User solicitante = justificativaPonto.getSolicitante();
+        final User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
 
-        final JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
         mapper.map(justificativa, justificativaPonto, "decisaoSuperIntendente");
         justificativaService.atualizar(justificativaPonto);
 

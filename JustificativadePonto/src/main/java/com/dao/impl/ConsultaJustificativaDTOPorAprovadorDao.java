@@ -3,7 +3,7 @@ package com.dao.impl;
 import com.dao.Dao;
 import com.dao.IConsultaFiltradaPaginadaDao;
 import com.domain.dto.JustificativaPontoDTO;
-import com.model.Identificacao;
+import com.model.TipoEventoJustificativaPontoEnum;
 import com.model.User;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -43,12 +43,14 @@ public class ConsultaJustificativaDTOPorAprovadorDao extends Dao implements ICon
                 "join j.historico h " +
                 "where h.data = (select max(hh.data) from HistoricoJustificativaPonto hh where hh.justificativaPonto = j) " +
                 "and h.class = EncaminhamentoJustificativaPonto " +
+                "and h.tipoEvento != :tipoEvento " +
                 "and h.responsavel.id = :responsavel " +
                 "order by j.solicitante.nome";
 
         final Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
+                .setParameter("tipoEvento", TipoEventoJustificativaPontoEnum.ENVIADO_SOLICITANTE)
                 .setParameter("responsavel", filtro.getId())
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoDTO.class));
 
@@ -61,8 +63,10 @@ public class ConsultaJustificativaDTOPorAprovadorDao extends Dao implements ICon
                 "join j.historico h " +
                 "where h.data = (select max(hh.data) from HistoricoJustificativaPonto hh where hh.justificativaPonto = j) " +
                 "and h.class = EncaminhamentoJustificativaPonto " +
+                "and h.tipoEvento != :tipoEvento " +
                 "and h.responsavel.id = :responsavel";
         final Query query = getSession().createQuery(hql)
+                .setParameter("tipoEvento", TipoEventoJustificativaPontoEnum.ENVIADO_SOLICITANTE)
                 .setParameter("responsavel", filtro.getId());
 
         return  (Long)query.uniqueResult();
