@@ -248,6 +248,9 @@
                         <p:dataTable var="historico"
                                      value="#{novaJustificativaManagedBean.justificativa.aprovacoes}"
                                      id="tblAprovacoesJustificativa">
+                            <p:column style="width:2%">
+                                <p:rowToggler rendered="#{historico.tipoEvento.codigo eq 4 or historico.tipoEvento.codigo eq 7 or historico.tipoEvento.codigo eq 10}" />
+                            </p:column>
                             <p:column id="colDataAprovacoes">
                                 <f:facet name="header">
                                     <h:outputText value="#{msgs['form.justificativa.tabela.historico.coluna.data']}" />
@@ -268,6 +271,14 @@
                                 </f:facet>
                                 <h:outputText value="#{msgs[historico.tipoEvento.descricao]}" />
                             </p:column>
+
+                            <p:rowExpansion rendered="#{historico.tipoEvento.codigo eq 4 or historico.tipoEvento.codigo eq 7 or historico.tipoEvento.codigo eq 10}">
+                                <h:panelGroup id="display" columns="4">
+                                    <h:outputLabel value="#{msgs['form.justificativa.label.motivo']}#{msgs['form.label.doispontos']}"/>
+                                    <h:outputText value="#{historico.observacao}"/>
+                                </h:panelGroup>
+                            </p:rowExpansion>
+
                         </p:dataTable>
                     </p:panel>
 

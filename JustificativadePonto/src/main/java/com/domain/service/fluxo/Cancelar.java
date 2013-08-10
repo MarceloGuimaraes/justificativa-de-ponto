@@ -85,8 +85,8 @@ public class Cancelar extends ProximoPasso {
                 permissoes.getUsuarioLogado(),
                 justificativaPersistida.getSolicitante(),
                 destinos,
-                justificativaPersistida.getId()
-        );
+                justificativaPersistida.getId(),
+                justificativa.getCancelamento());
     }
 
     @Override

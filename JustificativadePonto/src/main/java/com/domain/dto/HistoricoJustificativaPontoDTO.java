@@ -13,6 +13,7 @@ public class HistoricoJustificativaPontoDTO implements Serializable {
     private UsuarioLogado responsavel;
     private JustificativaPontoDTO justificativaPonto;
     private TipoEventoJustificativaPontoEnum tipoEvento;
+    private String observacao;
 
     public Long getId() {
         return id;
@@ -60,5 +61,13 @@ public class HistoricoJustificativaPontoDTO implements Serializable {
 
     public void setResponsavel(UsuarioLogado responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 }

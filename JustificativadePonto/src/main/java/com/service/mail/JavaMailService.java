@@ -71,10 +71,10 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void cancelado(UsuarioLogado remetente, User solicitante, List<User> copyTo, Integer idDoc) {
+    public void cancelado(UsuarioLogado remetente, User solicitante, List<User> copyTo, Integer idDoc, String motivoCancelamento) {
         final String assunto = Message.getBundleMessage("mail.subject.cancelado");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
-        final String corpo = Message.getBundleMessage("mail.corpo.cancelado", solicitante.getNome(), idDoc.toString(), urlAux);
+        final String corpo = Message.getBundleMessage("mail.corpo.cancelado", solicitante.getNome(), idDoc.toString(), motivoCancelamento, urlAux);
         final List<String> destinatarios = retornaListaFormatada(solicitante);
         destinatarios.addAll(formata(copyTo));
         sendMail(formata(remetente), destinatarios, assunto, corpo);

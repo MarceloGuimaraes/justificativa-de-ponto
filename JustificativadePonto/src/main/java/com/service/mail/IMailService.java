@@ -13,7 +13,7 @@ public interface IMailService {
     void enviarSuperintendente(UsuarioLogado usuarioLogado, User solicitante, User superIntendente, Integer idDoc);
     void enviarRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User rh, Integer idDoc);
     void concluiRh(UsuarioLogado usuarioLogado, User solicitante, User coordenador, User superintendente, Integer idDoc);
-    void cancelado(UsuarioLogado usuarioLogado, User solicitante,  List<User> copyTo, Integer idDoc);
+    void cancelado(UsuarioLogado usuarioLogado, User solicitante, List<User> copyTo, Integer idDoc, String motivoCancelamento);
     void resetaSenha(UsuarioLogin userMail,String passwd);
     void reprovadoCoordenador(User remetente, User solicitante, Integer id, String cancelamento);
     void reprovadoSuperintendente(User usuarioLogado, User solicitante, Integer id, String cancelamento);
