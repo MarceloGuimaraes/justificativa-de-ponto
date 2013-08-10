@@ -100,15 +100,12 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void reprovadoSuperintendente(User remetente, User solicitante, User coordenador, Integer id, String cancelamento) {
+    public void reprovadoSuperintendente(User remetente, User solicitante, Integer id, String cancelamento) {
         final String assunto = Message.getBundleMessage("mail.subject.reprovadosuperintendente");
         final String urlAux = formataUrlAcessaJustificativa(id);
         final String corpo = Message.getBundleMessage("mail.corpo.reprovado.superintendente",
                 solicitante.getNome(), id.toString(), cancelamento, urlAux);
         List<String> destinatarios = retornaListaFormatada(solicitante);
-        if(coordenador != null){
-            destinatarios.add(formata(coordenador));
-        }
         sendMail(formata(remetente), destinatarios, assunto, corpo);
     }
 

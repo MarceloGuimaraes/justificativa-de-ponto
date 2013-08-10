@@ -43,9 +43,6 @@ public class ReprovarSuperintendente extends ProximoPasso {
         final User solicitante = justificativaPonto.getSolicitante();
         final User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
 
-        mapper.map(justificativa, justificativaPonto, "decisaoSuperIntendente");
-        justificativaService.atualizar(justificativaPonto);
-
         justificativaService.atua(usuarioLogado,
                 justificativaPonto,
                 StatusEnum.ELABORACAO,
@@ -58,16 +55,9 @@ public class ReprovarSuperintendente extends ProximoPasso {
                 StatusEnum.ELABORACAO,
                 TipoEventoJustificativaPontoEnum.ENVIADO_SOLICITANTE);
 
-        final Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
-        User coordenador=null;
-        if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
-            coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
-        }
-
         mailService.reprovadoSuperintendente(
                 usuarioLogado,
                 solicitante,
-                coordenador,
                 justificativaPonto.getId(),
                 justificativa.getCancelamento());
     }

@@ -16,5 +16,5 @@ public interface IMailService {
     void cancelado(UsuarioLogado usuarioLogado, User solicitante,  List<User> copyTo, Integer idDoc);
     void resetaSenha(UsuarioLogin userMail,String passwd);
     void reprovadoCoordenador(User remetente, User solicitante, Integer id, String cancelamento);
-    void reprovadoSuperintendente(User usuarioLogado, User solicitante, User coordenador, Integer id, String cancelamento);
+    void reprovadoSuperintendente(User usuarioLogado, User solicitante, Integer id, String cancelamento);
 }
