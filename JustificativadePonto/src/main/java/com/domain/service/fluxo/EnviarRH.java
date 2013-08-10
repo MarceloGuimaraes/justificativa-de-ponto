@@ -68,7 +68,7 @@ public class EnviarRH extends ProximoPasso {
         }
 
         mailService.enviarRh(
-                permissoes.getUsuarioLogado(),
+                usuarioLogado,
                 solicitante,
                 coordenador,
                 rh,

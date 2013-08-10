@@ -11,9 +11,12 @@ import com.service.IUserService;
 import com.service.mail.IMailService;
 import org.dozer.Mapper;
 
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public abstract class ProximoPasso implements IProximoPasso {
 
@@ -50,13 +53,21 @@ public abstract class ProximoPasso implements IProximoPasso {
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH
         );
 
-        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = new LinkedHashMap<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto>();
-        for(HistoricoJustificativaPonto h : justificativa.getHistorico()){
-            if(tiposEventosEncaminhamento.contains(h.getTipoEvento())){
-                historicos.put(h.getTipoEvento(), (EncaminhamentoJustificativaPonto)h);
+        Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> resultado = new LinkedHashMap<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto>();
+        Set<HistoricoJustificativaPonto> historicosOrdenados = new TreeSet<HistoricoJustificativaPonto>(new Comparator<HistoricoJustificativaPonto>() {
+            @Override
+            public int compare(HistoricoJustificativaPonto h1, HistoricoJustificativaPonto h2) {
+                return h2.getId().compareTo(h1.getId());
+            }
+        });
+        historicosOrdenados.addAll(justificativa.getHistorico());
+        for(HistoricoJustificativaPonto h : historicosOrdenados){
+            if(tiposEventosEncaminhamento.contains(h.getTipoEvento())
+                    && !resultado.containsKey(h.getTipoEvento())){
+                resultado.put(h.getTipoEvento(), (EncaminhamentoJustificativaPonto) h);
             }
         }
-        return historicos;
+        return resultado;
     }
 
     @Override

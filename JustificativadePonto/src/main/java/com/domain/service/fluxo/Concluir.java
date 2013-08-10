@@ -73,7 +73,7 @@ public class Concluir extends ProximoPasso {
         }
 
         mailService.concluiRh(
-                permissoes.getUsuarioLogado(),
+                usuarioLogado,
                 solicitante,
                 coordenador,
                 superintendente,

@@ -35,7 +35,7 @@ public class EnviarCoordenador extends ProximoPasso {
     public void proximo(JustificativaPontoDTO justificativa) {
         // Inserindo o coordenador escolhido
         final User coordenador = userService.recuperar(justificativa.getIdProximoResponsavel());
-        final User solicitante = mapper.map(permissoes.getUsuarioLogado(), User.class);
+        final User solicitante = userService.recuperar(permissoes.getUsuarioLogado().getId());
 
         JustificativaPonto justificativaNova;
 
@@ -59,7 +59,7 @@ public class EnviarCoordenador extends ProximoPasso {
         destinos.add(coordenador);
 
         mailService.enviarCoordenador(
-                permissoes.getUsuarioLogado(),
+                solicitante,
                 coordenador,
                 justificativaNova.getId()
         );

@@ -61,7 +61,7 @@ public class EnviarSuperintendente extends ProximoPasso {
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE);
 
         mailService.enviarSuperintendente(
-                permissoes.getUsuarioLogado(),
+                usuarioLogado,
                 solicitante,
                 superintendente,
                 justificativaPonto.getId()

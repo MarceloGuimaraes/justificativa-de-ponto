@@ -37,7 +37,7 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
         final User superintendente = userService.recuperar(justificativa.getIdProximoResponsavel());
-        final User solicitante = mapper.map(permissoes.getUsuarioLogado(), User.class);
+        final User solicitante = userService.recuperar(permissoes.getUsuarioLogado().getId());
 
         JustificativaPonto justificativaNova;
 
@@ -61,7 +61,7 @@ public class EnviarDiretoSuperintendente extends ProximoPasso {
         destinos.add(superintendente);
 
         mailService.enviarSuperintendente(
-                permissoes.getUsuarioLogado(),
+                solicitante,
                 null,
                 superintendente,
                 justificativaNova.getId());

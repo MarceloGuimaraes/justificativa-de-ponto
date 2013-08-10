@@ -1,6 +1,5 @@
 package com.service.mail;
 
-import com.domain.dto.UsuarioLogado;
 import com.domain.dto.UsuarioLogin;
 import com.model.User;
 import com.util.JsfUtil;
@@ -23,7 +22,7 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void enviarCoordenador(UsuarioLogado remetente, User coordenador, Integer idDoc) {
+    public void enviarCoordenador(User remetente, User coordenador, Integer idDoc) {
         final String assunto = Message.getBundleMessage("mail.subject.aguardandoaprovacao.coordenador");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
         final String corpo = Message.getBundleMessage("mail.corpo.enviocoord", coordenador.getNome(), idDoc.toString(), urlAux);
@@ -33,7 +32,7 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void enviarSuperintendente(UsuarioLogado remetente, User solicitante, User superIntendente, Integer idDoc) {
+    public void enviarSuperintendente(User remetente, User solicitante, User superIntendente, Integer idDoc) {
         final String assunto = Message.getBundleMessage("mail.subject.aguardandoaprovacao.superintendente");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
         final String corpo = Message.getBundleMessage("mail.corpo.enviosuper", superIntendente.getNome(), idDoc.toString(), urlAux);
@@ -45,7 +44,7 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void enviarRh(UsuarioLogado remetente, User solicitante, User coordenador, User rh, Integer idDoc) {
+    public void enviarRh(User remetente, User solicitante, User coordenador, User rh, Integer idDoc) {
         final String assunto = Message.getBundleMessage("mail.subject.aguardandoaprovacao.rh");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
         final String corpo = Message.getBundleMessage("mail.corpo.enviorh", rh.getNome(), idDoc.toString(), urlAux);
@@ -58,7 +57,7 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void concluiRh(UsuarioLogado remetente, User solicitante, User coordenador, User superintendente, Integer idDoc) {
+    public void concluiRh(User remetente, User solicitante, User coordenador, User superintendente, Integer idDoc) {
         final String assunto = Message.getBundleMessage("mail.subject.aprovado.rh.concluir");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
         final String corpo = Message.getBundleMessage("mail.corpo.concluirh", solicitante.getNome(), idDoc.toString(), urlAux);
@@ -71,7 +70,7 @@ public class JavaMailService implements IMailService {
     }
 
     @Override
-    public void cancelado(UsuarioLogado remetente, User solicitante, List<User> copyTo, Integer idDoc, String motivoCancelamento) {
+    public void cancelado(User remetente, User solicitante, List<User> copyTo, Integer idDoc, String motivoCancelamento) {
         final String assunto = Message.getBundleMessage("mail.subject.cancelado");
         final String urlAux = formataUrlAcessaJustificativa(idDoc);
         final String corpo = Message.getBundleMessage("mail.corpo.cancelado", solicitante.getNome(), idDoc.toString(), motivoCancelamento, urlAux);
@@ -123,10 +122,6 @@ public class JavaMailService implements IMailService {
     }
 
     private String formata(User user) {
-        return formata(user.getNome(), user.getEmail());
-    }
-
-    private String formata(UsuarioLogado user) {
         return formata(user.getNome(), user.getEmail());
     }
 
