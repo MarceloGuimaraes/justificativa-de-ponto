@@ -56,10 +56,6 @@
         <constructor-arg ref="consultaJustificativasSolicitanteService"/>
     </bean>
 
-    <bean id="justificativasPendentesAprovacaoPaginadas" class="com.managed.bean.MinhasJustificativasPaginadasDatasource" scope="request">
-        <constructor-arg ref="consultaJustificativasPorAprovadorService"/>
-    </bean>
-
     <bean id="justificativasDTOPendentesAprovacaoPaginadas" class="com.managed.bean.AprovacaoJustificativaManagedBean" scope="request">
         <constructor-arg ref="pendenteAprovacaoWrappedPaginadaDataModel"/>
     </bean>

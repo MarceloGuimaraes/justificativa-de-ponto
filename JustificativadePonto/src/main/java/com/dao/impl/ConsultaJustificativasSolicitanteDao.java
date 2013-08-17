@@ -18,13 +18,21 @@ public class ConsultaJustificativasSolicitanteDao extends Dao implements IConsul
 
     @Override
     public List<JustificativaPontoGrid> todos(User filtro, int startIndex, int pageSize) {
-        String hql = "select j as justificativa from JustificativaPonto j " +
-                "where j.solicitante = :user order by j.solicitante.nome";
+        String hql = "select j.id as id, " +
+                "j.data as data, " +
+                "j.dataSolicitacao as dataSolicitacao, " +
+                "j.dataSolicitacaoFim as dataSolicitacaoFim, " +
+                "j.solicitante.nome as nomeSolicitante, " +
+                "j.motivo as motivo, " +
+                "j.status as status " +
+                "from JustificativaPonto j " +
+                "where j.solicitante.id = :user " +
+                "order by j.solicitante.nome";
 
         Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)
                 .setMaxResults(pageSize)
-                .setParameter("user", filtro)
+                .setParameter("user", filtro.getId())
                 .setResultTransformer(new AliasToBeanResultTransformer(JustificativaPontoGrid.class));
 
         return query.list();

@@ -20,8 +20,15 @@ public class ConsultaJustificativaPontoDao extends Dao implements IConsultaPagin
 
     @Override
     public List<JustificativaPontoGrid> todos(int startIndex, int pageSize) {
-        String hql = "select j as justificativa from JustificativaPonto j " +
-                "join fetch j.solicitante s order by j."+ordenacao+" asc";
+        String hql = "select j.id as id, " +
+                "j.data as data, " +
+                "j.dataSolicitacao as dataSolicitacao, " +
+                "j.dataSolicitacaoFim as dataSolicitacaoFim, " +
+                "j.solicitante.nome as nomeSolicitante, " +
+                "j.motivo as motivo, " +
+                "j.status as status " +
+                "from JustificativaPonto j " +
+                "order by j." + ordenacao + " asc";
 
         Query query = getSession().createQuery(hql)
                 .setFirstResult(startIndex)

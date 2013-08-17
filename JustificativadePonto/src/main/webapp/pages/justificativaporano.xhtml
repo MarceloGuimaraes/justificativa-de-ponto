@@ -37,20 +37,13 @@
 						<h:outputText
 							value="#{msgs['relatorio.justificativa.solicitante']}" />
 					</f:facet>
-					<h:outputText value="#{justificativa.solicitante.nome}" />
+					<h:outputText value="#{justificativa.nomeSolicitante}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="#{msgs['relatorio.justificativa.status']}" />
 					</f:facet>
 					<h:outputText value="#{msgs[justificativa.status.descricao]}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">
-						<h:outputText
-							value="#{msgs['relatorio.justificativa.coordenador']}" />
-					</f:facet>
-					<h:outputText value="#{justificativa.coordenador.nome}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">

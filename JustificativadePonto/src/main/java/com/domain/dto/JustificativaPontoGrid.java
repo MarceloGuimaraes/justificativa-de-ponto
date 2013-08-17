@@ -1,6 +1,7 @@
 package com.domain.dto;
 
-import com.model.*;
+import com.model.MotivoEnum;
+import com.model.StatusEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,51 +11,12 @@ public class JustificativaPontoGrid implements Serializable {
     private Date data;
     private Date dataSolicitacao;
     private Date dataSolicitacaoFim;
-    private boolean periodo;
-    private CadastroUsuario solicitante;
-    private CadastroUsuario coordenador;
     private MotivoEnum motivo;
     private StatusEnum status;
-    private HistoricoJustificativaPontoDTO ultimoHistorico;
+
+    private String nomeSolicitante;
 
     public JustificativaPontoGrid() {
-    }
-
-    public void setJustificativa(JustificativaPonto justificativa){
-        id = justificativa.getId();
-        data = justificativa.getData();
-        dataSolicitacao = justificativa.getDataSolicitacao();
-        dataSolicitacaoFim = justificativa.getDataSolicitacaoFim();
-        periodo = justificativa.getDataSolicitacaoFim()!=null;
-        solicitante = new CadastroUsuario();
-        solicitante.setNome(justificativa.getSolicitante().getNome());
-        solicitante.setCpf(justificativa.getSolicitante().getCpf());
-        solicitante.setEmail(justificativa.getSolicitante().getEmail());
-        status = justificativa.getStatus();
-        motivo = justificativa.getMotivo();
-        Date maiorData = justificativa.getHistorico().get(0).getData();
-        for (HistoricoJustificativaPonto h : justificativa.getHistorico()){
-            if(h.getData().after(maiorData)){
-                ultimoHistorico = new HistoricoJustificativaPontoDTO();
-                ultimoHistorico.setData(h.getData());
-                ultimoHistorico.setTipoEvento(h.getTipoEvento());
-            }
-            if(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR.equals(h.getTipoEvento())){
-                Identificacao coordUser = ((EncaminhamentoJustificativaPonto)h).getResponsavel();
-                coordenador = new CadastroUsuario();
-                coordenador.setNome(coordUser.getNome());
-                coordenador.setCpf(coordUser.getCpf());
-                coordenador.setEmail(coordUser.getEmail());
-            }
-        }
-    }
-
-    public CadastroUsuario getSolicitante() {
-        return solicitante;
-    }
-
-    public CadastroUsuario getCoordenador() {
-        return coordenador;
     }
 
     public MotivoEnum getMotivo() {
@@ -63,10 +25,6 @@ public class JustificativaPontoGrid implements Serializable {
 
     public StatusEnum getStatus() {
         return status;
-    }
-
-    public HistoricoJustificativaPontoDTO getUltimoHistorico() {
-        return ultimoHistorico;
     }
 
     public Integer getId() {
@@ -102,10 +60,22 @@ public class JustificativaPontoGrid implements Serializable {
     }
 
     public boolean isPeriodo() {
-        return periodo;
+        return dataSolicitacaoFim!=null;
     }
 
-    public void setPeriodo(boolean periodo) {
-        this.periodo = periodo;
+    public void setMotivo(MotivoEnum motivo) {
+        this.motivo = motivo;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
+
+    public String getNomeSolicitante() {
+        return nomeSolicitante;
+    }
+
+    public void setNomeSolicitante(String nomeSolicitante) {
+        this.nomeSolicitante = nomeSolicitante;
     }
 }
