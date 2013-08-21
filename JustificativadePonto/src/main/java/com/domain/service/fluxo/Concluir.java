@@ -51,26 +51,26 @@ public class Concluir extends ProximoPasso {
 
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
-
         User usuarioLogado = userService.recuperar(permissoes.getUsuarioLogado().getId());
         JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
-        justificativaService.atua(usuarioLogado,
-                justificativaPonto,
-                StatusEnum.CONCLUIDO,
-                TipoEventoJustificativaPontoEnum.APROVADO_RH);
-
-        User solicitante = justificativaPonto.getSolicitante();
 
         Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
 
+        User solicitante = justificativaPonto.getSolicitante();
+
         User coordenador = null;
         if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
-             coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+            coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
         }
         User superintendente = null;
         if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE)){
             superintendente = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_SUPERINTENDENTE).getResponsavel(), User.class);
         }
+
+        justificativaService.atua(usuarioLogado,
+                justificativaPonto,
+                StatusEnum.CONCLUIDO,
+                TipoEventoJustificativaPontoEnum.APROVADO_RH);
 
         mailService.concluiRh(
                 usuarioLogado,

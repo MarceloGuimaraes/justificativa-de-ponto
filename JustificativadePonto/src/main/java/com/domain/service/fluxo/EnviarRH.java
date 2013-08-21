@@ -42,6 +42,13 @@ public class EnviarRH extends ProximoPasso {
     @Override
     public void proximo(JustificativaPontoDTO justificativa) {
         final JustificativaPonto justificativaPonto = justificativaService.recuperar(justificativa.getId());
+
+        final Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
+        User coordenador=null;
+        if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
+            coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
+        }
+
         // Inserindo o Rh escolhidos
         final User rh = userService.recuperar(justificativa.getIdProximoResponsavel());
         final User solicitante = justificativaPonto.getSolicitante();
@@ -60,12 +67,6 @@ public class EnviarRH extends ProximoPasso {
                 justificativaPonto,
                 StatusEnum.EXECUCAORH,
                 TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_RH);
-
-        final Map<TipoEventoJustificativaPontoEnum, EncaminhamentoJustificativaPonto> historicos = retornaHistoricosMapeados(justificativaPonto);
-        User coordenador=null;
-        if(historicos.containsKey(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR)){
-            coordenador = mapper.map(historicos.get(TipoEventoJustificativaPontoEnum.ENVIADO_APROVACAO_COORDENADOR).getResponsavel(), User.class);
-        }
 
         mailService.enviarRh(
                 usuarioLogado,
