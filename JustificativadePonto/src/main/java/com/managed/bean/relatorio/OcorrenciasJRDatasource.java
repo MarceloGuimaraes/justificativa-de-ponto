@@ -6,7 +6,9 @@ import com.service.IConsultaFiltradaPaginadaService;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+import org.apache.commons.beanutils.PropertyUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 /**
@@ -47,34 +49,15 @@ public class OcorrenciasJRDatasource implements JRDataSource {
 
     @Override
     public Object getFieldValue(JRField jrField) throws JRException {
-        if (jrField.getName().equals("solicitante")) {
-            return corrente.getSolicitante();
+        try {
+            return PropertyUtils.getProperty(corrente, jrField.getName());
+        } catch (IllegalAccessException e) {
+            throw new JRException("Nao foi possivel acessar o campo: " + jrField.getName(), e);
+        } catch (InvocationTargetException e) {
+            throw new JRException("Ocorreu um erro inesperado ao acessar o campo: " + jrField.getName(), e);
+        } catch (NoSuchMethodException e) {
+            throw new JRException("O campo invocado nao existe: " + jrField.getName(), e);
         }
-        if (jrField.getName().equals("periodoDatas")) {
-            return corrente.getPeriodoDatas();
-        }
-        if (jrField.getName().equals("horaInicio")) {
-            return corrente.getHoraInicio();
-        }
-        if (jrField.getName().equals("horaTermino")) {
-            return corrente.getHoraTermino();
-        }
-        if (jrField.getName().equals("motivo")) {
-            return corrente.getMotivo();
-        }
-        if (jrField.getName().equals("complemento")) {
-            return corrente.getComplemento();
-        }
-        if (jrField.getName().equals("status")) {
-            return corrente.getStatus();
-        }
-        if (jrField.getName().equals("periodo")) {
-            return corrente.getPeriodo();
-        }
-        if (jrField.getName().equals("tipoDecisao")) {
-            return corrente.getTipoDecisao();
-        }
-        throw new JRException("campo nao existe: " + jrField.getName());
     }
 
     private void fetch(){
