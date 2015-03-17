@@ -59,3 +59,9 @@ Depois de configurar o arquivo de context, tem que colocar as seguintes librarys
 
 activation.jar
 mail.jar
+Depois de configurar o arquivo de context, tem que colocar as seguintes librarys no diretório <DIRETÓRIO_DE_INSTALACAO_TOMCAT>/lib:
+
+activation.jar
+mail.jar
+mysql-connector-java-5.xxx.jar
+
